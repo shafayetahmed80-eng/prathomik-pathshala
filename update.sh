@@ -3,8 +3,6 @@
 # Prathomik Pathshala - Production Safe Auto-Update Script for cPanel / CloudLinux
 # ==============================================================================
 
-set -o pipefail
-
 # 1. Resolve application root directory
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$APP_DIR" || {
@@ -20,7 +18,6 @@ echo "=================================================================="
 # 2. Prevent cPanel / CloudLinux Out-Of-Memory (OOM) kills
 export NODE_OPTIONS="--max-old-space-size=1536"
 export NEXT_TELEMETRY_DISABLED=1
-export NODE_ENV=production
 
 # 3. Detect and activate cPanel Node.js virtual environment (nodevenv)
 VENV_SCRIPT=""
@@ -60,21 +57,24 @@ git reset --hard origin/main || {
     exit 1
 }
 
-# 6. Install / update dependencies cleanly (skips pnpm check scripts)
-echo "📦 Installing npm dependencies..."
-npm install --no-audit --no-fund --ignore-scripts || {
+# 6. Install dependencies INCLUDING devDependencies (TypeScript & Tailwind required for build)
+echo "📦 Installing npm dependencies (including build tools)..."
+npm install --include=dev --no-audit --no-fund --ignore-scripts || {
     echo "❌ npm install failed."
     exit 1
 }
 
-# 7. Safe Production Build (Crash-proof: aborts before restart if build fails)
+# 7. Safe Production Build (Streams full compiler output)
 echo "🔨 Compiling Next.js production build..."
-if npm run build; then
+npm run build
+BUILD_STATUS=$?
+
+if [ $BUILD_STATUS -eq 0 ]; then
     echo "✅ Build completed successfully!"
 else
-    echo "❌ Build failed! Aborting update to prevent website crash."
+    echo "❌ Build failed with exit code $BUILD_STATUS! Aborting update to prevent website crash."
     echo "ℹ️  The existing running build has NOT been touched."
-    exit 1
+    exit $BUILD_STATUS
 fi
 
 # 8. Ensure correct permissions
@@ -84,6 +84,7 @@ chmod 777 tmp 2>/dev/null || true
 
 # 9. Graceful zero-downtime Phusion Passenger restart
 echo "🔄 Triggering Phusion Passenger restart (zero-downtime)..."
+export NODE_ENV=production
 touch tmp/restart.txt
 
 echo "=================================================================="
