@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import BanglaBornomalaLab from "@/components/BanglaBornomalaLab";
+import BrandHomeLink from "@/components/BrandHomeLink";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function BornomalaPage() {
@@ -23,6 +24,7 @@ export default function BornomalaPage() {
               ডিজিটাল বর্ণমালা ও হাতেখড়ি ল্যাব
             </span>
           </div>
+          <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
         </div>
       </header>
 

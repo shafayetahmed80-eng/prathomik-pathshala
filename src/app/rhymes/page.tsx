@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import AudioRhymesCorner from "@/components/AudioRhymesCorner";
+import BrandHomeLink from "@/components/BrandHomeLink";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function RhymesPage() {
@@ -23,6 +24,7 @@ export default function RhymesPage() {
               গল্প ও ছড়ার অডিও কর্নার
             </span>
           </div>
+          <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
         </div>
       </header>
 

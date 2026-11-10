@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ExamWorksheetGenerator from "@/components/ExamWorksheetGenerator";
+import BrandHomeLink from "@/components/BrandHomeLink";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function ExamsPage() {
@@ -23,6 +24,7 @@ export default function ExamsPage() {
               স্মার্ট প্রশ্নপত্র ও ওয়ার্কশিট মেকার
             </span>
           </div>
+          <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
         </div>
       </header>
 

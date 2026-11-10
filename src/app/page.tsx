@@ -29,6 +29,7 @@ import BanglaBornomalaLab from "@/components/BanglaBornomalaLab";
 import MultimediaSlideDeck from "@/components/MultimediaSlideDeck";
 import GlobalNCTBSearch from "@/components/GlobalNCTBSearch";
 import AudioRhymesCorner from "@/components/AudioRhymesCorner";
+import BrandHomeLink from "@/components/BrandHomeLink";
 import SiteFooter from "@/components/SiteFooter";
 
 type UserRole = "student" | "teacher";
@@ -81,22 +82,7 @@ export default function HomePage() {
       {/* 🌟 Semantic Header */}
       <header className="sticky top-0 z-40 backdrop-blur-md bg-white/95 border-b border-sky-100 shadow-xs print:hidden">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div 
-              aria-hidden="true" 
-              className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-white text-lg sm:text-2xl shadow-md shadow-amber-500/20 shrink-0"
-            >
-              🎈
-            </div>
-            <div className="min-w-0">
-              <span className="text-lg sm:text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 bg-clip-text text-transparent truncate block">
-                প্রাথমিক পাঠশালা
-              </span>
-              <span className="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
-                স্মার্ট এডুকেশন
-              </span>
-            </div>
-          </div>
+          <BrandHomeLink />
 
           {/* Quick Nav Links */}
           <nav aria-label="প্রধান লিঙ্কসমূহ" className="hidden lg:flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/60">
