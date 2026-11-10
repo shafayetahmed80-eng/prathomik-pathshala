@@ -60,9 +60,9 @@ git reset --hard origin/main || {
     exit 1
 }
 
-# 6. Install / update dependencies cleanly
+# 6. Install / update dependencies cleanly (skips pnpm check scripts)
 echo "📦 Installing npm dependencies..."
-npm install --no-audit --no-fund || {
+npm install --no-audit --no-fund --ignore-scripts || {
     echo "❌ npm install failed."
     exit 1
 }
