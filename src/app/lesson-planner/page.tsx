@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import TeacherLessonPlanner from "@/components/TeacherLessonPlanner";
 import BrandHomeLink from "@/components/BrandHomeLink";
+import InstallAppButton from "@/components/InstallAppButton";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function LessonPlannerPage() {
@@ -24,7 +25,10 @@ export default function LessonPlannerPage() {
               স্মার্ট এআই লেসন প্ল্যানার
             </span>
           </div>
-          <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
+          <div className="flex items-center gap-2 shrink-0">
+            <InstallAppButton variant="compact" />
+            <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
+          </div>
         </div>
       </header>
 

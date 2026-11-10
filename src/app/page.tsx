@@ -30,6 +30,7 @@ import MultimediaSlideDeck from "@/components/MultimediaSlideDeck";
 import GlobalNCTBSearch from "@/components/GlobalNCTBSearch";
 import AudioRhymesCorner from "@/components/AudioRhymesCorner";
 import BrandHomeLink from "@/components/BrandHomeLink";
+import InstallAppButton from "@/components/InstallAppButton";
 import SiteFooter from "@/components/SiteFooter";
 
 type UserRole = "student" | "teacher";
@@ -106,8 +107,9 @@ export default function HomePage() {
             </Link>
           </nav>
 
-          {/* Role Mode Segmented Switcher in Header */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+          {/* PWA Install & Role Mode Segmented Switcher in Header */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <InstallAppButton variant="header" />
             <div 
               role="radiogroup" 
               aria-label="ব্যবহারকারীর ভূমিকা নির্বাচন"
@@ -118,7 +120,7 @@ export default function HomePage() {
                 onClick={() => setRole("student")}
                 aria-checked={role === "student"}
                 role="radio"
-                className={`flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
+                className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
                   role === "student"
                     ? "bg-white text-emerald-700 shadow-xs"
                     : "text-slate-600 hover:text-slate-900"
@@ -131,7 +133,7 @@ export default function HomePage() {
                 onClick={() => setRole("teacher")}
                 aria-checked={role === "teacher"}
                 role="radio"
-                className={`flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
+                className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
                   role === "teacher"
                     ? "bg-purple-600 text-white shadow-xs"
                     : "text-slate-600 hover:text-slate-900"
@@ -197,6 +199,7 @@ export default function HomePage() {
             <span className="px-3 py-1 rounded-full bg-white border border-slate-200 shadow-2xs">
               📝 ১-ক্লিক প্রশ্নপত্র জেনারেটর
             </span>
+            <InstallAppButton variant="hero" />
           </div>
         </section>
 

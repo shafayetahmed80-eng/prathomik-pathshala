@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import InteractiveQuizHub from "@/components/InteractiveQuizHub";
 import BrandHomeLink from "@/components/BrandHomeLink";
+import InstallAppButton from "@/components/InstallAppButton";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function QuizPage() {
@@ -24,7 +25,10 @@ export default function QuizPage() {
               আনন্দ কুইজ ও ব্রেন বুস্টার
             </span>
           </div>
-          <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
+          <div className="flex items-center gap-2 shrink-0">
+            <InstallAppButton variant="compact" />
+            <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
+          </div>
         </div>
       </header>
 

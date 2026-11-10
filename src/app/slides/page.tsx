@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import MultimediaSlideDeck from "@/components/MultimediaSlideDeck";
 import BrandHomeLink from "@/components/BrandHomeLink";
+import InstallAppButton from "@/components/InstallAppButton";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function SlidesPage() {
@@ -24,7 +25,10 @@ export default function SlidesPage() {
               মাল্টিমিডিয়া স্লাইড হাব • ক্লাসরুম মোড
             </span>
           </div>
-          <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
+          <div className="flex items-center gap-2 shrink-0">
+            <InstallAppButton variant="compact" />
+            <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
+          </div>
         </div>
       </header>
 

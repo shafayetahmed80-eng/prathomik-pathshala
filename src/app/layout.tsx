@@ -1,15 +1,30 @@
 import type { Metadata, Viewport } from "next";
+import PwaBootstrap from "@/components/PwaBootstrap";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "প্রাথমিক পাঠশালা | Prathomik Pathshala",
   description: "বাংলাদেশের প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির শিক্ষার্থী ও শিক্ষকদের জন্য আধুনিক, ইন্টারঅ্যাক্টিভ ও আনন্দময় শিক্ষামূলক প্ল্যাটফর্ম।",
+  applicationName: "প্রাথমিক পাঠশালা",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "প্রাথমিক পাঠশালা",
+  },
+  icons: {
+    icon: [
+      { url: "/pwa-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/pwa-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  themeColor: "#059669",
 };
 
 export default function RootLayout({
@@ -56,6 +71,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-slate-50 text-slate-800 antialiased" suppressHydrationWarning>
+        <PwaBootstrap />
         {children}
       </body>
     </html>

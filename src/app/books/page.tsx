@@ -6,6 +6,7 @@ import { ArrowLeft, BookOpen, GraduationCap, ChevronRight, Volume2, Sparkles, He
 import { CLASSES_DATA, ClassGrade } from "@/data/curriculum";
 import BookReaderModal from "@/components/BookReaderModal";
 import BrandHomeLink from "@/components/BrandHomeLink";
+import InstallAppButton from "@/components/InstallAppButton";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function BooksPage() {
@@ -45,10 +46,11 @@ export default function BooksPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 hidden md:inline-block">
               {totalBooks}টি বই সংরক্ষিত
             </span>
+            <InstallAppButton variant="compact" />
             <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
           </div>
         </div>
