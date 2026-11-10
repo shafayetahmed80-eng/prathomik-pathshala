@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { playSuccessChime, playPopSound } from "@/utils/bornomalaAudio";
 import BrandHomeLink from "@/components/BrandHomeLink";
+import InstallAppButton from "@/components/InstallAppButton";
 
 export interface FontOption {
   id: string;
@@ -306,6 +307,8 @@ export default function SiteFooter() {
                 <span>{isPaperMode ? "চালু" : "বন্ধ"}</span>
               </span>
             </button>
+
+            <InstallAppButton variant="footer" />
           </div>
 
           {/* Right: Copyright */}

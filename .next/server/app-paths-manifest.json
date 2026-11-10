@@ -5,6 +5,7 @@
   "/api/pdf/route": "app/api/pdf/route.js",
   "/api/tts/route": "app/api/tts/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js",
   "/books/page": "app/books/page.js",
   "/bornomala/page": "app/bornomala/page.js",
   "/exams/page": "app/exams/page.js",
