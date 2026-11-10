@@ -82,9 +82,18 @@ chmod -R 755 .
 mkdir -p tmp
 chmod 777 tmp 2>/dev/null || true
 
-# 9. Graceful zero-downtime Phusion Passenger restart
-echo "🔄 Triggering Phusion Passenger restart (zero-downtime)..."
+# 9. Trigger Phusion Passenger reload and refresh Node.js worker
+echo "🔄 Triggering Phusion Passenger restart..."
 touch tmp/restart.txt
+
+# Restart existing server.js process so Passenger instantly spawns fresh worker from new build
+if command -v pkill >/dev/null 2>&1; then
+    pkill -f "server.js" 2>/dev/null || true
+fi
+
+if command -v passenger-config >/dev/null 2>&1; then
+    passenger-config restart-app "$APP_DIR" --ignore-passenger-not-running 2>/dev/null || true
+fi
 
 echo "=================================================================="
 echo "🎉 Update completed successfully at $(date '+%Y-%m-%d %H:%M:%S')!"

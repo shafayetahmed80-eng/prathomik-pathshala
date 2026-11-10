@@ -15,6 +15,7 @@
 
 # next.js build cache (keep production build for zero-OOM cPanel deployment)
 /.next/cache/
+/.next/server/route-cache/
 /.next/dev/
 /.next/trace*
 /out/
