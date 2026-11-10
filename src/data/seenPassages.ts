@@ -5052,70 +5052,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u1-f1",
+        "marks": 1,
         "sentence": "Sima and Jessica are meeting at the ____ station.",
-        "answer": "railway",
-        "marks": 1
+        "answer": "railway"
       },
       {
         "id": "c5e-u1-f2",
+        "marks": 1,
         "sentence": "Jessica has come to Bangladesh on ____ with her father.",
-        "answer": "holiday",
-        "marks": 1
+        "answer": "holiday"
       },
       {
         "id": "c5e-u1-f3",
+        "marks": 1,
         "sentence": "Sima is traveling to ____ with her family members.",
-        "answer": "Sylhet",
-        "marks": 1
+        "answer": "Sylhet"
       },
       {
         "id": "c5e-u1-f4",
+        "marks": 1,
         "sentence": "Jessica lives in the ____.",
-        "answer": "United Kingdom",
-        "marks": 1
+        "answer": "United Kingdom"
       },
       {
         "id": "c5e-u1-f5",
+        "marks": 1,
         "sentence": "They wished each other a safe and pleasant ____.",
-        "answer": "journey",
-        "marks": 1
+        "answer": "journey"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u1-tf1",
+        "marks": 1,
         "statement": "Sima and Jessica are at an airport departure lounge.",
         "isTrue": false,
-        "answer": "False (They are at a railway station)",
-        "marks": 1
+        "answer": "False (They are at a railway station)"
       },
       {
         "id": "c5e-u1-tf2",
+        "marks": 1,
         "statement": "Jessica is visiting Bangladesh for work.",
         "isTrue": false,
-        "answer": "False (She is on holiday with her father)",
-        "marks": 1
+        "answer": "False (She is on holiday with her father)"
       },
       {
         "id": "c5e-u1-tf3",
+        "marks": 1,
         "statement": "Sima is going to Sylhet.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u1-tf4",
+        "marks": 1,
         "statement": "Jessica's train leaves in ten minutes.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u1-tf5",
+        "marks": 1,
         "statement": "Jessica likes the people of Bangladesh very much.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -5234,70 +5234,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u3-f1",
+        "marks": 1,
         "sentence": "Saikat's family lives in an apartment in ____.",
-        "answer": "Bogura",
-        "marks": 1
+        "answer": "Bogura"
       },
       {
         "id": "c5e-u3-f2",
+        "marks": 1,
         "sentence": "Mr. Rashidul Islam is a ____ by profession.",
-        "answer": "banker",
-        "marks": 1
+        "answer": "banker"
       },
       {
         "id": "c5e-u3-f3",
+        "marks": 1,
         "sentence": "Mrs. Monwara Islam is a caring ____.",
-        "answer": "housewife",
-        "marks": 1
+        "answer": "housewife"
       },
       {
         "id": "c5e-u3-f4",
+        "marks": 1,
         "sentence": "In her leisure time, Saikat's mother enjoys ____.",
-        "answer": "sewing",
-        "marks": 1
+        "answer": "sewing"
       },
       {
         "id": "c5e-u3-f5",
+        "marks": 1,
         "sentence": "Saikat watches English ____ on TV to improve his language skills.",
-        "answer": "cartoons",
-        "marks": 1
+        "answer": "cartoons"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u3-tf1",
+        "marks": 1,
         "statement": "Saikat Islam lives in an independent bungalow in Dhaka.",
         "isTrue": false,
-        "answer": "False (He lives in an apartment in Bogura)",
-        "marks": 1
+        "answer": "False (He lives in an apartment in Bogura)"
       },
       {
         "id": "c5e-u3-tf2",
+        "marks": 1,
         "statement": "Mr. Rashidul Islam writes stories in his free time.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u3-tf3",
+        "marks": 1,
         "statement": "Saikat's mother gets dress orders from neighbours.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u3-tf4",
+        "marks": 1,
         "statement": "Saikat watches TV all day without studying.",
         "isTrue": false,
-        "answer": "False (He is a good student in Class 5)",
-        "marks": 1
+        "answer": "False (He is a good student in Class 5)"
       },
       {
         "id": "c5e-u3-tf5",
+        "marks": 1,
         "statement": "Saikat especially loves books about tigers and lions.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -5416,70 +5416,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u6-f1",
+        "marks": 1,
         "sentence": "The ____ helps us understand different food groups.",
-        "answer": "Food Pyramid",
-        "marks": 1
+        "answer": "Food Pyramid"
       },
       {
         "id": "c5e-u6-f2",
+        "marks": 1,
         "sentence": "Foods made of ____ form the base of the pyramid.",
-        "answer": "grains",
-        "marks": 1
+        "answer": "grains"
       },
       {
         "id": "c5e-u6-f3",
+        "marks": 1,
         "sentence": "Rice, ruti and bread provide our body with ____.",
-        "answer": "energy",
-        "marks": 1
+        "answer": "energy"
       },
       {
         "id": "c5e-u6-f4",
+        "marks": 1,
         "sentence": "Fresh fruits and vegetables are rich in ____.",
-        "answer": "vitamins",
-        "marks": 1
+        "answer": "vitamins"
       },
       {
         "id": "c5e-u6-f5",
+        "marks": 1,
         "sentence": "Meat, fish and lentils provide essential ____.",
-        "answer": "protein",
-        "marks": 1
+        "answer": "protein"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u6-tf1",
+        "marks": 1,
         "statement": "The food we like the most is always the healthiest food.",
         "isTrue": false,
-        "answer": "False (Sometimes foods we like aren't the healthiest)",
-        "marks": 1
+        "answer": "False (Sometimes foods we like aren't the healthiest)"
       },
       {
         "id": "c5e-u6-tf2",
+        "marks": 1,
         "statement": "Grains are at the bottom of the Food Pyramid.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u6-tf3",
+        "marks": 1,
         "statement": "Dairy products like milk help our teeth and bones.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u6-tf4",
+        "marks": 1,
         "statement": "Our body needs large amounts of fat and oil daily.",
         "isTrue": false,
-        "answer": "False (Our body needs very little fat and oil)",
-        "marks": 1
+        "answer": "False (Our body needs very little fat and oil)"
       },
       {
         "id": "c5e-u6-tf5",
+        "marks": 1,
         "statement": "Beans and lentils provide protein to our body.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -5598,70 +5598,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u8-f1",
+        "marks": 1,
         "sentence": "Sima stayed home and could not attend ____.",
-        "answer": "school",
-        "marks": 1
+        "answer": "school"
       },
       {
         "id": "c5e-u8-f2",
+        "marks": 1,
         "sentence": "Sima feels very warm because of a high ____.",
-        "answer": "fever",
-        "marks": 1
+        "answer": "fever"
       },
       {
         "id": "c5e-u8-f3",
+        "marks": 1,
         "sentence": "The doctor diagnosed that Sima has the ____.",
-        "answer": "flu",
-        "marks": 1
+        "answer": "flu"
       },
       {
         "id": "c5e-u8-f4",
+        "marks": 1,
         "sentence": "She should eat food that gives her body ____.",
-        "answer": "energy",
-        "marks": 1
+        "answer": "energy"
       },
       {
         "id": "c5e-u8-f5",
+        "marks": 1,
         "sentence": "When sneezing, she must cover her mouth with a ____.",
-        "answer": "tissue",
-        "marks": 1
+        "answer": "tissue"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u8-tf1",
+        "marks": 1,
         "statement": "Sima went to school because she felt energetic.",
         "isTrue": false,
-        "answer": "False (She stayed home because she was ill)",
-        "marks": 1
+        "answer": "False (She stayed home because she was ill)"
       },
       {
         "id": "c5e-u8-tf2",
+        "marks": 1,
         "statement": "The doctor advised Sima to drink soft drinks.",
         "isTrue": false,
-        "answer": "False (He advised water or juice instead of soft drinks)",
-        "marks": 1
+        "answer": "False (He advised water or juice instead of soft drinks)"
       },
       {
         "id": "c5e-u8-tf3",
+        "marks": 1,
         "statement": "Sima should use a tissue when coughing or sneezing.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u8-tf4",
+        "marks": 1,
         "statement": "Other family members can catch flu from shared cups.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u8-tf5",
+        "marks": 1,
         "statement": "The doctor visited Sima last night.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -5780,70 +5780,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u9-f1",
+        "marks": 1,
         "sentence": "When Raju was in Class 5, a ____ broke out in his school.",
-        "answer": "fire",
-        "marks": 1
+        "answer": "fire"
       },
       {
         "id": "c5e-u9-f2",
+        "marks": 1,
         "sentence": "Teachers helped students leave the building safely and ____.",
-        "answer": "quietly",
-        "marks": 1
+        "answer": "quietly"
       },
       {
         "id": "c5e-u9-f3",
+        "marks": 1,
         "sentence": "Raju first served as an unpaid ____ firefighter.",
-        "answer": "volunteer",
-        "marks": 1
+        "answer": "volunteer"
       },
       {
         "id": "c5e-u9-f4",
+        "marks": 1,
         "sentence": "Today Raju is a dedicated ____ firefighter.",
-        "answer": "full-time",
-        "marks": 1
+        "answer": "full-time"
       },
       {
         "id": "c5e-u9-f5",
+        "marks": 1,
         "sentence": "He visits schools to teach young students about fire ____.",
-        "answer": "safety",
-        "marks": 1
+        "answer": "safety"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u9-tf1",
+        "marks": 1,
         "statement": "Students panicked and screamed when the fire broke out.",
         "isTrue": false,
-        "answer": "False (Everyone was afraid, but no one panicked)",
-        "marks": 1
+        "answer": "False (Everyone was afraid, but no one panicked)"
       },
       {
         "id": "c5e-u9-tf2",
+        "marks": 1,
         "statement": "Raju watched the brave firefighters from the school yard.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u9-tf3",
+        "marks": 1,
         "statement": "Raju earned a large salary as a volunteer firefighter.",
         "isTrue": false,
-        "answer": "False (Volunteers do not get money for their work)",
-        "marks": 1
+        "answer": "False (Volunteers do not get money for their work)"
       },
       {
         "id": "c5e-u9-tf4",
+        "marks": 1,
         "statement": "Now Raju earns money because he is a full-time firefighter.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u9-tf5",
+        "marks": 1,
         "statement": "Raju enjoys visiting schools and teaching students.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -5962,70 +5962,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u10-f1",
+        "marks": 1,
         "sentence": "Kishoreganj is situated about 145 kilometres away from ____.",
-        "answer": "Dhaka",
-        "marks": 1
+        "answer": "Dhaka"
       },
       {
         "id": "c5e-u10-f2",
+        "marks": 1,
         "sentence": "The river ____ flows gracefully through Kishoreganj town.",
-        "answer": "Narasunda",
-        "marks": 1
+        "answer": "Narasunda"
       },
       {
         "id": "c5e-u10-f3",
+        "marks": 1,
         "sentence": "The historic ____ Eid Ground hosts the largest Eid congregation.",
-        "answer": "Solakia",
-        "marks": 1
+        "answer": "Solakia"
       },
       {
         "id": "c5e-u10-f4",
+        "marks": 1,
         "sentence": "The town got its name from landlord Brojosundor or ____ Roy.",
-        "answer": "Brojokishore",
-        "marks": 1
+        "answer": "Brojokishore"
       },
       {
         "id": "c5e-u10-f5",
+        "marks": 1,
         "sentence": "Pioneering artist Shilpacharya ____ was born in this district.",
-        "answer": "Zainul Abedin",
-        "marks": 1
+        "answer": "Zainul Abedin"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u10-tf1",
+        "marks": 1,
         "statement": "Kishoreganj is located right inside Dhaka city.",
         "isTrue": false,
-        "answer": "False (It is about 145 kilometres away from Dhaka)",
-        "marks": 1
+        "answer": "False (It is about 145 kilometres away from Dhaka)"
       },
       {
         "id": "c5e-u10-tf2",
+        "marks": 1,
         "statement": "Solakia is the largest Eid fairground in Bangladesh.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u10-tf3",
+        "marks": 1,
         "statement": "The river Jamuna flows through the heart of Kishoreganj town.",
         "isTrue": false,
-        "answer": "False (The river Narasunda flows through it)",
-        "marks": 1
+        "answer": "False (The river Narasunda flows through it)"
       },
       {
         "id": "c5e-u10-tf4",
+        "marks": 1,
         "statement": "Sukumar Ray and Upendrakishore Roy Chowdhury were born in Kishoreganj.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u10-tf5",
+        "marks": 1,
         "statement": "Syed Nazrul Islam was the first acting President of Bangladesh.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -6144,70 +6144,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u12-f1",
+        "marks": 1,
         "sentence": "Saint Martin's is the only ____ island in Bangladesh.",
-        "answer": "coral",
-        "marks": 1
+        "answer": "coral"
       },
       {
         "id": "c5e-u12-f2",
+        "marks": 1,
         "sentence": "The sparkling water in the ____ of Bengal is crystal blue.",
-        "answer": "Bay",
-        "marks": 1
+        "answer": "Bay"
       },
       {
         "id": "c5e-u12-f3",
+        "marks": 1,
         "sentence": "Sea ____ build nests in the soft sand and lay eggs.",
-        "answer": "turtles",
-        "marks": 1
+        "answer": "turtles"
       },
       {
         "id": "c5e-u12-f4",
+        "marks": 1,
         "sentence": "Visitors take a boat or a sea truck from ____.",
-        "answer": "Teknaf",
-        "marks": 1
+        "answer": "Teknaf"
       },
       {
         "id": "c5e-u12-f5",
+        "marks": 1,
         "sentence": "Tourists enjoy refreshing green ____ water on the island.",
-        "answer": "coconut",
-        "marks": 1
+        "answer": "coconut"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u12-tf1",
+        "marks": 1,
         "statement": "Saint Martin's Island is located in the middle of the Padma river.",
         "isTrue": false,
-        "answer": "False (It is located in the Bay of Bengal)",
-        "marks": 1
+        "answer": "False (It is located in the Bay of Bengal)"
       },
       {
         "id": "c5e-u12-tf2",
+        "marks": 1,
         "statement": "Saint Martin's is the only coral island in Bangladesh.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u12-tf3",
+        "marks": 1,
         "statement": "Sea turtles lay their eggs in deep sea trenches.",
         "isTrue": false,
-        "answer": "False (They lay eggs in nests on the sandy beach)",
-        "marks": 1
+        "answer": "False (They lay eggs in nests on the sandy beach)"
       },
       {
         "id": "c5e-u12-tf4",
+        "marks": 1,
         "statement": "You can see green hills of Myanmar during the journey from Teknaf.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u12-tf5",
+        "marks": 1,
         "statement": "The island journey takes about two to two and a half hours.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -6326,70 +6326,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u14-f1",
+        "marks": 1,
         "sentence": "The hare bragged that he was the ____ animal in the woods.",
-        "answer": "fastest",
-        "marks": 1
+        "answer": "fastest"
       },
       {
         "id": "c5e-u14-f2",
+        "marks": 1,
         "sentence": "The patient tortoise was the ____ creature.",
-        "answer": "slowest",
-        "marks": 1
+        "answer": "slowest"
       },
       {
         "id": "c5e-u14-f3",
+        "marks": 1,
         "sentence": "The two animals decided to compete in a running ____.",
-        "answer": "race",
-        "marks": 1
+        "answer": "race"
       },
       {
         "id": "c5e-u14-f4",
+        "marks": 1,
         "sentence": "The careless hare decided to take a short ____ under a shady tree.",
-        "answer": "nap",
-        "marks": 1
+        "answer": "nap"
       },
       {
         "id": "c5e-u14-f5",
+        "marks": 1,
         "sentence": "The tortoise walked ____ on without taking any break.",
-        "answer": "steadily",
-        "marks": 1
+        "answer": "steadily"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u14-tf1",
+        "marks": 1,
         "statement": "The tortoise challenged the proud hare to a race.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u14-tf2",
+        "marks": 1,
         "statement": "The race began at the river and finished at a big tree.",
         "isTrue": false,
-        "answer": "False (It started at the big tree and finished at the river)",
-        "marks": 1
+        "answer": "False (It started at the big tree and finished at the river)"
       },
       {
         "id": "c5e-u14-tf3",
+        "marks": 1,
         "statement": "The hare stayed awake and won the race easily.",
         "isTrue": false,
-        "answer": "False (The hare fell asleep and lost)",
-        "marks": 1
+        "answer": "False (The hare fell asleep and lost)"
       },
       {
         "id": "c5e-u14-tf4",
+        "marks": 1,
         "statement": "The tortoise walked steadily and did not stop until the end.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u14-tf5",
+        "marks": 1,
         "statement": "The moral of the story is 'Slow and steady wins the race.'",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -6508,70 +6508,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u15-f1",
+        "marks": 1,
         "sentence": "A person's ____ marks the memorable day they were born.",
-        "answer": "birthday",
-        "marks": 1
+        "answer": "birthday"
       },
       {
         "id": "c5e-u15-f2",
+        "marks": 1,
         "sentence": "In many nations, people celebrate birthdays with a delicious ____.",
-        "answer": "cake",
-        "marks": 1
+        "answer": "cake"
       },
       {
         "id": "c5e-u15-f3",
+        "marks": 1,
         "sentence": "There is one burning ____ for each completed year of life.",
-        "answer": "candle",
-        "marks": 1
+        "answer": "candle"
       },
       {
         "id": "c5e-u15-f4",
+        "marks": 1,
         "sentence": "Friends gather together and sing the celebratory 'Happy Birthday' ____.",
-        "answer": "song",
-        "marks": 1
+        "answer": "song"
       },
       {
         "id": "c5e-u15-f5",
+        "marks": 1,
         "sentence": "The most vital element is sharing warmth with loved ones and ____.",
-        "answer": "family",
-        "marks": 1
+        "answer": "family"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u15-tf1",
+        "marks": 1,
         "statement": "A birthday is celebrated in the exact same way all over the world.",
         "isTrue": false,
-        "answer": "False (People celebrate birthdays in different ways)",
-        "marks": 1
+        "answer": "False (People celebrate birthdays in different ways)"
       },
       {
         "id": "c5e-u15-tf2",
+        "marks": 1,
         "statement": "There is one candle for each year of the person's life.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u15-tf3",
+        "marks": 1,
         "statement": "The birthday child lights the candles at the end of the song.",
         "isTrue": false,
-        "answer": "False (The person blows out the candles)",
-        "marks": 1
+        "answer": "False (The person blows out the candles)"
       },
       {
         "id": "c5e-u15-tf4",
+        "marks": 1,
         "statement": "Birthday gifts can be toys, books or nice clothes.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u15-tf5",
+        "marks": 1,
         "statement": "Spending time with family and friends is the most important part of a birthday.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -6690,70 +6690,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u19-f1",
+        "marks": 1,
         "sentence": "The educational tour took place on ____ (Martyred Intellectuals Day).",
-        "answer": "14 December",
-        "marks": 1
+        "answer": "14 December"
       },
       {
         "id": "c5e-u19-f2",
+        "marks": 1,
         "sentence": "The Liberation War Museum was located at ____, Dhaka.",
-        "answer": "Segunbagicha",
-        "marks": 1
+        "answer": "Segunbagicha"
       },
       {
         "id": "c5e-u19-f3",
+        "marks": 1,
         "sentence": "There were four permanent ____ displaying historical artifacts.",
-        "answer": "galleries",
-        "marks": 1
+        "answer": "galleries"
       },
       {
         "id": "c5e-u19-f4",
+        "marks": 1,
         "sentence": "The teacher read out the historic ____ of Independence.",
-        "answer": "Declaration",
-        "marks": 1
+        "answer": "Declaration"
       },
       {
         "id": "c5e-u19-f5",
+        "marks": 1,
         "sentence": "Students saw the moving personal ____ of martyred heroes.",
-        "answer": "belongings",
-        "marks": 1
+        "answer": "belongings"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u19-tf1",
+        "marks": 1,
         "statement": "The students visited the museum on 21 February.",
         "isTrue": false,
-        "answer": "False (They visited on 14 December)",
-        "marks": 1
+        "answer": "False (They visited on 14 December)"
       },
       {
         "id": "c5e-u19-tf2",
+        "marks": 1,
         "statement": "A guide welcomed the students and showed them the galleries.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u19-tf3",
+        "marks": 1,
         "statement": "Gallery 2 displayed the Declaration of Independence by Bangabandhu.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u19-tf4",
+        "marks": 1,
         "statement": "The students laughed loudly in Gallery 4.",
         "isTrue": false,
-        "answer": "False (They fell silent with deep sorrow)",
-        "marks": 1
+        "answer": "False (They fell silent with deep sorrow)"
       },
       {
         "id": "c5e-u19-tf5",
+        "marks": 1,
         "statement": "The visit to the museum was an unforgettable experience.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -6872,70 +6872,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u20-f1",
+        "marks": 1,
         "sentence": "Maria wakes up early on a warm ____ morning.",
-        "answer": "spring",
-        "marks": 1
+        "answer": "spring"
       },
       {
         "id": "c5e-u20-f2",
+        "marks": 1,
         "sentence": "Maria cannot see because she is ____ impaired since birth.",
-        "answer": "visually",
-        "marks": 1
+        "answer": "visually"
       },
       {
         "id": "c5e-u20-f3",
+        "marks": 1,
         "sentence": "She reads books printed in the tactile ____ script.",
-        "answer": "Braille",
-        "marks": 1
+        "answer": "Braille"
       },
       {
         "id": "c5e-u20-f4",
+        "marks": 1,
         "sentence": "In Braille, letters are formed from patterns of raised ____.",
-        "answer": "dots",
-        "marks": 1
+        "answer": "dots"
       },
       {
         "id": "c5e-u20-f5",
+        "marks": 1,
         "sentence": "Maria aspires to establish a dedicated ____ for visually impaired children.",
-        "answer": "school",
-        "marks": 1
+        "answer": "school"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u20-tf1",
+        "marks": 1,
         "statement": "Maria became visually impaired due to an accident in Class 3.",
         "isTrue": false,
-        "answer": "False (She has been unable to see since birth)",
-        "marks": 1
+        "answer": "False (She has been unable to see since birth)"
       },
       {
         "id": "c5e-u20-tf2",
+        "marks": 1,
         "statement": "Maria enjoys the smell of flowers and the singing of birds.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u20-tf3",
+        "marks": 1,
         "statement": "Braille script uses raised dots that fingers can feel.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u20-tf4",
+        "marks": 1,
         "statement": "Maria feels sad and refuses to go to school.",
         "isTrue": false,
-        "answer": "False (Maria is cheerful and goes to school every day)",
-        "marks": 1
+        "answer": "False (Maria is cheerful and goes to school every day)"
       },
       {
         "id": "c5e-u20-tf5",
+        "marks": 1,
         "statement": "Maria dreams of writing a book about her life and experiences.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -7054,70 +7054,70 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
     "fillInTheBlanks": [
       {
         "id": "c5e-u21-f1",
+        "marks": 1,
         "sentence": "A ____ brings together cub scouts from different places.",
-        "answer": "camporee",
-        "marks": 1
+        "answer": "camporee"
       },
       {
         "id": "c5e-u21-f2",
+        "marks": 1,
         "sentence": "The camporee took place in the scenic town of ____.",
-        "answer": "Sreemangal",
-        "marks": 1
+        "answer": "Sreemangal"
       },
       {
         "id": "c5e-u21-f3",
+        "marks": 1,
         "sentence": "The group traveled by ____ from Sylhet in the morning.",
-        "answer": "train",
-        "marks": 1
+        "answer": "train"
       },
       {
         "id": "c5e-u21-f4",
+        "marks": 1,
         "sentence": "The scouts set up their own ____ for living at the campsite.",
-        "answer": "tents",
-        "marks": 1
+        "answer": "tents"
       },
       {
         "id": "c5e-u21-f5",
+        "marks": 1,
         "sentence": "For breakfast, the cubs cooked eggs and warm ____.",
-        "answer": "khichuri",
-        "marks": 1
+        "answer": "khichuri"
       }
     ],
     "trueFalse": [
       {
         "id": "c5e-u21-tf1",
+        "marks": 1,
         "statement": "The narrator had attended ten camporees before this one.",
         "isTrue": false,
-        "answer": "False (It was their first visit to a camporee)",
-        "marks": 1
+        "answer": "False (It was their first visit to a camporee)"
       },
       {
         "id": "c5e-u21-tf2",
+        "marks": 1,
         "statement": "The scouts took twenty rickshaws from the train station.",
         "isTrue": false,
-        "answer": "False (They walked together from the station)",
-        "marks": 1
+        "answer": "False (They walked together from the station)"
       },
       {
         "id": "c5e-u21-tf3",
+        "marks": 1,
         "statement": "The scouts cooked eggs and khichuri for breakfast.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u21-tf4",
+        "marks": 1,
         "statement": "Cubs from different parts of Bangladesh played games together.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       },
       {
         "id": "c5e-u21-tf5",
+        "marks": 1,
         "statement": "In the evening, the cubs sang songs and recited poems.",
         "isTrue": true,
-        "answer": "True",
-        "marks": 1
+        "answer": "True"
       }
     ],
     "shortQuestions": [
@@ -9154,25 +9154,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u1-f1",
         "marks": 1,
-        "question": "Tanvir is _____ years old.",
+        "sentence": "Tanvir is _____ years old.",
         "answer": "nine"
       },
       {
         "id": "c4e-26u1-f2",
         "marks": 1,
-        "question": "Tanvir is in _____ 4.",
+        "sentence": "Tanvir is in _____ 4.",
         "answer": "Class 4"
       },
       {
         "id": "c4e-26u1-f3",
         "marks": 1,
-        "question": "Tanvir lives in _____ with his family.",
+        "sentence": "Tanvir lives in _____ with his family.",
         "answer": "Dhaka"
       },
       {
         "id": "c4e-26u1-f4",
         "marks": 1,
-        "question": "Mrs. _____ Begum is their English teacher.",
+        "sentence": "Mrs. _____ Begum is their English teacher.",
         "answer": "Fatema"
       }
     ],
@@ -9180,7 +9180,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u1-t1",
         "marks": 1,
-        "question": "Tanvir is a student of Class 4.",
         "statement": "Tanvir is a student of Class 4.",
         "isTrue": true,
         "answer": "True"
@@ -9188,7 +9187,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u1-t2",
         "marks": 1,
-        "question": "Tanvir lives in Chattogram.",
         "statement": "Tanvir lives in Chattogram.",
         "isTrue": false,
         "answer": "False"
@@ -9196,7 +9194,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u1-t3",
         "marks": 1,
-        "question": "Mrs. Fatema Begum is their English teacher.",
         "statement": "Mrs. Fatema Begum is their English teacher.",
         "isTrue": true,
         "answer": "True"
@@ -9204,7 +9201,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u1-t4",
         "marks": 1,
-        "question": "Raju dislikes playing football.",
         "statement": "Raju dislikes playing football.",
         "isTrue": false,
         "answer": "False"
@@ -9311,25 +9307,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u5-f1",
         "marks": 1,
-        "question": "Our school has a _____ team called Little Doctor Team.",
+        "sentence": "Our school has a _____ team called Little Doctor Team.",
         "answer": "special"
       },
       {
         "id": "c4e-26u5-f2",
         "marks": 1,
-        "question": "The little doctors check students' _____, weight, and eyesight.",
+        "sentence": "The little doctors check students' _____, weight, and eyesight.",
         "answer": "height"
       },
       {
         "id": "c4e-26u5-f3",
         "marks": 1,
-        "question": "We should wash our hands with _____.",
+        "sentence": "We should wash our hands with _____.",
         "answer": "soap"
       },
       {
         "id": "c4e-26u5-f4",
         "marks": 1,
-        "question": "Dr. _____ visits our school once a year.",
+        "sentence": "Dr. _____ visits our school once a year.",
         "answer": "Anis"
       }
     ],
@@ -9337,7 +9333,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u5-t1",
         "marks": 1,
-        "question": "Little doctors are students from Class 4 and 5.",
         "statement": "Little doctors are students from Class 4 and 5.",
         "isTrue": true,
         "answer": "True"
@@ -9345,7 +9340,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u5-t2",
         "marks": 1,
-        "question": "We should keep our fingernails long and dirty.",
         "statement": "We should keep our fingernails long and dirty.",
         "isTrue": false,
         "answer": "False"
@@ -9353,7 +9347,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u5-t3",
         "marks": 1,
-        "question": "Dr. Anis visits the school to train the team.",
         "statement": "Dr. Anis visits the school to train the team.",
         "isTrue": true,
         "answer": "True"
@@ -9361,7 +9354,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u5-t4",
         "marks": 1,
-        "question": "Washing hands with soap prevents diseases.",
         "statement": "Washing hands with soap prevents diseases.",
         "isTrue": true,
         "answer": "True"
@@ -9468,25 +9460,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u8-f1",
         "marks": 1,
-        "question": "Alvi lives in _____ with his family.",
+        "sentence": "Alvi lives in _____ with his family.",
         "answer": "Rajshahi"
       },
       {
         "id": "c4e-26u8-f2",
         "marks": 1,
-        "question": "There are _____ members in his family.",
+        "sentence": "There are _____ members in his family.",
         "answer": "four"
       },
       {
         "id": "c4e-26u8-f3",
         "marks": 1,
-        "question": "Alvi's mother is a _____ at the upazila health complex.",
+        "sentence": "Alvi's mother is a _____ at the upazila health complex.",
         "answer": "doctor"
       },
       {
         "id": "c4e-26u8-f4",
         "marks": 1,
-        "question": "On weekends they visit their grandparents in the _____.",
+        "sentence": "On weekends they visit their grandparents in the _____.",
         "answer": "village"
       }
     ],
@@ -9494,7 +9486,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u8-t1",
         "marks": 1,
-        "question": "Alvi has a little brother named Arif.",
         "statement": "Alvi has a little brother named Arif.",
         "isTrue": true,
         "answer": "True"
@@ -9502,7 +9493,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u8-t2",
         "marks": 1,
-        "question": "Alvi's father teaches mathematics.",
         "statement": "Alvi's father teaches mathematics.",
         "isTrue": false,
         "answer": "False"
@@ -9510,7 +9500,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u8-t3",
         "marks": 1,
-        "question": "Alvi's mother helps him and Arif with their studies.",
         "statement": "Alvi's mother helps him and Arif with their studies.",
         "isTrue": true,
         "answer": "True"
@@ -9518,7 +9507,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u8-t4",
         "marks": 1,
-        "question": "The family visits grandparents on weekends.",
         "statement": "The family visits grandparents on weekends.",
         "isTrue": true,
         "answer": "True"
@@ -9625,25 +9613,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u15-f1",
         "marks": 1,
-        "question": "Smoke from factories and _____ pollutes the air.",
+        "sentence": "Smoke from factories and _____ pollutes the air.",
         "answer": "vehicles"
       },
       {
         "id": "c4e-26u15-f2",
         "marks": 1,
-        "question": "Plastic bottles thrown into rivers cause _____ pollution.",
+        "sentence": "Plastic bottles thrown into rivers cause _____ pollution.",
         "answer": "water"
       },
       {
         "id": "c4e-26u15-f3",
         "marks": 1,
-        "question": "Loud horns and microphones cause _____ pollution.",
+        "sentence": "Loud horns and microphones cause _____ pollution.",
         "answer": "noise"
       },
       {
         "id": "c4e-26u15-f4",
         "marks": 1,
-        "question": "We can protect our nature by planting more _____.",
+        "sentence": "We can protect our nature by planting more _____.",
         "answer": "trees"
       }
     ],
@@ -9651,7 +9639,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u15-t1",
         "marks": 1,
-        "question": "Smoke from vehicles pollutes the air.",
         "statement": "Smoke from vehicles pollutes the air.",
         "isTrue": true,
         "answer": "True"
@@ -9659,7 +9646,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u15-t2",
         "marks": 1,
-        "question": "Plastic bottles thrown in rivers are good for fishes.",
         "statement": "Plastic bottles thrown in rivers are good for fishes.",
         "isTrue": false,
         "answer": "False"
@@ -9667,7 +9653,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u15-t3",
         "marks": 1,
-        "question": "Planting trees helps protect the environment.",
         "statement": "Planting trees helps protect the environment.",
         "isTrue": true,
         "answer": "True"
@@ -9675,7 +9660,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c4e-26u15-t4",
         "marks": 1,
-        "question": "A clean environment gives us good health.",
         "statement": "A clean environment gives us good health.",
         "isTrue": true,
         "answer": "True"
@@ -9782,25 +9766,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u1-f1",
         "marks": 1,
-        "question": "The library is a _____ place for studying.",
+        "sentence": "The library is a _____ place for studying.",
         "answer": "quiet"
       },
       {
         "id": "c5e-26u1-f2",
         "marks": 1,
-        "question": "Mr. Shafiq is the _____ of the public library.",
+        "sentence": "Mr. Shafiq is the _____ of the public library.",
         "answer": "librarian"
       },
       {
         "id": "c5e-26u1-f3",
         "marks": 1,
-        "question": "Visitors must keep _____ inside the library.",
+        "sentence": "Visitors must keep _____ inside the library.",
         "answer": "silence"
       },
       {
         "id": "c5e-26u1-f4",
         "marks": 1,
-        "question": "Lima filled out a _____ form to get her card.",
+        "sentence": "Lima filled out a _____ form to get her card.",
         "answer": "membership"
       }
     ],
@@ -9808,7 +9792,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u1-t1",
         "marks": 1,
-        "question": "Lima and Rony visited a noisy market.",
         "statement": "Lima and Rony visited a noisy market.",
         "isTrue": false,
         "answer": "False"
@@ -9816,7 +9799,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u1-t2",
         "marks": 1,
-        "question": "The librarian explained the library rules.",
         "statement": "The librarian explained the library rules.",
         "isTrue": true,
         "answer": "True"
@@ -9824,7 +9806,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u1-t3",
         "marks": 1,
-        "question": "Rony borrowed a science fiction book.",
         "statement": "Rony borrowed a science fiction book.",
         "isTrue": true,
         "answer": "True"
@@ -9832,7 +9813,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u1-t4",
         "marks": 1,
-        "question": "Books can be kept for six months.",
         "statement": "Books can be kept for six months.",
         "isTrue": false,
         "answer": "False"
@@ -9939,25 +9919,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u7-f1",
         "marks": 1,
-        "question": "The Sundarbans is the largest _____ forest in the world.",
+        "sentence": "The Sundarbans is the largest _____ forest in the world.",
         "answer": "mangrove"
       },
       {
         "id": "c5e-26u7-f2",
         "marks": 1,
-        "question": "The forest is named after the _____ tree.",
+        "sentence": "The forest is named after the _____ tree.",
         "answer": "Sundari"
       },
       {
         "id": "c5e-26u7-f3",
         "marks": 1,
-        "question": "It is the home of the majestic _____ Bengal Tiger.",
+        "sentence": "It is the home of the majestic _____ Bengal Tiger.",
         "answer": "Royal"
       },
       {
         "id": "c5e-26u7-f4",
         "marks": 1,
-        "question": "In 1997, _____ declared it a World Heritage Site.",
+        "sentence": "In 1997, _____ declared it a World Heritage Site.",
         "answer": "UNESCO"
       }
     ],
@@ -9965,7 +9945,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u7-t1",
         "marks": 1,
-        "question": "The Sundarbans is located in northeastern Bangladesh.",
         "statement": "The Sundarbans is located in northeastern Bangladesh.",
         "isTrue": false,
         "answer": "False"
@@ -9973,7 +9952,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u7-t2",
         "marks": 1,
-        "question": "Spotted deer and crocodiles live in the Sundarbans.",
         "statement": "Spotted deer and crocodiles live in the Sundarbans.",
         "isTrue": true,
         "answer": "True"
@@ -9981,7 +9959,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u7-t3",
         "marks": 1,
-        "question": "Local people collect honey and fish from the forest.",
         "statement": "Local people collect honey and fish from the forest.",
         "isTrue": true,
         "answer": "True"
@@ -9989,7 +9966,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u7-t4",
         "marks": 1,
-        "question": "We should destroy the forest for building factories.",
         "statement": "We should destroy the forest for building factories.",
         "isTrue": false,
         "answer": "False"
@@ -10096,25 +10072,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u16-f1",
         "marks": 1,
-        "question": "The tree loved the little _____ very much.",
+        "sentence": "The tree loved the little _____ very much.",
         "answer": "boy"
       },
       {
         "id": "c5e-26u16-f2",
         "marks": 1,
-        "question": "The boy sold sweet _____ in the city to earn money.",
+        "sentence": "The boy sold sweet _____ in the city to earn money.",
         "answer": "apples"
       },
       {
         "id": "c5e-26u16-f3",
         "marks": 1,
-        "question": "The tree gave its sturdy _____ to build a house.",
+        "sentence": "The tree gave its sturdy _____ to build a house.",
         "answer": "branches"
       },
       {
         "id": "c5e-26u16-f4",
         "marks": 1,
-        "question": "The old man sat on the tree's _____ to rest.",
+        "sentence": "The old man sat on the tree's _____ to rest.",
         "answer": "stump"
       }
     ],
@@ -10122,7 +10098,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u16-t1",
         "marks": 1,
-        "question": "The little boy loved to climb the apple tree.",
         "statement": "The little boy loved to climb the apple tree.",
         "isTrue": true,
         "answer": "True"
@@ -10130,7 +10105,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u16-t2",
         "marks": 1,
-        "question": "The tree refused to help the boy.",
         "statement": "The tree refused to help the boy.",
         "isTrue": false,
         "answer": "False"
@@ -10138,7 +10112,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u16-t3",
         "marks": 1,
-        "question": "The tree gave its branches to make a boat.",
         "statement": "The tree gave its branches to make a boat.",
         "isTrue": false,
         "answer": "False"
@@ -10146,7 +10119,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u16-t4",
         "marks": 1,
-        "question": "The tree was happy giving selflessly.",
         "statement": "The tree was happy giving selflessly.",
         "isTrue": true,
         "answer": "True"
@@ -10253,25 +10225,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u18-f1",
         "marks": 1,
-        "question": "Nakshi Kantha is a _____ embroidered quilt.",
+        "sentence": "Nakshi Kantha is a _____ embroidered quilt.",
         "answer": "traditional"
       },
       {
         "id": "c5e-26u18-f2",
         "marks": 1,
-        "question": "The word 'naksha' means artistic _____.",
+        "sentence": "The word 'naksha' means artistic _____.",
         "answer": "pattern"
       },
       {
         "id": "c5e-26u18-f3",
         "marks": 1,
-        "question": "Poet _____ wrote 'Nakshi Kanthar Math'.",
+        "sentence": "Poet _____ wrote 'Nakshi Kanthar Math'.",
         "answer": "Jasimuddin"
       },
       {
         "id": "c5e-26u18-f4",
         "marks": 1,
-        "question": "Nakshi Kanthas are exported as precious cultural _____.",
+        "sentence": "Nakshi Kanthas are exported as precious cultural _____.",
         "answer": "handicrafts"
       }
     ],
@@ -10279,7 +10251,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u18-t1",
         "marks": 1,
-        "question": "Nakshi Kantha is made using new silk cloth only.",
         "statement": "Nakshi Kantha is made using new silk cloth only.",
         "isTrue": false,
         "answer": "False"
@@ -10287,7 +10258,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u18-t2",
         "marks": 1,
-        "question": "Rural women sit together to stitch Nakshi Kanthas.",
         "statement": "Rural women sit together to stitch Nakshi Kanthas.",
         "isTrue": true,
         "answer": "True"
@@ -10295,7 +10265,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u18-t3",
         "marks": 1,
-        "question": "Nakshi Kanthar Math made this craft famous.",
         "statement": "Nakshi Kanthar Math made this craft famous.",
         "isTrue": true,
         "answer": "True"
@@ -10303,7 +10272,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5e-26u18-t4",
         "marks": 1,
-        "question": "Nakshi Kanthas are only known inside Bangladesh.",
         "statement": "Nakshi Kanthas are only known inside Bangladesh.",
         "isTrue": false,
         "answer": "False"
@@ -10410,25 +10378,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch1-f1",
         "marks": 1,
-        "question": "বাংলাদেশ নানা জাতিগোষ্ঠীর _____ মেলা।",
+        "sentence": "বাংলাদেশ নানা জাতিগোষ্ঠীর _____ মেলা।",
         "answer": "মিলনমেলা"
       },
       {
         "id": "c5b-26ch1-f2",
         "marks": 1,
-        "question": "ক্ষুদ্র জাতিসত্তার নিজস্ব ভাষা ও _____ রয়েছে।",
+        "sentence": "ক্ষুদ্র জাতিসত্তার নিজস্ব ভাষা ও _____ রয়েছে।",
         "answer": "সংস্কৃতি"
       },
       {
         "id": "c5b-26ch1-f3",
         "marks": 1,
-        "question": "ধর্মীয় উৎসবগুলো এ দেশের আবহমান _____ সাক্ষ্য দেয়।",
+        "sentence": "ধর্মীয় উৎসবগুলো এ দেশের আবহমান _____ সাক্ষ্য দেয়।",
         "answer": "সম্প্রীতি"
       },
       {
         "id": "c5b-26ch1-f4",
         "marks": 1,
-        "question": "সবাই মিলেমিশে কাজ করে আমরা গড়ে তুলছি _____ বাংলাদেশ।",
+        "sentence": "সবাই মিলেমিশে কাজ করে আমরা গড়ে তুলছি _____ বাংলাদেশ।",
         "answer": "প্রগতিশীল"
       }
     ],
@@ -10436,7 +10404,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch1-t1",
         "marks": 1,
-        "question": "বাংলাদেশে কোনো ক্ষুদ্র নৃগোষ্ঠী নেই।",
         "statement": "বাংলাদেশে কোনো ক্ষুদ্র নৃগোষ্ঠী নেই।",
         "isTrue": false,
         "answer": "মিথ্যা"
@@ -10444,7 +10411,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch1-t2",
         "marks": 1,
-        "question": "বিভিন্ন ধর্মের মানুষ এ দেশে মিলেমিশে বাস করে।",
         "statement": "বিভিন্ন ধর্মের মানুষ এ দেশে মিলেমিশে বাস করে।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10452,7 +10418,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch1-t3",
         "marks": 1,
-        "question": "বড়দিন হলো খ্রিস্টানদের প্রধান ধর্মীয় উৎসব।",
         "statement": "বড়দিন হলো খ্রিস্টানদের প্রধান ধর্মীয় উৎসব।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10460,7 +10425,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch1-t4",
         "marks": 1,
-        "question": "সাংস্কৃতিক বৈচিত্র্য দেশকে দুর্বল করে।",
         "statement": "সাংস্কৃতিক বৈচিত্র্য দেশকে দুর্বল করে।",
         "isTrue": false,
         "answer": "মিথ্যা"
@@ -10567,25 +10531,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch2-f1",
         "marks": 1,
-        "question": "তিতুমীরের প্রকৃত নাম সৈয়দ মীর _____ আলী।",
+        "sentence": "তিতুমীরের প্রকৃত নাম সৈয়দ মীর _____ আলী।",
         "answer": "নিসার"
       },
       {
         "id": "c5b-26ch2-f2",
         "marks": 1,
-        "question": "নারকেলবাড়িয়ায় তিনি নির্মাণ করেন বিখ্যাত _____ কেল্লা।",
+        "sentence": "নারকেলবাড়িয়ায় তিনি নির্মাণ করেন বিখ্যাত _____ কেল্লা।",
         "answer": "বাঁশের কেল্লা"
       },
       {
         "id": "c5b-26ch2-f3",
         "marks": 1,
-        "question": "ব্রিটিশ সেনাপতি কর্নেল _____ কামানের গোলাবর্ষণ করেন।",
+        "sentence": "ব্রিটিশ সেনাপতি কর্নেল _____ কামানের গোলাবর্ষণ করেন।",
         "answer": "স্টুয়ার্ট"
       },
       {
         "id": "c5b-26ch2-f4",
         "marks": 1,
-        "question": "তিতুমীরের আত্মত্যাগ ও _____ চিরকাল স্মরণীয়।",
+        "sentence": "তিতুমীরের আত্মত্যাগ ও _____ চিরকাল স্মরণীয়।",
         "answer": "দেশপ্রেম"
       }
     ],
@@ -10593,7 +10557,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch2-t1",
         "marks": 1,
-        "question": "তিতুমীর ব্রিটিশ শাসনের সমর্থক ছিলেন।",
         "statement": "তিতুমীর ব্রিটিশ শাসনের সমর্থক ছিলেন।",
         "isTrue": false,
         "answer": "মিথ্যা"
@@ -10601,7 +10564,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch2-t2",
         "marks": 1,
-        "question": "নারকেলবাড়িয়ায় বাঁশের কেল্লা নির্মিত হয়েছিল।",
         "statement": "নারকেলবাড়িয়ায় বাঁশের কেল্লা নির্মিত হয়েছিল।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10609,7 +10571,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch2-t3",
         "marks": 1,
-        "question": "১৮৩১ সালের ১৯ নভেম্বর তিতুমীর শাহাদাতবরণ করেন।",
         "statement": "১৮৩১ সালের ১৯ নভেম্বর তিতুমীর শাহাদাতবরণ করেন।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10617,7 +10578,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch2-t4",
         "marks": 1,
-        "question": "তিতুমীর কৃষকদের অধিকার আদায়ে আন্দোলন করেছিলেন।",
         "statement": "তিতুমীর কৃষকদের অধিকার আদায়ে আন্দোলন করেছিলেন।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10724,25 +10684,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch7-f1",
         "marks": 1,
-        "question": "সাইক্লোন হলো সমুদ্রপৃষ্ঠে সৃষ্ট তীব্র ঘূর্ণিবায়ুর _____।",
+        "sentence": "সাইক্লোন হলো সমুদ্রপৃষ্ঠে সৃষ্ট তীব্র ঘূর্ণিবায়ুর _____।",
         "answer": "ঝড়"
       },
       {
         "id": "c5b-26ch7-f2",
         "marks": 1,
-        "question": "বাংলাদেশ _____ সাগরের উপকূলে অবস্থিত।",
+        "sentence": "বাংলাদেশ _____ সাগরের উপকূলে অবস্থিত।",
         "answer": "বঙ্গোপসাগর"
       },
       {
         "id": "c5b-26ch7-f3",
         "marks": 1,
-        "question": "ঝড়ের সময় নিরাপদ আশ্রয়ের জন্য রয়েছে সাইক্লোন _____।",
+        "sentence": "ঝড়ের সময় নিরাপদ আশ্রয়ের জন্য রয়েছে সাইক্লোন _____।",
         "answer": "শেল্টারে"
       },
       {
         "id": "c5b-26ch7-f4",
         "marks": 1,
-        "question": "জরুরি প্রয়োজনে শুকনো খাবার ও _____ পানি মজুত রাখতে হয়।",
+        "sentence": "জরুরি প্রয়োজনে শুকনো খাবার ও _____ পানি মজুত রাখতে হয়।",
         "answer": "বিশুদ্ধ"
       }
     ],
@@ -10750,7 +10710,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch7-t1",
         "marks": 1,
-        "question": "সাইক্লোনের সময় সমুদ্রের ধারে ঘুরতে যাওয়া উচিত।",
         "statement": "সাইক্লোনের সময় সমুদ্রের ধারে ঘুরতে যাওয়া উচিত।",
         "isTrue": false,
         "answer": "মিথ্যা"
@@ -10758,7 +10717,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch7-t2",
         "marks": 1,
-        "question": "১০ নম্বর হলো মহাবিপদ সংকেত।",
         "statement": "১০ নম্বর হলো মহাবিপদ সংকেত।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10766,7 +10724,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch7-t3",
         "marks": 1,
-        "question": "রেড ক্রিসেন্ট কর্মীরা সাইক্লোনে মানুষকে সহায়তা করেন।",
         "statement": "রেড ক্রিসেন্ট কর্মীরা সাইক্লোনে মানুষকে সহায়তা করেন।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10774,7 +10731,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch7-t4",
         "marks": 1,
-        "question": "সাইক্লোনের পর ক্ষতিগ্রস্তদের সাহায্য করার প্রয়োজন নেই।",
         "statement": "সাইক্লোনের পর ক্ষতিগ্রস্তদের সাহায্য করার প্রয়োজন নেই।",
         "isTrue": false,
         "answer": "মিথ্যা"
@@ -10881,25 +10837,25 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch20-f1",
         "marks": 1,
-        "question": "'শিক্ষাগুরুর মর্যাদা' লিখেছেন কবি কাজী _____।",
+        "sentence": "'শিক্ষাগুরুর মর্যাদা' লিখেছেন কবি কাজী _____।",
         "answer": "কাদের নেওয়াজ"
       },
       {
         "id": "c5b-26ch20-f2",
         "marks": 1,
-        "question": "দিল্লির বাদশাহ ছিলেন _____।",
+        "sentence": "দিল্লির বাদশাহ ছিলেন _____।",
         "answer": "আলমগীর"
       },
       {
         "id": "c5b-26ch20-f3",
         "marks": 1,
-        "question": "বাদশাহ তাঁর পুত্রকে শিক্ষকের প্রতি _____ প্রদর্শন করতে বলেছিলেন।",
+        "sentence": "বাদশাহ তাঁর পুত্রকে শিক্ষকের প্রতি _____ প্রদর্শন করতে বলেছিলেন।",
         "answer": "শিষ্টাচার"
       },
       {
         "id": "c5b-26ch20-f4",
         "marks": 1,
-        "question": "'আজ হতে চির-উন্নত হলো _____ শির।' ",
+        "sentence": "'আজ হতে চির-উন্নত হলো _____ শির।' ",
         "answer": "শিক্ষাগুরুর"
       }
     ],
@@ -10907,7 +10863,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch20-t1",
         "marks": 1,
-        "question": "বাদশাহ আলমগীর শিক্ষককে শাস্তি দিয়েছিলেন।",
         "statement": "বাদশাহ আলমগীর শিক্ষককে শাস্তি দিয়েছিলেন।",
         "isTrue": false,
         "answer": "মিথ্যা"
@@ -10915,7 +10870,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch20-t2",
         "marks": 1,
-        "question": "বাদশাহ চেয়েছিলেন তাঁর পুত্র নিজ হাতে শিক্ষকের চরণ পরিষ্কার করুক।",
         "statement": "বাদশাহ চেয়েছিলেন তাঁর পুত্র নিজ হাতে শিক্ষকের চরণ পরিষ্কার করুক।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10923,7 +10877,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch20-t3",
         "marks": 1,
-        "question": "শিক্ষক হলেন সমাজের শ্রদ্ধেয় পথপ্রদর্শক।",
         "statement": "শিক্ষক হলেন সমাজের শ্রদ্ধেয় পথপ্রদর্শক।",
         "isTrue": true,
         "answer": "সত্য"
@@ -10931,7 +10884,6 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
       {
         "id": "c5b-26ch20-t4",
         "marks": 1,
-        "question": "শিক্ষকের মর্যাদা রক্ষা করা কেবল ছাত্রের নয়, রাষ্ট্রনায়কেরও দায়িত্ব।",
         "statement": "শিক্ষকের মর্যাদা রক্ষা করা কেবল ছাত্রের নয়, রাষ্ট্রনায়কেরও দায়িত্ব।",
         "isTrue": true,
         "answer": "সত্য"

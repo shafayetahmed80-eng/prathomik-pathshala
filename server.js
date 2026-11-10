@@ -1,17 +1,18 @@
-// Custom server for cPanel / Passenger Node.js deployment
+// Custom server for cPanel / Phusion Passenger Node.js deployment
 const { createServer } = require('http');
 const { parse } = require('url');
 const next = require('next');
 
 const dev = process.env.NODE_ENV !== 'production';
 const hostname = process.env.HOSTNAME || 'localhost';
-const port = parseInt(process.env.PORT, 10) || 3000;
+// Phusion Passenger may pass a port number or a Unix domain socket path
+const port = process.env.PORT ? (isNaN(process.env.PORT) ? process.env.PORT : Number(process.env.PORT)) : 3000;
 
-const app = next({ dev, hostname, port });
+const app = next({ dev, hostname: typeof port === 'number' ? hostname : undefined, port: typeof port === 'number' ? port : undefined });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  createServer(async (req, res) => {
+  const server = createServer(async (req, res) => {
     try {
       const parsedUrl = parse(req.url, true);
       await handle(req, res, parsedUrl);
@@ -20,8 +21,13 @@ app.prepare().then(() => {
       res.statusCode = 500;
       res.end('Internal Server Error');
     }
-  }).listen(port, (err) => {
-    if (err) throw err;
-    console.log(`> Ready on http://${hostname}:${port}`);
   });
+
+  server.listen(port, (err) => {
+    if (err) throw err;
+    console.log(`> Ready on ${typeof port === 'number' ? `http://${hostname}:${port}` : `socket ${port}`}`);
+  });
+}).catch((err) => {
+  console.error('Fatal error preparing Next.js application:', err);
+  process.exit(1);
 });
