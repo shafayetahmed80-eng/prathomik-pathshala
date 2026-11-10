@@ -13,8 +13,10 @@
 # testing
 /coverage
 
-# next.js
-/.next/
+# next.js build cache (keep production build for zero-OOM cPanel deployment)
+/.next/cache/
+/.next/dev/
+/.next/trace*
 /out/
 
 # production

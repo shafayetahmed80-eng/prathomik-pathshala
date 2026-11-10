@@ -18,6 +18,7 @@ echo "=================================================================="
 # 2. Prevent cPanel / CloudLinux Out-Of-Memory (OOM) kills
 export NODE_OPTIONS="--max-old-space-size=1536"
 export NEXT_TELEMETRY_DISABLED=1
+export NODE_ENV=production
 
 # 3. Detect and activate cPanel Node.js virtual environment (nodevenv)
 VENV_SCRIPT=""
@@ -57,24 +58,23 @@ git reset --hard origin/main || {
     exit 1
 }
 
-# 6. Install dependencies INCLUDING devDependencies (TypeScript & Tailwind required for build)
-echo "📦 Installing npm dependencies (including build tools)..."
-npm install --include=dev --no-audit --no-fund --ignore-scripts || {
+# 6. Install production dependencies (lightweight & ultra fast)
+echo "📦 Installing production dependencies..."
+npm install --omit=dev --no-audit --no-fund --ignore-scripts || {
     echo "❌ npm install failed."
     exit 1
 }
 
-# 7. Safe Production Build (Streams full compiler output)
-echo "🔨 Compiling Next.js production build..."
-npm run build
-BUILD_STATUS=$?
-
-if [ $BUILD_STATUS -eq 0 ]; then
-    echo "✅ Build completed successfully!"
+# 7. Check for pre-compiled production build (.next)
+if [ -f ".next/BUILD_ID" ] && [ -d ".next/server" ]; then
+    echo "⚡ Verified pre-compiled production build (.next)! Zero CloudLinux RAM/CPU load needed."
 else
-    echo "❌ Build failed with exit code $BUILD_STATUS! Aborting update to prevent website crash."
-    echo "ℹ️  The existing running build has NOT been touched."
-    exit $BUILD_STATUS
+    echo "🔨 Pre-compiled build not found. Compiling Next.js production build..."
+    npm install --include=dev --no-audit --no-fund --ignore-scripts
+    npm run build || {
+        echo "❌ Build failed! Aborting update to prevent website crash."
+        exit 1
+    }
 fi
 
 # 8. Ensure correct permissions
@@ -84,7 +84,6 @@ chmod 777 tmp 2>/dev/null || true
 
 # 9. Graceful zero-downtime Phusion Passenger restart
 echo "🔄 Triggering Phusion Passenger restart (zero-downtime)..."
-export NODE_ENV=production
 touch tmp/restart.txt
 
 echo "=================================================================="
