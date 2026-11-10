@@ -82,17 +82,24 @@ chmod -R 755 .
 mkdir -p tmp
 chmod 777 tmp 2>/dev/null || true
 
-# 9. Trigger Phusion Passenger reload and refresh Node.js worker
-echo "🔄 Triggering Phusion Passenger restart..."
+# 9. Trigger Phusion Passenger / LiteSpeed reload and refresh Node.js worker
+echo "🔄 Triggering Node.js application restart..."
 touch tmp/restart.txt
 
-# Restart existing server.js process so Passenger instantly spawns fresh worker from new build
-if command -v pkill >/dev/null 2>&1; then
-    pkill -f "server.js" 2>/dev/null || true
+# Try CloudLinux Node.js selector restart CLI (cPanel native)
+if command -v cloudlinux-selector >/dev/null 2>&1; then
+    cloudlinux-selector restart --json --interpreter nodejs --app-root "$APP_DIR" 2>/dev/null || true
+    cloudlinux-selector restart --json --interpreter nodejs --app-root "$(basename "$APP_DIR")" 2>/dev/null || true
 fi
 
+# Try Passenger config restart
 if command -v passenger-config >/dev/null 2>&1; then
     passenger-config restart-app "$APP_DIR" --ignore-passenger-not-running 2>/dev/null || true
+fi
+
+# Terminate existing node process so Passenger / LiteSpeed immediately spawns fresh worker
+if command -v pkill >/dev/null 2>&1; then
+    pkill -9 -f "server.js" 2>/dev/null || true
 fi
 
 echo "=================================================================="
