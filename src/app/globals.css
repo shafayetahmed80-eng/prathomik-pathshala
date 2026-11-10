@@ -1,26 +1,239 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Kalpurush';
+  src: url('https://cdn.jsdelivr.net/gh/Shahriar-Rafi/Kalpurush-Font@main/kalpurush.woff2') format('woff2'),
+       url('https://cdn.jsdelivr.net/gh/Shahriar-Rafi/Kalpurush-Font@main/kalpurush.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SolaimanLipi';
+  src: url('https://cdn.jsdelivr.net/gh/Shahriar-Rafi/SolaimanLipi-Font@main/SolaimanLipi.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --font-active: 'Hind Siliguri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-scale: 100%;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-active);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: var(--font-scale);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-active);
+  overflow-x: clip; /* 'clip' prevents horizontal scroll without breaking iOS Safari touch/click events */
+  line-height: 1.6;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: font-size 0.2s ease;
 }
+
+/* Ensure all interactive elements across the site respond instantly to touches on mobile */
+button, 
+a, 
+input, 
+select, 
+textarea, 
+label,
+summary,
+[role="button"], 
+[role="tab"], 
+[role="radio"],
+[role="checkbox"],
+[role="switch"],
+[tabindex="0"] {
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 📱 Mobile Canvas & Tracing Gesture Isolation */
+canvas.touch-none,
+.touch-none {
+  touch-action: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  overscroll-behavior: none !important;
+}
+
+/* 📱 Prevent accidental text selection or callout delays when tapping controls on mobile */
+@media (pointer: coarse) {
+  button, 
+  [role="button"], 
+  [role="tab"], 
+  [role="radio"] {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Custom subtle scrollbar styling for horizontal pill tabs */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 📜 ক্লাসিক পেপার মোড (সুপারিশ ক - হাইব্রিড ওয়ার্ম বেইজ ও আইভরি ডিজাইন) */
+html.paper-mode {
+  --background: #f8f6f0;
+  --foreground: #2f240e;
+}
+
+html.paper-mode body {
+  background-color: #f8f6f0 !important;
+  color: #2f240e !important;
+}
+
+/* Base page wrappers in paper mode */
+html.paper-mode .min-h-screen:not([data-paper-card="true"]) {
+  background-color: #f8f6f0 !important;
+  background-image: none !important;
+}
+
+/* 📜 Warm Parchment Paper Card Overrides (ছড়া, কবিতা, বই ও প্রশ্নপত্র এরিয়া) */
+html.paper-mode [data-paper-card="true"] {
+  background-color: #ece1ce !important;
+  background-image: none !important;
+  border-color: #dbd0bc !important;
+  color: #2f240e !important;
+  box-shadow: 0 10px 30px -5px rgba(47, 36, 14, 0.08), 0 4px 6px -2px rgba(47, 36, 14, 0.04) !important;
+}
+
+html.paper-mode [data-paper-inner="true"] {
+  background-color: #f4eee1 !important;
+  background-image: none !important;
+  border-color: #dbd0bc !important;
+  color: #2f240e !important;
+}
+
+/* Text & headings contrast adaptation inside paper card */
+html.paper-mode [data-paper-card="true"] h1,
+html.paper-mode [data-paper-card="true"] h2,
+html.paper-mode [data-paper-card="true"] h3,
+html.paper-mode [data-paper-card="true"] h4,
+html.paper-mode [data-paper-card="true"] h5,
+html.paper-mode [data-paper-card="true"] strong,
+html.paper-mode [data-paper-card="true"] b {
+  color: #2f240e !important;
+}
+
+/* Active karaoke word bounce highlighting in paper mode */
+html.paper-mode [data-paper-card="true"] .bg-rose-100\/90 {
+  background-color: #f0e6d5 !important;
+  border-color: #c7bca7 !important;
+}
+
+html.paper-mode [data-paper-card="true"] .bg-rose-200\/90 {
+  background-color: #dbd0bc !important;
+  color: #2f240e !important;
+}
+
+/* Header & Footer soft parchment adaptation in paper mode */
+html.paper-mode header:not([data-paper-ignore="true"]) {
+  background-color: rgba(248, 246, 240, 0.95) !important;
+  border-color: #dbd0bc !important;
+}
+
+html.paper-mode footer {
+  background-color: #ece1ce !important;
+  border-color: #dbd0bc !important;
+  color: #2f240e !important;
+}
+
+html.paper-mode footer .text-slate-900,
+html.paper-mode footer .text-slate-800,
+html.paper-mode footer .text-slate-700 {
+  color: #2f240e !important;
+}
+
+html.paper-mode footer .text-slate-500,
+html.paper-mode footer .text-slate-400 {
+  color: #6a5c41 !important;
+}
+
+/* Print Perfection for Exam, Worksheet & Certificate Studio */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+  html.paper-mode body,
+  body {
+    background: white !important;
+    color: #111827 !important;
+  }
+  html.paper-mode [data-paper-card="true"],
+  html.paper-mode [data-paper-inner="true"],
+  #printable-exam-sheet,
+  .worksheet-print-area,
+  .certificate-print-area {
+    background: white !important;
+    background-color: white !important;
+    color: #111827 !important;
+    border-color: #cbd5e1 !important;
+    box-shadow: none !important;
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  #printable-exam-sheet header {
+    display: block !important;
+  }
+  .print\:hidden,
+  header:not(#printable-exam-sheet header),
+  footer:not(#printable-exam-sheet footer) {
+    display: none !important;
+  }
+  .break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  .print\:columns-2 {
+    columns: 2 !important;
+    column-gap: 24px !important;
+  }
+
+  /* Full print layout isolation for modals */
+  .fixed.inset-0:has(.worksheet-print-area),
+  .fixed.inset-0:has(.certificate-print-area) {
+    position: static !important;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+  .fixed.inset-0:has(.worksheet-print-area) > div,
+  .fixed.inset-0:has(.certificate-print-area) > div {
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+}
+

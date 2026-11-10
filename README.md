@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎈 প্রাথমিক পাঠশালা (Prathomik Pathshala)
+### প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির আধুনিক স্মার্ট এডুকেশন ও কারিকুলাম প্ল্যাটফর্ম
 
-## Getting Started
+বাংলাদেশের জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) ২০২৬ কারিকুলাম অনুযায়ী তৈরি একটি পূর্ণাঙ্গ, ইন্টারঅ্যাক্টিভ ও শিশুবান্ধব ডিজিটাল প্ল্যাটফর্ম।
 
-First, run the development server:
+---
+
+## 🌟 প্রধান মডিউলসমূহ (Core Modules)
+
+1. **📖 ডিজিটাল পাঠ্যবই ও শিক্ষক সহায়িকা (`/books`):**
+   - ৯০টি সরকারি আসল পাঠ্যবই ও শিক্ষক সহায়িকার ইন-ব্রাউজার হাই-স্পিড পিডিএফ রিডার।
+2. **🎨 ডিজিটাল বর্ণমালা ও হাতেখড়ি ল্যাব (`/bornomala`):**
+   - ৩৯টি ব্যঞ্জনবর্ণ, ১১টি স্বরবর্ণ, কারচিহ্ন, যুক্তবর্ণ ও সংখ্যা লেখার ক্যানভাস, অডিও উচ্চারণ, ভয়েস রেকর্ডার, ট্রেসিং এক্যুরেসি ডিটেকশন ও সনদপত্র।
+3. **📝 স্মার্ট প্রশ্নপত্র ও ওয়ার্কশিট মেকার (`/exams`):**
+   - বোর্ড প্রশ্ন কাঠামো ও ব্লুপ্রিন্ট অনুসারে বহুনির্বাচনী, সংক্ষিপ্ত ও যোগ্যতাভিত্তিক সৃজনশীল প্রশ্নপত্র তৈরি ও প্রিন্ট।
+4. **🖥️ মাল্টিমিডিয়া স্লাইড হাব (`/slides`):**
+   - শ্রেণিকক্ষ ও প্রজেক্টরের জন্য পাঠভিত্তিক ইন্টারঅ্যাক্টিভ অ্যানিমেটেড স্লাইড শো।
+5. **👩‍🏫 এআই লেসন প্ল্যানার (`/lesson-planner`):**
+   - শিক্ষক সহায়িকা অনুযায়ী ৪০ মিনিটের বিজ্ঞানসম্মত পিরিয়ড পাঠ পরিকল্পনা।
+6. **🧩 আনন্দ কুইজ ও ব্রেন বুস্টার (`/quiz`):**
+   - বিষয়ভিত্তিক টাইমার কুইজ ও তাৎক্ষণিক স্কোর।
+7. **🎙️ গল্প ও ছড়ার অডিও কর্নার (`/rhymes`):**
+   - পাঠ্যবইয়ের ছড়া ও শিক্ষণীয় গল্পের মিষ্টি অডিও আবৃত্তি।
+
+---
+
+## 📚 সোর্স পিডিএফ ও এআই আপডেট গাইড
+
+প্রজেক্টের ভেতর সংরক্ষিত ৯০টি মূল পিডিএফ ফাইল ব্যবহার করে ওয়েবসাইট আপডেট করার বিস্তারিত নির্দেশিকা পড়ুন:
+👉 **[NCTB Source Workflow Guide](./NCTB_SOURCE_WORKFLOW_GUIDE.md)**
+
+---
+
+## 🚀 লোকাল সেটআপ ও রান করার নিয়ম
 
 ```bash
+# ডিপেন্ডেন্সি ইন্সটল
+npm install
+
+# ডেভেলপমেন্ট সার্ভার চালু
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# প্রোডাকশন বিল্ড
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ব্রাউজারে ওপেন করুন: [http://localhost:3000](http://localhost:3000)

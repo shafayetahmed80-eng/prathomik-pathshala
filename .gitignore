@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tools
+/.tools/
+
+# scratch and test artifacts
+/scratch/
+
+# large NCTB PDF collections (upload directly to cPanel or cloud storage)
+NCTB_Primary_Collection_Web/
+
