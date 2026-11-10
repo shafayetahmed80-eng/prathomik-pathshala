@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import InteractiveQuizHub from "@/components/InteractiveQuizHub";
+import BrandHomeLink from "@/components/BrandHomeLink";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function QuizPage() {
@@ -23,6 +24,7 @@ export default function QuizPage() {
               আনন্দ কুইজ ও ব্রেন বুস্টার
             </span>
           </div>
+          <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
         </div>
       </header>
 

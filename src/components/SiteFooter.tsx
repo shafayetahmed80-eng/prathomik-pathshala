@@ -10,6 +10,7 @@ import {
   Heart
 } from "lucide-react";
 import { playSuccessChime, playPopSound } from "@/utils/bornomalaAudio";
+import BrandHomeLink from "@/components/BrandHomeLink";
 
 export interface FontOption {
   id: string;
@@ -257,21 +258,8 @@ export default function SiteFooter() {
       <footer className="mt-auto border-t border-slate-200/90 bg-white/95 py-5 px-4 sm:px-6 lg:px-8 w-full print:hidden">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           
-          {/* Left: Clean Brand Branding */}
-          <div className="flex items-center gap-3">
-            <span className="text-2xl" aria-hidden="true">🎈</span>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-slate-900 text-sm">প্রাথমিক পাঠশালা</span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-                  NCTB ২০২৬
-                </span>
-              </div>
-              <p className="text-xs text-slate-500">
-                বাংলাদেশের প্রাথমিক শিক্ষার আধুনিক প্ল্যাটফর্ম
-              </p>
-            </div>
-          </div>
+          {/* Left: Clickable Brand Branding */}
+          <BrandHomeLink variant="footer" />
 
           {/* Center: Sleek Font & Paper Mode Switch Controls */}
           <div className="flex flex-wrap items-center justify-center gap-2 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200 transition-all">

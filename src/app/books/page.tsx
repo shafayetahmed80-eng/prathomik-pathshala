@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, BookOpen, GraduationCap, ChevronRight, Volume2, Sparkles, Heart } from "lucide-react";
 import { CLASSES_DATA, ClassGrade } from "@/data/curriculum";
 import BookReaderModal from "@/components/BookReaderModal";
+import BrandHomeLink from "@/components/BrandHomeLink";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function BooksPage() {
@@ -48,6 +49,7 @@ export default function BooksPage() {
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 hidden md:inline-block">
               {totalBooks}টি বই সংরক্ষিত
             </span>
+            <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
           </div>
         </div>
       </header>
