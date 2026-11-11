@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\scratch\bornomala-worktree\src\app\api\ai\generate-exam\route.ts
+// File: C:\Projects\prathomik-pathshala\scratch\pdf-reader-worktree\src\app\api\ai\generate-exam\route.ts
 import * as entry from '../../../../../../src/app/api/ai/generate-exam/route.js'
 import type { NextRequest } from 'next/server.js'
 

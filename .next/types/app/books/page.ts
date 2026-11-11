@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\scratch\bornomala-worktree\src\app\books\page.tsx
+// File: C:\Projects\prathomik-pathshala\scratch\pdf-reader-worktree\src\app\books\page.tsx
 import * as entry from '../../../../src/app/books/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
