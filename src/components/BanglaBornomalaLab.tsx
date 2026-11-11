@@ -1035,6 +1035,7 @@ export default function BanglaBornomalaLab() {
       {/* 🎮 Mini Game Viewport (When Active) */}
       {showMiniGame ? (
         <BornomalaMiniGame
+          key={languageMode}
           languageMode={languageMode}
           onBackToCanvas={() => setShowMiniGame(false)}
           onAddStars={(amount) => setStars((prev) => prev + amount)}
