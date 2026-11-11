@@ -1,4 +1,9 @@
 // Custom server for cPanel / Phusion Passenger / LiteSpeed Node.js deployment
+// Bound libuv threadpool before Next.js / async I/O initializes it (CloudLinux NPROC safety)
+if (!process.env.UV_THREADPOOL_SIZE) {
+  process.env.UV_THREADPOOL_SIZE = '1';
+}
+
 const fs = require('fs');
 const path = require('path');
 const { createServer } = require('http');

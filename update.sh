@@ -79,6 +79,15 @@ git -c pack.threads=1 reset --hard origin/main || {
     exit 1
 }
 
+# Shared helper to stop this app's LiteSpeed/Node workers without touching sibling apps
+stop_app_workers() {
+    if command -v pkill >/dev/null 2>&1; then
+        pkill -9 -f "lsnode:${APP_DIR}(/|$)" 2>/dev/null || true
+        pkill -9 -f "${APP_DIR}/server\.js" 2>/dev/null || true
+        pkill -9 -f "^node server\.js" 2>/dev/null || true
+    fi
+}
+
 # 6. Install production dependencies only when manifest/lockfile changed or node_modules incomplete
 DEPS_SIG="$(cksum package.json pnpm-lock.yaml 2>/dev/null || cksum package.json 2>/dev/null || echo '')"
 DEPS_STAMP="node_modules/.prathomik_deps_sig"
@@ -100,11 +109,9 @@ else
     fi
 
     # Free CloudLinux NPROC thread slots held by old worker processes before running npm install
-    if command -v pkill >/dev/null 2>&1; then
-        echo "🧹 Freeing running Node worker threads before package sync..."
-        pkill -9 -f "server.js" 2>/dev/null || true
-        sleep 1
-    fi
+    echo "🧹 Freeing running Node worker threads before package sync..."
+    stop_app_workers
+    sleep 1
 
     echo "📦 Installing production dependencies (CloudLinux safe mode)..."
     npm install --omit=dev --no-audit --no-fund --ignore-scripts --maxsockets=2 || {
@@ -139,9 +146,7 @@ chmod 777 tmp 2>/dev/null || true
 
 # 9. Recycle old worker first, then trigger Phusion Passenger / LiteSpeed reload cleanly
 echo "🔄 Triggering Node.js application restart..."
-if command -v pkill >/dev/null 2>&1; then
-    pkill -9 -f "server.js" 2>/dev/null || true
-fi
+stop_app_workers
 
 touch tmp/restart.txt
 
