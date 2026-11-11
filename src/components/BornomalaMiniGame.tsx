@@ -18,13 +18,15 @@ import {
   ENGLISH_NUMBERS_DATA,
   EnglishAlphabetItem,
 } from "@/data/englishAlphabetData";
-import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
+import { safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import { playSuccessChime, playStarDing, playGentlePlop, playPopSound } from "@/utils/bornomalaAudio";
 
 interface Props {
   onBackToCanvas: () => void;
   onAddStars: (amount: number) => void;
   languageMode?: "bangla" | "english";
+  teacherVoice?: "nabanita" | "pradeep" | "ana" | "guy";
+  initialSeed?: number;
 }
 
 type GameMode = "picture-to-letter" | "listen-to-letter" | "case-match";
@@ -60,27 +62,58 @@ function getCategoryPool(
   }
 }
 
+function getPhonicsCue(item: BornomalaItem | EnglishAlphabetItem): string | undefined {
+  return "phonicsTtsCue" in item ? item.phonicsTtsCue : undefined;
+}
+
 function buildQuizRound(
   pool: (BornomalaItem | EnglishAlphabetItem)[],
-  deterministic: boolean = false
+  seed?: number
 ): { targetIndex: number; options: (BornomalaItem | EnglishAlphabetItem)[] } {
   if (pool.length === 0) return { targetIndex: 0, options: [] };
-  const targetIndex = deterministic ? 0 : Math.floor(Math.random() * pool.length);
+  const useDeterministicSeed = typeof seed === "number";
+  const targetIndex = useDeterministicSeed
+    ? Math.abs(Math.floor(seed)) % pool.length
+    : Math.floor(Math.random() * pool.length);
   const target = pool[targetIndex];
+  const targetCue = getPhonicsCue(target);
   const distractors: (BornomalaItem | EnglishAlphabetItem)[] = [];
 
-  if (deterministic) {
-    for (let i = 1; i < pool.length && distractors.length < 3; i++) {
-      if (pool[i].id !== target.id) distractors.push(pool[i]);
+  if (useDeterministicSeed) {
+    // Spread deterministically across pool using prime step so SSR/initial open has no random calls
+    let cursor = (targetIndex + 7) % pool.length;
+    let guard = 0;
+    while (distractors.length < 3 && guard < pool.length) {
+      guard++;
+      const candidate = pool[cursor];
+      const candCue = getPhonicsCue(candidate);
+      const conflictsCue = Boolean(targetCue && candCue && targetCue === candCue);
+      if (
+        candidate.id !== target.id &&
+        !conflictsCue &&
+        !distractors.some((d) => d.id === candidate.id)
+      ) {
+        distractors.push(candidate);
+      }
+      cursor = (cursor + 5) % pool.length;
     }
-    return { targetIndex, options: [target, ...distractors] };
+    const rotate = targetIndex % 4;
+    const rawOpts = [target, ...distractors];
+    const rotated = rawOpts.map((_, idx) => rawOpts[(idx + rotate) % rawOpts.length]);
+    return { targetIndex, options: rotated };
   }
 
   let attempts = 0;
-  while (distractors.length < 3 && attempts < 40) {
+  while (distractors.length < 3 && attempts < 60) {
     attempts++;
     const rand = pool[Math.floor(Math.random() * pool.length)];
-    if (rand.id !== target.id && !distractors.some((d) => d.id === rand.id)) {
+    const randCue = getPhonicsCue(rand);
+    const conflictsCue = Boolean(targetCue && randCue && targetCue === randCue);
+    if (
+      rand.id !== target.id &&
+      !conflictsCue &&
+      !distractors.some((d) => d.id === rand.id)
+    ) {
       distractors.push(rand);
     }
   }
@@ -95,19 +128,30 @@ export default function BornomalaMiniGame({
   onBackToCanvas,
   onAddStars,
   languageMode = "bangla",
+  teacherVoice,
+  initialSeed = 0,
 }: Props) {
   const isEng = languageMode === "english";
   const [gameMode, setGameMode] = useState<GameMode>("picture-to-letter");
   const [selectedCategory, setSelectedCategory] = useState<QuizCategory>("all");
   const [round, setRound] = useState(() =>
-    buildQuizRound(getCategoryPool(isEng, "all"), true)
+    buildQuizRound(getCategoryPool(isEng, "all"), initialSeed)
   );
-  const [selectedAnswer, setSelectedAnswer] = useState<BornomalaItem | EnglishAlphabetItem | null>(null);
+  const [wrongOptionIds, setWrongOptionIds] = useState<string[]>([]);
+  const [lastWrongItem, setLastWrongItem] = useState<BornomalaItem | EnglishAlphabetItem | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState<number>(0);
   const [streak, setStreak] = useState<number>(0);
   const advanceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const promptTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const activeVoice = isEng
+    ? teacherVoice === "guy" || teacherVoice === "pradeep"
+      ? "guy"
+      : "ana"
+    : teacherVoice === "pradeep" || teacherVoice === "guy"
+      ? "pradeep"
+      : "nabanita";
 
   const clearPendingTimers = () => {
     if (advanceTimerRef.current) {
@@ -133,21 +177,24 @@ export default function BornomalaMiniGame({
       if (mode === "case-match" && !isNum) {
         safeSpeak(`Find the small letter for capital ${target.char}!`, {
           lang: "en-US",
-          voice: "ana",
+          voice: activeVoice,
           rate: 0.88,
         });
         return;
       }
+      const cue = getPhonicsCue(target);
       const prompt = isNum
         ? `Find the number ${target.name}!`
-        : `Find the letter ${target.char}! ${target.char} as in ${target.word}.`;
-      safeSpeak(prompt, { lang: "en-US", voice: "ana", rate: 0.88 });
+        : cue
+          ? `Listen carefully! Which letter says ${cue}, ${cue}?`
+          : `Find the letter ${target.char}!`;
+      safeSpeak(prompt, { lang: "en-US", voice: activeVoice, rate: 0.88 });
     } else {
       const soundText = target.pureSound || target.name;
       const prompt = isNum
         ? `খুঁজে বের করো সংখ্যা: ${soundText}`
         : `খুঁজে বের করো বর্ণ: ${soundText}`;
-      safeSpeak(prompt, { lang: "bn-BD", rate: 0.85 });
+      safeSpeak(prompt, { lang: "bn-BD", voice: activeVoice, rate: 0.85 });
     }
   };
 
@@ -165,14 +212,15 @@ export default function BornomalaMiniGame({
     category: QuizCategory = selectedCategory
   ) => {
     clearPendingTimers();
-    setSelectedAnswer(null);
+    setWrongOptionIds([]);
+    setLastWrongItem(null);
     setIsCorrect(null);
     stopSpeech();
 
     const pool = getCategoryPool(isEng, category);
     if (pool.length === 0) return;
 
-    const nextRound = buildQuizRound(pool, false);
+    const nextRound = buildQuizRound(pool);
     setRound(nextRound);
     const target = pool[nextRound.targetIndex];
 
@@ -187,16 +235,21 @@ export default function BornomalaMiniGame({
     }
   };
 
-  const generateQuestion = () => startNewRound(gameMode, selectedCategory);
+  const generateQuestion = () => {
+    unlockMobileAudio({ primeSilent: true });
+    startNewRound(gameMode, selectedCategory);
+  };
 
   const handleModeSwitch = (nextMode: GameMode) => {
     playPopSound();
+    unlockMobileAudio({ primeSilent: true });
     setGameMode(nextMode);
     startNewRound(nextMode, selectedCategory);
   };
 
   const handleCategorySwitch = (nextCat: QuizCategory) => {
     playPopSound();
+    unlockMobileAudio({ primeSilent: true });
     const resolvedMode =
       nextCat === "numbers" && gameMode === "case-match"
         ? "picture-to-letter"
@@ -209,16 +262,18 @@ export default function BornomalaMiniGame({
   const targetItem = currentPool[currentIndex] || currentPool[0];
 
   const handleSelectOption = (item: BornomalaItem | EnglishAlphabetItem) => {
-    if (selectedAnswer !== null) return; // Prevent multiple clicks
+    if (isCorrect === true || wrongOptionIds.includes(item.id)) return;
 
     playPopSound();
-    setSelectedAnswer(item);
+    unlockMobileAudio({ primeSilent: true });
 
     if (item.id === targetItem.id) {
+      const earnedStars = wrongOptionIds.length === 0 ? 10 : 5;
+      setLastWrongItem(null);
       setIsCorrect(true);
-      setScore((prev) => prev + 10);
-      setStreak((prev) => prev + 1);
-      onAddStars(10);
+      setScore((prev) => prev + earnedStars);
+      setStreak((prev) => (wrongOptionIds.length === 0 ? prev + 1 : 0));
+      onAddStars(earnedStars);
       playSuccessChime();
       playStarDing();
 
@@ -236,7 +291,7 @@ export default function BornomalaMiniGame({
           : `Awesome! ${item.char} is for ${item.word}!`;
         safeSpeak(praise, {
           lang: "en-US",
-          voice: "ana",
+          voice: activeVoice,
           rate: 0.88,
         });
       } else {
@@ -245,6 +300,7 @@ export default function BornomalaMiniGame({
           : `চমৎকার! ঠিক বলেছ! ${item.char}-তে ${item.word}!`;
         safeSpeak(praise, {
           lang: "bn-BD",
+          voice: activeVoice,
           rate: 0.9,
         });
       }
@@ -255,18 +311,21 @@ export default function BornomalaMiniGame({
         startNewRound(gameMode, selectedCategory);
       }, 1600);
     } else {
+      setWrongOptionIds((prev) => [...prev, item.id]);
+      setLastWrongItem(item);
       setIsCorrect(false);
       setStreak(0);
       playGentlePlop();
       if (isEng) {
-        safeSpeak(`Try again! You can do it!`, { lang: "en-US", voice: "ana", rate: 0.88 });
+        safeSpeak(`Try again! Pick another one!`, { lang: "en-US", voice: activeVoice, rate: 0.88 });
       } else {
-        safeSpeak(`হলো না! আবার চেষ্টা করো।`, { lang: "bn-BD", rate: 0.9 });
+        safeSpeak(`হলো না! আরেকটি চেষ্টা করো।`, { lang: "bn-BD", voice: activeVoice, rate: 0.9 });
       }
     }
   };
 
   const handleReplayAudio = () => {
+    unlockMobileAudio({ primeSilent: true });
     speakTargetPrompt(targetItem, gameMode);
   };
 
@@ -431,18 +490,21 @@ export default function BornomalaMiniGame({
         {/* 4 Multi-choice Option Buttons */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto pt-4">
           {options.map((opt) => {
-            const isThisSelected = selectedAnswer?.id === opt.id;
+            const isWrongPicked = wrongOptionIds.includes(opt.id);
             const isThisTarget = opt.id === targetItem.id;
+            const showOptionName = gameMode !== "case-match" || isCorrect === true;
 
             let buttonStyle = "bg-slate-50 hover:bg-pink-50 border-2 border-slate-200 text-slate-800";
-            if (selectedAnswer) {
+            if (isCorrect === true) {
               if (isThisTarget) {
                 buttonStyle = "bg-emerald-500 text-white border-2 border-emerald-600 scale-105 shadow-lg";
-              } else if (isThisSelected) {
-                buttonStyle = "bg-rose-500 text-white border-2 border-rose-600 animate-shake";
+              } else if (isWrongPicked) {
+                buttonStyle = "bg-rose-100 text-rose-500 border-2 border-rose-200 opacity-70";
               } else {
                 buttonStyle = "opacity-40 bg-slate-100 border-slate-200 text-slate-400";
               }
+            } else if (isWrongPicked) {
+              buttonStyle = "bg-rose-500 text-white border-2 border-rose-600 animate-shake cursor-not-allowed opacity-90";
             }
 
             const optionGlyph = gameMode === "case-match" && "lowerChar" in opt
@@ -453,21 +515,23 @@ export default function BornomalaMiniGame({
               <button
                 key={opt.id}
                 type="button"
-                disabled={selectedAnswer !== null}
+                disabled={isCorrect === true || isWrongPicked}
                 onClick={() => handleSelectOption(opt)}
                 className={`h-24 sm:h-28 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all duration-200 active:scale-95 font-black text-4xl sm:text-5xl ${buttonStyle}`}
               >
                 <span>{optionGlyph}</span>
-                <span className="text-[11px] font-semibold opacity-80">{opt.name}</span>
+                {showOptionName && (
+                  <span className="text-[11px] font-semibold opacity-80">{opt.name}</span>
+                )}
               </button>
             );
           })}
         </div>
 
         {/* Feedback Alert */}
-        {selectedAnswer && (
+        {(isCorrect === true || (isCorrect === false && lastWrongItem)) && (
           <div className="pt-2 animate-in zoom-in-95 duration-200">
-            {isCorrect ? (
+            {isCorrect === true ? (
               <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-100 text-emerald-800 font-bold text-sm border border-emerald-200 shadow-sm">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                 <span>
@@ -480,20 +544,22 @@ export default function BornomalaMiniGame({
                     : `দারুণ! '${targetItem.char}'-তে ${targetItem.word} — সঠিক উত্তর! 🎉`}
                 </span>
               </div>
-            ) : (
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-rose-100 text-rose-800 font-bold text-sm border border-rose-200 shadow-sm">
+            ) : lastWrongItem ? (
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-100 text-amber-900 font-bold text-sm border border-amber-200 shadow-sm">
                 <XCircle className="w-5 h-5 text-rose-600" />
                 <span>
-                  {isEng
-                    ? targetItem.type === "number"
-                      ? `Incorrect! The correct number was: '${targetItem.char}' (${targetItem.word})`
-                      : `Incorrect! The correct letter was: '${targetItem.char}' (${targetItem.word})`
-                    : targetItem.type === "number"
-                    ? `ভুল উত্তর! সঠিক সংখ্যা হলো: '${targetItem.char}' (${targetItem.word})`
-                    : `ভুল উত্তর! সঠিক উত্তর হলো: '${targetItem.char}' (${targetItem.word})`}
+                  {(() => {
+                    const wrongGlyph =
+                      gameMode === "case-match" && "lowerChar" in lastWrongItem
+                        ? lastWrongItem.lowerChar
+                        : lastWrongItem.char;
+                    return isEng
+                      ? `Not '${wrongGlyph}' — try another option!`
+                      : `'${wrongGlyph}' নয় — আরেকটি বিকল্প চেষ্টা করো!`;
+                  })()}
                 </span>
               </div>
-            )}
+            ) : null}
           </div>
         )}
 

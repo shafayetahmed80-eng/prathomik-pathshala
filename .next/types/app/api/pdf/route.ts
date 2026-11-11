@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\src\app\api\pdf\route.ts
+// File: C:\Projects\prathomik-pathshala\scratch\bornomala-fixes-wt\src\app\api\pdf\route.ts
 import * as entry from '../../../../../src/app/api/pdf/route.js'
 import type { NextRequest } from 'next/server.js'
 
