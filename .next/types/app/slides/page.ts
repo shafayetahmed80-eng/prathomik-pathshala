@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\scratch\pdf-reader-worktree\src\app\slides\page.tsx
+// File: C:\Projects\prathomik-pathshala\scratch\recording-cleanup-wt\src\app\slides\page.tsx
 import * as entry from '../../../../src/app/slides/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
