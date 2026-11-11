@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\scratch\recording-cleanup-wt\src\app\quiz\page.tsx
+// File: C:\Projects\prathomik-pathshala\src\app\quiz\page.tsx
 import * as entry from '../../../../src/app/quiz/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

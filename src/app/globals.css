@@ -176,6 +176,560 @@ html.paper-mode footer .text-slate-400 {
   color: #6a5c41 !important;
 }
 
+/* =====================================================================
+   🪟 থিম ৩: ফ্রস্টেড স্টুডিও মিস্ট (হালকা গ্লাস থিম)
+   ইমেজের কুল সিলভার-সেইজ কাঁচ (#C6D0CF / #D5E1E4), ওক (#90613B) ও সায়ান (#53A2C9) থেকে অনুপ্রাণিত
+   ===================================================================== */
+html.glass-light-mode {
+  --background: #d8e3e5;
+  --foreground: #0f172a;
+}
+
+html.glass-light-mode body {
+  background-color: #d8e3e5 !important;
+  background-image:
+    radial-gradient(1000px 440px at 50% -6%, rgba(255, 255, 255, 0.72), transparent 64%),
+    radial-gradient(860px 400px at 12% 32%, rgba(83, 162, 201, 0.14), transparent 60%),
+    radial-gradient(920px 440px at 88% 95%, rgba(198, 152, 92, 0.16), transparent 64%),
+    linear-gradient(155deg, #d7e3e5 0%, #c8d5d6 48%, #e1e8e6 100%) !important;
+  background-attachment: fixed !important;
+  color: #0f172a !important;
+}
+
+html.glass-light-mode .min-h-screen:not([data-paper-card="true"]) {
+  background: transparent !important;
+  background-image: none !important;
+  color: #0f172a !important;
+}
+
+html.glass-light-mode header:not([data-paper-ignore="true"]) {
+  background-color: rgba(235, 242, 244, 0.80) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-color: rgba(144, 97, 59, 0.22) !important;
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.78), 0 6px 20px -12px rgba(27, 44, 50, 0.14) !important;
+}
+
+html.glass-light-mode footer {
+  background-color: rgba(218, 229, 232, 0.88) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(144, 97, 59, 0.26) !important;
+  color: #0f172a !important;
+}
+
+html.glass-light-mode .bg-white,
+html.glass-light-mode .bg-white\/95,
+html.glass-light-mode .bg-white\/90,
+html.glass-light-mode .bg-white\/85,
+html.glass-light-mode .bg-white\/80,
+html.glass-light-mode .bg-slate-50,
+html.glass-light-mode .bg-slate-50\/50,
+html.glass-light-mode [data-paper-card="true"],
+html.glass-light-mode [data-paper-inner="true"] {
+  background-color: rgba(242, 247, 248, 0.78) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 10px 28px -12px rgba(27, 44, 50, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+html.glass-light-mode .bg-slate-100,
+html.glass-light-mode .bg-slate-100\/90,
+html.glass-light-mode .bg-slate-100\/80 {
+  background-color: rgba(203, 217, 221, 0.72) !important;
+  border-color: rgba(148, 163, 184, 0.34) !important;
+}
+
+html.glass-light-mode nav .bg-white,
+html.glass-light-mode [role="tablist"] .bg-white,
+html.glass-light-mode [role="radiogroup"] .bg-white {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(83, 162, 201, 0.45) !important;
+}
+
+html.glass-light-mode h1 .bg-clip-text {
+  background-image: linear-gradient(90deg, #0c4a6e 0%, #0e7490 50%, #905a04 100%) !important;
+}
+
+html.glass-light-mode input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.glass-light-mode select,
+html.glass-light-mode textarea {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(100, 116, 139, 0.35) !important;
+}
+
+html.glass-light-mode canvas,
+html.glass-light-mode #printable-exam-sheet,
+html.glass-light-mode .worksheet-print-area,
+html.glass-light-mode .certificate-print-area {
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* =====================================================================
+   🌌 থিম ৪: মিডনাইট ফ্রস্টেড স্টুডিও (ডার্ক গ্লাস থিম)
+   ইমেজের স্লেট-টিল কাঁচ (#1B2C32 / #24363C), সিলভার (#F1F5F9), গোল্ড (#D0B679) ও সায়ান (#63B3ED)
+   ===================================================================== */
+html.glass-dark-mode {
+  --background: #18272c;
+  --foreground: #f1f5f9;
+  color-scheme: dark;
+}
+
+html.glass-dark-mode body {
+  background-color: #18272c !important;
+  background-image:
+    radial-gradient(1100px 440px at 50% -6%, rgba(198, 208, 207, 0.14), transparent 62%),
+    radial-gradient(880px 420px at 14% 36%, rgba(83, 162, 201, 0.15), transparent 60%),
+    radial-gradient(920px 460px at 86% 96%, rgba(198, 152, 92, 0.13), transparent 64%),
+    linear-gradient(155deg, #1b2c32 0%, #23373e 48%, #162328 100%) !important;
+  background-attachment: fixed !important;
+  color: #f1f5f9 !important;
+}
+
+html.glass-dark-mode .min-h-screen {
+  background: transparent !important;
+  background-image: none !important;
+  color: #f1f5f9 !important;
+}
+
+html.glass-dark-mode header:not([data-paper-ignore="true"]) {
+  background-color: rgba(23, 39, 45, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(198, 208, 207, 0.20) !important;
+  box-shadow: inset 0 -1px 0 rgba(208, 182, 121, 0.18), 0 8px 24px -12px rgba(0, 0, 0, 0.45) !important;
+}
+
+html.glass-dark-mode footer {
+  background-color: rgba(21, 36, 42, 0.90) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(198, 152, 92, 0.28) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Primary elevated glass cards & modals */
+html.glass-dark-mode .bg-white,
+html.glass-dark-mode .bg-white\/95,
+html.glass-dark-mode .bg-white\/90,
+html.glass-dark-mode .bg-white\/85,
+html.glass-dark-mode .bg-white\/80,
+html.glass-dark-mode .bg-slate-50,
+html.glass-dark-mode .bg-slate-50\/50,
+html.glass-dark-mode .bg-gray-50,
+html.glass-dark-mode [data-paper-card="true"],
+html.glass-dark-mode [data-paper-inner="true"] {
+  background-color: rgba(34, 54, 61, 0.84) !important;
+  background-image: none !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: rgba(198, 208, 207, 0.22) !important;
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+
+/* Darker recessed wells & pill groups */
+html.glass-dark-mode .bg-slate-100,
+html.glass-dark-mode .bg-slate-100\/90,
+html.glass-dark-mode .bg-slate-100\/80,
+html.glass-dark-mode .bg-slate-200,
+html.glass-dark-mode .bg-gray-100 {
+  background-color: rgba(19, 33, 38, 0.82) !important;
+  border-color: rgba(198, 208, 207, 0.16) !important;
+}
+
+/* Selected active pill tabs inside recessed tracks */
+html.glass-dark-mode nav .bg-white,
+html.glass-dark-mode [role="tablist"] .bg-white,
+html.glass-dark-mode [role="radiogroup"] .bg-white {
+  background-color: rgba(48, 76, 86, 0.96) !important;
+  border-color: rgba(208, 182, 121, 0.45) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28) !important;
+}
+
+html.glass-dark-mode .hover\:bg-white:hover,
+html.glass-dark-mode .hover\:bg-slate-50:hover,
+html.glass-dark-mode .hover\:bg-slate-100:hover,
+html.glass-dark-mode .hover\:bg-slate-200:hover,
+html.glass-dark-mode .hover\:bg-slate-200\/80:hover,
+html.glass-dark-mode .hover\:bg-slate-200\/60:hover {
+  background-color: rgba(49, 77, 87, 0.90) !important;
+}
+
+html.glass-dark-mode .hover\:bg-emerald-50:hover,
+html.glass-dark-mode .hover\:bg-emerald-100:hover,
+html.glass-dark-mode .hover\:bg-emerald-200:hover,
+html.glass-dark-mode .hover\:bg-teal-50:hover,
+html.glass-dark-mode .hover\:bg-teal-100:hover,
+html.glass-dark-mode .hover\:bg-teal-200:hover {
+  background-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+html.glass-dark-mode .hover\:bg-sky-100:hover,
+html.glass-dark-mode .hover\:bg-blue-50:hover,
+html.glass-dark-mode .hover\:bg-blue-100:hover,
+html.glass-dark-mode .hover\:bg-indigo-50:hover,
+html.glass-dark-mode .hover\:bg-indigo-100:hover {
+  background-color: rgba(83, 162, 201, 0.28) !important;
+}
+
+html.glass-dark-mode .hover\:bg-amber-50:hover,
+html.glass-dark-mode .hover\:bg-amber-50\/50:hover,
+html.glass-dark-mode .hover\:bg-amber-100:hover,
+html.glass-dark-mode .hover\:bg-amber-200:hover {
+  background-color: rgba(208, 182, 121, 0.28) !important;
+}
+
+html.glass-dark-mode .hover\:bg-purple-50:hover,
+html.glass-dark-mode .hover\:bg-purple-100:hover,
+html.glass-dark-mode .hover\:bg-purple-200:hover,
+html.glass-dark-mode .hover\:bg-purple-200\/50:hover {
+  background-color: rgba(168, 85, 247, 0.28) !important;
+}
+
+html.glass-dark-mode .hover\:bg-rose-50:hover,
+html.glass-dark-mode .hover\:bg-rose-100:hover,
+html.glass-dark-mode .hover\:bg-pink-100:hover {
+  background-color: rgba(244, 63, 94, 0.28) !important;
+}
+
+html.glass-dark-mode .hover\:text-slate-900:hover {
+  color: #ffffff !important;
+}
+
+/* Borders */
+html.glass-dark-mode .border-slate-100,
+html.glass-dark-mode .border-slate-200,
+html.glass-dark-mode .border-slate-200\/60,
+html.glass-dark-mode .border-slate-200\/80,
+html.glass-dark-mode .border-slate-200\/90,
+html.glass-dark-mode .border-slate-300 {
+  border-color: rgba(198, 208, 207, 0.20) !important;
+}
+
+/* Crisp Silver-White & Mist Slate Typography Scale */
+html.glass-dark-mode h1,
+html.glass-dark-mode h2,
+html.glass-dark-mode h3,
+html.glass-dark-mode .text-slate-900,
+html.glass-dark-mode .text-slate-950,
+html.glass-dark-mode .text-gray-900 {
+  color: #f1f5f9 !important;
+}
+
+html.glass-dark-mode h1 .bg-clip-text {
+  background-image: linear-gradient(90deg, #e7d199 0%, #f1f5f9 52%, #63b3ed 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+html.glass-dark-mode .text-slate-800,
+html.glass-dark-mode .text-gray-800 {
+  color: #e2e8f0 !important;
+}
+
+html.glass-dark-mode .text-slate-700,
+html.glass-dark-mode .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+
+html.glass-dark-mode .text-slate-600,
+html.glass-dark-mode .text-gray-600 {
+  color: #b8c7d1 !important;
+}
+
+html.glass-dark-mode .text-slate-500,
+html.glass-dark-mode .text-gray-500 {
+  color: #9fb3be !important;
+}
+
+html.glass-dark-mode .text-slate-400 {
+  color: #8fa5b2 !important;
+}
+
+/* Preserve dark ink on bright gold/amber CTA buttons & badges */
+html.glass-dark-mode .bg-amber-300,
+html.glass-dark-mode .bg-amber-400,
+html.glass-dark-mode .bg-amber-500,
+html.glass-dark-mode .bg-yellow-300,
+html.glass-dark-mode .bg-yellow-400 {
+  color: #0f172a !important;
+}
+
+/* Translucent Color Families (High Contrast Pill Badges & Cards) */
+html.glass-dark-mode .bg-emerald-50,
+html.glass-dark-mode .bg-emerald-100,
+html.glass-dark-mode .bg-emerald-100\/90,
+html.glass-dark-mode .bg-teal-50,
+html.glass-dark-mode .bg-teal-100 {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+}
+html.glass-dark-mode .border-emerald-200,
+html.glass-dark-mode .border-emerald-300,
+html.glass-dark-mode .border-teal-200 {
+  border-color: rgba(52, 211, 153, 0.34) !important;
+}
+html.glass-dark-mode .text-emerald-600,
+html.glass-dark-mode .text-emerald-700,
+html.glass-dark-mode .text-emerald-800,
+html.glass-dark-mode .text-emerald-900,
+html.glass-dark-mode .hover\:text-emerald-600:hover,
+html.glass-dark-mode .hover\:text-emerald-700:hover,
+html.glass-dark-mode .group:hover .group-hover\:text-emerald-700 {
+  color: #6ee7b7 !important;
+}
+html.glass-dark-mode .text-teal-600,
+html.glass-dark-mode .text-teal-700,
+html.glass-dark-mode .text-teal-800,
+html.glass-dark-mode .text-teal-900,
+html.glass-dark-mode .hover\:text-teal-700:hover,
+html.glass-dark-mode .hover\:text-teal-900:hover,
+html.glass-dark-mode .group:hover .group-hover\:text-teal-700 {
+  color: #5eead4 !important;
+}
+
+html.glass-dark-mode .bg-sky-50,
+html.glass-dark-mode .bg-sky-100,
+html.glass-dark-mode .bg-blue-50,
+html.glass-dark-mode .bg-blue-50\/50,
+html.glass-dark-mode .bg-blue-100,
+html.glass-dark-mode .bg-indigo-50,
+html.glass-dark-mode .bg-indigo-100 {
+  background-color: rgba(83, 162, 201, 0.18) !important;
+}
+html.glass-dark-mode .border-sky-100,
+html.glass-dark-mode .border-sky-200,
+html.glass-dark-mode .border-sky-300,
+html.glass-dark-mode .border-blue-200,
+html.glass-dark-mode .border-indigo-200 {
+  border-color: rgba(99, 179, 237, 0.34) !important;
+}
+html.glass-dark-mode .text-sky-600,
+html.glass-dark-mode .text-sky-700,
+html.glass-dark-mode .text-sky-800,
+html.glass-dark-mode .text-blue-600,
+html.glass-dark-mode .text-blue-700,
+html.glass-dark-mode .hover\:text-sky-700:hover,
+html.glass-dark-mode .hover\:text-blue-700:hover,
+html.glass-dark-mode .group:hover .group-hover\:text-sky-700 {
+  color: #7dd3fc !important;
+}
+html.glass-dark-mode .text-indigo-600,
+html.glass-dark-mode .text-indigo-700,
+html.glass-dark-mode .text-indigo-800,
+html.glass-dark-mode .text-indigo-900,
+html.glass-dark-mode .hover\:text-indigo-600:hover,
+html.glass-dark-mode .hover\:text-indigo-900:hover,
+html.glass-dark-mode .group:hover .group-hover\:text-indigo-700 {
+  color: #a5b4fc !important;
+}
+
+html.glass-dark-mode .bg-amber-50,
+html.glass-dark-mode .bg-amber-50\/50,
+html.glass-dark-mode .bg-amber-100,
+html.glass-dark-mode .bg-yellow-50,
+html.glass-dark-mode .bg-yellow-100 {
+  background-color: rgba(208, 182, 121, 0.17) !important;
+}
+html.glass-dark-mode .border-amber-200,
+html.glass-dark-mode .border-amber-300 {
+  border-color: rgba(208, 182, 121, 0.36) !important;
+}
+html.glass-dark-mode .text-amber-600,
+html.glass-dark-mode .text-amber-700,
+html.glass-dark-mode .text-amber-800,
+html.glass-dark-mode .text-amber-900,
+html.glass-dark-mode .text-amber-950,
+html.glass-dark-mode .hover\:text-amber-600:hover,
+html.glass-dark-mode .hover\:text-amber-700:hover,
+html.glass-dark-mode .hover\:text-amber-800:hover,
+html.glass-dark-mode .hover\:text-amber-950:hover,
+html.glass-dark-mode .group:hover .group-hover\:text-amber-700 {
+  color: #e5ca8a !important;
+}
+
+html.glass-dark-mode .bg-purple-50,
+html.glass-dark-mode .bg-purple-50\/90,
+html.glass-dark-mode .bg-purple-100,
+html.glass-dark-mode .bg-purple-100\/90 {
+  background-color: rgba(168, 85, 247, 0.18) !important;
+}
+html.glass-dark-mode .border-purple-100,
+html.glass-dark-mode .border-purple-200 {
+  border-color: rgba(192, 132, 252, 0.34) !important;
+}
+html.glass-dark-mode .text-purple-600,
+html.glass-dark-mode .text-purple-700,
+html.glass-dark-mode .text-purple-800,
+html.glass-dark-mode .text-purple-900,
+html.glass-dark-mode .text-purple-950,
+html.glass-dark-mode .hover\:text-purple-600:hover,
+html.glass-dark-mode .hover\:text-purple-700:hover,
+html.glass-dark-mode .hover\:text-purple-900:hover,
+html.glass-dark-mode .hover\:text-purple-950:hover,
+html.glass-dark-mode .group:hover .group-hover\:text-purple-700 {
+  color: #d8b4fe !important;
+}
+
+html.glass-dark-mode .bg-rose-50,
+html.glass-dark-mode .bg-rose-100,
+html.glass-dark-mode .bg-rose-100\/90,
+html.glass-dark-mode .bg-rose-200\/90,
+html.glass-dark-mode .bg-pink-50,
+html.glass-dark-mode .bg-pink-100 {
+  background-color: rgba(244, 63, 94, 0.18) !important;
+}
+html.glass-dark-mode .border-rose-100,
+html.glass-dark-mode .border-rose-200,
+html.glass-dark-mode .border-rose-300,
+html.glass-dark-mode .border-pink-100,
+html.glass-dark-mode .border-pink-200 {
+  border-color: rgba(251, 113, 133, 0.34) !important;
+}
+html.glass-dark-mode .text-rose-600,
+html.glass-dark-mode .text-rose-700,
+html.glass-dark-mode .text-rose-800,
+html.glass-dark-mode .text-rose-900,
+html.glass-dark-mode .text-pink-600,
+html.glass-dark-mode .text-pink-700,
+html.glass-dark-mode .text-pink-800,
+html.glass-dark-mode .text-pink-900,
+html.glass-dark-mode .hover\:text-rose-600:hover,
+html.glass-dark-mode .hover\:text-rose-700:hover,
+html.glass-dark-mode .hover\:text-pink-700:hover,
+html.glass-dark-mode .group:hover .group-hover\:text-rose-700,
+html.glass-dark-mode .group:hover .group-hover\:text-pink-700 {
+  color: #fda4af !important;
+}
+
+/* Dark Glass Form Controls */
+html.glass-dark-mode input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.glass-dark-mode select,
+html.glass-dark-mode textarea {
+  background-color: rgba(18, 30, 35, 0.88) !important;
+  color: #f1f5f9 !important;
+  border-color: rgba(198, 208, 207, 0.28) !important;
+}
+
+html.glass-dark-mode select option {
+  background-color: #1b2c32;
+  color: #f1f5f9;
+}
+
+/* Protect Interactive Drawing Canvases (white paper + dark stroke guidelines) */
+html.glass-dark-mode canvas,
+html.glass-dark-mode .bg-white:has(> canvas) {
+  background-color: #ffffff !important;
+  border-color: rgba(198, 208, 207, 0.45) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Protect Footer 4-Theme Mini Swatches */
+html.glass-dark-mode [data-theme-switcher="true"] {
+  background-color: rgba(18, 30, 35, 0.85) !important;
+  border-color: rgba(198, 208, 207, 0.22) !important;
+}
+html.glass-dark-mode [data-theme-switcher="true"] [data-theme-option="glass-light"][aria-checked="true"] {
+  background-color: #d5e1e4 !important;
+  color: #0f172a !important;
+}
+html.glass-dark-mode [data-theme-switcher="true"] [data-theme-option="paper"][aria-checked="true"] {
+  background-color: #ece1ce !important;
+  color: #2f240e !important;
+}
+html.glass-dark-mode [data-theme-switcher="true"] [data-theme-option="glass-dark"][aria-checked="true"] {
+  background-color: #2c434b !important;
+  color: #d0b679 !important;
+  border-color: rgba(99, 179, 237, 0.7) !important;
+}
+
+/* Protect A4 Printable Mockup Sheets (Exam Papers, Worksheets & Certificates stay paper-white on screen) */
+html.glass-dark-mode #printable-exam-sheet,
+html.glass-dark-mode .worksheet-print-area,
+html.glass-dark-mode .certificate-print-area {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.glass-dark-mode .certificate-print-area {
+  background-image: linear-gradient(135deg, #fffbeb 0%, #ffffff 50%, #fdf2f8 100%) !important;
+  border-color: #fbbf24 !important;
+}
+
+html.glass-dark-mode #printable-exam-sheet .bg-white,
+html.glass-dark-mode .worksheet-print-area .bg-white,
+html.glass-dark-mode .certificate-print-area .bg-white {
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+}
+
+html.glass-dark-mode #printable-exam-sheet h1,
+html.glass-dark-mode #printable-exam-sheet h2,
+html.glass-dark-mode #printable-exam-sheet h3,
+html.glass-dark-mode #printable-exam-sheet .text-slate-900,
+html.glass-dark-mode #printable-exam-sheet .text-slate-800,
+html.glass-dark-mode .worksheet-print-area h1,
+html.glass-dark-mode .worksheet-print-area h2,
+html.glass-dark-mode .worksheet-print-area h3,
+html.glass-dark-mode .worksheet-print-area .text-slate-900,
+html.glass-dark-mode .worksheet-print-area .text-slate-800,
+html.glass-dark-mode .certificate-print-area h1,
+html.glass-dark-mode .certificate-print-area h2,
+html.glass-dark-mode .certificate-print-area h3,
+html.glass-dark-mode .certificate-print-area .text-slate-900,
+html.glass-dark-mode .certificate-print-area .text-slate-800 {
+  color: #0f172a !important;
+}
+
+html.glass-dark-mode #printable-exam-sheet .text-slate-700,
+html.glass-dark-mode #printable-exam-sheet .text-slate-600,
+html.glass-dark-mode #printable-exam-sheet .text-slate-500,
+html.glass-dark-mode .worksheet-print-area .text-slate-700,
+html.glass-dark-mode .worksheet-print-area .text-slate-600,
+html.glass-dark-mode .worksheet-print-area .text-pink-900,
+html.glass-dark-mode .certificate-print-area .text-slate-700,
+html.glass-dark-mode .certificate-print-area .text-slate-600 {
+  color: #334155 !important;
+}
+
+html.glass-dark-mode #printable-exam-sheet .border-slate-900 {
+  border-color: #0f172a !important;
+}
+
+html.glass-dark-mode #printable-exam-sheet .border-slate-300,
+html.glass-dark-mode #printable-exam-sheet .border-slate-200,
+html.glass-dark-mode .worksheet-print-area .border-slate-300,
+html.glass-dark-mode .worksheet-print-area .border-slate-200 {
+  border-color: #cbd5e1 !important;
+}
+
+html.glass-dark-mode #printable-exam-sheet .bg-emerald-50 {
+  background-color: #ecfdf5 !important;
+}
+html.glass-dark-mode #printable-exam-sheet .text-emerald-800 {
+  color: #065f46 !important;
+}
+html.glass-dark-mode #printable-exam-sheet .bg-rose-50,
+html.glass-dark-mode .worksheet-print-area .bg-pink-50 {
+  background-color: #fff1f2 !important;
+}
+html.glass-dark-mode #printable-exam-sheet .text-rose-800,
+html.glass-dark-mode .worksheet-print-area .text-pink-800 {
+  color: #9f1239 !important;
+}
+html.glass-dark-mode #printable-exam-sheet .bg-amber-50,
+html.glass-dark-mode .certificate-print-area .text-amber-800,
+html.glass-dark-mode .certificate-print-area .text-amber-900 {
+  color: #78350f !important;
+}
+
 /* Print Perfection for Exam, Worksheet & Certificate Studio */
 @media print {
   @page {
@@ -183,20 +737,29 @@ html.paper-mode footer .text-slate-400 {
     margin: 10mm 12mm 10mm 12mm;
   }
   html.paper-mode body,
+  html.glass-light-mode body,
+  html.glass-dark-mode body,
   body {
     background: white !important;
+    background-image: none !important;
     color: #111827 !important;
   }
   html.paper-mode [data-paper-card="true"],
   html.paper-mode [data-paper-inner="true"],
+  html.glass-light-mode [data-paper-card="true"],
+  html.glass-light-mode [data-paper-inner="true"],
+  html.glass-dark-mode [data-paper-card="true"],
+  html.glass-dark-mode [data-paper-inner="true"],
   #printable-exam-sheet,
   .worksheet-print-area,
   .certificate-print-area {
     background: white !important;
     background-color: white !important;
+    background-image: none !important;
     color: #111827 !important;
     border-color: #cbd5e1 !important;
     box-shadow: none !important;
+    backdrop-filter: none !important;
     margin: 0 auto !important;
     max-width: 100% !important;
     width: 100% !important;

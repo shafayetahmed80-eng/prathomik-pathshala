@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\scratch\recording-cleanup-wt\src\app\lesson-planner\page.tsx
+// File: C:\Projects\prathomik-pathshala\src\app\lesson-planner\page.tsx
 import * as entry from '../../../../src/app/lesson-planner/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

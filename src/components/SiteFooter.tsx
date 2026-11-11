@@ -116,22 +116,86 @@ const getSizeSnapshot = () => {
   return saved && AVAILABLE_FONT_SIZES.some((s) => s.id === saved) ? saved : "normal";
 };
 
-const subscribePaperMode = (callback: () => void) => {
+export type ThemeMode = "default" | "paper" | "glass-light" | "glass-dark";
+
+export interface ThemeOption {
+  id: ThemeMode;
+  name: string;
+  shortName: string;
+  icon: string;
+  className: string | null;
+  toast: string;
+  confettiColors: string[];
+  title: string;
+}
+
+export const AVAILABLE_THEMES: ThemeOption[] = [
+  {
+    id: "default",
+    name: "শুভ্র",
+    shortName: "শুভ্র",
+    icon: "☀️",
+    className: null,
+    toast: "☀️ ডিফল্ট শুভ্র থিম চালু হয়েছে!",
+    confettiColors: ["#059669", "#0284c7", "#f59e0b", "#ffffff"],
+    title: "ডিফল্ট উজ্জ্বল থিম",
+  },
+  {
+    id: "paper",
+    name: "কাগজ",
+    shortName: "কাগজ",
+    icon: "📜",
+    className: "paper-mode",
+    toast: "📜 ক্লাসিক কাগজের থিম চালু হয়েছে! (চোখের জন্য আরামদায়ক)",
+    confettiColors: ["#905A04", "#ECE1CE", "#2F240E", "#D4AF37"],
+    title: "চোখের আরামদায়ক ক্লাসিক কাগজের থিম",
+  },
+  {
+    id: "glass-light",
+    name: "হালকা গ্লাস",
+    shortName: "মিস্ট",
+    icon: "🪟",
+    className: "glass-light-mode",
+    toast: "🪟 ফ্রস্টেড লাইট গ্লাস থিম চালু হয়েছে!",
+    confettiColors: ["#C6D0CF", "#53A2C9", "#D0B679", "#90613B"],
+    title: "ফ্রস্টেড স্টুডিও মিস্ট (হালকা গ্লাস) থিম",
+  },
+  {
+    id: "glass-dark",
+    name: "ডার্ক গ্লাস",
+    shortName: "ডার্ক",
+    icon: "🌌",
+    className: "glass-dark-mode",
+    toast: "🌌 মিডনাইট ডার্ক গ্লাস থিম চালু হয়েছে!",
+    confettiColors: ["#24363C", "#63B3ED", "#D0B679", "#F1F5F9"],
+    title: "মিডনাইট ফ্রস্টেড ডার্ক গ্লাস থিম",
+  },
+];
+
+const ALL_THEME_CLASSES = ["paper-mode", "glass-light-mode", "glass-dark-mode"] as const;
+
+const subscribeThemeMode = (callback: () => void) => {
   if (typeof window === "undefined") return () => {};
+  window.addEventListener("theme-mode-change", callback);
   window.addEventListener("paper-mode-change", callback);
   window.addEventListener("storage", callback);
   return () => {
+    window.removeEventListener("theme-mode-change", callback);
     window.removeEventListener("paper-mode-change", callback);
     window.removeEventListener("storage", callback);
   };
 };
 
-const getPaperModeSnapshot = () => {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem("pp_paper_mode") === "true";
+const getThemeModeSnapshot = (): ThemeMode => {
+  if (typeof window === "undefined") return "default";
+  const saved = localStorage.getItem("pp_theme_mode") as ThemeMode | null;
+  if (saved && AVAILABLE_THEMES.some((t) => t.id === saved)) {
+    return saved;
+  }
+  return localStorage.getItem("pp_paper_mode") === "true" ? "paper" : "default";
 };
 
-const getPaperModeServerSnapshot = () => false;
+const getThemeModeServerSnapshot = (): ThemeMode => "default";
 
 export default function SiteFooter() {
   // Current active preferences via useSyncExternalStore
@@ -143,8 +207,12 @@ export default function SiteFooter() {
   const [modalFontId, setModalFontId] = useState<string>("hind-siliguri");
   const [modalSizeId, setModalSizeId] = useState<string>("normal");
 
-  // Paper Theme Mode (সুপারিশ ক: হাইব্রিড ওয়ার্ম বেইজ থিম)
-  const isPaperMode = useSyncExternalStore(subscribePaperMode, getPaperModeSnapshot, getPaperModeServerSnapshot);
+  // Active site color theme ("default" | "paper" | "glass-light" | "glass-dark")
+  const activeTheme = useSyncExternalStore(
+    subscribeThemeMode,
+    getThemeModeSnapshot,
+    getThemeModeServerSnapshot
+  );
 
   // Success Toast Notification
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -167,32 +235,36 @@ export default function SiteFooter() {
     } catch {}
   }, []);
 
-  // Toggle Paper Theme Mode
-  const togglePaperMode = () => {
-    const nextMode = !isPaperMode;
+  // Switch between Default, Warm Paper, Frosted Light Glass & Midnight Dark Glass themes
+  const selectTheme = (nextTheme: ThemeMode) => {
+    if (nextTheme === activeTheme) return;
     playPopSound();
 
-    if (nextMode) {
-      document.documentElement.classList.add("paper-mode");
-      try {
-        localStorage.setItem("pp_paper_mode", "true");
-      } catch {}
-      confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.85 },
-        colors: ["#905A04", "#ECE1CE", "#2F240E", "#D4AF37"]
-      });
-      setToastMessage("📜 ক্লাসিক কাগজের থিম চালু হয়েছে! (চোখের জন্য আরামদায়ক)");
-    } else {
-      document.documentElement.classList.remove("paper-mode");
-      try {
-        localStorage.setItem("pp_paper_mode", "false");
-      } catch {}
-      setToastMessage("ডিফল্ট থিমে ফিরে আসা হয়েছে।");
+    const root = document.documentElement;
+    root.classList.remove(...ALL_THEME_CLASSES);
+    const themeObj = AVAILABLE_THEMES.find((t) => t.id === nextTheme) || AVAILABLE_THEMES[0];
+    if (themeObj.className) {
+      root.classList.add(themeObj.className);
     }
 
+    try {
+      localStorage.setItem("pp_theme_mode", nextTheme);
+      localStorage.setItem("pp_paper_mode", nextTheme === "paper" ? "true" : "false");
+    } catch {}
+
+    if (nextTheme !== "default") {
+      confetti({
+        particleCount: 45,
+        spread: 60,
+        origin: { y: 0.86 },
+        colors: themeObj.confettiColors,
+      });
+    }
+
+    setToastMessage(themeObj.toast);
+
     if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("theme-mode-change"));
       window.dispatchEvent(new Event("paper-mode-change"));
     }
 
@@ -277,36 +349,51 @@ export default function SiteFooter() {
               <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </button>
 
-            {/* 📜 Classic Paper Mode Toggle (সুপারিশ ক: হাইব্রিড ওয়ার্ম বেইজ থিম) */}
-            <button
-              type="button"
-              onClick={togglePaperMode}
-              aria-pressed={isPaperMode}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border shadow-xs hover:scale-102 active:scale-98 ${
-                isPaperMode
-                  ? "bg-[#ECE1CE] text-[#2F240E] border-[#905A04]/40 ring-2 ring-[#905A04]/20 shadow-inner"
-                  : "bg-white hover:bg-amber-50/50 text-slate-700 hover:text-amber-900 border-slate-200/80"
-              }`}
-              title={isPaperMode ? "সাধারণ থিমে ফিরে যেতে ক্লিক করুন" : "চোখের আরামদায়ক ক্লাসিক কাগজের থিম চালু করতে ক্লিক করুন"}
+            {/* 🎨 4-Theme Background Switcher (শুভ্র • কাগজ • হালকা গ্লাস • ডার্ক গ্লাস) */}
+            <div
+              role="radiogroup"
+              aria-label="ব্যাকগ্রাউন্ড থিম নির্বাচন"
+              data-theme-switcher="true"
+              className="inline-flex flex-wrap items-center justify-center gap-1 p-1 rounded-xl bg-white/85 border border-slate-200/80 shadow-xs"
             >
-              <span className="text-sm" aria-hidden="true">📜</span>
-              <span className="hidden sm:inline">কাগজের থিম:</span>
-              <span className="sm:hidden">কাগজ:</span>
-              <span
-                className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-black transition-all ${
-                  isPaperMode
-                    ? "bg-[#905A04] text-white shadow-xs"
-                    : "bg-slate-200 text-slate-600"
-                }`}
-              >
-                <span
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    isPaperMode ? "bg-amber-300 animate-pulse" : "bg-slate-400"
-                  }`}
-                />
-                <span>{isPaperMode ? "চালু" : "বন্ধ"}</span>
+              <span className="hidden lg:inline-flex items-center px-1.5 text-[11px] font-bold text-slate-500">
+                থিম:
               </span>
-            </button>
+              {AVAILABLE_THEMES.map((theme) => {
+                const isActive = activeTheme === theme.id;
+                const activeClass =
+                  theme.id === "paper"
+                    ? "bg-[#ECE1CE] text-[#2F240E] border-[#905A04]/45 shadow-xs"
+                    : theme.id === "glass-light"
+                    ? "bg-[#D5E1E4] text-[#0F172A] border-[#53A2C9]/60 shadow-xs"
+                    : theme.id === "glass-dark"
+                    ? "bg-[#24363C] text-[#D0B679] border-[#63B3ED]/60 shadow-xs"
+                    : "bg-emerald-600 text-white border-emerald-600 shadow-xs";
+
+                return (
+                  <button
+                    key={theme.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isActive}
+                    data-theme-option={theme.id}
+                    onClick={() => selectTheme(theme.id)}
+                    title={theme.title}
+                    className={`inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all active:scale-95 ${
+                      isActive
+                        ? `${activeClass} ring-1 ring-black/5`
+                        : "bg-transparent border-transparent text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
+                    }`}
+                  >
+                    <span aria-hidden="true" className="text-xs leading-none">
+                      {theme.icon}
+                    </span>
+                    <span className="hidden sm:inline">{theme.name}</span>
+                    <span className="sm:hidden">{theme.shortName}</span>
+                  </button>
+                );
+              })}
+            </div>
 
             <InstallAppButton variant="footer" />
           </div>
