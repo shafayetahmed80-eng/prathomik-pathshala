@@ -113,6 +113,8 @@ export default function BanglaBornomalaLab() {
   const audioChunksRef = useRef<Blob[]>([]);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const recordedAudioPlayerRef = useRef<HTMLAudioElement | null>(null);
+  const discardRecordingRef = useRef<boolean>(false);
+  const isUnmountedRef = useRef<boolean>(false);
 
   // Gamification & Accuracy
   const [stars, setStars] = useState<number>(20);
@@ -346,47 +348,7 @@ export default function BanglaBornomalaLab() {
     }
   }, [showRuledGrid, isEnglish, englishCase, activeChar]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setupCanvas(false), 30);
-    const handleResize = () => setupCanvas(true);
-    window.addEventListener("resize", handleResize);
-
-    // Font loading listener to ensure dynamic Bengali web fonts render crisp
-    if (typeof document !== "undefined" && "fonts" in document) {
-      document.fonts.ready.then(() => {
-        setupCanvas(undoStackRef.current.length > 0);
-      });
-    }
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("resize", handleResize);
-      stopSpeech();
-      if (recordedAudioPlayerRef.current) {
-        try {
-          recordedAudioPlayerRef.current.pause();
-          recordedAudioPlayerRef.current.currentTime = 0;
-        } catch {}
-        recordedAudioPlayerRef.current = null;
-      }
-      if (recordedAudioUrlRef.current) {
-        URL.revokeObjectURL(recordedAudioUrlRef.current);
-        recordedAudioUrlRef.current = null;
-      }
-      if (countdownIntervalRef.current) {
-        clearInterval(countdownIntervalRef.current);
-        countdownIntervalRef.current = null;
-      }
-      if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-        try {
-          mediaRecorderRef.current.stop();
-        } catch {}
-      }
-    };
-  }, [setupCanvas]);
-
-  // Stop child recording playback
-  const stopRecordedAudio = () => {
+  const pauseRecordedAudioElement = useCallback(() => {
     if (recordedAudioPlayerRef.current) {
       try {
         recordedAudioPlayerRef.current.pause();
@@ -394,27 +356,71 @@ export default function BanglaBornomalaLab() {
       } catch {}
       recordedAudioPlayerRef.current = null;
     }
-    setIsPlayingRecorded(false);
-  };
+  }, []);
 
-  // Cleanup recorded audio & active recording when switching letter/tab/language
-  const selectItem = (nextItem: BornomalaItem | EnglishAlphabetItem) => {
-    stopRecordedAudio();
+  const disposeAudioRefs = useCallback(() => {
+    stopSpeech();
+    pauseRecordedAudioElement();
     if (recordedAudioUrlRef.current) {
       URL.revokeObjectURL(recordedAudioUrlRef.current);
       recordedAudioUrlRef.current = null;
-      setRecordedAudioUrl(null);
-    }
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-      try {
-        mediaRecorderRef.current.stop();
-      } catch {}
-      setIsRecording(false);
     }
     if (countdownIntervalRef.current) {
       clearInterval(countdownIntervalRef.current);
       countdownIntervalRef.current = null;
     }
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+      discardRecordingRef.current = true;
+      try {
+        mediaRecorderRef.current.stop();
+      } catch {}
+    }
+  }, [pauseRecordedAudioElement]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const timer = setTimeout(() => setupCanvas(false), 30);
+    const handleResize = () => setupCanvas(true);
+    window.addEventListener("resize", handleResize);
+
+    // Font loading listener to ensure dynamic Bengali web fonts render crisp
+    if (typeof document !== "undefined" && "fonts" in document) {
+      document.fonts.ready.then(() => {
+        if (!cancelled) {
+          setupCanvas(undoStackRef.current.length > 0);
+        }
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [setupCanvas]);
+
+  // Dispose audio/recording resources strictly on component unmount
+  useEffect(() => {
+    isUnmountedRef.current = false;
+    return () => {
+      isUnmountedRef.current = true;
+      disposeAudioRefs();
+    };
+  }, [disposeAudioRefs]);
+
+  // Stop child recording playback
+  const stopRecordedAudio = () => {
+    pauseRecordedAudioElement();
+    setIsPlayingRecorded(false);
+  };
+
+  // Cleanup recorded audio & active recording when switching letter/tab/language
+  const selectItem = (nextItem: BornomalaItem | EnglishAlphabetItem) => {
+    disposeAudioRefs();
+    setIsSpeaking(false);
+    setIsPlayingRecorded(false);
+    setRecordedAudioUrl(null);
+    setIsRecording(false);
     setRecordCountdown(6);
     setSelectedItem(nextItem);
   };
@@ -796,6 +802,7 @@ export default function BanglaBornomalaLab() {
     }
     setRecordCountdown(6);
     if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+      discardRecordingRef.current = false;
       try {
         mediaRecorderRef.current.stop();
       } catch {}
@@ -810,11 +817,16 @@ export default function BanglaBornomalaLab() {
     } else {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        if (isUnmountedRef.current) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
         const mimeType = getSupportedMimeType();
         const options = mimeType ? { mimeType } : undefined;
         const mediaRecorder = new MediaRecorder(stream, options);
         mediaRecorderRef.current = mediaRecorder;
         audioChunksRef.current = [];
+        discardRecordingRef.current = false;
 
         mediaRecorder.ondataavailable = (event) => {
           if (event.data.size > 0) {
@@ -823,6 +835,12 @@ export default function BanglaBornomalaLab() {
         };
 
         mediaRecorder.onstop = () => {
+          stream.getTracks().forEach((track) => track.stop()); // release mic hardware
+          if (discardRecordingRef.current || isUnmountedRef.current) {
+            discardRecordingRef.current = false;
+            audioChunksRef.current = [];
+            return;
+          }
           const finalMime = mimeType || "audio/webm";
           const audioBlob = new Blob(audioChunksRef.current, { type: finalMime });
           if (recordedAudioUrlRef.current) {
@@ -831,7 +849,6 @@ export default function BanglaBornomalaLab() {
           const audioUrl = URL.createObjectURL(audioBlob);
           recordedAudioUrlRef.current = audioUrl;
           setRecordedAudioUrl(audioUrl);
-          stream.getTracks().forEach((track) => track.stop()); // release mic hardware
           setIsRecording(false);
         };
 
