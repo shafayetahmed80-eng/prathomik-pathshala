@@ -19,7 +19,6 @@ import {
   Square,
   Play,
   Gamepad2,
-  FileText,
   Eye,
   EyeOff,
   Sparkle
@@ -109,6 +108,7 @@ export default function BanglaBornomalaLab() {
   const [isPlayingRecorded, setIsPlayingRecorded] = useState<boolean>(false);
   const [recordCountdown, setRecordCountdown] = useState<number>(6);
   const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
+  const recordedAudioUrlRef = useRef<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -344,7 +344,7 @@ export default function BanglaBornomalaLab() {
       redoStackRef.current = [];
       setAccuracyScore(null);
     }
-  }, [selectedItem, showRuledGrid, isEnglish, englishCase, activeChar]);
+  }, [showRuledGrid, isEnglish, englishCase, activeChar]);
 
   useEffect(() => {
     const timer = setTimeout(() => setupCanvas(false), 30);
@@ -368,6 +368,10 @@ export default function BanglaBornomalaLab() {
           recordedAudioPlayerRef.current.currentTime = 0;
         } catch {}
         recordedAudioPlayerRef.current = null;
+      }
+      if (recordedAudioUrlRef.current) {
+        URL.revokeObjectURL(recordedAudioUrlRef.current);
+        recordedAudioUrlRef.current = null;
       }
       if (countdownIntervalRef.current) {
         clearInterval(countdownIntervalRef.current);
@@ -393,6 +397,28 @@ export default function BanglaBornomalaLab() {
     setIsPlayingRecorded(false);
   };
 
+  // Cleanup recorded audio & active recording when switching letter/tab/language
+  const selectItem = (nextItem: BornomalaItem | EnglishAlphabetItem) => {
+    stopRecordedAudio();
+    if (recordedAudioUrlRef.current) {
+      URL.revokeObjectURL(recordedAudioUrlRef.current);
+      recordedAudioUrlRef.current = null;
+      setRecordedAudioUrl(null);
+    }
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
+      try {
+        mediaRecorderRef.current.stop();
+      } catch {}
+      setIsRecording(false);
+    }
+    if (countdownIntervalRef.current) {
+      clearInterval(countdownIntervalRef.current);
+      countdownIntervalRef.current = null;
+    }
+    setRecordCountdown(6);
+    setSelectedItem(nextItem);
+  };
+
   // Helper to distinguish English alphabet item
   const isEnglishItem = (item: BornomalaItem | EnglishAlphabetItem): item is EnglishAlphabetItem => {
     return languageMode === "english" || ("upperChar" in item) || ("phonicsTtsPrompt" in item);
@@ -404,9 +430,7 @@ export default function BanglaBornomalaLab() {
     setIsSpeaking(true);
     const isEn = /[a-zA-Z]/.test(text) && !/[\u0980-\u09FF]/.test(text);
     const targetLang = isEn ? "en-US" : "bn-BD";
-    const voiceToUse = isEn
-      ? (teacherVoice === "pradeep" ? "guy" : "ana")
-      : teacherVoice;
+    const voiceToUse = isEn ? englishTeacherVoice : teacherVoice;
 
     safeSpeak(text, {
       lang: targetLang,
@@ -424,11 +448,10 @@ export default function BanglaBornomalaLab() {
     if (isEnglishItem(item)) {
       // English Letter Phonics Articulation
       const text = item.phonicsTtsPrompt || `The letter ${item.upperChar}. Sound: ${item.pureSound}`;
-      const voiceToUse = teacherVoice === "pradeep" ? "guy" : "ana";
       safeSpeak(text, {
         lang: "en-US",
         rate: 0.88,
-        voice: voiceToUse,
+        voice: englishTeacherVoice,
         onEnd: () => setIsSpeaking(false),
         onError: () => setIsSpeaking(false),
       });
@@ -452,11 +475,10 @@ export default function BanglaBornomalaLab() {
     if (isEnglishItem(item)) {
       // English Alphabet Rhyme
       const text = item.speechPrompt || `${item.name}. ${item.char} is for ${item.word}. ${item.rhyme}`;
-      const voiceToUse = teacherVoice === "pradeep" ? "guy" : "ana";
       safeSpeak(text, {
         lang: "en-US",
         rate: 0.88,
-        voice: voiceToUse,
+        voice: englishTeacherVoice,
         onEnd: () => setIsSpeaking(false),
         onError: () => setIsSpeaking(false),
       });
@@ -472,26 +494,6 @@ export default function BanglaBornomalaLab() {
       });
     }
   };
-
-  // Cleanup recorded audio blob when changing letter
-  useEffect(() => {
-    stopRecordedAudio();
-    if (recordedAudioUrl) {
-      URL.revokeObjectURL(recordedAudioUrl);
-      setRecordedAudioUrl(null);
-    }
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state === "recording") {
-      try {
-        mediaRecorderRef.current.stop();
-      } catch {}
-      setIsRecording(false);
-    }
-    if (countdownIntervalRef.current) {
-      clearInterval(countdownIntervalRef.current);
-      countdownIntervalRef.current = null;
-    }
-    setRecordCountdown(6);
-  }, [selectedItem.id]);
 
   // Undo Handler
   const handleUndo = () => {
@@ -823,10 +825,11 @@ export default function BanglaBornomalaLab() {
         mediaRecorder.onstop = () => {
           const finalMime = mimeType || "audio/webm";
           const audioBlob = new Blob(audioChunksRef.current, { type: finalMime });
-          if (recordedAudioUrl) {
-            URL.revokeObjectURL(recordedAudioUrl);
+          if (recordedAudioUrlRef.current) {
+            URL.revokeObjectURL(recordedAudioUrlRef.current);
           }
           const audioUrl = URL.createObjectURL(audioBlob);
+          recordedAudioUrlRef.current = audioUrl;
           setRecordedAudioUrl(audioUrl);
           stream.getTracks().forEach((track) => track.stop()); // release mic hardware
           setIsRecording(false);
@@ -931,7 +934,7 @@ export default function BanglaBornomalaLab() {
                 playPopSound();
                 stopSpeech();
                 setLanguageMode("bangla");
-                setSelectedItem(VOWELS_DATA[0]);
+                selectItem(VOWELS_DATA[0]);
                 setActiveTab("vowels");
               }}
               className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
@@ -949,7 +952,7 @@ export default function BanglaBornomalaLab() {
                 playPopSound();
                 stopSpeech();
                 setLanguageMode("english");
-                setSelectedItem(ENGLISH_ALPHABET_DATA[0]);
+                selectItem(ENGLISH_ALPHABET_DATA[0]);
                 setEnglishTab("all");
               }}
               className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
@@ -1053,7 +1056,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setEnglishTab("all");
-                      setSelectedItem(ENGLISH_ALPHABET_DATA[0]);
+                      selectItem(ENGLISH_ALPHABET_DATA[0]);
                       setEnglishAnatomyFilter("all");
                     }}
                     aria-pressed={englishTab === "all"}
@@ -1070,7 +1073,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setEnglishTab("vowels");
-                      setSelectedItem(ENGLISH_VOWELS[0]);
+                      selectItem(ENGLISH_VOWELS[0]);
                       setEnglishAnatomyFilter("all");
                     }}
                     aria-pressed={englishTab === "vowels"}
@@ -1087,7 +1090,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setEnglishTab("consonants");
-                      setSelectedItem(ENGLISH_CONSONANTS[0]);
+                      selectItem(ENGLISH_CONSONANTS[0]);
                       setEnglishAnatomyFilter("all");
                     }}
                     aria-pressed={englishTab === "consonants"}
@@ -1104,7 +1107,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setEnglishTab("numbers");
-                      setSelectedItem(ENGLISH_NUMBERS_DATA[0]);
+                      selectItem(ENGLISH_NUMBERS_DATA[0]);
                     }}
                     aria-pressed={englishTab === "numbers"}
                     className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
@@ -1242,7 +1245,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setActiveTab("vowels");
-                      setSelectedItem(VOWELS_DATA[0]);
+                      selectItem(VOWELS_DATA[0]);
                       setSelectedMatraFilter("all");
                     }}
                     aria-pressed={activeTab === "vowels"}
@@ -1259,7 +1262,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setActiveTab("consonants");
-                      setSelectedItem(CONSONANTS_DATA[0]);
+                      selectItem(CONSONANTS_DATA[0]);
                       setSelectedMatraFilter("all");
                     }}
                     aria-pressed={activeTab === "consonants"}
@@ -1276,7 +1279,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setActiveTab("karchinho");
-                      setSelectedItem(KAR_DATA[0]);
+                      selectItem(KAR_DATA[0]);
                     }}
                     aria-pressed={activeTab === "karchinho"}
                     className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
@@ -1292,7 +1295,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setActiveTab("juktoborno");
-                      setSelectedItem(JUKTOBORNO_DATA[0]);
+                      selectItem(JUKTOBORNO_DATA[0]);
                     }}
                     aria-pressed={activeTab === "juktoborno"}
                     className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
@@ -1308,7 +1311,7 @@ export default function BanglaBornomalaLab() {
                     onClick={() => {
                       playPopSound();
                       setActiveTab("numbers");
-                      setSelectedItem(NUMBERS_DATA[0]);
+                      selectItem(NUMBERS_DATA[0]);
                     }}
                     aria-pressed={activeTab === "numbers"}
                     className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
@@ -1405,7 +1408,7 @@ export default function BanglaBornomalaLab() {
                   type="button"
                   onClick={() => {
                     playPopSound();
-                    setSelectedItem(item);
+                    selectItem(item);
                     if (isEnglish && "upperChar" in item) {
                       handleSpeak(item.type === "number" ? item.name : item.upperChar);
                     } else {
@@ -1488,7 +1491,7 @@ export default function BanglaBornomalaLab() {
                 <div className={`p-2.5 rounded-xl border font-bold text-xs sm:text-sm ${
                   isEnglish ? "bg-white/80 text-blue-900 border-blue-100" : "bg-white/70 text-pink-800 border-pink-100"
                 }`}>
-                  <p>"{selectedItem.rhyme}"</p>
+                  <p>&quot;{selectedItem.rhyme}&quot;</p>
                   {isEnglish && englishItem?.rhymeBn && (
                     <p className="text-[11px] text-blue-700/80 font-medium mt-0.5">({englishItem.rhymeBn})</p>
                   )}
@@ -1589,10 +1592,10 @@ export default function BanglaBornomalaLab() {
                         type="button"
                         onClick={() => {
                           playPopSound();
-                          setTeacherVoice("nabanita");
+                          setEnglishTeacherVoice("ana");
                         }}
                         className={`px-2.5 py-1 rounded-xl font-bold text-xs transition-all ${
-                          teacherVoice === "nabanita"
+                          englishTeacherVoice === "ana"
                             ? "bg-blue-600 text-white shadow-xs scale-102"
                             : "bg-blue-50 text-blue-700 hover:bg-blue-100"
                         }`}
@@ -1604,10 +1607,10 @@ export default function BanglaBornomalaLab() {
                         type="button"
                         onClick={() => {
                           playPopSound();
-                          setTeacherVoice("pradeep");
+                          setEnglishTeacherVoice("guy");
                         }}
                         className={`px-2.5 py-1 rounded-xl font-bold text-xs transition-all ${
-                          teacherVoice === "pradeep"
+                          englishTeacherVoice === "guy"
                             ? "bg-indigo-600 text-white shadow-xs scale-102"
                             : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
                         }`}
@@ -1653,8 +1656,19 @@ export default function BanglaBornomalaLab() {
                 </div>
               </div>
 
-              {/* Action Buttons: Pure Sound, Rhyme, Record, Celebrate */}
+              {/* Action Buttons: Letter Name (English), Pure Sound/Phonics, Rhyme, Record, Celebrate */}
               <div className="pt-1 flex flex-wrap gap-2 justify-center sm:justify-start">
+                {isEnglish && englishItem && (
+                  <button
+                    type="button"
+                    onClick={() => handleSpeak(englishItem.name)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-sky-700 hover:bg-sky-50 border border-sky-200 shadow-xs transition-all"
+                    title="অক্ষরের নাম শুনুন (Letter Name)"
+                  >
+                    <span>🔤 {englishItem.type === "number" ? "Number Name" : "Letter Name"}</span>
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={() => handleSpeakPure(selectedItem)}
@@ -1667,7 +1681,7 @@ export default function BanglaBornomalaLab() {
                   }`}
                   title={isEnglish ? "Listen to pure Phonics sound" : "শুধু বিশুদ্ধ বর্ণধ্বনি শুনুন"}
                 >
-                  <Volume2 className="w-4 h-4 text-blue-600" aria-hidden="true" />
+                  <Volume2 className={`w-4 h-4 ${isSpeaking ? "text-white" : isEnglish ? "text-blue-600" : "text-pink-600"}`} aria-hidden="true" />
                   <span>{isEnglish ? "🔊 Phonics Sound" : "🔊 বর্ণধ্বনি"}</span>
                 </button>
 
