@@ -50,6 +50,7 @@ interface ParsedPdfQuery {
   type: PdfResourceType;
   fileName: string;
   download: boolean;
+  proxy: boolean;
 }
 
 function parsePdfQuery(request: NextRequest): ParsedPdfQuery | null {
@@ -62,8 +63,82 @@ function parsePdfQuery(request: NextRequest): ParsedPdfQuery | null {
   const type: PdfResourceType =
     typeParam === "teachers_guide" ? "teachers_guide" : "textbook";
   const download = searchParams.get("download") === "1";
+  const proxy = searchParams.get("proxy") === "1";
 
-  return { classId, type, fileName, download };
+  return { classId, type, fileName, download, proxy };
+}
+
+function buildContentDisposition(
+  dispositionType: "inline" | "attachment",
+  fileName: string
+): string {
+  const safeBase = path.basename(fileName).replace(/["\r\n]/g, "");
+  const fullPdfName = safeBase.toLowerCase().endsWith(".pdf") ? safeBase : `${safeBase}.pdf`;
+  const encoded = encodeURIComponent(fullPdfName);
+  const asciiSlug =
+    fullPdfName
+      .replace(/\.pdf$/i, "")
+      .replace(/[^a-zA-Z0-9._-]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "nctb-book";
+  return `${dispositionType}; filename="${asciiSlug}.pdf"; filename*=UTF-8''${encoded}`;
+}
+
+function parseByteRange(
+  rangeHeader: string,
+  fileSize: number
+): { start: number; end: number } | null {
+  const match = /^bytes=(\d*)-(\d*)$/i.exec(rangeHeader.trim());
+  if (!match) return null;
+  const [, rawStart, rawEnd] = match;
+  if (!rawStart && !rawEnd) return null;
+
+  let start: number;
+  let end: number;
+  if (!rawStart) {
+    const suffixLen = Number(rawEnd);
+    if (!Number.isFinite(suffixLen) || suffixLen <= 0) return null;
+    start = Math.max(0, fileSize - suffixLen);
+    end = fileSize - 1;
+  } else {
+    start = Number(rawStart);
+    end = rawEnd ? Number(rawEnd) : fileSize - 1;
+  }
+
+  if (
+    !Number.isFinite(start) ||
+    !Number.isFinite(end) ||
+    start < 0 ||
+    start >= fileSize ||
+    end < start
+  ) {
+    return null;
+  }
+
+  return { start, end: Math.min(end, fileSize - 1) };
+}
+
+function createNodeFileWebStream(
+  filePath: string,
+  options?: { start?: number; end?: number }
+): ReadableStream<Uint8Array> {
+  let fileStream: fs.ReadStream | null = null;
+  return new ReadableStream({
+    start(controller) {
+      fileStream = fs.createReadStream(/*turbopackIgnore: true*/ filePath, options);
+      fileStream.on("data", (chunk) => {
+        controller.enqueue(
+          typeof chunk === "string" ? Buffer.from(chunk) : new Uint8Array(chunk)
+        );
+      });
+      fileStream.on("end", () => controller.close());
+      fileStream.on("error", (err) => controller.error(err));
+    },
+    cancel() {
+      try {
+        fileStream?.destroy();
+      } catch {}
+    },
+  });
 }
 
 function resolveLocalPdfPath(query: ParsedPdfQuery): string | null {
@@ -167,13 +242,16 @@ export async function HEAD(request: NextRequest) {
   const localPath = resolveLocalPdfPath(query);
   if (localPath && fs.existsSync(/*turbopackIgnore: true*/ localPath)) {
     const stat = fs.statSync(/*turbopackIgnore: true*/ localPath);
+    const sizeStr = stat.size.toString();
     return new NextResponse(null, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Length": stat.size.toString(),
+        "Content-Length": sizeStr,
+        "X-PDF-Size": sizeStr,
         "Accept-Ranges": "bytes",
         "X-PDF-Source": "local",
+        "Cache-Control": "no-store",
       },
     });
   }
@@ -195,9 +273,10 @@ export async function HEAD(request: NextRequest) {
         status: 200,
         headers: {
           "Content-Type": "application/pdf",
-          ...(len ? { "Content-Length": len } : {}),
+          ...(len ? { "Content-Length": len, "X-PDF-Size": len } : {}),
           "Accept-Ranges": "bytes",
           "X-PDF-Source": "cloudflare-r2",
+          "Cache-Control": "no-store",
         },
       });
     }
@@ -212,7 +291,8 @@ export async function HEAD(request: NextRequest) {
 
 /**
  * Serves PDFs from local collection when present (supporting HTTP 206 byte-ranges),
- * or redirects directly (`307`) to Cloudflare R2 / CDN with zero Node.js memory load.
+ * redirects directly (`307`) to Cloudflare R2 / CDN with zero Node.js memory load,
+ * or streams byte-range chunks cleanly (`?proxy=1`) when cross-origin R2 CORS isn't yet enabled.
  */
 export async function GET(request: NextRequest) {
   const query = parsePdfQuery(request);
@@ -223,44 +303,94 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const dispositionType = query.download ? "attachment" : "inline";
+  const range = request.headers.get("range");
   const localPath = resolveLocalPdfPath(query);
+
   if (!localPath || !fs.existsSync(/*turbopackIgnore: true*/ localPath)) {
     const { cdnUrl, objectKey } = buildCdnPdfUrl(query);
     if (!cdnUrl) {
       return notFoundResponse("PDF_STORAGE_NOT_CONFIGURED", objectKey, false);
     }
 
-    return NextResponse.redirect(cdnUrl, {
-      status: 307,
-      headers: {
-        "Cache-Control": "no-store",
-        "X-PDF-Source": "cloudflare-r2",
-      },
-    });
+    if (!query.proxy) {
+      return NextResponse.redirect(cdnUrl, {
+        status: 307,
+        headers: {
+          "Cache-Control": "no-store",
+          "X-PDF-Source": "cloudflare-r2",
+        },
+      });
+    }
+
+    // Streaming Range-chunk proxy fallback for client PDF.js when R2 CORS isn't configured
+    try {
+      const upstream = await fetch(cdnUrl, {
+        headers: range ? { Range: range } : undefined,
+        cache: "no-store",
+        signal: request.signal,
+      });
+
+      if (upstream.status === 404) {
+        return notFoundResponse("CDN_FILE_MISSING", objectKey, false);
+      }
+
+      if (!upstream.ok && upstream.status !== 206) {
+        const resHeaders: Record<string, string> = {
+          "X-PDF-Source": "cloudflare-r2-proxy",
+          "Cache-Control": "no-store",
+        };
+        const contentRange = upstream.headers.get("content-range");
+        if (contentRange) resHeaders["Content-Range"] = contentRange;
+        return new NextResponse(null, { status: upstream.status, headers: resHeaders });
+      }
+
+      const headers: Record<string, string> = {
+        "Content-Type": upstream.headers.get("content-type") || "application/pdf",
+        "Accept-Ranges": upstream.headers.get("accept-ranges") || "bytes",
+        "Content-Disposition": buildContentDisposition(dispositionType, query.fileName),
+        "Cache-Control": "public, max-age=3600",
+        "X-PDF-Source": "cloudflare-r2-proxy",
+      };
+
+      const contentLength = upstream.headers.get("content-length");
+      const contentRange = upstream.headers.get("content-range");
+      if (contentLength) headers["Content-Length"] = contentLength;
+      if (contentRange) headers["Content-Range"] = contentRange;
+
+      return new NextResponse(upstream.body, {
+        status: upstream.status,
+        headers,
+      });
+    } catch {
+      return NextResponse.json(
+        { error: "Unable to stream PDF from CDN.", code: "CDN_UNREACHABLE" },
+        { status: 502, headers: { "X-PDF-Error-Code": "CDN_UNREACHABLE" } }
+      );
+    }
   }
 
-  const dispositionType = query.download ? "attachment" : "inline";
-  const encodedName = encodeURIComponent(path.basename(localPath));
+  const contentDisposition = buildContentDisposition(
+    dispositionType,
+    path.basename(localPath)
+  );
 
   try {
     const stat = fs.statSync(/*turbopackIgnore: true*/ localPath);
     const fileSize = stat.size;
-    const range = request.headers.get("range");
 
     if (range) {
-      const parts = range.replace(/bytes=/, "").split("-");
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-      const chunksize = end - start + 1;
+      const parsedRange = parseByteRange(range, fileSize);
+      if (!parsedRange) {
+        return new NextResponse(null, {
+          status: 416,
+          headers: { "Content-Range": `bytes */${fileSize}` },
+        });
+      }
 
-      const fileStream = fs.createReadStream(/*turbopackIgnore: true*/ localPath, { start, end });
-      const stream = new ReadableStream({
-        start(controller) {
-          fileStream.on("data", (chunk) => controller.enqueue(chunk));
-          fileStream.on("end", () => controller.close());
-          fileStream.on("error", (err) => controller.error(err));
-        },
-      });
+      const { start, end } = parsedRange;
+      const chunksize = end - start + 1;
+      const stream = createNodeFileWebStream(localPath, { start, end });
 
       return new NextResponse(stream, {
         status: 206,
@@ -269,27 +399,21 @@ export async function GET(request: NextRequest) {
           "Accept-Ranges": "bytes",
           "Content-Length": chunksize.toString(),
           "Content-Type": "application/pdf",
-          "Content-Disposition": `${dispositionType}; filename="${encodedName}"`,
+          "Content-Disposition": contentDisposition,
+          "Cache-Control": "public, max-age=3600",
         },
       });
     }
 
-    const fileStream = fs.createReadStream(/*turbopackIgnore: true*/ localPath);
-    const stream = new ReadableStream({
-      start(controller) {
-        fileStream.on("data", (chunk) => controller.enqueue(chunk));
-        fileStream.on("end", () => controller.close());
-        fileStream.on("error", (err) => controller.error(err));
-      },
-    });
-
+    const stream = createNodeFileWebStream(localPath);
     return new NextResponse(stream, {
       status: 200,
       headers: {
         "Content-Length": fileSize.toString(),
         "Content-Type": "application/pdf",
-        "Content-Disposition": `${dispositionType}; filename="${encodedName}"`,
+        "Content-Disposition": contentDisposition,
         "Accept-Ranges": "bytes",
+        "Cache-Control": "public, max-age=3600",
       },
     });
   } catch (err: unknown) {

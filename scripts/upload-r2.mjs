@@ -377,8 +377,78 @@ async function uploadSingleFile({ item, host, bucket, creds }) {
   return { status: "uploaded" };
 }
 
+function resolveR2Config() {
+  const accountId = process.env.R2_ACCOUNT_ID;
+  const accessKeyId = process.env.R2_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
+  const bucket = process.env.R2_BUCKET_NAME || "pathshala-books";
+
+  if (!accountId || !accessKeyId || !secretAccessKey) {
+    console.error(
+      "❌ Missing R2 credentials. Set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY (and optional R2_BUCKET_NAME) in .env.r2 or environment."
+    );
+    process.exit(1);
+  }
+
+  return {
+    bucket,
+    host: `${accountId}.r2.cloudflarestorage.com`,
+    creds: { accessKeyId, secretAccessKey },
+  };
+}
+
+async function setupBucketCors(bucket, host, creds) {
+  const corsXml = [
+    `<CORSConfiguration>`,
+    `  <CORSRule>`,
+    `    <AllowedOrigin>*</AllowedOrigin>`,
+    `    <AllowedMethod>GET</AllowedMethod>`,
+    `    <AllowedMethod>HEAD</AllowedMethod>`,
+    `    <AllowedHeader>*</AllowedHeader>`,
+    `    <ExposeHeader>Accept-Ranges</ExposeHeader>`,
+    `    <ExposeHeader>Content-Range</ExposeHeader>`,
+    `    <ExposeHeader>Content-Length</ExposeHeader>`,
+    `    <ExposeHeader>Content-Type</ExposeHeader>`,
+    `    <ExposeHeader>ETag</ExposeHeader>`,
+    `    <MaxAgeSeconds>86400</MaxAgeSeconds>`,
+    `  </CORSRule>`,
+    `</CORSConfiguration>`,
+  ].join("\n");
+
+  const bodyBuffer = Buffer.from(corsXml, "utf8");
+  const contentMd5 = crypto.createHash("md5").update(bodyBuffer).digest("base64");
+  const canonicalUri = `/${encodeRfc3986(bucket)}`;
+
+  const res = await withRetries(`PUT ${bucket}?cors`, () =>
+    sendSignedRequest({
+      method: "PUT",
+      host,
+      canonicalUri,
+      queryParams: { cors: "" },
+      body: bodyBuffer,
+      creds,
+      extraHeaders: {
+        "content-type": "application/xml",
+        "content-md5": contentMd5,
+      },
+    })
+  );
+
+  if (res.status < 200 || res.status >= 300) {
+    throw new Error(`R2 PutBucketCors failed (${res.status}): ${res.text.slice(0, 300)}`);
+  }
+}
+
 async function main() {
   loadEnvFile(path.resolve(".env.r2"));
+
+  if (process.argv.includes("--setup-cors")) {
+    const { bucket, host, creds } = resolveR2Config();
+    console.log(`🔧 Configuring CORS policy on R2 bucket "${bucket}" for browser PDF Range streaming...`);
+    await setupBucketCors(bucket, host, creds);
+    console.log(`✅ R2 bucket "${bucket}" CORS policy configured (GET, HEAD, Range, ExposeHeaders).`);
+    return;
+  }
 
   if (!fs.existsSync(SOURCE_DIR)) {
     console.error(`❌ Source PDF folder not found: ${SOURCE_DIR}`);
@@ -399,20 +469,7 @@ async function main() {
     return;
   }
 
-  const accountId = process.env.R2_ACCOUNT_ID;
-  const accessKeyId = process.env.R2_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
-  const bucket = process.env.R2_BUCKET_NAME || "pathshala-books";
-
-  if (!accountId || !accessKeyId || !secretAccessKey) {
-    console.error(
-      "❌ Missing R2 credentials. Set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY (and optional R2_BUCKET_NAME) in .env.r2 or environment."
-    );
-    process.exit(1);
-  }
-
-  const host = `${accountId}.r2.cloudflarestorage.com`;
-  const creds = { accessKeyId, secretAccessKey };
+  const { bucket, host, creds } = resolveR2Config();
   let uploaded = 0;
   let skipped = 0;
 
