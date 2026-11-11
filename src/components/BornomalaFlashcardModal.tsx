@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { X, Play, Pause, ChevronLeft, ChevronRight, Volume2 } from "lucide-react";
 import { BornomalaItem } from "@/data/bornomalaData";
 import { EnglishAlphabetItem } from "@/data/englishAlphabetData";
-import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
+import { safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import { playPopSound } from "@/utils/bornomalaAudio";
 
 interface Props {
@@ -12,11 +12,19 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   languageMode?: "bangla" | "english";
+  teacherVoice?: "nabanita" | "pradeep" | "ana" | "guy";
 }
 
-export default function BornomalaFlashcardModal({ items, isOpen, onClose, languageMode = "bangla" }: Props) {
+export default function BornomalaFlashcardModal({
+  items,
+  isOpen,
+  onClose,
+  languageMode = "bangla",
+  teacherVoice,
+}: Props) {
   const [index, setIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const advanceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const safeLength = Math.max(1, items.length);
   const safeIndex = index >= safeLength ? 0 : index;
@@ -24,72 +32,93 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
   const isEng = languageMode === "english" || (currentItem && (/[a-zA-Z]/.test(currentItem.char) || ("upperChar" in currentItem)));
   const isNum = currentItem?.type === "number";
 
-  const handleClose = () => {
+  const clearAdvanceTimer = useCallback(() => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  }, []);
+
+  const handleClose = useCallback(() => {
+    clearAdvanceTimer();
     setIsPlaying(false);
     stopSpeech();
     onClose();
-  };
+  }, [clearAdvanceTimer, onClose]);
 
-  const handleSpeakCurrent = (item: BornomalaItem | EnglishAlphabetItem, onFinish?: () => void) => {
-    const itemIsEng = /[a-zA-Z]/.test(item.char) || ("upperChar" in item);
-    let text = item.speechPrompt;
-    if (!text) {
-      if (itemIsEng) {
-        text = item.type === "number"
-          ? `${item.name}. ${item.word}. ${item.rhyme}`
-          : `Letter ${item.char}. ${item.char} is for ${item.word}. ${item.rhyme}`;
-      } else {
-        text = `${item.name}। ${item.char}-তে ${item.word}। ${item.rhyme}`;
+  const handleSpeakCurrent = useCallback(
+    (item: BornomalaItem | EnglishAlphabetItem, onFinish?: () => void) => {
+      const itemIsEng = /[a-zA-Z]/.test(item.char) || ("upperChar" in item);
+      let text = item.speechPrompt;
+      if (!text) {
+        if (itemIsEng) {
+          text =
+            item.type === "number"
+              ? `${item.name}. ${item.word}. ${item.rhyme}`
+              : `Letter ${item.char}. ${item.char} is for ${item.word}. ${item.rhyme}`;
+        } else {
+          text = `${item.name}। ${item.char}-তে ${item.word}। ${item.rhyme}`;
+        }
       }
-    }
 
-    safeSpeak(text, {
-      lang: itemIsEng ? "en-US" : "bn-BD",
-      voice: itemIsEng ? "ana" : "nabanita",
-      rate: itemIsEng ? 0.88 : 0.85,
-      onEnd: () => onFinish?.(),
-      onError: () => onFinish?.(),
-    });
-  };
+      const resolvedVoice = itemIsEng
+        ? teacherVoice === "guy" || teacherVoice === "pradeep"
+          ? "guy"
+          : "ana"
+        : teacherVoice === "pradeep" || teacherVoice === "guy"
+          ? "pradeep"
+          : "nabanita";
+
+      safeSpeak(text, {
+        lang: itemIsEng ? "en-US" : "bn-BD",
+        voice: resolvedVoice,
+        rate: itemIsEng ? 0.88 : 0.85,
+        onEnd: () => onFinish?.(),
+        onError: () => onFinish?.(),
+      });
+    },
+    [teacherVoice]
+  );
 
   // Autoplay loop synchronized with speech ending
   useEffect(() => {
     if (!isOpen || !isPlaying || !currentItem) {
+      clearAdvanceTimer();
       stopSpeech();
       return;
     }
 
-    let advanceTimer: NodeJS.Timeout | null = null;
     handleSpeakCurrent(currentItem, () => {
       // Pause for 1.4s after teacher speech finishes before switching to next card
-      advanceTimer = setTimeout(() => {
+      clearAdvanceTimer();
+      advanceTimerRef.current = setTimeout(() => {
         setIndex((prev) => (prev + 1) % safeLength);
       }, 1400);
     });
 
     return () => {
-      if (advanceTimer) clearTimeout(advanceTimer);
+      clearAdvanceTimer();
     };
-  }, [isPlaying, safeIndex, isOpen, safeLength, currentItem]);
+  }, [isPlaying, safeIndex, isOpen, safeLength, currentItem, handleSpeakCurrent, clearAdvanceTimer]);
 
   // Keyboard Escape listener
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsPlaying(false);
-        stopSpeech();
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+  }, [isOpen, handleClose]);
 
   if (!isOpen || !currentItem) return null;
 
   const handleNext = () => {
     playPopSound();
+    unlockMobileAudio({ primeSilent: true });
+    clearAdvanceTimer();
     stopSpeech();
     const nextIdx = (safeIndex + 1) % safeLength;
     setIndex(nextIdx);
@@ -100,6 +129,8 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
 
   const handlePrev = () => {
     playPopSound();
+    unlockMobileAudio({ primeSilent: true });
+    clearAdvanceTimer();
     stopSpeech();
     const prevIdx = (safeIndex - 1 + safeLength) % safeLength;
     setIndex(prevIdx);
@@ -188,7 +219,10 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
           <div>
             <button
               type="button"
-              onClick={() => handleSpeakCurrent(currentItem)}
+              onClick={() => {
+                unlockMobileAudio({ primeSilent: true });
+                handleSpeakCurrent(currentItem);
+              }}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm shadow-md transition-all hover:scale-105"
             >
               <Volume2 className="w-5 h-5" />
@@ -210,7 +244,11 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
 
           <button
             type="button"
-            onClick={() => setIsPlaying(!isPlaying)}
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setIsPlaying(!isPlaying);
+            }}
             className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all ${
               isPlaying
                 ? "bg-amber-500 text-white animate-pulse"

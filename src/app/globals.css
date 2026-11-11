@@ -259,7 +259,7 @@ html.glass-light-mode textarea {
   border-color: rgba(100, 116, 139, 0.35) !important;
 }
 
-html.glass-light-mode canvas,
+html.glass-light-mode canvas:not([data-bornomala-ink="true"]),
 html.glass-light-mode #printable-exam-sheet,
 html.glass-light-mode .worksheet-print-area,
 html.glass-light-mode .certificate-print-area {
@@ -620,12 +620,17 @@ html.glass-dark-mode select option {
 }
 
 /* Protect Interactive Drawing Canvases (white paper + dark stroke guidelines) */
-html.glass-dark-mode canvas,
+html.glass-dark-mode canvas:not([data-bornomala-ink="true"]),
 html.glass-dark-mode .bg-white:has(> canvas) {
   background-color: #ffffff !important;
   border-color: rgba(198, 208, 207, 0.45) !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+
+canvas[data-bornomala-ink="true"] {
+  background-color: transparent !important;
+  background-image: none !important;
 }
 
 /* Protect Footer 4-Theme Mini Swatches */
@@ -782,6 +787,18 @@ html.glass-dark-mode .certificate-print-area .text-amber-900 {
   }
 
   /* Full print layout isolation for modals */
+  body:has(.worksheet-print-area) .bornomala-main-ui,
+  body:has(.certificate-print-area) .bornomala-main-ui {
+    display: none !important;
+  }
+  article:has(.worksheet-print-area),
+  article:has(.certificate-print-area) {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+  }
   .fixed.inset-0:has(.worksheet-print-area),
   .fixed.inset-0:has(.certificate-print-area) {
     position: static !important;

@@ -104,7 +104,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala",
+    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\bornomala-fixes-wt",
     "enablePrerenderSourceMaps": true,
     "cacheComponents": false,
     "cacheLife": {
@@ -342,13 +342,13 @@ self.__SERVER_FILES_MANIFEST={
           "as": "*.css"
         }
       },
-      "root": "C:\\Projects\\prathomik-pathshala"
+      "root": "C:\\Projects\\prathomik-pathshala\\scratch\\bornomala-fixes-wt"
     },
-    "repoRoot": "C:\\Projects\\prathomik-pathshala",
+    "repoRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\bornomala-fixes-wt",
     "distDirRoot": ".next",
     "supportsImmutableAssets": false
   },
-  "appDir": "C:\\Projects\\prathomik-pathshala",
+  "appDir": "C:\\Projects\\prathomik-pathshala\\scratch\\bornomala-fixes-wt",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",

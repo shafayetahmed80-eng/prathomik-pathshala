@@ -15,6 +15,7 @@ interface Props {
 
 interface RuledCellProps {
   isEng: boolean;
+  isNumber?: boolean;
   char?: string;
 }
 
@@ -23,10 +24,11 @@ interface RuledCellProps {
  * Uses separated SVG layers so horizontal rules span 100% width while
  * traceable dotted glyphs snap cleanly to the baseline without distortion.
  */
-function RuledTracingCell({ isEng, char }: RuledCellProps) {
-  const isWideChar = Boolean(char && char.length >= 2);
+function RuledTracingCell({ isEng, isNumber = false, char }: RuledCellProps) {
+  // Single Bengali conjuncts like ক্ষ, জ্ঞ, হ্ম have UTF-16 length 3 even though they occupy 1 glyph cell.
+  const isWideChar = Boolean(char && ((isEng && char.length >= 2) || (isNumber && char.length >= 2)));
   const engFontSize = isWideChar ? 48 : 62;
-  const bnFontSize = isWideChar ? 46 : 58;
+  const bnFontSize = isWideChar ? 44 : 58;
 
   return (
     <div
@@ -308,7 +310,9 @@ export default function BornomalaWorksheetModal({
               <div className="col-span-4 text-center border-r-2 border-pink-200 pr-2">
                 <span
                   className={`${
-                    activeChar.length >= 2 ? "text-5xl sm:text-6xl" : "text-6xl sm:text-7xl"
+                    (isEng && activeChar.length >= 2) || (isNumber && activeChar.length >= 2)
+                      ? "text-5xl sm:text-6xl"
+                      : "text-6xl sm:text-7xl"
                   } font-black text-pink-600 block leading-none`}
                 >
                   {activeChar}
@@ -359,7 +363,7 @@ export default function BornomalaWorksheetModal({
               <div className="border-2 border-slate-300 rounded-xl p-3 bg-white">
                 <div className="grid grid-cols-4 sm:grid-cols-8 print:grid-cols-8 gap-2 text-center">
                   {[...Array(8)].map((_, i) => (
-                    <RuledTracingCell key={`trace-${i}`} isEng={isEng} char={activeChar} />
+                    <RuledTracingCell key={`trace-${i}`} isEng={isEng} isNumber={isNumber} char={activeChar} />
                   ))}
                 </div>
               </div>
@@ -372,7 +376,7 @@ export default function BornomalaWorksheetModal({
               <div className="border-2 border-slate-300 rounded-xl p-3 bg-white">
                 <div className="grid grid-cols-4 sm:grid-cols-8 print:grid-cols-8 gap-2 text-center">
                   {[...Array(8)].map((_, i) => (
-                    <RuledTracingCell key={`blank-${i}`} isEng={isEng} />
+                    <RuledTracingCell key={`blank-${i}`} isEng={isEng} isNumber={isNumber} />
                   ))}
                 </div>
               </div>
@@ -394,15 +398,33 @@ export default function BornomalaWorksheetModal({
                   {isNumber ? (
                     <>
                       <div>
-                        {activeChar} = {item.name} ({item.word})
+                        {activeChar} = {item.imageEmoji} ({item.word})
                       </div>
                       <div className="text-xs font-semibold text-slate-600">
-                        {isEng ? "Write in words:" : "কথায় লেখো:"} ______________
+                        {isEng ? "Write in words:" : "কথায় বানান করে লেখো:"} ______________
                       </div>
                     </>
-                  ) : (
+                  ) : item.type === "karchinho" || item.type === "juktoborno" ? (
+                    <div className="space-y-1 text-xs sm:text-sm">
+                      <div>
+                        {"breakdown" in item && item.breakdown ? item.breakdown : `${item.char} — ${item.word}`}
+                      </div>
+                      <div className="text-xs font-semibold text-slate-600">
+                        {item.word} শব্দটি ২ বার দেখে লেখো: __________, __________
+                      </div>
+                    </div>
+                  ) : spellingTargetWord.toLowerCase().startsWith(spellingLeadChar.toLowerCase()) ? (
                     <div>
                       {spellingTargetWord} = {spellingLeadChar} + ______
+                    </div>
+                  ) : (
+                    <div className="space-y-1 text-xs sm:text-sm">
+                      <div>
+                        শব্দে &apos;{spellingLeadChar}&apos; বর্ণটি খুঁজে গোল দাগ দাও: {spellingTargetWord}
+                      </div>
+                      <div className="text-xs font-semibold text-slate-600">
+                        বর্ণটি পাশে লেখো: ______
+                      </div>
                     </div>
                   )}
                 </div>

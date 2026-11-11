@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useSyncExternalStore } from "react";
 import confetti from "canvas-confetti";
 import { 
   Volume2, 
@@ -41,7 +41,7 @@ import {
   EnglishCaseType,
   EnglishLetterAnatomy
 } from "@/data/englishAlphabetData";
-import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
+import { safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import { 
   playSuccessChime, 
   playPopSound, 
@@ -70,6 +70,152 @@ type EnglishTab = "all" | "vowels" | "consonants" | "numbers";
 type EnglishAnatomyFilter = "all" | EnglishLetterAnatomy;
 type BrushMode = "pencil" | "chalk" | "rainbow" | "eraser";
 
+const STARS_STORAGE_KEY = "prathomik_bornomala_stars_v1";
+const STARS_CHANGE_EVENT = "prathomik-bornomala-stars-change";
+const DEFAULT_STARS = 20;
+
+function getStarsSnapshot(): number {
+  if (typeof window === "undefined") return DEFAULT_STARS;
+  try {
+    const raw = window.localStorage.getItem(STARS_STORAGE_KEY);
+    if (raw === null) return DEFAULT_STARS;
+    const parsed = Number.parseInt(raw, 10);
+    return Number.isFinite(parsed) && parsed >= 0 ? parsed : DEFAULT_STARS;
+  } catch {
+    return DEFAULT_STARS;
+  }
+}
+
+function getStarsServerSnapshot(): number {
+  return DEFAULT_STARS;
+}
+
+function subscribeStarsStore(callback: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  const handleStorage = (e: StorageEvent) => {
+    if (!e.key || e.key === STARS_STORAGE_KEY) {
+      callback();
+    }
+  };
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(STARS_CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(STARS_CHANGE_EVENT, callback);
+  };
+}
+
+function persistAddStars(delta: number): void {
+  if (typeof window === "undefined" || !Number.isFinite(delta) || delta === 0) return;
+  try {
+    const next = Math.max(0, getStarsSnapshot() + Math.round(delta));
+    window.localStorage.setItem(STARS_STORAGE_KEY, String(next));
+    window.dispatchEvent(new Event(STARS_CHANGE_EVENT));
+  } catch {}
+}
+
+const BANGLA_BREAKDOWN_SPEECH_MAP: Record<string, string> = {
+  "া": "আ-কার",
+  "ি": "হ্রস্ব ই-কার",
+  "ী": "দীর্ঘ ঈ-কার",
+  "ু": "হ্রস্ব উ-কার",
+  "ূ": "দীর্ঘ ঊ-কার",
+  "ৃ": "ঋ-কার",
+  "ে": "এ-কার",
+  "ৈ": "ঐ-কার",
+  "ো": "ও-কার",
+  "ৌ": "ঔ-কার",
+  "্র": "র-ফলা",
+  "্য": "য-ফলা",
+  "্ব": "ব-ফলা",
+};
+
+function getSpeakableBreakdownPart(token: string): string {
+  const clean = token.trim();
+  if (!clean) return "";
+  if (BANGLA_BREAKDOWN_SPEECH_MAP[clean]) {
+    return BANGLA_BREAKDOWN_SPEECH_MAP[clean];
+  }
+  // Remove trailing halant (e.g. "ক্" -> "ক") so TTS pronounces the letter cleanly
+  return clean.replace(/\u09CD$/g, "");
+}
+
+function computeCanvasTextLayout(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  width: number,
+  height: number,
+  isEnglish: boolean,
+  englishCase: EnglishCaseType
+): {
+  font: string;
+  x: number;
+  y: number;
+  baseline: CanvasTextBaseline;
+} {
+  if (isEnglish) {
+    const line1Y = Math.round(height * 0.18);
+    const line3Y = Math.round(height * 0.68);
+    const targetCapHeight = Math.max(40, line3Y - line1Y);
+    const fontFamily = "'Nunito', 'Fredoka', 'Comic Sans MS', sans-serif";
+    const isPair = englishCase === "pair" && text.length > 1;
+
+    let fontSize = Math.round(height * (isPair ? 0.62 : 0.68));
+    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+
+    const capMetrics = ctx.measureText("H");
+    if ("actualBoundingBoxAscent" in capMetrics && capMetrics.actualBoundingBoxAscent > 0) {
+      fontSize = Math.round(fontSize * (targetCapHeight / capMetrics.actualBoundingBoxAscent));
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    }
+
+    const activeMetrics = ctx.measureText(text);
+    const maxAllowedWidth = width * 0.8;
+    if (activeMetrics.width > maxAllowedWidth && activeMetrics.width > 0) {
+      fontSize = Math.max(28, Math.floor(fontSize * (maxAllowedWidth / activeMetrics.width)));
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    }
+
+    const finalMetrics = ctx.measureText(text);
+    const maxAllowedDescent = Math.max(12, height - line3Y - 6);
+    if ("actualBoundingBoxDescent" in finalMetrics && finalMetrics.actualBoundingBoxDescent > maxAllowedDescent) {
+      fontSize = Math.max(28, Math.floor(fontSize * (maxAllowedDescent / finalMetrics.actualBoundingBoxDescent)));
+      ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    }
+
+    return {
+      font: ctx.font,
+      x: width / 2,
+      y: line3Y,
+      baseline: "alphabetic",
+    };
+  }
+
+  let dynamicFont = "'Hind Siliguri', 'Noto Sans Bengali', sans-serif";
+  try {
+    const computedFont = getComputedStyle(document.documentElement).getPropertyValue("--font-active");
+    if (computedFont && computedFont.trim().length > 0) {
+      dynamicFont = computedFont.trim();
+    }
+  } catch {}
+
+  let fontSize = Math.round(Math.min(width, height) * 0.54);
+  ctx.font = `bold ${fontSize}px ${dynamicFont}`;
+  const metrics = ctx.measureText(text);
+  const maxAllowedWidth = width * 0.8;
+  if (metrics.width > maxAllowedWidth && metrics.width > 0) {
+    fontSize = Math.max(28, Math.floor(fontSize * (maxAllowedWidth / metrics.width)));
+    ctx.font = `bold ${fontSize}px ${dynamicFont}`;
+  }
+
+  return {
+    font: ctx.font,
+    x: width / 2,
+    y: height / 2 + 4,
+    baseline: "middle",
+  };
+}
+
 export default function BanglaBornomalaLab() {
   // Language Mode state: বাংলা 🇧🇩 vs English 🇬🇧
   const [languageMode, setLanguageMode] = useState<LanguageMode>("bangla");
@@ -86,11 +232,13 @@ export default function BanglaBornomalaLab() {
   // Active item (can be Bangla or English)
   const [selectedItem, setSelectedItem] = useState<BornomalaItem | EnglishAlphabetItem>(VOWELS_DATA[0]);
 
-  // View modes
+  // View modes & Modal seeds
   const [showMiniGame, setShowMiniGame] = useState<boolean>(false);
+  const [miniGameSeed, setMiniGameSeed] = useState<number>(1);
   const [isWorksheetOpen, setIsWorksheetOpen] = useState<boolean>(false);
   const [isCertificateOpen, setIsCertificateOpen] = useState<boolean>(false);
   const [isFlashcardOpen, setIsFlashcardOpen] = useState<boolean>(false);
+  const [flashcardSessionKey, setFlashcardSessionKey] = useState<number>(0);
 
   // Drawing Tools State
   const [brushColor, setBrushColor] = useState<string>("#2563eb");
@@ -117,14 +265,21 @@ export default function BanglaBornomalaLab() {
   const isUnmountedRef = useRef<boolean>(false);
 
   // Gamification & Accuracy
-  const [stars, setStars] = useState<number>(20);
+  const stars = useSyncExternalStore(
+    subscribeStarsStore,
+    getStarsSnapshot,
+    getStarsServerSnapshot
+  );
   const [accuracyScore, setAccuracyScore] = useState<number | null>(null);
 
-  // Canvas Refs & Undo/Redo Stacks
+  // Dual-layer Canvas Refs (bgCanvas = white sheet + ruled lines + watermark; canvas = transparent ink)
+  const bgCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const undoStackRef = useRef<ImageData[]>([]);
   const redoStackRef = useRef<ImageData[]>([]);
   const rainbowHueRef = useRef<number>(0);
+  const hasAwardedCurrentAttemptRef = useRef<boolean>(false);
+  const hasCelebratedCurrentRef = useRef<boolean>(false);
 
   // Filter current list based on Tab and Matra / English Filter
   const getTabList = useCallback((): (BornomalaItem | EnglishAlphabetItem)[] => {
@@ -176,7 +331,7 @@ export default function BanglaBornomalaLab() {
 
   const activeChar = getActiveChar();
 
-  // Save current canvas state to Undo stack
+  // Save current transparent ink layer state to Undo stack
   const saveCanvasState = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -189,22 +344,141 @@ export default function BanglaBornomalaLab() {
         undoStackRef.current.shift();
       }
       undoStackRef.current.push(state);
-      redoStackRef.current = []; // Clear redo on new action
+      redoStackRef.current = [];
     } catch {}
   };
 
-  // Draw background guidelines and guide character with resize preservation
-  const setupCanvas = useCallback((preserveDrawing = false) => {
+  // Draw background guidelines and guide character on dedicated bgCanvas (never contaminates ink checks)
+  const setupBgCanvas = useCallback(() => {
+    const bgCanvas = bgCanvasRef.current;
+    if (!bgCanvas) return;
+
+    const rect = bgCanvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const width = rect.width > 0 ? rect.width : 540;
+    const height = rect.height > 0 ? rect.height : 320;
+
+    bgCanvas.width = Math.round(width * dpr);
+    bgCanvas.height = Math.round(height * dpr);
+
+    const ctx = bgCanvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+
+    // Clean white sheet
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
+
+    // Draw Ruled Lines
+    if (showRuledGrid) {
+      if (isEnglish) {
+        // English 4-Line Primary Ruled Grid (18% / 34% / 68% / 86% aligned with Worksheet SVG)
+        const line1Y = Math.round(height * 0.18); // Ascender Top Line (Red)
+        const line2Y = Math.round(height * 0.34); // Midline / Waistline (Blue dashed)
+        const line3Y = Math.round(height * 0.68); // Baseline (Dark Navy Blue)
+        const line4Y = Math.round(height * 0.86); // Descender Bottom Line (Red)
+
+        // Soft sky-blue tint in Middle Zone (between Midline and Baseline)
+        ctx.fillStyle = "rgba(224, 242, 254, 0.45)";
+        ctx.fillRect(16, line2Y, width - 32, line3Y - line2Y);
+
+        // Line 1: Top Red Ascender Line
+        ctx.strokeStyle = "#f43f5e";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(16, line1Y);
+        ctx.lineTo(width - 16, line1Y);
+        ctx.stroke();
+
+        // Line 2: Midline (Sky Blue, Dashed)
+        ctx.strokeStyle = "#0284c7";
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(16, line2Y);
+        ctx.lineTo(width - 16, line2Y);
+        ctx.stroke();
+
+        // Line 3: Baseline (Dark Navy Solid)
+        ctx.strokeStyle = "#1e3a8a";
+        ctx.lineWidth = 2.2;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(16, line3Y);
+        ctx.lineTo(width - 16, line3Y);
+        ctx.stroke();
+
+        // Line 4: Bottom Red Descender Line
+        ctx.strokeStyle = "#f43f5e";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(16, line4Y);
+        ctx.lineTo(width - 16, line4Y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      } else {
+        // Bengali 3-Line Primary Ruled Grid
+        const topLineY = Math.round(height * 0.22);
+        const midLineY = Math.round(height * 0.50);
+        const baseLineY = Math.round(height * 0.78);
+
+        ctx.strokeStyle = "#fda4af";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(16, topLineY);
+        ctx.lineTo(width - 16, topLineY);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#bae6fd";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(16, midLineY);
+        ctx.lineTo(width - 16, midLineY);
+        ctx.stroke();
+
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = 2;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(16, baseLineY);
+        ctx.lineTo(width - 16, baseLineY);
+        ctx.stroke();
+      }
+    }
+
+    // Draw watermark guide character matching verification mask metrics
+    const layout = computeCanvasTextLayout(ctx, activeChar, width, height, isEnglish, englishCase);
+    ctx.fillStyle = "rgba(203, 213, 225, 0.85)";
+    ctx.font = layout.font;
+    ctx.textAlign = "center";
+    ctx.textBaseline = layout.baseline;
+    ctx.fillText(activeChar, layout.x, layout.y);
+  }, [showRuledGrid, isEnglish, englishCase, activeChar]);
+
+  // Setup transparent ink layer separately (resizing scales ink cleanly; toggling rules never erases ink)
+  const setupInkCanvas = useCallback((preserveDrawing = false) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    let savedDrawing: ImageData | null = null;
+    let snapshotCanvas: HTMLCanvasElement | null = null;
     if (preserveDrawing && canvas.width > 0 && canvas.height > 0) {
-      const prevCtx = canvas.getContext("2d");
-      if (prevCtx) {
-        try {
-          savedDrawing = prevCtx.getImageData(0, 0, canvas.width, canvas.height);
-        } catch {}
+      try {
+        snapshotCanvas = document.createElement("canvas");
+        snapshotCanvas.width = canvas.width;
+        snapshotCanvas.height = canvas.height;
+        const snapCtx = snapshotCanvas.getContext("2d");
+        if (snapCtx) {
+          snapCtx.drawImage(canvas, 0, 0);
+        }
+      } catch {
+        snapshotCanvas = null;
       }
     }
 
@@ -219,134 +493,20 @@ export default function BanglaBornomalaLab() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
-
-    // Clean white sheet
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, width, height);
 
-    // Draw Ruled Lines
-    if (showRuledGrid) {
-      if (isEnglish) {
-        // 🇬🇧 English 4-Line Primary Ruled Grid
-        const line1Y = Math.round(height * 0.18); // Ascender Top Line (Red)
-        const line2Y = Math.round(height * 0.42); // Midline / Waistline (Blue dashed)
-        const line3Y = Math.round(height * 0.66); // Baseline (Dark Navy Blue)
-        const line4Y = Math.round(height * 0.88); // Descender Bottom Line (Red)
-
-        // Soft sky-blue tint in Middle Zone (between Midline and Baseline)
-        ctx.fillStyle = "rgba(224, 242, 254, 0.45)"; // sky-100 soft highlight
-        ctx.fillRect(16, line2Y, width - 32, line3Y - line2Y);
-
-        // Line 1: Top Red Ascender Line
-        ctx.strokeStyle = "#f43f5e"; // rose-500
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([]);
-        ctx.beginPath();
-        ctx.moveTo(16, line1Y);
-        ctx.lineTo(width - 16, line1Y);
-        ctx.stroke();
-
-        // Line 2: Midline (Sky Blue, Dashed)
-        ctx.strokeStyle = "#0284c7"; // sky-600
-        ctx.lineWidth = 1.2;
-        ctx.setLineDash([6, 4]);
-        ctx.beginPath();
-        ctx.moveTo(16, line2Y);
-        ctx.lineTo(width - 16, line2Y);
-        ctx.stroke();
-
-        // Line 3: Baseline (Dark Navy Solid)
-        ctx.strokeStyle = "#1e3a8a"; // blue-900
-        ctx.lineWidth = 2.2;
-        ctx.setLineDash([]);
-        ctx.beginPath();
-        ctx.moveTo(16, line3Y);
-        ctx.lineTo(width - 16, line3Y);
-        ctx.stroke();
-
-        // Line 4: Bottom Red Descender Line
-        ctx.strokeStyle = "#f43f5e"; // rose-500
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([]);
-        ctx.beginPath();
-        ctx.moveTo(16, line4Y);
-        ctx.lineTo(width - 16, line4Y);
-        ctx.stroke();
-      } else {
-        // 🇧🇩 Bengali 3-Line Primary Ruled Grid
-        const topLineY = Math.round(height * 0.22);
-        const midLineY = Math.round(height * 0.50);
-        const baseLineY = Math.round(height * 0.78);
-
-        // Top Matra line (soft rose)
-        ctx.strokeStyle = "#fda4af"; // pink-300
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([6, 4]);
-        ctx.beginPath();
-        ctx.moveTo(16, topLineY);
-        ctx.lineTo(width - 16, topLineY);
-        ctx.stroke();
-
-        // Middle line (soft sky)
-        ctx.strokeStyle = "#bae6fd"; // sky-200
-        ctx.lineWidth = 1;
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(16, midLineY);
-        ctx.lineTo(width - 16, midLineY);
-        ctx.stroke();
-
-        // Base line (soft slate)
-        ctx.strokeStyle = "#cbd5e1"; // slate-300
-        ctx.lineWidth = 2;
-        ctx.setLineDash([]);
-        ctx.beginPath();
-        ctx.moveTo(16, baseLineY);
-        ctx.lineTo(width - 16, baseLineY);
-        ctx.stroke();
-      }
-    }
-
-    // Draw Watermark/Dotted guide character in center
-    if (isEnglish) {
-      const isPair = englishCase === "pair" && activeChar.length > 1;
-      const fontSize = Math.round(Math.min(width, height) * (isPair ? 0.44 : 0.54));
-      ctx.fillStyle = "rgba(203, 213, 225, 0.85)"; // soft slate watermark
-      ctx.font = `bold ${fontSize}px 'Nunito', 'Fredoka', 'Comic Sans MS', sans-serif`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "alphabetic";
-      ctx.fillText(activeChar, width / 2, Math.round(height * 0.66));
-    } else {
-      const fontSize = Math.round(Math.min(width, height) * 0.54);
-      let dynamicFont = "'Hind Siliguri', 'Noto Sans Bengali', sans-serif";
+    if (snapshotCanvas) {
       try {
-        const computedFont = getComputedStyle(document.documentElement).getPropertyValue("--font-active");
-        if (computedFont && computedFont.trim().length > 0) {
-          dynamicFont = computedFont.trim();
-        }
+        ctx.drawImage(snapshotCanvas, 0, 0, width, height);
       } catch {}
-
-      ctx.fillStyle = "rgba(203, 213, 225, 0.85)"; // soft slate watermark
-      ctx.font = `bold ${fontSize}px ${dynamicFont}`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(activeChar, width / 2, height / 2 + 4);
     }
 
-    // If preserving drawing across device rotation / window resize
-    if (savedDrawing) {
-      try {
-        ctx.putImageData(savedDrawing, 0, 0);
-      } catch {}
-    } else {
-      // Reset stacks on explicit letter change or clear
-      undoStackRef.current = [];
-      redoStackRef.current = [];
-      setAccuracyScore(null);
-    }
-  }, [showRuledGrid, isEnglish, englishCase, activeChar]);
+    // Undo/Redo ImageData dimensions belong to the previous buffer size
+    undoStackRef.current = [];
+    redoStackRef.current = [];
+  }, []);
 
   const pauseRecordedAudioElement = useCallback(() => {
     if (recordedAudioPlayerRef.current) {
@@ -379,15 +539,14 @@ export default function BanglaBornomalaLab() {
 
   useEffect(() => {
     let cancelled = false;
-    const timer = setTimeout(() => setupCanvas(false), 30);
-    const handleResize = () => setupCanvas(true);
+    const timer = setTimeout(() => setupBgCanvas(), 30);
+    const handleResize = () => setupBgCanvas();
     window.addEventListener("resize", handleResize);
 
-    // Font loading listener to ensure dynamic Bengali web fonts render crisp
     if (typeof document !== "undefined" && "fonts" in document) {
       document.fonts.ready.then(() => {
         if (!cancelled) {
-          setupCanvas(undoStackRef.current.length > 0);
+          setupBgCanvas();
         }
       });
     }
@@ -397,7 +556,18 @@ export default function BanglaBornomalaLab() {
       clearTimeout(timer);
       window.removeEventListener("resize", handleResize);
     };
-  }, [setupCanvas]);
+  }, [setupBgCanvas]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setupInkCanvas(false), 30);
+    const handleResize = () => setupInkCanvas(true);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [setupInkCanvas, activeChar, isEnglish, englishCase]);
 
   // Dispose audio/recording resources strictly on component unmount
   useEffect(() => {
@@ -414,7 +584,7 @@ export default function BanglaBornomalaLab() {
     setIsPlayingRecorded(false);
   };
 
-  // Cleanup recorded audio & active recording when switching letter/tab/language
+  // Cleanup speech, recording, and attempt flags when switching letter/tab/language
   const selectItem = (nextItem: BornomalaItem | EnglishAlphabetItem) => {
     disposeAudioRefs();
     setIsSpeaking(false);
@@ -422,7 +592,36 @@ export default function BanglaBornomalaLab() {
     setRecordedAudioUrl(null);
     setIsRecording(false);
     setRecordCountdown(6);
+    setAccuracyScore(null);
+    hasAwardedCurrentAttemptRef.current = false;
+    hasCelebratedCurrentRef.current = false;
     setSelectedItem(nextItem);
+  };
+
+  const applyEnglishAnatomyFilter = (nextFilter: EnglishAnatomyFilter) => {
+    setEnglishAnatomyFilter(nextFilter);
+    const nextList = rawList.filter((item) => {
+      if (englishTab !== "numbers" && nextFilter !== "all" && "anatomy" in item) {
+        return item.anatomy === nextFilter;
+      }
+      return true;
+    });
+    if (nextList.length > 0 && !nextList.some((item) => item.id === selectedItem.id)) {
+      selectItem(nextList[0]);
+    }
+  };
+
+  const applyBanglaMatraFilter = (nextFilter: "all" | MatraType) => {
+    setSelectedMatraFilter(nextFilter);
+    const nextList = rawList.filter((item) => {
+      if ((activeTab === "vowels" || activeTab === "consonants") && nextFilter !== "all") {
+        return item.matra === nextFilter;
+      }
+      return true;
+    });
+    if (nextList.length > 0 && !nextList.some((item) => item.id === selectedItem.id)) {
+      selectItem(nextList[0]);
+    }
   };
 
   // Helper to distinguish English alphabet item
@@ -432,6 +631,7 @@ export default function BanglaBornomalaLab() {
 
   // Audio Playback with Selected Teacher Voice (Adaptive for Bangla and English)
   const handleSpeak = (text: string) => {
+    unlockMobileAudio({ primeSilent: true });
     stopRecordedAudio();
     setIsSpeaking(true);
     const isEn = /[a-zA-Z]/.test(text) && !/[\u0980-\u09FF]/.test(text);
@@ -448,11 +648,11 @@ export default function BanglaBornomalaLab() {
   };
 
   const handleSpeakPure = (item: BornomalaItem | EnglishAlphabetItem) => {
+    unlockMobileAudio({ primeSilent: true });
     stopRecordedAudio();
     setIsSpeaking(true);
 
     if (isEnglishItem(item)) {
-      // English Letter Phonics Articulation
       const text = item.phonicsTtsPrompt || `The letter ${item.upperChar}. Sound: ${item.pureSound}`;
       safeSpeak(text, {
         lang: "en-US",
@@ -462,7 +662,6 @@ export default function BanglaBornomalaLab() {
         onError: () => setIsSpeaking(false),
       });
     } else {
-      // Bengali Pure Sound Articulation
       const text = item.pureSound || item.name;
       safeSpeak(text, {
         lang: "bn-BD",
@@ -475,11 +674,11 @@ export default function BanglaBornomalaLab() {
   };
 
   const handleSpeakRhyme = (item: BornomalaItem | EnglishAlphabetItem) => {
+    unlockMobileAudio({ primeSilent: true });
     stopRecordedAudio();
     setIsSpeaking(true);
 
     if (isEnglishItem(item)) {
-      // English Alphabet Rhyme
       const text = item.speechPrompt || `${item.name}. ${item.char} is for ${item.word}. ${item.rhyme}`;
       safeSpeak(text, {
         lang: "en-US",
@@ -489,7 +688,6 @@ export default function BanglaBornomalaLab() {
         onError: () => setIsSpeaking(false),
       });
     } else {
-      // Bengali Alphabet Rhyme
       const text = item.speechPrompt || `${item.name}। ${item.char}-তে ${item.word}। ${item.rhyme}`;
       safeSpeak(text, {
         lang: "bn-BD",
@@ -514,6 +712,7 @@ export default function BanglaBornomalaLab() {
 
     const previousState = undoStackRef.current.pop()!;
     ctx.putImageData(previousState, 0, 0);
+    ctx.globalCompositeOperation = "source-over";
   };
 
   // Redo Handler
@@ -529,9 +728,10 @@ export default function BanglaBornomalaLab() {
 
     const nextState = redoStackRef.current.pop()!;
     ctx.putImageData(nextState, 0, 0);
+    ctx.globalCompositeOperation = "source-over";
   };
 
-  // Pointer Draw Handlers (Pencil, Chalk, Rainbow, Eraser)
+  // Pointer Draw Handlers (Pencil, Chalk, Rainbow, Eraser on transparent ink layer)
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     e.preventDefault();
     const canvas = canvasRef.current;
@@ -549,25 +749,41 @@ export default function BanglaBornomalaLab() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    ctx.beginPath();
-    ctx.moveTo(x, y);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
 
     if (brushMode === "eraser") {
+      ctx.globalCompositeOperation = "destination-out";
       ctx.lineWidth = brushSize * 2.5;
-      ctx.strokeStyle = "#ffffff";
+      ctx.strokeStyle = "rgba(0, 0, 0, 1)";
+      ctx.fillStyle = "rgba(0, 0, 0, 1)";
     } else if (brushMode === "chalk") {
+      ctx.globalCompositeOperation = "source-over";
       ctx.lineWidth = brushSize * 1.3;
-      ctx.strokeStyle = `${brushColor}cc`; // slight soft chalk opacity
+      ctx.strokeStyle = `${brushColor}cc`;
+      ctx.fillStyle = `${brushColor}cc`;
     } else if (brushMode === "rainbow") {
+      ctx.globalCompositeOperation = "source-over";
       rainbowHueRef.current = (rainbowHueRef.current + 25) % 360;
+      const rainbowColor = `hsl(${rainbowHueRef.current}, 90%, 55%)`;
       ctx.lineWidth = brushSize;
-      ctx.strokeStyle = `hsl(${rainbowHueRef.current}, 90%, 55%)`;
+      ctx.strokeStyle = rainbowColor;
+      ctx.fillStyle = rainbowColor;
     } else {
+      ctx.globalCompositeOperation = "source-over";
       ctx.lineWidth = brushSize;
       ctx.strokeStyle = brushColor;
+      ctx.fillStyle = brushColor;
     }
+
+    // Immediate dot on tap (supports i, j, ং, ঁ, ড়, ঢ়, য়)
+    ctx.beginPath();
+    ctx.arc(x, y, Math.max(1.5, ctx.lineWidth / 2), 0, Math.PI * 2);
+    ctx.fill();
+
+    // Start continuous stroke path for dragging
+    ctx.beginPath();
+    ctx.moveTo(x, y);
 
     setIsDrawing(true);
     playDrawingScratch();
@@ -597,6 +813,11 @@ export default function BanglaBornomalaLab() {
 
   const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
     setIsDrawing(false);
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (ctx) {
+      ctx.globalCompositeOperation = "source-over";
+    }
     try {
       if (e.currentTarget.hasPointerCapture(e.pointerId)) {
         e.currentTarget.releasePointerCapture(e.pointerId);
@@ -604,8 +825,9 @@ export default function BanglaBornomalaLab() {
     } catch {}
   };
 
-  // 🎯 Genuine Computer-Vision Pixel Overlap Accuracy Algorithm
+  // 🎯 Genuine Computer-Vision Pixel Overlap Accuracy Algorithm (inspects transparent ink canvas only)
   const handleVerifyAccuracy = () => {
+    unlockMobileAudio({ primeSilent: true });
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -620,7 +842,7 @@ export default function BanglaBornomalaLab() {
       const imageData = ctx.getImageData(0, 0, width, height);
       const data = imageData.data;
 
-      // 1. Create an offscreen reference mask canvas with the exact letter glyph
+      // 1. Offscreen reference glyph mask aligned 1:1 with bgCanvas watermark
       const offscreen = document.createElement("canvas");
       offscreen.width = width;
       offscreen.height = height;
@@ -630,31 +852,13 @@ export default function BanglaBornomalaLab() {
       offCtx.scale(dpr, dpr);
       const cssWidth = width / dpr;
       const cssHeight = height / dpr;
+      const layout = computeCanvasTextLayout(offCtx, activeChar, cssWidth, cssHeight, isEnglish, englishCase);
 
-      if (isEnglish) {
-        const isPair = englishCase === "pair" && activeChar.length > 1;
-        const fontSize = Math.round(Math.min(cssWidth, cssHeight) * (isPair ? 0.44 : 0.54));
-        offCtx.font = `bold ${fontSize}px 'Nunito', 'Fredoka', 'Comic Sans MS', sans-serif`;
-        offCtx.textAlign = "center";
-        offCtx.textBaseline = "alphabetic";
-        offCtx.fillStyle = "#000000";
-        offCtx.fillText(activeChar, cssWidth / 2, Math.round(cssHeight * 0.66));
-      } else {
-        let dynamicFont = "'Hind Siliguri', 'Noto Sans Bengali', sans-serif";
-        try {
-          const computedFont = getComputedStyle(document.documentElement).getPropertyValue("--font-active");
-          if (computedFont && computedFont.trim().length > 0) {
-            dynamicFont = computedFont.trim();
-          }
-        } catch {}
-
-        const fontSize = Math.round(Math.min(cssWidth, cssHeight) * 0.54);
-        offCtx.font = `bold ${fontSize}px ${dynamicFont}`;
-        offCtx.textAlign = "center";
-        offCtx.textBaseline = "middle";
-        offCtx.fillStyle = "#000000";
-        offCtx.fillText(activeChar, cssWidth / 2, cssHeight / 2 + 4);
-      }
+      offCtx.font = layout.font;
+      offCtx.textAlign = "center";
+      offCtx.textBaseline = layout.baseline;
+      offCtx.fillStyle = "#000000";
+      offCtx.fillText(activeChar, layout.x, layout.y);
 
       const refData = offCtx.getImageData(0, 0, width, height).data;
 
@@ -663,28 +867,17 @@ export default function BanglaBornomalaLab() {
       let matchedPixels = 0;
       let strayPixels = 0;
 
-      // Downsample step for fast & accurate sampling
       const step = 2;
       for (let y = 0; y < height; y += step) {
         for (let x = 0; x < width; x += step) {
           const idx = (y * width + x) * 4;
-
-          // Reference letter pixel (black text has high alpha)
           const isLetter = refData[idx + 3] > 60;
           if (isLetter) {
             letterPixels++;
           }
 
-          // User drawn pixel on real canvas:
-          const r = data[idx];
-          const g = data[idx + 1];
-          const b = data[idx + 2];
-          const a = data[idx + 3];
-
-          // Check if pixel is drawn by user (not pure white and not the faint gray watermark)
-          const isDrawn = a > 50 && (r < 235 || g < 235 || b < 235) && !(r > 190 && g > 200 && b > 215);
-
-          if (isDrawn) {
+          // Transparent ink layer: alpha > 35 guarantees pure user ink (zero ruled line or watermark pollution)
+          if (data[idx + 3] > 35) {
             userDrawnPixels++;
             if (isLetter) {
               matchedPixels++;
@@ -695,8 +888,9 @@ export default function BanglaBornomalaLab() {
         }
       }
 
-      // If barely drawn anything (< 80 sampled pixels)
-      if (userDrawnPixels < 80) {
+      // DPR-normalized check for empty or tiny tap
+      const drawnCssArea = (userDrawnPixels * step * step) / (dpr * dpr);
+      if (drawnCssArea < 160) {
         setAccuracyScore(20);
         setTimeout(() => {
           if (isEnglish) {
@@ -704,22 +898,23 @@ export default function BanglaBornomalaLab() {
           } else {
             handleSpeak("আরেকটু চেষ্টা করো! দাগের ওপর সুন্দর করে হাত ঘোরাও।");
           }
-        }, 300);
+        }, 250);
         return;
       }
 
-      // Compute coverage & precision
-      const safeLetterPixels = Math.max(letterPixels, 100);
+      const safeLetterPixels = Math.max(letterPixels, Math.round(100 * dpr * dpr));
       const coverageRatio = Math.min(1, matchedPixels / (safeLetterPixels * 0.75));
-      const precisionRatio = matchedPixels / Math.max(1, (matchedPixels + strayPixels * 0.65));
+      const precisionRatio = matchedPixels / Math.max(1, matchedPixels + strayPixels * 0.65);
 
-      // Calculate weighted score (60% letter stroke coverage, 40% precision inside the lines)
       const rawScore = (coverageRatio * 0.60 + precisionRatio * 0.40) * 100;
       const scorePercent = Math.max(25, Math.min(97, Math.round(rawScore)));
       setAccuracyScore(scorePercent);
 
       if (scorePercent >= 60) {
-        setStars((prev) => prev + 15);
+        if (!hasAwardedCurrentAttemptRef.current) {
+          hasAwardedCurrentAttemptRef.current = true;
+          persistAddStars(15);
+        }
         playSuccessChime();
         playStarDing();
         confetti({
@@ -749,9 +944,13 @@ export default function BanglaBornomalaLab() {
     }
   };
 
-  // Manual Celebrate
+  // Manual Celebrate (awards +10 stars once per selected item)
   const handleCelebrateManual = () => {
-    setStars((prev) => prev + 10);
+    unlockMobileAudio({ primeSilent: true });
+    if (!hasCelebratedCurrentRef.current) {
+      hasCelebratedCurrentRef.current = true;
+      persistAddStars(10);
+    }
     playSuccessChime();
     playStarDing();
     confetti({
@@ -768,14 +967,31 @@ export default function BanglaBornomalaLab() {
     }, 400);
   };
 
-  // Download Child's Art as PNG
+  // Download Child's Art as PNG (composite background sheet + user ink)
   const handleDownloadDrawing = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const inkCanvas = canvasRef.current;
+    const bgCanvas = bgCanvasRef.current;
+    if (!inkCanvas) return;
     playPopSound();
+
+    const exportCanvas = document.createElement("canvas");
+    exportCanvas.width = inkCanvas.width;
+    exportCanvas.height = inkCanvas.height;
+    const exportCtx = exportCanvas.getContext("2d");
+    if (!exportCtx) return;
+
+    if (bgCanvas) {
+      exportCtx.drawImage(bgCanvas, 0, 0, exportCanvas.width, exportCanvas.height);
+    } else {
+      exportCtx.fillStyle = "#ffffff";
+      exportCtx.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+    }
+    exportCtx.drawImage(inkCanvas, 0, 0, exportCanvas.width, exportCanvas.height);
+
+    const safeFileChar = activeChar.replace(/\s+/g, "_");
     const link = document.createElement("a");
-    link.download = `prathomik-pathshala-${selectedItem.char}.png`;
-    link.href = canvas.toDataURL("image/png");
+    link.download = `prathomik-pathshala-${safeFileChar}.png`;
+    link.href = exportCanvas.toDataURL("image/png");
     link.click();
   };
 
@@ -916,6 +1132,7 @@ export default function BanglaBornomalaLab() {
       aria-labelledby="bornomala-lab-heading"
       className="bg-white rounded-3xl p-4 sm:p-7 lg:p-9 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 w-full"
     >
+      <div className={`bornomala-main-ui space-y-6 sm:space-y-8 ${(isWorksheetOpen || isCertificateOpen) ? "print:hidden" : ""}`}>
       {/* 🌟 Top Header: Title + Language Switcher + Stars + Quick Action Modals */}
       <header className="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-200 gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3.5">
@@ -951,6 +1168,7 @@ export default function BanglaBornomalaLab() {
                 playPopSound();
                 stopSpeech();
                 setLanguageMode("bangla");
+                setSelectedMatraFilter("all");
                 selectItem(VOWELS_DATA[0]);
                 setActiveTab("vowels");
               }}
@@ -969,6 +1187,7 @@ export default function BanglaBornomalaLab() {
                 playPopSound();
                 stopSpeech();
                 setLanguageMode("english");
+                setEnglishAnatomyFilter("all");
                 selectItem(ENGLISH_ALPHABET_DATA[0]);
                 setEnglishTab("all");
               }}
@@ -996,6 +1215,10 @@ export default function BanglaBornomalaLab() {
             type="button"
             onClick={() => {
               playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              if (!showMiniGame) {
+                setMiniGameSeed((prev) => prev + 1);
+              }
               setShowMiniGame(!showMiniGame);
             }}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs ${
@@ -1011,11 +1234,15 @@ export default function BanglaBornomalaLab() {
           {/* Flashcard Modal Toggle */}
           <button
             type="button"
+            disabled={filteredList.length === 0}
             onClick={() => {
+              if (filteredList.length === 0) return;
               playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setFlashcardSessionKey((prev) => prev + 1);
               setIsFlashcardOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 text-xs sm:text-sm font-bold transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed text-pink-700 border border-pink-200 text-xs sm:text-sm font-bold transition-all shadow-xs"
             title="ক্লাসরুম মাল্টিমিডিয়া অটোপ্লে ফ্ল্যাশ কার্ড"
           >
             <Play className="w-3.5 h-3.5 fill-pink-600 text-pink-600" />
@@ -1055,10 +1282,12 @@ export default function BanglaBornomalaLab() {
       {/* 🎮 Mini Game Viewport (When Active) */}
       {showMiniGame ? (
         <BornomalaMiniGame
-          key={languageMode}
+          key={`${languageMode}-${miniGameSeed}`}
           languageMode={languageMode}
+          teacherVoice={isEnglish ? englishTeacherVoice : teacherVoice}
+          initialSeed={miniGameSeed}
           onBackToCanvas={() => setShowMiniGame(false)}
-          onAddStars={(amount) => setStars((prev) => prev + amount)}
+          onAddStars={persistAddStars}
         />
       ) : (
         <>
@@ -1083,7 +1312,7 @@ export default function BanglaBornomalaLab() {
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    All Letters (A-Z) (২৬)
+                    All Letters (A-Z) (26)
                   </button>
                   <button
                     type="button"
@@ -1100,7 +1329,7 @@ export default function BanglaBornomalaLab() {
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    Vowels (স্বরধ্বনি) (৫)
+                    Vowels (স্বরধ্বনি) (5)
                   </button>
                   <button
                     type="button"
@@ -1117,7 +1346,7 @@ export default function BanglaBornomalaLab() {
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    Consonants (ব্যঞ্জনধ্বনি) (২১)
+                    Consonants (ব্যঞ্জনধ্বনি) (21)
                   </button>
                   <button
                     type="button"
@@ -1125,6 +1354,7 @@ export default function BanglaBornomalaLab() {
                       playPopSound();
                       setEnglishTab("numbers");
                       selectItem(ENGLISH_NUMBERS_DATA[0]);
+                      setEnglishAnatomyFilter("all");
                     }}
                     aria-pressed={englishTab === "numbers"}
                     className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
@@ -1148,6 +1378,8 @@ export default function BanglaBornomalaLab() {
                         onClick={() => {
                           playPopSound();
                           setEnglishCase("upper");
+                          setAccuracyScore(null);
+                          hasAwardedCurrentAttemptRef.current = false;
                         }}
                         className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                           englishCase === "upper"
@@ -1162,6 +1394,8 @@ export default function BanglaBornomalaLab() {
                         onClick={() => {
                           playPopSound();
                           setEnglishCase("lower");
+                          setAccuracyScore(null);
+                          hasAwardedCurrentAttemptRef.current = false;
                         }}
                         className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                           englishCase === "lower"
@@ -1176,6 +1410,8 @@ export default function BanglaBornomalaLab() {
                         onClick={() => {
                           playPopSound();
                           setEnglishCase("pair");
+                          setAccuracyScore(null);
+                          hasAwardedCurrentAttemptRef.current = false;
                         }}
                         className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                           englishCase === "pair"
@@ -1194,7 +1430,7 @@ export default function BanglaBornomalaLab() {
                         type="button"
                         onClick={() => {
                           playPopSound();
-                          setEnglishAnatomyFilter("all");
+                          applyEnglishAnatomyFilter("all");
                         }}
                         className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
                           englishAnatomyFilter === "all"
@@ -1208,7 +1444,7 @@ export default function BanglaBornomalaLab() {
                         type="button"
                         onClick={() => {
                           playPopSound();
-                          setEnglishAnatomyFilter("ascender");
+                          applyEnglishAnatomyFilter("ascender");
                         }}
                         className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
                           englishAnatomyFilter === "ascender"
@@ -1223,7 +1459,7 @@ export default function BanglaBornomalaLab() {
                         type="button"
                         onClick={() => {
                           playPopSound();
-                          setEnglishAnatomyFilter("middle");
+                          applyEnglishAnatomyFilter("middle");
                         }}
                         className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
                           englishAnatomyFilter === "middle"
@@ -1238,7 +1474,7 @@ export default function BanglaBornomalaLab() {
                         type="button"
                         onClick={() => {
                           playPopSound();
-                          setEnglishAnatomyFilter("descender");
+                          applyEnglishAnatomyFilter("descender");
                         }}
                         className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
                           englishAnatomyFilter === "descender"
@@ -1349,7 +1585,7 @@ export default function BanglaBornomalaLab() {
                       type="button"
                       onClick={() => {
                         playPopSound();
-                        setSelectedMatraFilter("all");
+                        applyBanglaMatraFilter("all");
                       }}
                       className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                         selectedMatraFilter === "all"
@@ -1363,7 +1599,7 @@ export default function BanglaBornomalaLab() {
                       type="button"
                       onClick={() => {
                         playPopSound();
-                        setSelectedMatraFilter("full");
+                        applyBanglaMatraFilter("full");
                       }}
                       className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                         selectedMatraFilter === "full"
@@ -1377,7 +1613,7 @@ export default function BanglaBornomalaLab() {
                       type="button"
                       onClick={() => {
                         playPopSound();
-                        setSelectedMatraFilter("half");
+                        applyBanglaMatraFilter("half");
                       }}
                       className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                         selectedMatraFilter === "half"
@@ -1391,7 +1627,7 @@ export default function BanglaBornomalaLab() {
                       type="button"
                       onClick={() => {
                         playPopSound();
-                        setSelectedMatraFilter("none");
+                        applyBanglaMatraFilter("none");
                       }}
                       className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                         selectedMatraFilter === "none"
@@ -1413,43 +1649,64 @@ export default function BanglaBornomalaLab() {
             aria-label={isEnglish ? "English letter list" : "বর্ণ তালিকা"}
             className="flex items-center gap-2.5 overflow-x-auto pb-3 pt-1 no-scrollbar"
           >
-            {filteredList.map((item) => {
-              const isSelected = selectedItem.id === item.id;
-              const displayGlyph = isEnglish && "upperChar" in item
-                ? (item.type === "number" ? item.char : englishCase === "lower" ? item.lowerChar : englishCase === "pair" ? item.displayPair : item.upperChar)
-                : item.char;
-
-              return (
+            {filteredList.length === 0 ? (
+              <div className="w-full p-4 rounded-2xl border border-amber-200 bg-amber-50/70 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-xs sm:text-sm font-bold text-amber-900">
+                  {isEnglish
+                    ? "এই ফিল্টারে কোনো বর্ণ নেই। সব বর্ণ দেখতে রিসেট করুন।"
+                    : "এই ফিল্টারে কোনো বর্ণ পাওয়া যায়নি।"}
+                </span>
                 <button
-                  key={item.id}
                   type="button"
                   onClick={() => {
                     playPopSound();
-                    selectItem(item);
-                    if (isEnglish && "upperChar" in item) {
-                      handleSpeak(item.type === "number" ? item.name : item.upperChar);
-                    } else {
-                      handleSpeak(item.pureSound || item.name);
-                    }
+                    setEnglishAnatomyFilter("all");
+                    setSelectedMatraFilter("all");
                   }}
-                  aria-pressed={isSelected}
-                  className={`min-w-[64px] sm:min-w-[74px] h-18 sm:h-20 rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 shrink-0 transition-all ${
-                    isSelected
-                      ? isEnglish
-                        ? "border-blue-500 bg-blue-50/90 text-blue-900 shadow-md scale-105 ring-2 ring-blue-500/20"
-                        : "border-pink-500 bg-pink-50/90 text-pink-900 shadow-md scale-105 ring-2 ring-pink-500/20"
-                      : "border-slate-200 bg-white hover:border-slate-300 text-slate-800"
-                  }`}
+                  className="px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold shadow-xs"
                 >
-                  <span className={`font-black ${isEnglish && englishCase === "pair" ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"}`}>
-                    {displayGlyph}
-                  </span>
-                  <span className="text-[11px] sm:text-xs font-semibold text-slate-600 px-1 truncate max-w-[66px] text-center">
-                    {item.word}
-                  </span>
+                  সব বর্ণ দেখাও
                 </button>
-              );
-            })}
+              </div>
+            ) : (
+              filteredList.map((item) => {
+                const isSelected = selectedItem.id === item.id;
+                const displayGlyph = isEnglish && "upperChar" in item
+                  ? (item.type === "number" ? item.char : englishCase === "lower" ? item.lowerChar : englishCase === "pair" ? item.displayPair : item.upperChar)
+                  : item.char;
+
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => {
+                      playPopSound();
+                      selectItem(item);
+                      if (isEnglish && "upperChar" in item) {
+                        handleSpeak(item.type === "number" ? item.name : `Letter ${item.upperChar}`);
+                      } else {
+                        handleSpeak(item.pureSound || item.name);
+                      }
+                    }}
+                    aria-pressed={isSelected}
+                    className={`min-w-[64px] sm:min-w-[74px] h-18 sm:h-20 rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 shrink-0 transition-all ${
+                      isSelected
+                        ? isEnglish
+                          ? "border-blue-500 bg-blue-50/90 text-blue-900 shadow-md scale-105 ring-2 ring-blue-500/20"
+                          : "border-pink-500 bg-pink-50/90 text-pink-900 shadow-md scale-105 ring-2 ring-pink-500/20"
+                        : "border-slate-200 bg-white hover:border-slate-300 text-slate-800"
+                    }`}
+                  >
+                    <span className={`font-black ${isEnglish && englishCase === "pair" ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"}`}>
+                      {displayGlyph}
+                    </span>
+                    <span className="text-[11px] sm:text-xs font-semibold text-slate-600 px-1 truncate max-w-[66px] text-center">
+                      {item.word}
+                    </span>
+                  </button>
+                );
+              })
+            )}
           </div>
 
           {/* 🎨 Dual Section: Left Info Card + Right Tracing Canvas */}
@@ -1575,16 +1832,17 @@ export default function BanglaBornomalaLab() {
                               </span>
                             );
                           }
+                          const spokenPart = getSpeakableBreakdownPart(trimmed);
                           return (
                             <button
                               key={pIdx}
                               type="button"
                               onClick={() => {
                                 playPopSound();
-                                handleSpeak(trimmed);
+                                handleSpeak(spokenPart || trimmed);
                               }}
                               className="px-2.5 py-1 bg-white hover:bg-purple-100 active:bg-purple-200 text-purple-900 border border-purple-300 rounded-xl text-xs font-bold shadow-2xs hover:scale-105 active:scale-95 transition-all inline-flex items-center gap-1"
-                              title={`"${trimmed}" উচ্চারণ শোনো`}
+                              title={`"${spokenPart || trimmed}" উচ্চারণ শোনো`}
                             >
                               <Volume2 className="w-3 h-3 text-purple-600" />
                               <span>{trimmed}</span>
@@ -1932,7 +2190,9 @@ export default function BanglaBornomalaLab() {
                       playPopSound();
                       undoStackRef.current = [];
                       redoStackRef.current = [];
-                      setupCanvas(false);
+                      hasAwardedCurrentAttemptRef.current = false;
+                      setAccuracyScore(null);
+                      setupInkCanvas(false);
                     }}
                     className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1"
                     title="নতুন করে পরিষ্কার করো"
@@ -1943,17 +2203,25 @@ export default function BanglaBornomalaLab() {
                 </div>
               </div>
 
-              {/* Interactive Canvas Board */}
+              {/* Dual-layer Interactive Canvas Board (bgCanvas = sheet + lines + watermark; canvas = user ink) */}
               <div className="relative rounded-3xl border-2 border-dashed border-slate-300 bg-white p-1 overflow-hidden shadow-inner flex items-center justify-center touch-none select-none overscroll-none">
-                <canvas
-                  ref={canvasRef}
-                  onPointerDown={handlePointerDown}
-                  onPointerMove={handlePointerMove}
-                  onPointerUp={handlePointerUp}
-                  onPointerCancel={handlePointerUp}
-                  className="touch-none select-none w-full max-w-[560px] h-[270px] sm:h-[330px] rounded-2xl cursor-crosshair bg-white"
-                  aria-label={`'${selectedItem.char}' বর্ণটি হাত ঘুরিয়ে লেখার ট্রেসিং ক্যানভাস`}
-                />
+                <div className="relative w-full max-w-[560px] h-[270px] sm:h-[330px] rounded-2xl overflow-hidden bg-white">
+                  <canvas
+                    ref={bgCanvasRef}
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 w-full h-full rounded-2xl"
+                  />
+                  <canvas
+                    ref={canvasRef}
+                    data-bornomala-ink="true"
+                    onPointerDown={handlePointerDown}
+                    onPointerMove={handlePointerMove}
+                    onPointerUp={handlePointerUp}
+                    onPointerCancel={handlePointerUp}
+                    className="relative z-10 touch-none select-none w-full h-full rounded-2xl cursor-crosshair bg-transparent"
+                    aria-label={`'${activeChar}' বর্ণটি হাত ঘুরিয়ে লেখার ট্রেসিং ক্যানভাস`}
+                  />
+                </div>
               </div>
 
               {/* Bottom Tracing Controls Bar: Grid toggle, Accuracy verification */}
@@ -1996,24 +2264,38 @@ export default function BanglaBornomalaLab() {
 
               {/* Accuracy Feedback Banner */}
               {accuracyScore !== null && (
-                <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 text-emerald-900 flex items-center justify-between animate-in zoom-in-95">
+                <div
+                  className={`p-3 rounded-2xl border flex items-center justify-between animate-in zoom-in-95 ${
+                    accuracyScore >= 60
+                      ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                      : "bg-amber-50 border-amber-200 text-amber-900"
+                  }`}
+                >
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">🌟</span>
+                    <span className="text-xl">{accuracyScore >= 60 ? "🌟" : "✏️"}</span>
                     <div>
                       <span className="font-bold text-xs sm:text-sm">
-                        {isEnglish 
-                          ? `Your tracing is approximately ${accuracyScore}% accurate!` 
+                        {isEnglish
+                          ? `Your tracing is approximately ${accuracyScore}% accurate!`
                           : `তোমার ট্রেসিং প্রায় ${accuracyScore}% নিখুঁত হয়েছে!`}
                       </span>
-                      <span className="text-[11px] text-emerald-700 block">
-                        {isEnglish 
-                          ? "Great effort! Practice daily for perfect handwriting." 
-                          : "দারুণ চেষ্টা! নিয়মিত লিখলে লেখা আরও সুন্দর হবে।"}
+                      <span
+                        className={`text-[11px] block ${
+                          accuracyScore >= 60 ? "text-emerald-700" : "text-amber-800"
+                        }`}
+                      >
+                        {accuracyScore >= 60
+                          ? isEnglish
+                            ? "Great effort! Practice daily for perfect handwriting."
+                            : "দারুণ চেষ্টা! নিয়মিত লিখলে লেখা আরও সুন্দর হবে।"
+                          : isEnglish
+                            ? "Keep trying! Trace closely along the guide lines."
+                            : "আরেকটু চেষ্টা করো! দাগের ওপর হাত ঘোরালে আরও সুন্দর হবে।"}
                       </span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1 text-amber-500 font-bold text-sm">
-                    <span>⭐⭐⭐</span>
+                    <span>{accuracyScore >= 85 ? "⭐⭐⭐" : accuracyScore >= 60 ? "⭐⭐" : "⭐"}</span>
                   </div>
                 </div>
               )}
@@ -2021,6 +2303,7 @@ export default function BanglaBornomalaLab() {
           </div>
         </>
       )}
+      </div>
 
       {/* 🖨️ Offline Worksheet Modal (Phase 4 / Phase 5) */}
       <BornomalaWorksheetModal
@@ -2041,10 +2324,12 @@ export default function BanglaBornomalaLab() {
 
       {/* 🎴 Classroom Flashcard Modal (Phase 4 / Phase 5) */}
       <BornomalaFlashcardModal
+        key={flashcardSessionKey}
         items={filteredList}
         isOpen={isFlashcardOpen}
         onClose={() => setIsFlashcardOpen(false)}
         languageMode={languageMode}
+        teacherVoice={isEnglish ? englishTeacherVoice : teacherVoice}
       />
     </article>
   );
