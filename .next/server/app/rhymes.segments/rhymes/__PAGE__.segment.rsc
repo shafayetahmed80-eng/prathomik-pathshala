@@ -1,27 +1,19 @@
 1:"$Sreact.fragment"
-3:"static/chunks/app/layout-5b124732ee30e690.js"
+3:"static/chunks/app/layout-fd859b1a6ba92473.js"
 4:I[8346,["177","$3"],"default"]
 5:I[6626,[],""]
 6:I[7632,[],""]
-d:I[4659,[],"ClientPageRoot"]
-e:"static/chunks/325-c66616a62dcd567e.js"
-f:"static/chunks/232-4a4a60de235643e8.js"
-10:"static/chunks/595-b3bbe4e380399af9.js"
-11:"static/chunks/557-9419d01e97202ab9.js"
-12:"static/chunks/app/rhymes/page-dced6b23b9a90173.js"
-13:I[6825,["325","$e","232","$f","595","$10","557","$11","231","$12"],"default"]
-16:I[4395,[],"OutletBoundary"]
-17:"$Sreact.suspense"
-1a:"ViewportBoundary"
-1b:I[4395,[],"$1a"]
-1c:"MetadataBoundary"
-1d:I[4395,[],"$1c"]
-:HL["/_next/static/css/f17a93eae2567d3a.css","style"]
+:HL["/_next/static/css/da9c398c3a62f698.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","style"]
-2:T529,
+2:T6aa,
               try {
-                var p = localStorage.getItem('pp_paper_mode');
-                if (p === 'true') document.documentElement.classList.add('paper-mode');
+                var t = localStorage.getItem('pp_theme_mode');
+                if (!t && localStorage.getItem('pp_paper_mode') === 'true') t = 'paper';
+                var root = document.documentElement;
+                root.classList.remove('paper-mode', 'glass-light-mode', 'glass-dark-mode');
+                if (t === 'paper') root.classList.add('paper-mode');
+                else if (t === 'glass-light') root.classList.add('glass-light-mode');
+                else if (t === 'glass-dark') root.classList.add('glass-dark-mode');
                 var f = localStorage.getItem('pp_active_font_id');
                 var s = localStorage.getItem('pp_active_font_size_id');
                 var fontMap = {
@@ -41,32 +33,38 @@ f:"static/chunks/232-4a4a60de235643e8.js"
                 if (f && fontMap[f]) document.documentElement.style.setProperty('--font-active', fontMap[f]);
                 if (s && sizeMap[s]) document.documentElement.style.setProperty('--font-scale', sizeMap[s]);
               } catch (e) {}
-            8:X
-b:X
-b:C
-c:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$1","c",{"children":[["$","$Ld",null,{"Component":"$13","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@14","$@15"]}}],null,["$","$L16",null,{"children":["$","$17",null,{"name":"Next.MetadataOutlet","children":"$@18"}]}]]}],"p":"$@19","v":null,"s":"$8"}}]]
-9:[["children",{"s":"rhymes","h":96,"d":{"r":["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@a","v":"$b","s":"$8"},"c":"$Qc"}]]
-0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/f17a93eae2567d3a.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]]}]]}]]}],"p":"$@7","v":null,"s":"$8"},"c":"$Q9"},"h":{"r":["$","$1","h",{"children":[null,["$","$L1b",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=5"}],["$","meta","2",{"name":"theme-color","content":"#059669"}]]}],["$","$L1d",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$17",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"প্রাথমিক পাঠশালা | Prathomik Pathshala"}],"$L1e","$L1f","$L20","$L21","$L22","$L23","$L24","$L25","$L26","$L27","$L28"]}]}],null]}],null]}],"p":"$@29","v":null,"s":"$8"}},"a":"$@2a","u":"$@2b","b":"piR-85g0U5AhJR8DC_pmr"}
-2c:I[466,[],"IconMark"]
-14:{}
-15:"$c:0:1:d:r:props:children:0:props:serverProvidedParams:params"
-18:null
-1e:["$","meta","1",{"name":"description","content":"বাংলাদেশের প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির শিক্ষার্থী ও শিক্ষকদের জন্য আধুনিক, ইন্টারঅ্যাক্টিভ ও আনন্দময় শিক্ষামূলক প্ল্যাটফর্ম।"}]
-1f:["$","meta","2",{"name":"application-name","content":"প্রাথমিক পাঠশালা"}]
-20:["$","link","3",{"rel":"manifest","href":"/manifest.webmanifest"}]
-21:["$","meta","4",{"name":"mobile-web-app-capable","content":"yes"}]
-22:["$","meta","5",{"name":"apple-mobile-web-app-title","content":"প্রাথমিক পাঠশালা"}]
-23:["$","meta","6",{"name":"apple-mobile-web-app-status-bar-style","content":"default"}]
-24:["$","link","7",{"rel":"icon","href":"/favicon.ico?7161ee1d105bc9c7","type":"image/x-icon","sizes":"48x48"}]
-25:["$","link","8",{"rel":"icon","href":"/pwa-192x192.png","sizes":"192x192","type":"image/png"}]
-26:["$","link","9",{"rel":"icon","href":"/pwa-512x512.png","sizes":"512x512","type":"image/png"}]
-27:["$","link","10",{"rel":"apple-touch-icon","href":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"}]
-28:["$","$L2c","11",{}]
-8:300
-2b:true
-8:C
-2a:0
-a:"$undefined"
-7:"$undefined"
-29:"$undefined"
-19:"$undefined"
+            9:X
+d:X
+d:C
+e:[["children",{"s":"__PAGE__","h":160,"d":{"r":"$Lf","p":"$@10","v":null,"s":"$9"}}]]
+a:[["children",{"s":"rhymes","h":96,"d":{"r":"$Lb","p":"$@c","v":"$d","s":"$9"},"c":"$Qe"}]]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/da9c398c3a62f698.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":"$L7"}]]}]}]],[]]}]]}]]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":"$L11","p":"$@12","v":null,"s":"$9"}},"a":"$@13","u":"$@14","b":"1EYlt0h8z4ke12Lbmma4T"}
+15:I[4659,[],"ClientPageRoot"]
+16:"static/chunks/325-c66616a62dcd567e.js"
+17:"static/chunks/232-37020f11324e034a.js"
+18:"static/chunks/595-b3bbe4e380399af9.js"
+19:"static/chunks/557-9419d01e97202ab9.js"
+1a:"static/chunks/app/rhymes/page-a01eac0f83cc4c6c.js"
+1b:I[6825,["325","$16","232","$17","595","$18","557","$19","231","$1a"],"default"]
+1e:I[4395,[],"OutletBoundary"]
+1f:"$Sreact.suspense"
+21:"ViewportBoundary"
+22:I[4395,[],"$21"]
+23:"MetadataBoundary"
+24:I[4395,[],"$23"]
+25:I[466,[],"IconMark"]
+7:["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]
+b:["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}]
+f:["$","$1","c",{"children":[["$","$L15",null,{"Component":"$1b","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@1c","$@1d"]}}],null,["$","$L1e",null,{"children":["$","$1f",null,{"name":"Next.MetadataOutlet","children":"$@20"}]}]]}]
+11:["$","$1","h",{"children":[null,["$","$L22",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=5"}],["$","meta","2",{"name":"theme-color","content":"#059669"}]]}],["$","$L24",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1f",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"প্রাথমিক পাঠশালা | Prathomik Pathshala"}],["$","meta","1",{"name":"description","content":"বাংলাদেশের প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির শিক্ষার্থী ও শিক্ষকদের জন্য আধুনিক, ইন্টারঅ্যাক্টিভ ও আনন্দময় শিক্ষামূলক প্ল্যাটফর্ম।"}],["$","meta","2",{"name":"application-name","content":"প্রাথমিক পাঠশালা"}],["$","link","3",{"rel":"manifest","href":"/manifest.webmanifest"}],["$","meta","4",{"name":"mobile-web-app-capable","content":"yes"}],["$","meta","5",{"name":"apple-mobile-web-app-title","content":"প্রাথমিক পাঠশালা"}],["$","meta","6",{"name":"apple-mobile-web-app-status-bar-style","content":"default"}],["$","link","7",{"rel":"icon","href":"/favicon.ico?7161ee1d105bc9c7","type":"image/x-icon","sizes":"48x48"}],["$","link","8",{"rel":"icon","href":"/pwa-192x192.png","sizes":"192x192","type":"image/png"}],["$","link","9",{"rel":"icon","href":"/pwa-512x512.png","sizes":"512x512","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"}],["$","$L25","11",{}]]}]}],null]}],null]}]
+1c:{}
+1d:"$f:props:children:0:props:serverProvidedParams:params"
+20:null
+14:true
+9:300
+9:C
+13:0
+c:"$undefined"
+12:"$undefined"
+10:"$undefined"
+8:"$undefined"

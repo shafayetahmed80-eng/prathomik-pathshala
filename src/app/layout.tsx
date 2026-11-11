@@ -45,8 +45,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                var p = localStorage.getItem('pp_paper_mode');
-                if (p === 'true') document.documentElement.classList.add('paper-mode');
+                var t = localStorage.getItem('pp_theme_mode');
+                if (!t && localStorage.getItem('pp_paper_mode') === 'true') t = 'paper';
+                var root = document.documentElement;
+                root.classList.remove('paper-mode', 'glass-light-mode', 'glass-dark-mode');
+                if (t === 'paper') root.classList.add('paper-mode');
+                else if (t === 'glass-light') root.classList.add('glass-light-mode');
+                else if (t === 'glass-dark') root.classList.add('glass-dark-mode');
                 var f = localStorage.getItem('pp_active_font_id');
                 var s = localStorage.getItem('pp_active_font_size_id');
                 var fontMap = {
