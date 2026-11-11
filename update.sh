@@ -3,7 +3,7 @@
 # Prathomik Pathshala - Production Safe Auto-Update Script for cPanel / CloudLinux
 # ==============================================================================
 
-# 1. Resolve application root directory
+# 1. Resolve application root directory (zero external forks)
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$APP_DIR" || {
     echo "❌ Failed to change directory to $APP_DIR"
@@ -15,16 +15,39 @@ echo "🚀 Starting Prathomik Pathshala Update: $(date '+%Y-%m-%d %H:%M:%S')"
 echo "📂 Working directory: $APP_DIR"
 echo "=================================================================="
 
-# 2. Prevent cPanel / CloudLinux Out-Of-Memory (OOM) kills
-export NODE_OPTIONS="--max-old-space-size=1536"
+# 2. Prevent cPanel / CloudLinux NPROC (thread limit) exhaustion & OOM kills
+export UV_THREADPOOL_SIZE=1
+export NODE_OPTIONS="--max-old-space-size=1024 --v8-pool-size=1"
+export RAYON_NUM_THREADS=1
+export OMP_NUM_THREADS=1
 export NEXT_TELEMETRY_DISABLED=1
 export NODE_ENV=production
+export npm_config_audit=false
+export npm_config_fund=false
+export npm_config_maxsockets=2
 
-# 3. Detect and activate cPanel Node.js virtual environment (nodevenv)
+# 3. Detect and activate cPanel Node.js virtual environment (zero-fork bash glob)
 VENV_SCRIPT=""
-if [ -d "$HOME/nodevenv" ]; then
-    APP_BASENAME="$(basename "$APP_DIR")"
-    VENV_SCRIPT=$(find "$HOME/nodevenv" -maxdepth 4 -name "activate" 2>/dev/null | grep -E "$APP_BASENAME" | head -n 1)
+APP_BASENAME="${APP_DIR##*/}"
+if [ -d "$HOME/nodevenv/$APP_BASENAME" ]; then
+    for candidate in "$HOME/nodevenv/$APP_BASENAME"/*/bin/activate; do
+        if [ -f "$candidate" ]; then
+            VENV_SCRIPT="$candidate"
+            break
+        fi
+    done
+fi
+if [ -z "$VENV_SCRIPT" ] && [ -d "$HOME/nodevenv" ]; then
+    for candidate in "$HOME/nodevenv"/*/"$APP_BASENAME"/*/bin/activate "$HOME/nodevenv"/*/*/bin/activate "$HOME/nodevenv"/*/*/*/bin/activate; do
+        case "$candidate" in
+            *"$APP_BASENAME"*)
+                if [ -f "$candidate" ]; then
+                    VENV_SCRIPT="$candidate"
+                    break
+                fi
+                ;;
+        esac
+    done
 fi
 
 if [ -n "$VENV_SCRIPT" ] && [ -f "$VENV_SCRIPT" ]; then
@@ -35,73 +58,100 @@ else
     echo "ℹ️  Using default system Node.js environment"
 fi
 
-echo "🟢 Node version: $(node -v 2>/dev/null || echo 'Not found')"
-echo "🟢 NPM version:  $(npm -v 2>/dev/null || echo 'Not found')"
-
-# Check node availability
 if ! command -v node >/dev/null 2>&1; then
     echo "❌ Node.js is not found in PATH! Please ensure Setup Node.js App is configured."
     exit 1
 fi
 
-# 4. Fetch latest updates from GitHub
+echo "🟢 Node version: $(node -v 2>/dev/null || echo 'Unknown')"
+
+# 4. Fetch latest updates from GitHub (single thread to respect CloudLinux NPROC)
 echo "📥 Fetching latest changes from GitHub (main branch)..."
-git fetch origin main || {
+git -c pack.threads=1 fetch origin main || {
     echo "❌ Git fetch failed. Please check internet connection or repository permissions."
     exit 1
 }
 
 # 5. Cleanly align with origin/main (preserves untracked .env & NCTB_Primary_Collection_Web)
 echo "🔄 Aligning local files with origin/main..."
-git reset --hard origin/main || {
+git -c pack.threads=1 reset --hard origin/main || {
     echo "❌ Git reset failed."
     exit 1
 }
 
-# 6. Install production dependencies (lightweight & ultra fast)
-echo "📦 Installing production dependencies..."
-npm install --omit=dev --no-audit --no-fund --ignore-scripts || {
-    echo "❌ npm install failed."
-    exit 1
-}
+# 6. Install production dependencies only when manifest/lockfile changed or node_modules incomplete
+DEPS_SIG="$(cksum package.json pnpm-lock.yaml 2>/dev/null || cksum package.json 2>/dev/null || echo '')"
+DEPS_STAMP="node_modules/.prathomik_deps_sig"
+DEPS_NEEDED=1
+
+if [ -d "node_modules/next" ] && [ -n "$DEPS_SIG" ] && [ -r "$DEPS_STAMP" ]; then
+    SAVED_SIG="$(<"$DEPS_STAMP")"
+    if [ "$SAVED_SIG" = "$DEPS_SIG" ]; then
+        DEPS_NEEDED=0
+    fi
+fi
+
+if [ "$DEPS_NEEDED" -eq 0 ]; then
+    echo "⚡ Dependencies unchanged & verified — skipping npm install to save CloudLinux processes."
+else
+    if ! command -v npm >/dev/null 2>&1; then
+        echo "❌ npm is not found in PATH! Please ensure Setup Node.js App is configured."
+        exit 1
+    fi
+
+    # Free CloudLinux NPROC thread slots held by old worker processes before running npm install
+    if command -v pkill >/dev/null 2>&1; then
+        echo "🧹 Freeing running Node worker threads before package sync..."
+        pkill -9 -f "server.js" 2>/dev/null || true
+        sleep 1
+    fi
+
+    echo "📦 Installing production dependencies (CloudLinux safe mode)..."
+    npm install --omit=dev --no-audit --no-fund --ignore-scripts --maxsockets=2 || {
+        echo "❌ npm install failed."
+        exit 1
+    }
+
+    if [ -d "node_modules" ] && [ -n "$DEPS_SIG" ]; then
+        printf '%s' "$DEPS_SIG" > "$DEPS_STAMP" 2>/dev/null || true
+    fi
+fi
 
 # 7. Check for pre-compiled production build (.next)
 if [ -f ".next/BUILD_ID" ] && [ -d ".next/server" ]; then
     echo "⚡ Verified pre-compiled production build (.next)! Zero CloudLinux RAM/CPU load needed."
 else
     echo "🔨 Pre-compiled build not found. Compiling Next.js production build..."
-    npm install --include=dev --no-audit --no-fund --ignore-scripts
+    npm install --include=dev --no-audit --no-fund --ignore-scripts --maxsockets=2
     npm run build || {
         echo "❌ Build failed! Aborting update to prevent website crash."
         exit 1
     }
 fi
 
-# 8. Purge untracked Next.js runtime caches & ensure permissions
+# 8. Purge untracked Next.js runtime caches & ensure runtime permissions without scanning all node_modules
 echo "🧹 Clearing stale Next.js runtime route caches..."
 rm -rf .next/server/route-cache .next/cache .next/.deployed_build_id
-chmod -R 755 .
+chmod -R 755 .next 2>/dev/null || true
+chmod 755 update.sh 2>/dev/null || true
 mkdir -p tmp
 chmod 777 tmp 2>/dev/null || true
 
-# 9. Trigger Phusion Passenger / LiteSpeed reload and refresh Node.js worker
+# 9. Recycle old worker first, then trigger Phusion Passenger / LiteSpeed reload cleanly
 echo "🔄 Triggering Node.js application restart..."
-touch tmp/restart.txt
-
-# Try CloudLinux Node.js selector restart CLI (cPanel native)
-if command -v cloudlinux-selector >/dev/null 2>&1; then
-    cloudlinux-selector restart --json --interpreter nodejs --app-root "$APP_DIR" 2>/dev/null || true
-    cloudlinux-selector restart --json --interpreter nodejs --app-root "$(basename "$APP_DIR")" 2>/dev/null || true
-fi
-
-# Try Passenger config restart
-if command -v passenger-config >/dev/null 2>&1; then
-    passenger-config restart-app "$APP_DIR" --ignore-passenger-not-running 2>/dev/null || true
-fi
-
-# Terminate existing node process so Passenger / LiteSpeed immediately spawns fresh worker
 if command -v pkill >/dev/null 2>&1; then
     pkill -9 -f "server.js" 2>/dev/null || true
+fi
+
+touch tmp/restart.txt
+
+if command -v cloudlinux-selector >/dev/null 2>&1; then
+    cloudlinux-selector restart --json --interpreter nodejs --app-root "$APP_DIR" 2>/dev/null || true
+    cloudlinux-selector restart --json --interpreter nodejs --app-root "$APP_BASENAME" 2>/dev/null || true
+fi
+
+if command -v passenger-config >/dev/null 2>&1; then
+    passenger-config restart-app "$APP_DIR" --ignore-passenger-not-running 2>/dev/null || true
 fi
 
 echo "=================================================================="
