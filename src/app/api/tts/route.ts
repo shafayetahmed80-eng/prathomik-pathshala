@@ -106,17 +106,35 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid text parameter after sanitization" }, { status: 400 });
   }
 
-  // Determine Edge Neural voice
-  let edgeVoice = "bn-BD-NabanitaNeural";
-  if (isBengali) {
-    edgeVoice = voice === "pradeep" ? "bn-BD-PradeepNeural" : "bn-BD-NabanitaNeural";
-  } else {
-    edgeVoice = voice === "guy" ? "en-US-GuyNeural" : "en-US-AnaNeural";
-  }
+  // Determine Edge Neural voice (with South Asian Indian English voices for mobile "দেশীয়" mode)
+  const englishVoiceMap: Record<string, string> = {
+    neerja: "en-IN-NeerjaNeural",
+    prabhat: "en-IN-PrabhatNeural",
+    guy: "en-US-GuyNeural",
+    ana: "en-US-AnaNeural",
+  };
+  const isIndianEnglish = !isBengali && lang.toLowerCase().includes("in");
+  const edgeVoice = isBengali
+    ? voice === "pradeep"
+      ? "bn-BD-PradeepNeural"
+      : "bn-BD-NabanitaNeural"
+    : englishVoiceMap[voice] || (isIndianEnglish ? "en-IN-NeerjaNeural" : "en-US-AnaNeural");
+
+  // Validate prosody parameters to prevent malformed SSML values from breaking Edge TTS
+  const sanitizePercent = (raw: string | null, fallback: string): string => {
+    if (!raw || !/^[+-]?\d{1,2}%$/.test(raw.trim())) return fallback;
+    const val = Math.max(-50, Math.min(50, parseInt(raw.trim(), 10)));
+    return `${val >= 0 ? "+" : ""}${val}%`;
+  };
+  const sanitizePitch = (raw: string | null, fallback: string): string => {
+    if (!raw || !/^[+-]?\d{1,2}Hz$/i.test(raw.trim())) return fallback;
+    const val = Math.max(-25, Math.min(25, parseInt(raw.trim(), 10)));
+    return `${val >= 0 ? "+" : ""}${val}Hz`;
+  };
 
   // Default prosody adjustments for poetic rhythm & sweet child-friendly tone
-  const pitch = reqPitch || (isBengali ? "+2Hz" : "+0Hz");
-  const rate = reqRate || (isBengali ? "-4%" : "-2%");
+  const pitch = sanitizePitch(reqPitch, isBengali ? "+2Hz" : "+0Hz");
+  const rate = sanitizePercent(reqRate, isBengali ? "-4%" : "-2%");
 
   const cacheKey = `${edgeVoice}:${pitch}:${rate}:${cleanText}`;
 
@@ -170,7 +188,7 @@ export async function GET(request: NextRequest) {
 
   // 3. Ultra-fast Secondary Fallback: Google Cloud TTS Proxy (~180ms latency)
   try {
-    const tl = isBengali ? "bn" : "en";
+    const tl = isIndianEnglish ? "en-in" : isBengali ? "bn" : "en";
     const fallbackText = cleanText.slice(0, 180);
     const googleTtsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(
       fallbackText

@@ -11,7 +11,7 @@ export interface SafeSpeakOptions {
   lang?: string;
   rate?: number;
   pitch?: number;
-  voice?: "nabanita" | "pradeep" | "ana" | "guy" | string;
+  voice?: "nabanita" | "pradeep" | "ana" | "guy" | "neerja" | "prabhat" | string;
   onStart?: () => void;
   onEnd?: () => void;
   onError?: () => void;
@@ -21,11 +21,77 @@ let activeAudio: HTMLAudioElement | null = null;
 let activeRequestId = 0;
 let watchdogTimer: NodeJS.Timeout | null = null;
 
-// In-memory preloaded audio cache for zero-latency seamless line transitions
-const preloadedAudioMap = new Map<string, HTMLAudioElement>();
+// Single reusable audio element so chained onended sentences inherit user-tap activation on mobile
+let sharedAudio: HTMLAudioElement | null = null;
+let audioUnlocked = false;
+let sharedAudioCtx: AudioContext | null = null;
+const SILENT_WAV_DATA_URI =
+  "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+
+// In-memory preloaded blob/source cache for zero-latency seamless line transitions
+const preloadedSrcMap = new Map<string, string>();
 
 // Persistent browser CacheStorage name for rural / offline resilient classroom playback
 const AUDIO_CACHE_NAME = "pp-rhymes-audio-v2";
+
+export function isMobileBrowser(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return (
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
+}
+
+function getSharedAudio(): HTMLAudioElement | null {
+  if (typeof window === "undefined" || typeof Audio === "undefined") return null;
+  if (!sharedAudio) {
+    sharedAudio = new Audio();
+    sharedAudio.preload = "auto";
+  }
+  return sharedAudio;
+}
+
+/**
+ * Unlocks Web Audio & HTMLAudioElement playback inside a user tap handler on iOS Safari / Android Chrome
+ * so subsequent async sentence chains inside onended are not blocked by autoplay policies.
+ */
+export function unlockMobileAudio(options?: { primeSilent?: boolean }) {
+  if (typeof window === "undefined") return;
+
+  try {
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    if (AudioCtx) {
+      if (!sharedAudioCtx) {
+        sharedAudioCtx = new AudioCtx();
+      }
+      if (sharedAudioCtx.state === "suspended") {
+        sharedAudioCtx.resume().catch(() => {});
+      }
+    }
+  } catch {}
+
+  const audio = getSharedAudio();
+  if (!audio) return;
+
+  if (options?.primeSilent && !audioUnlocked && activeAudio !== audio) {
+    try {
+      audio.onplaying = null;
+      audio.onended = null;
+      audio.onerror = null;
+      audio.src = SILENT_WAV_DATA_URI;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            audioUnlocked = true;
+          })
+          .catch(() => {});
+      }
+    } catch {}
+  }
+}
 
 /**
  * Checks persistent browser CacheStorage first, converts cached response to blob URL,
@@ -59,10 +125,23 @@ async function resolveAudioSource(audioUrl: string): Promise<string> {
   }
 }
 
+function getServerRatePercent(speed?: number): number {
+  if (speed === undefined || Number.isNaN(speed)) return 0;
+  if (speed <= 0.35) return -35;
+  if (speed <= 0.55) return -24;
+  if (speed <= 0.75) return -12;
+  if (speed < 0.92) return -5;
+  return 0;
+}
+
 export function getTtsAudioUrl(text: string, options?: SafeSpeakOptions): string {
   const targetLang = options?.lang || "bn-BD";
   const voiceQuery = options?.voice ? `&voice=${encodeURIComponent(options.voice)}` : "";
-  const rateQuery = options?.rate ? `&rate=${encodeURIComponent(options.rate < 0.9 ? "-5%" : "+0%")}` : "";
+  const ratePct = getServerRatePercent(options?.rate);
+  const rateQuery =
+    options?.rate !== undefined
+      ? `&rate=${encodeURIComponent(`${ratePct >= 0 ? "+" : ""}${ratePct}%`)}`
+      : "";
   const pitchQuery = options?.pitch ? `&pitch=${encodeURIComponent(options.pitch > 1 ? "+3Hz" : "+0Hz")}` : "";
   return `/api/tts?text=${encodeURIComponent(text.trim())}&lang=${encodeURIComponent(targetLang)}${voiceQuery}${rateQuery}${pitchQuery}`;
 }
@@ -75,32 +154,25 @@ export function preloadSpeech(text: string, options?: SafeSpeakOptions) {
   if (typeof window === "undefined" || !text || !text.trim()) return;
 
   const audioUrl = getTtsAudioUrl(text, options);
-  if (preloadedAudioMap.has(audioUrl)) return;
+  if (preloadedSrcMap.has(audioUrl)) return;
 
-  try {
-    const audio = new Audio();
-    audio.preload = "auto";
-    
-    // Resolve via persistent CacheStorage if available
-    resolveAudioSource(audioUrl).then((src) => {
-      audio.src = src;
-      audio.load();
-    });
-
-    // Maintain max 10 preloaded lines in memory
-    if (preloadedAudioMap.size >= 10) {
-      const oldestKey = preloadedAudioMap.keys().next().value;
-      if (oldestKey) {
-        const oldAudio = preloadedAudioMap.get(oldestKey);
-        if (oldAudio) {
-          oldAudio.src = "";
-          oldAudio.load();
+  resolveAudioSource(audioUrl)
+    .then((src) => {
+      if (preloadedSrcMap.size >= 10) {
+        const oldestKey = preloadedSrcMap.keys().next().value;
+        if (oldestKey) {
+          const oldSrc = preloadedSrcMap.get(oldestKey);
+          if (oldSrc && oldSrc.startsWith("blob:") && sharedAudio?.src !== oldSrc) {
+            try {
+              URL.revokeObjectURL(oldSrc);
+            } catch {}
+          }
+          preloadedSrcMap.delete(oldestKey);
         }
-        preloadedAudioMap.delete(oldestKey);
       }
-    }
-    preloadedAudioMap.set(audioUrl, audio);
-  } catch {}
+      preloadedSrcMap.set(audioUrl, src);
+    })
+    .catch(() => {});
 }
 
 export function stopSpeech(options?: { preserveBgm?: boolean }) {
@@ -162,6 +234,12 @@ function fallbackBrowserSynthesis(
             v.name.toLowerCase().includes("bangla") ||
             v.name.toLowerCase().includes("bengali")
         ) || null;
+    } else if (targetLang.toLowerCase().includes("in")) {
+      chosenVoice =
+        voices.find((v) => v.lang.toLowerCase().includes("en-in")) ||
+        voices.find((v) => v.lang.startsWith("en-GB") || v.lang.startsWith("en-US")) ||
+        voices.find((v) => v.lang.startsWith("en")) ||
+        null;
     } else {
       chosenVoice =
         voices.find((v) => v.lang.startsWith("en-US") || v.lang.startsWith("en-GB")) ||
@@ -210,77 +288,141 @@ export function safeSpeak(text: string, options?: SafeSpeakOptions) {
 
   const targetLang = options?.lang || "bn-BD";
   const rawRate = options?.rate ?? 0.88;
-  const isMobile =
-    typeof navigator !== "undefined" &&
-    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const safeRate = isMobile ? Math.max(0.65, rawRate) : rawRate;
+  const isMobile = isMobileBrowser();
+  const serverPct = getServerRatePercent(options?.rate);
+  // Keep mobile client playbackRate at 1.0 (Edge TTS SSML already applies speed natively)
+  // to avoid Android/iOS playbackRate codec distortion, buffering stalls, or silence.
+  const clientPlaybackRate = isMobile
+    ? 1.0
+    : rawRate >= 0.92
+    ? rawRate
+    : Math.max(0.75, Math.min(1.0, rawRate / (1 + serverPct / 100)));
+  const fallbackRate = isMobile ? Math.max(0.7, rawRate) : rawRate;
 
   // Cancel prior spoken audio without killing active poetry BGM, and advance sequence token
   stopSpeech({ preserveBgm: true });
   const currentReqId = activeRequestId;
 
-  // Set adaptive safety watchdog timer to prevent stuck pulsing button state
-  const adaptiveTimeout = Math.max(4500, Math.min(14000, text.length * 180));
-  watchdogTimer = setTimeout(() => {
-    if (activeRequestId === currentReqId) {
+  // Set adaptive safety watchdog timer scaled by rate, never truncating actively progressing audio
+  const rateFactor = rawRate < 0.75 ? 1.6 : 1.1;
+  const adaptiveTimeout = Math.max(8000, Math.min(30000, Math.round(text.length * 220 * rateFactor)));
+  let watchdogExtensions = 0;
+
+  const scheduleWatchdog = (delayMs: number) => {
+    watchdogTimer = setTimeout(() => {
+      if (activeRequestId !== currentReqId) return;
+      if (
+        activeAudio &&
+        !activeAudio.paused &&
+        !activeAudio.ended &&
+        activeAudio.readyState >= 3 &&
+        activeAudio.currentTime > 0 &&
+        watchdogExtensions < 2
+      ) {
+        watchdogExtensions++;
+        const remainingMs =
+          isFinite(activeAudio.duration) && activeAudio.duration > activeAudio.currentTime
+            ? Math.ceil(((activeAudio.duration - activeAudio.currentTime) * 1000) / clientPlaybackRate) + 2500
+            : 8000;
+        scheduleWatchdog(Math.min(20000, remainingMs));
+        return;
+      }
       stopSpeech({ preserveBgm: true });
       options?.onEnd?.();
-    }
-  }, adaptiveTimeout);
+    }, delayMs);
+  };
+  scheduleWatchdog(adaptiveTimeout);
 
   const audioUrl = getTtsAudioUrl(text, options);
 
-  // High-fidelity Neural Streaming (for both Bengali and English) with zero-latency preloaded audio
+  // High-fidelity Neural Streaming reusing one unlocked HTMLAudioElement across sentence chains
   try {
-    let audio: HTMLAudioElement;
-
-    if (preloadedAudioMap.has(audioUrl)) {
-      audio = preloadedAudioMap.get(audioUrl)!;
-      preloadedAudioMap.delete(audioUrl);
-    } else {
-      audio = new Audio();
-      audio.preload = "auto";
-      audio.src = audioUrl;
-      resolveAudioSource(audioUrl).then((cachedSrc) => {
-        if (cachedSrc !== audioUrl && audio.src === audioUrl) {
-          audio.src = cachedSrc;
-        }
-      });
+    const audio = getSharedAudio();
+    if (!audio) {
+      fallbackBrowserSynthesis(text, targetLang, fallbackRate, currentReqId, options);
+      return;
     }
 
-    activeAudio = audio;
-    activeAudio.playbackRate = safeRate;
+    const preloadedSrc = preloadedSrcMap.get(audioUrl);
+    const targetSrc = preloadedSrc || audioUrl;
+    if (!preloadedSrc) {
+      // Warm persistent CacheStorage in the background without mutating active audio.src mid-playback
+      resolveAudioSource(audioUrl)
+        .then((cachedSrc) => {
+          if (cachedSrc !== audioUrl && !preloadedSrcMap.has(audioUrl)) {
+            preloadedSrcMap.set(audioUrl, cachedSrc);
+          }
+        })
+        .catch(() => {});
+    }
 
-    activeAudio.onplaying = () => {
+    audio.onplaying = null;
+    audio.onended = null;
+    audio.onerror = null;
+    audio.src = targetSrc;
+    audio.defaultPlaybackRate = clientPlaybackRate;
+    audio.playbackRate = clientPlaybackRate;
+    activeAudio = audio;
+
+    const triggerFallback = () => {
+      if (activeRequestId !== currentReqId) return;
+      audio.onplaying = null;
+      audio.onended = null;
+      audio.onerror = null;
+      activeAudio = null;
+      fallbackBrowserSynthesis(text, targetLang, fallbackRate, currentReqId, options);
+    };
+
+    audio.onplaying = () => {
       if (activeRequestId === currentReqId) {
+        audioUnlocked = true;
         options?.onStart?.();
       }
     };
 
-    activeAudio.onended = () => {
+    audio.onended = () => {
       if (activeRequestId === currentReqId) {
-        if (watchdogTimer) clearTimeout(watchdogTimer);
+        if (watchdogTimer) {
+          clearTimeout(watchdogTimer);
+          watchdogTimer = null;
+        }
+        activeAudio = null;
         options?.onEnd?.();
       }
     };
 
-    activeAudio.onerror = () => {
-      if (activeRequestId === currentReqId) {
-        // Fallback to browser synthesis if audio streaming fails (e.g. offline)
-        fallbackBrowserSynthesis(text, targetLang, safeRate, currentReqId, options);
+    audio.onerror = () => {
+      if (activeRequestId !== currentReqId) return;
+      if (audio.src.startsWith("blob:") && preloadedSrcMap.has(audioUrl)) {
+        preloadedSrcMap.delete(audioUrl);
+        audio.src = audioUrl;
+        audio.defaultPlaybackRate = clientPlaybackRate;
+        audio.playbackRate = clientPlaybackRate;
+        audio.play().catch(triggerFallback);
+        return;
       }
+      triggerFallback();
     };
 
-    const playPromise = activeAudio.play();
+    const playPromise = audio.play();
     if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        // Ignore normal AbortError caused by quick user switching
-        if (err.name !== "AbortError" && activeRequestId === currentReqId) {
-          fallbackBrowserSynthesis(text, targetLang, safeRate, currentReqId, options);
-        }
-      });
+      playPromise
+        .then(() => {
+          if (activeRequestId === currentReqId) {
+            audioUnlocked = true;
+          }
+        })
+        .catch((err) => {
+          if (err?.name === "NotAllowedError") {
+            audioUnlocked = false;
+          }
+          // Ignore normal AbortError caused by quick user switching
+          if (err?.name !== "AbortError") {
+            triggerFallback();
+          }
+        });
     }
   } catch {
-    fallbackBrowserSynthesis(text, targetLang, safeRate, currentReqId, options);
+    fallbackBrowserSynthesis(text, targetLang, fallbackRate, currentReqId, options);
   }
 }
