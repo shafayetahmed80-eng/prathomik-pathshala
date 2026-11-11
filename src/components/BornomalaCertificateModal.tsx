@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Award, Printer, X, Sparkles, CheckCircle, Heart } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { Printer, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import { playSuccessChime } from "@/utils/bornomalaAudio";
 
@@ -13,38 +13,25 @@ interface Props {
 }
 
 export default function BornomalaCertificateModal({ isOpen, onClose, stars, languageMode = "bangla" }: Props) {
-  const [certLang, setCertLang] = useState<"bangla" | "english">(languageMode);
-  const [studentName, setStudentName] = useState<string>(languageMode === "english" ? "Champion Learner" : "সোনামণি");
-  const [todayDate, setTodayDate] = useState<string>("");
+  const [langOverride, setLangOverride] = useState<{ base: "bangla" | "english"; value: "bangla" | "english" } | null>(null);
+  const [nameOverride, setNameOverride] = useState<{ baseLang: "bangla" | "english"; value: string } | null>(null);
 
-  useEffect(() => {
-    setCertLang(languageMode);
-    if (languageMode === "english") {
-      setStudentName("Champion Learner");
-    } else {
-      setStudentName("সোনামণি");
-    }
-  }, [languageMode]);
+  const certLang = langOverride?.base === languageMode ? langOverride.value : languageMode;
+  const studentName =
+    nameOverride?.baseLang === certLang
+      ? nameOverride.value
+      : certLang === "english"
+        ? "Champion Learner"
+        : "সোনামণি";
 
-  useEffect(() => {
-    if (certLang === "english") {
-      setTodayDate(
-        new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      );
-    } else {
-      setTodayDate(
-        new Date().toLocaleDateString("bn-BD", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      );
-    }
-  }, [certLang]);
+  const todayDate = useMemo(() => {
+    if (!isOpen) return "";
+    return new Date().toLocaleDateString(certLang === "english" ? "en-US" : "bn-BD", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }, [certLang, isOpen]);
 
   // Keyboard Escape listener
   useEffect(() => {
@@ -106,7 +93,7 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
             <div className="flex items-center bg-slate-200 p-0.5 rounded-xl text-xs font-bold">
               <button
                 type="button"
-                onClick={() => setCertLang("bangla")}
+                onClick={() => setLangOverride({ base: languageMode, value: "bangla" })}
                 className={`px-2 py-1 rounded-lg transition-all ${
                   certLang === "bangla" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
                 }`}
@@ -115,7 +102,7 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
               </button>
               <button
                 type="button"
-                onClick={() => setCertLang("english")}
+                onClick={() => setLangOverride({ base: languageMode, value: "english" })}
                 className={`px-2 py-1 rounded-lg transition-all ${
                   certLang === "english" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
                 }`}
@@ -152,7 +139,7 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
             id="student-name-input"
             type="text"
             value={studentName}
-            onChange={(e) => setStudentName(e.target.value)}
+            onChange={(e) => setNameOverride({ baseLang: certLang, value: e.target.value })}
             placeholder={isEn ? "e.g., Aayan Ahmed" : "যেমন: আয়ান আহমেদ"}
             className="px-3.5 py-1.5 rounded-xl border border-amber-300 text-xs sm:text-sm font-bold bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 max-w-xs flex-1"
           />
