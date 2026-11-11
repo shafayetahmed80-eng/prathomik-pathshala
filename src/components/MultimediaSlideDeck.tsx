@@ -63,7 +63,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { SLIDE_DECKS, PILOT_SLIDE_DECK, SlideItem, SyllableWord, SortingItem, PunctuationChallenge, SlideDeck } from "@/data/slidesData";
-import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
+import { isMobileBrowser, safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import ActivityAColoringCanvas from "./ActivityAColoringCanvas";
 import StoryVisualStage from "./StoryVisualStage";
 import KiteCraftingVisualStage from "./KiteCraftingVisualStage";
@@ -455,7 +455,7 @@ export default function MultimediaSlideDeck() {
 
   // Safe speed for mobile TTS engines (Android Google TTS crashes if rate < 0.5)
   const getSafeSpeed = (spd: number) => {
-    if (typeof navigator !== "undefined" && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    if (isMobileBrowser()) {
       return Math.max(0.5, spd);
     }
     return spd;
@@ -550,6 +550,7 @@ export default function MultimediaSlideDeck() {
   // Stream Microsoft Edge Neural Bengali Voice (/api/tts with offline cache & watchdog)
   const speakBangla = (text: string) => {
     stopAllSpeech();
+    unlockMobileAudio();
     setIsBanglaSpeaking(true);
     safeSpeak(text, {
       lang: "bn-BD",
@@ -627,9 +628,21 @@ export default function MultimediaSlideDeck() {
             speaker
           )
       );
+      const useIndianEnglish = !isBn && accentMode === "bd";
+      const targetLang = isBn ? "bn-BD" : useIndianEnglish ? "en-IN" : "en-US";
+      const targetVoice = isBn
+        ? "nabanita"
+        : useIndianEnglish
+        ? isMaleSpeaker
+          ? "prabhat"
+          : "neerja"
+        : isMaleSpeaker
+        ? "guy"
+        : "ana";
+
       safeSpeak(sentenceText, {
-        lang: isBn ? "bn-BD" : "en-US",
-        voice: isBn ? "nabanita" : isMaleSpeaker ? "guy" : "ana",
+        lang: targetLang,
+        voice: targetVoice,
         rate: effectiveSpeed,
         onStart: () => startKaraokePacer(),
         onEnd: () => {
@@ -645,9 +658,11 @@ export default function MultimediaSlideDeck() {
     const isBnText = /[\u0980-\u09FF]/.test(sentenceText);
     const { voice, lang, hasEnglishVoice } = getDeviceVoiceAndLang(accentMode);
 
-    // Use studio Neural TTS for Bengali, International accent, or devices lacking English system voices
+    // Use studio Neural TTS for Bengali, all mobile browsers (Android/iOS speechSynthesis
+    // often stays silent at slow rates or in async chains), International accent, or missing desktop voices
     if (
       isBnText ||
+      isMobileBrowser() ||
       accentMode === "intl" ||
       !hasEnglishVoice ||
       !("speechSynthesis" in window)
@@ -731,8 +746,40 @@ export default function MultimediaSlideDeck() {
 
     const sentences = currentSlide.content.englishText || [];
     const dialogues = currentSlide.content.dialogue || [];
-    if (sentences.length === 0 && dialogues.length === 0) return;
+    const vocab = currentSlide.content.vocabulary || [];
+    const vocabLines =
+      sentences.length === 0 && dialogues.length === 0 && vocab.length > 0
+        ? vocab
+            .map((item) => (item.example ? `${item.word}. ${item.example}` : item.word))
+            .filter(Boolean)
+        : [];
+    const banglaFallback =
+      sentences.length === 0 && dialogues.length === 0 && vocabLines.length === 0
+        ? currentSlide.content.banglaExplanation || currentSlide.content.activityTask || ""
+        : "";
 
+    if (
+      sentences.length === 0 &&
+      dialogues.length === 0 &&
+      vocabLines.length === 0 &&
+      !banglaFallback.trim()
+    ) {
+      return;
+    }
+
+    // Unlock shared WebAudio/HTMLAudio pipeline synchronously inside user tap gesture on mobile
+    unlockMobileAudio();
+
+    if (sentences.length === 0 && dialogues.length === 0 && vocabLines.length === 0) {
+      if (/[\u0980-\u09FF]/.test(banglaFallback)) {
+        speakBangla(banglaFallback);
+      } else {
+        playSentence(banglaFallback, 0);
+      }
+      return;
+    }
+
+    const activeSentences = sentences.length > 0 ? sentences : vocabLines;
     let sIdx = 0;
     let dIdx = 0;
 
@@ -748,10 +795,10 @@ export default function MultimediaSlideDeck() {
     };
 
     const playNextSentence = () => {
-      if (sIdx < sentences.length) {
+      if (sIdx < activeSentences.length) {
         const curIdx = sIdx;
         sIdx++;
-        playSentence(sentences[curIdx], curIdx, undefined, playNextSentence);
+        playSentence(activeSentences[curIdx], curIdx, undefined, playNextSentence);
       } else if (dialogues.length > 0) {
         playNextDialogue();
       } else {
@@ -763,7 +810,7 @@ export default function MultimediaSlideDeck() {
   };
 
   // Dual-Accent Speech Synthesis Engine (🇧🇩 Bangladeshi Classroom Phonics vs 🌐 International Neural Accent)
-  // Auto-routes Bengali phrases & International accent to Microsoft Edge Neural Voice (/api/tts)
+  // Auto-routes Bengali phrases, mobile browsers & International accent to Microsoft Edge Neural Voice (/api/tts)
   const handleSpeak = (
     text: string,
     forceAccent?: "bd" | "intl",
@@ -779,6 +826,7 @@ export default function MultimediaSlideDeck() {
 
     if (typeof window === "undefined") return;
     stopAllSpeech();
+    unlockMobileAudio();
 
     // Strip punctuation for crisp single-word articulation
     const cleanWord = text.replace(/[.,/#!$%^&*;:{}=\-_`~()?"']/g, "").trim();
@@ -789,10 +837,11 @@ export default function MultimediaSlideDeck() {
     const { voice, lang, hasEnglishVoice } = getDeviceVoiceAndLang(effectiveAccent);
 
     const speakWithNeuralEnglish = () => {
+      const useIndianEnglish = effectiveAccent === "bd";
       setIsSpeaking(true);
       safeSpeak(targetText, {
-        lang: "en-US",
-        voice: "ana",
+        lang: useIndianEnglish ? "en-IN" : "en-US",
+        voice: useIndianEnglish ? "neerja" : "ana",
         rate: effectiveSpeed,
         onEnd: () => setIsSpeaking(false),
         onError: () => setIsSpeaking(false),
@@ -800,6 +849,7 @@ export default function MultimediaSlideDeck() {
     };
 
     if (
+      isMobileBrowser() ||
       effectiveAccent === "intl" ||
       !hasEnglishVoice ||
       !("speechSynthesis" in window)
