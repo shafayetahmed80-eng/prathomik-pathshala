@@ -1,0 +1,166 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  verify:
+    name: Typecheck, Build & Smoke Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify committed .next bundle & cPanel sync
+        shell: bash
+        run: |
+          if [ ! -f ".next/BUILD_ID" ] || [ ! -d ".next/server" ]; then
+            echo "::error::Missing committed .next/BUILD_ID or .next/server required for zero-OOM cPanel deployment."
+            exit 1
+          fi
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            CHANGED_FILES=$(git -c core.quotePath=false diff --name-only "$BASE_SHA"...HEAD)
+            APP_CHANGED=$(echo "$CHANGED_FILES" | grep -E '^(src/|public/|next\.config\.ts$|package\.json$|pnpm-lock\.yaml$|tsconfig\.json$)' || true)
+            NEXT_CHANGED=$(echo "$CHANGED_FILES" | grep -E '^\.next/' || true)
+
+            if [ -n "$APP_CHANGED" ] && [ -z "$NEXT_CHANGED" ]; then
+              echo "::error::Application files changed without updating the pre-compiled .next bundle. Run 'npm run build' and commit .next/ so update.sh on cPanel does not serve stale code."
+              echo "Changed app files:"
+              echo "$APP_CHANGED"
+              exit 1
+            fi
+          fi
+
+      - name: Check JS & shell script syntax
+        shell: bash
+        run: |
+          node --check server.js
+          node --check public/sw.js
+          node --check scripts/upload-r2.mjs
+          bash -n update.sh
+
+      - name: TypeScript typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Lint changed files (advisory report)
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        shell: bash
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          mapfile -t FILES < <(git -c core.quotePath=false diff --name-only --diff-filter=ACMR "$BASE_SHA"...HEAD | grep -E '^(src/.*\.(ts|tsx|js|jsx|mts|mjs)|public/sw\.js|next\.config\.ts|eslint\.config\.mjs)$' || true)
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            echo "No lintable app files changed in this PR."
+            exit 0
+          fi
+          echo "Linting changed files:"
+          printf ' - %s\n' "${FILES[@]}"
+          pnpm exec eslint "${FILES[@]}"
+
+      - name: Build Next.js production bundle (webpack)
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: pnpm run build
+
+      - name: Smoke test custom production server (server.js)
+        shell: bash
+        run: |
+          set -euo pipefail
+          PORT=3099
+          NODE_ENV=production PORT="$PORT" HOSTNAME=127.0.0.1 NEXT_TELEMETRY_DISABLED=1 node server.js > /tmp/ci-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+
+          READY=0
+          for _ in $(seq 1 30); do
+            if curl -fsS "http://127.0.0.1:${PORT}/" > /tmp/home.html 2>/dev/null; then
+              READY=1
+              break
+            fi
+            sleep 1
+          done
+
+          if [ "$READY" -ne 1 ]; then
+            echo "::error::server.js failed to start within 30s"
+            cat /tmp/ci-server.log || true
+            exit 1
+          fi
+
+          ROUTES=(
+            "/"
+            "/books"
+            "/bornomala"
+            "/exams"
+            "/lesson-planner"
+            "/quiz"
+            "/rhymes"
+            "/slides"
+            "/manifest.webmanifest"
+            "/sw.js"
+            "/pwa-192x192.png"
+            "/pwa-512x512.png"
+            "/apple-touch-icon.png"
+          )
+
+          for route in "${ROUTES[@]}"; do
+            STATUS=$(curl -sS -o /dev/null -w "%{http_code}" "http://127.0.0.1:${PORT}${route}")
+            echo "GET ${route} -> HTTP ${STATUS}"
+            if [ "$STATUS" -ne 200 ]; then
+              echo "::error::Expected HTTP 200 for ${route}, got ${STATUS}"
+              cat /tmp/ci-server.log || true
+              exit 1
+            fi
+          done
+
+          # Verify referenced static CSS/JS chunks resolve 200 OK
+          mapfile -t ASSETS < <(grep -oE '(href|src)="/_next/static/[^"]+"' /tmp/home.html | sed -E 's/^(href|src)="//;s/"$//' | sort -u || true)
+          if [ "${#ASSETS[@]}" -eq 0 ]; then
+            echo "::error::No /_next/static/ assets found in / HTML"
+            exit 1
+          fi
+
+          for asset in "${ASSETS[@]}"; do
+            STATUS=$(curl -sS -o /dev/null -w "%{http_code}" "http://127.0.0.1:${PORT}${asset}")
+            echo "GET ${asset} -> HTTP ${STATUS}"
+            if [ "$STATUS" -ne 200 ]; then
+              echo "::error::Static asset failed: ${asset} -> HTTP ${STATUS}"
+              exit 1
+            fi
+          done
+
+          # Verify PDF API rejects missing query cleanly
+          API_400=$(curl -sS -o /dev/null -w "%{http_code}" "http://127.0.0.1:${PORT}/api/pdf")
+          echo "GET /api/pdf (no query) -> HTTP ${API_400}"
+          if [ "$API_400" -ne 400 ]; then
+            echo "::error::Expected HTTP 400 for /api/pdf without params, got ${API_400}"
+            exit 1
+          fi
