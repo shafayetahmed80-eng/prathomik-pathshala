@@ -77,7 +77,9 @@ else
     }
 fi
 
-# 8. Ensure correct permissions
+# 8. Purge untracked Next.js runtime caches & ensure permissions
+echo "🧹 Clearing stale Next.js runtime route caches..."
+rm -rf .next/server/route-cache .next/cache .next/.deployed_build_id
 chmod -R 755 .
 mkdir -p tmp
 chmod 777 tmp 2>/dev/null || true
