@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Play, Pause, ChevronLeft, ChevronRight, Volume2, Sparkles } from "lucide-react";
+import { X, Play, Pause, ChevronLeft, ChevronRight, Volume2 } from "lucide-react";
 import { BornomalaItem } from "@/data/bornomalaData";
 import { EnglishAlphabetItem } from "@/data/englishAlphabetData";
 import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
@@ -18,15 +18,26 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
   const [index, setIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
-  const currentItem = items[index] || items[0];
+  const safeLength = Math.max(1, items.length);
+  const safeIndex = index >= safeLength ? 0 : index;
+  const currentItem = items[safeIndex] || items[0];
   const isEng = languageMode === "english" || (currentItem && (/[a-zA-Z]/.test(currentItem.char) || ("upperChar" in currentItem)));
+  const isNum = currentItem?.type === "number";
+
+  const handleClose = () => {
+    setIsPlaying(false);
+    stopSpeech();
+    onClose();
+  };
 
   const handleSpeakCurrent = (item: BornomalaItem | EnglishAlphabetItem, onFinish?: () => void) => {
     const itemIsEng = /[a-zA-Z]/.test(item.char) || ("upperChar" in item);
     let text = item.speechPrompt;
     if (!text) {
       if (itemIsEng) {
-        text = `Letter ${item.char}. ${item.char} is for ${item.word}. ${item.rhyme}`;
+        text = item.type === "number"
+          ? `${item.name}. ${item.word}. ${item.rhyme}`
+          : `Letter ${item.char}. ${item.char} is for ${item.word}. ${item.rhyme}`;
       } else {
         text = `${item.name}। ${item.char}-তে ${item.word}। ${item.rhyme}`;
       }
@@ -43,13 +54,7 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
 
   // Autoplay loop synchronized with speech ending
   useEffect(() => {
-    if (!isOpen) {
-      setIsPlaying(false);
-      stopSpeech();
-      return;
-    }
-
-    if (!isPlaying) {
+    if (!isOpen || !isPlaying || !currentItem) {
       stopSpeech();
       return;
     }
@@ -58,20 +63,21 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
     handleSpeakCurrent(currentItem, () => {
       // Pause for 1.4s after teacher speech finishes before switching to next card
       advanceTimer = setTimeout(() => {
-        setIndex((prev) => (prev + 1) % items.length);
+        setIndex((prev) => (prev + 1) % safeLength);
       }, 1400);
     });
 
     return () => {
       if (advanceTimer) clearTimeout(advanceTimer);
     };
-  }, [isPlaying, index, isOpen, items.length]);
+  }, [isPlaying, safeIndex, isOpen, safeLength, currentItem]);
 
   // Keyboard Escape listener
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        setIsPlaying(false);
         stopSpeech();
         onClose();
       }
@@ -80,14 +86,14 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !currentItem) return null;
 
   const handleNext = () => {
     playPopSound();
     stopSpeech();
-    const nextIdx = (index + 1) % items.length;
+    const nextIdx = (safeIndex + 1) % safeLength;
     setIndex(nextIdx);
-    if (!isPlaying) {
+    if (!isPlaying && items[nextIdx]) {
       handleSpeakCurrent(items[nextIdx]);
     }
   };
@@ -95,9 +101,9 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
   const handlePrev = () => {
     playPopSound();
     stopSpeech();
-    const prevIdx = (index - 1 + items.length) % items.length;
+    const prevIdx = (safeIndex - 1 + safeLength) % safeLength;
     setIndex(prevIdx);
-    if (!isPlaying) {
+    if (!isPlaying && items[prevIdx]) {
       handleSpeakCurrent(items[prevIdx]);
     }
   };
@@ -106,8 +112,7 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
     <div 
       onClick={(e) => {
         if (e.target === e.currentTarget) {
-          stopSpeech();
-          onClose();
+          handleClose();
         }
       }}
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200"
@@ -123,15 +128,12 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
           <div className="flex items-center gap-2">
             <span className="text-xl">🎴</span>
             <h3 id="flashcard-title" className="text-sm sm:text-base font-black text-slate-900">
-              ক্লাসরুম ফ্ল্যাশ কার্ড মোড ({index + 1}/{items.length})
+              ক্লাসরুম ফ্ল্যাশ কার্ড মোড ({safeIndex + 1}/{items.length})
             </h3>
           </div>
           <button
             type="button"
-            onClick={() => {
-              stopSpeech();
-              onClose();
-            }}
+            onClick={handleClose}
             className="p-2 rounded-xl text-slate-500 hover:bg-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />
@@ -154,7 +156,13 @@ export default function BornomalaFlashcardModal({ items, isOpen, onClose, langua
               {currentItem.matraLabel || currentItem.type}
             </div>
             <h2 className="text-3xl sm:text-5xl font-black text-slate-900">
-              {isEng ? `${currentItem.char} is for ${currentItem.word}` : `${currentItem.char}-তে ${currentItem.word}`}
+              {isEng
+                ? isNum
+                  ? `${currentItem.char} — ${currentItem.word}`
+                  : `${currentItem.char} is for ${currentItem.word}`
+                : isNum
+                ? `${currentItem.char} — ${currentItem.word}`
+                : `${currentItem.char}-তে ${currentItem.word}`}
             </h2>
             {isEng && "wordMeaningBn" in currentItem && (
               <p className="text-sm font-bold text-slate-600">

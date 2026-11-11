@@ -1,20 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
-import { 
-  Volume2, 
-  RotateCcw, 
-  Sparkles, 
-  Star, 
-  ArrowRight, 
-  Award,
+import {
+  Volume2,
+  RotateCcw,
+  Star,
+  ArrowRight,
   CheckCircle2,
   XCircle,
-  HelpCircle
 } from "lucide-react";
 import { VOWELS_DATA, CONSONANTS_DATA, NUMBERS_DATA, BornomalaItem } from "@/data/bornomalaData";
-import { ENGLISH_ALPHABET_DATA, ENGLISH_VOWELS, ENGLISH_CONSONANTS, ENGLISH_NUMBERS_DATA, EnglishAlphabetItem } from "@/data/englishAlphabetData";
+import {
+  ENGLISH_ALPHABET_DATA,
+  ENGLISH_VOWELS,
+  ENGLISH_CONSONANTS,
+  ENGLISH_NUMBERS_DATA,
+  EnglishAlphabetItem,
+} from "@/data/englishAlphabetData";
 import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
 import { playSuccessChime, playStarDing, playGentlePlop, playPopSound } from "@/utils/bornomalaAudio";
 
@@ -27,98 +30,181 @@ interface Props {
 type GameMode = "picture-to-letter" | "listen-to-letter" | "case-match";
 type QuizCategory = "all" | "vowels" | "consonants" | "numbers";
 
-export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, languageMode = "bangla" }: Props) {
+function getCategoryPool(
+  isEng: boolean,
+  cat: QuizCategory
+): (BornomalaItem | EnglishAlphabetItem)[] {
+  if (isEng) {
+    switch (cat) {
+      case "vowels":
+        return ENGLISH_VOWELS;
+      case "consonants":
+        return ENGLISH_CONSONANTS;
+      case "numbers":
+        return ENGLISH_NUMBERS_DATA;
+      case "all":
+      default:
+        return ENGLISH_ALPHABET_DATA;
+    }
+  }
+  switch (cat) {
+    case "vowels":
+      return VOWELS_DATA;
+    case "consonants":
+      return CONSONANTS_DATA;
+    case "numbers":
+      return NUMBERS_DATA;
+    case "all":
+    default:
+      return [...VOWELS_DATA, ...CONSONANTS_DATA, ...NUMBERS_DATA];
+  }
+}
+
+function buildQuizRound(
+  pool: (BornomalaItem | EnglishAlphabetItem)[],
+  deterministic: boolean = false
+): { targetIndex: number; options: (BornomalaItem | EnglishAlphabetItem)[] } {
+  if (pool.length === 0) return { targetIndex: 0, options: [] };
+  const targetIndex = deterministic ? 0 : Math.floor(Math.random() * pool.length);
+  const target = pool[targetIndex];
+  const distractors: (BornomalaItem | EnglishAlphabetItem)[] = [];
+
+  if (deterministic) {
+    for (let i = 1; i < pool.length && distractors.length < 3; i++) {
+      if (pool[i].id !== target.id) distractors.push(pool[i]);
+    }
+    return { targetIndex, options: [target, ...distractors] };
+  }
+
+  let attempts = 0;
+  while (distractors.length < 3 && attempts < 40) {
+    attempts++;
+    const rand = pool[Math.floor(Math.random() * pool.length)];
+    if (rand.id !== target.id && !distractors.some((d) => d.id === rand.id)) {
+      distractors.push(rand);
+    }
+  }
+
+  return {
+    targetIndex,
+    options: [target, ...distractors].sort(() => Math.random() - 0.5),
+  };
+}
+
+export default function BornomalaMiniGame({
+  onBackToCanvas,
+  onAddStars,
+  languageMode = "bangla",
+}: Props) {
   const isEng = languageMode === "english";
   const [gameMode, setGameMode] = useState<GameMode>("picture-to-letter");
   const [selectedCategory, setSelectedCategory] = useState<QuizCategory>("all");
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [options, setOptions] = useState<(BornomalaItem | EnglishAlphabetItem)[]>([]);
+  const [round, setRound] = useState(() =>
+    buildQuizRound(getCategoryPool(isEng, "all"), true)
+  );
   const [selectedAnswer, setSelectedAnswer] = useState<BornomalaItem | EnglishAlphabetItem | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState<number>(0);
   const [streak, setStreak] = useState<number>(0);
+  const advanceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const promptTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Pool of items based on active category and language
-  const getCategoryPool = (cat: QuizCategory): (BornomalaItem | EnglishAlphabetItem)[] => {
-    if (isEng) {
-      switch (cat) {
-        case "vowels": return ENGLISH_VOWELS;
-        case "consonants": return ENGLISH_CONSONANTS;
-        case "numbers": return ENGLISH_NUMBERS_DATA;
-        case "all":
-        default:
-          return ENGLISH_ALPHABET_DATA;
-      }
+  const clearPendingTimers = () => {
+    if (advanceTimerRef.current) {
+      clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
     }
-    switch (cat) {
-      case "vowels": return VOWELS_DATA;
-      case "consonants": return CONSONANTS_DATA;
-      case "numbers": return NUMBERS_DATA;
-      case "all":
-      default:
-        return [...VOWELS_DATA, ...CONSONANTS_DATA, ...NUMBERS_DATA];
+    if (promptTimerRef.current) {
+      clearTimeout(promptTimerRef.current);
+      promptTimerRef.current = null;
     }
   };
 
-  const currentPool = getCategoryPool(selectedCategory);
+  const currentPool = getCategoryPool(isEng, selectedCategory);
+  const currentIndex = round.targetIndex;
+  const options = round.options;
 
-  // Cleanup speech on unmount
+  const speakTargetPrompt = (
+    target: BornomalaItem | EnglishAlphabetItem,
+    mode: GameMode = gameMode
+  ) => {
+    const isNum = target.type === "number";
+    if (isEng) {
+      if (mode === "case-match" && !isNum) {
+        safeSpeak(`Find the small letter for capital ${target.char}!`, {
+          lang: "en-US",
+          voice: "ana",
+          rate: 0.88,
+        });
+        return;
+      }
+      const prompt = isNum
+        ? `Find the number ${target.name}!`
+        : `Find the letter ${target.char}! ${target.char} as in ${target.word}.`;
+      safeSpeak(prompt, { lang: "en-US", voice: "ana", rate: 0.88 });
+    } else {
+      const soundText = target.pureSound || target.name;
+      const prompt = isNum
+        ? `খুঁজে বের করো সংখ্যা: ${soundText}`
+        : `খুঁজে বের করো বর্ণ: ${soundText}`;
+      safeSpeak(prompt, { lang: "bn-BD", rate: 0.85 });
+    }
+  };
+
+  // Cleanup speech & timers on unmount
   useEffect(() => {
     return () => {
+      clearPendingTimers();
       stopSpeech();
     };
   }, []);
 
-  // Shuffle and generate question
-  const generateQuestion = () => {
+  // Shuffle and start a new round cleanly
+  const startNewRound = (
+    mode: GameMode = gameMode,
+    category: QuizCategory = selectedCategory
+  ) => {
+    clearPendingTimers();
     setSelectedAnswer(null);
     setIsCorrect(null);
     stopSpeech();
 
-    const pool = getCategoryPool(selectedCategory);
+    const pool = getCategoryPool(isEng, category);
     if (pool.length === 0) return;
 
-    // Pick random target
-    const randomTargetIndex = Math.floor(Math.random() * pool.length);
-    const target = pool[randomTargetIndex];
-    setCurrentIndex(randomTargetIndex);
+    const nextRound = buildQuizRound(pool, false);
+    setRound(nextRound);
+    const target = pool[nextRound.targetIndex];
 
-    // Pick 3 distractors
-    const distractors: (BornomalaItem | EnglishAlphabetItem)[] = [];
-    let attempts = 0;
-    while (distractors.length < 3 && attempts < 40) {
-      attempts++;
-      const rand = pool[Math.floor(Math.random() * pool.length)];
-      if (rand.id !== target.id && !distractors.some((d) => d.id === rand.id)) {
-        distractors.push(rand);
-      }
-    }
-
-    // Combine and shuffle options
-    const shuffled = [target, ...distractors].sort(() => Math.random() - 0.5);
-    setOptions(shuffled);
-
-    // If listen mode, speak target
-    if (gameMode === "listen-to-letter") {
-      setTimeout(() => {
-        if (isEng) {
-          const sound = "pureSound" in target && target.pureSound ? target.pureSound : target.char;
-          safeSpeak(`Find the letter: ${target.char}! Sound: ${sound}`, { lang: "en-US", voice: "ana", rate: 0.88 });
-        } else {
-          const soundText = target.pureSound || target.name;
-          safeSpeak(`খুঁজে বের করো বর্ণ: ${soundText}`, { lang: "bn-BD", rate: 0.85 });
-        }
-      }, 200);
-    } else if (gameMode === "case-match" && isEng) {
-      setTimeout(() => {
-        safeSpeak(`Find the small letter for capital ${target.char}!`, { lang: "en-US", voice: "ana", rate: 0.88 });
+    if (
+      target &&
+      (mode === "listen-to-letter" ||
+        (mode === "case-match" && isEng && target.type !== "number"))
+    ) {
+      promptTimerRef.current = setTimeout(() => {
+        speakTargetPrompt(target, mode);
       }, 200);
     }
   };
 
-  useEffect(() => {
-    generateQuestion();
-  }, [gameMode, selectedCategory, languageMode]);
+  const generateQuestion = () => startNewRound(gameMode, selectedCategory);
+
+  const handleModeSwitch = (nextMode: GameMode) => {
+    playPopSound();
+    setGameMode(nextMode);
+    startNewRound(nextMode, selectedCategory);
+  };
+
+  const handleCategorySwitch = (nextCat: QuizCategory) => {
+    playPopSound();
+    const resolvedMode =
+      nextCat === "numbers" && gameMode === "case-match"
+        ? "picture-to-letter"
+        : gameMode;
+    setGameMode(resolvedMode);
+    setSelectedCategory(nextCat);
+    startNewRound(resolvedMode, nextCat);
+  };
 
   const targetItem = currentPool[currentIndex] || currentPool[0];
 
@@ -143,22 +229,30 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
         colors: ["#ec4899", "#3b82f6", "#10b981", "#f59e0b"]
       });
 
+      const isNum = item.type === "number";
       if (isEng) {
-        safeSpeak(`Awesome! ${item.char} is for ${item.word}!`, {
+        const praise = isNum
+          ? `Awesome! ${item.char} means ${item.word}!`
+          : `Awesome! ${item.char} is for ${item.word}!`;
+        safeSpeak(praise, {
           lang: "en-US",
           voice: "ana",
           rate: 0.88,
         });
       } else {
-        safeSpeak(`চমৎকার! ঠিক বলেছ! ${item.char}-তে ${item.word}!`, {
+        const praise = isNum
+          ? `চমৎকার! ঠিক বলেছ! ${item.char} — ${item.word}!`
+          : `চমৎকার! ঠিক বলেছ! ${item.char}-তে ${item.word}!`;
+        safeSpeak(praise, {
           lang: "bn-BD",
           rate: 0.9,
         });
       }
 
-      // Auto advance after 1.6s
-      setTimeout(() => {
-        generateQuestion();
+      // Auto advance after 1.6s using current mode & category
+      clearPendingTimers();
+      advanceTimerRef.current = setTimeout(() => {
+        startNewRound(gameMode, selectedCategory);
       }, 1600);
     } else {
       setIsCorrect(false);
@@ -173,17 +267,7 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
   };
 
   const handleReplayAudio = () => {
-    if (isEng) {
-      if (gameMode === "case-match") {
-        safeSpeak(`Find the small letter for capital ${targetItem.char}!`, { lang: "en-US", voice: "ana", rate: 0.88 });
-      } else {
-        const sound = "pureSound" in targetItem && targetItem.pureSound ? targetItem.pureSound : targetItem.char;
-        safeSpeak(`Find the letter: ${targetItem.char}! Sound: ${sound}`, { lang: "en-US", voice: "ana", rate: 0.88 });
-      }
-    } else {
-      const soundText = targetItem.pureSound || targetItem.name;
-      safeSpeak(`খুঁজে বের করো বর্ণ: ${soundText}`, { lang: "bn-BD", rate: 0.85 });
-    }
+    speakTargetPrompt(targetItem, gameMode);
   };
 
   return (
@@ -193,10 +277,7 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={() => {
-              setGameMode("picture-to-letter");
-              playPopSound();
-            }}
+            onClick={() => handleModeSwitch("picture-to-letter")}
             className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               gameMode === "picture-to-letter"
                 ? "bg-pink-600 text-white shadow-md scale-102"
@@ -207,10 +288,7 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
           </button>
           <button
             type="button"
-            onClick={() => {
-              setGameMode("listen-to-letter");
-              playPopSound();
-            }}
+            onClick={() => handleModeSwitch("listen-to-letter")}
             className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               gameMode === "listen-to-letter"
                 ? "bg-purple-600 text-white shadow-md scale-102"
@@ -219,13 +297,10 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
           >
             {isEng ? "🎧 Listen & Pick" : "🎧 শুনে বর্ণ বাছাই করো"}
           </button>
-          {isEng && (
+          {isEng && selectedCategory !== "numbers" && (
             <button
               type="button"
-              onClick={() => {
-                setGameMode("case-match");
-                playPopSound();
-              }}
+              onClick={() => handleModeSwitch("case-match")}
               className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 gameMode === "case-match"
                   ? "bg-blue-600 text-white shadow-md scale-102"
@@ -253,62 +328,45 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
       {/* Category Filter Pills (Vowels, Consonants, Numbers) */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
         <span className="font-bold text-slate-500 shrink-0">{isEng ? "Topic:" : "বিষয়:"}</span>
-        <button
-          type="button"
-          onClick={() => {
-            playPopSound();
-            setSelectedCategory("all");
-          }}
-          className={`px-3 py-1.5 rounded-xl font-bold transition-all shrink-0 ${
-            selectedCategory === "all"
-              ? "bg-slate-800 text-white shadow-xs"
-              : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-          }`}
-        >
-          {isEng ? "🌈 All Letters" : "🌈 সকল বর্ণ ও সংখ্যা"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            playPopSound();
-            setSelectedCategory("vowels");
-          }}
-          className={`px-3 py-1.5 rounded-xl font-bold transition-all shrink-0 ${
-            selectedCategory === "vowels"
-              ? "bg-pink-600 text-white shadow-xs"
-              : "bg-pink-50 text-pink-700 hover:bg-pink-100"
-          }`}
-        >
-          {isEng ? "🌸 Vowels (5)" : "🌸 স্বরবর্ণ (১১)"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            playPopSound();
-            setSelectedCategory("consonants");
-          }}
-          className={`px-3 py-1.5 rounded-xl font-bold transition-all shrink-0 ${
-            selectedCategory === "consonants"
-              ? "bg-emerald-600 text-white shadow-xs"
-              : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-          }`}
-        >
-          {isEng ? "🌿 Consonants (21)" : "🌿 ব্যঞ্জনবর্ণ (৩৯)"}
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            playPopSound();
-            setSelectedCategory("numbers");
-          }}
-          className={`px-3 py-1.5 rounded-xl font-bold transition-all shrink-0 ${
-            selectedCategory === "numbers"
-              ? "bg-amber-600 text-white shadow-xs"
-              : "bg-amber-50 text-amber-700 hover:bg-amber-100"
-          }`}
-        >
-          {isEng ? "🔢 Numbers (0-20)" : "🔢 সংখ্যা (০-২০)"}
-        </button>
+        {(
+          [
+            {
+              id: "all",
+              label: isEng ? "🌈 All Letters" : "🌈 সকল বর্ণ ও সংখ্যা",
+              activeCls: "bg-slate-800 text-white shadow-xs",
+              idleCls: "bg-slate-100 text-slate-600 hover:bg-slate-200",
+            },
+            {
+              id: "vowels",
+              label: isEng ? "🌸 Vowels (5)" : "🌸 স্বরবর্ণ (১১)",
+              activeCls: "bg-pink-600 text-white shadow-xs",
+              idleCls: "bg-pink-50 text-pink-700 hover:bg-pink-100",
+            },
+            {
+              id: "consonants",
+              label: isEng ? "🌿 Consonants (21)" : "🌿 ব্যঞ্জনবর্ণ (৩৯)",
+              activeCls: "bg-emerald-600 text-white shadow-xs",
+              idleCls: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100",
+            },
+            {
+              id: "numbers",
+              label: isEng ? "🔢 Numbers (0-20)" : "🔢 সংখ্যা (০-২০)",
+              activeCls: "bg-amber-600 text-white shadow-xs",
+              idleCls: "bg-amber-50 text-amber-700 hover:bg-amber-100",
+            },
+          ] as const
+        ).map((cat) => (
+          <button
+            key={cat.id}
+            type="button"
+            onClick={() => handleCategorySwitch(cat.id)}
+            className={`px-3 py-1.5 rounded-xl font-bold transition-all shrink-0 ${
+              selectedCategory === cat.id ? cat.activeCls : cat.idleCls
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
 
       {/* Main Question Card */}
@@ -316,7 +374,13 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
         {gameMode === "picture-to-letter" ? (
           <div className="space-y-3">
             <span className="text-xs font-bold text-pink-600 uppercase tracking-widest block">
-              {isEng ? "Look at the picture and tap the correct letter" : "ছবি দেখে সঠিক বর্ণটিতে ট্যাপ করো"}
+              {isEng
+                ? targetItem.type === "number"
+                  ? "Count / look at the card and tap the matching number"
+                  : "Look at the picture and tap the correct letter"
+                : targetItem.type === "number"
+                ? "ছবি দেখে সঠিক সংখ্যাটিতে ট্যাপ করো"
+                : "ছবি দেখে সঠিক বর্ণটিতে ট্যাপ করো"}
             </span>
             <div className="text-8xl sm:text-9xl p-4 bg-pink-50 rounded-3xl inline-block shadow-inner border border-pink-100 animate-bounce duration-1000">
               {targetItem.imageEmoji}
@@ -325,7 +389,7 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
               {targetItem.word} {"wordMeaningBn" in targetItem && targetItem.wordMeaningBn ? `(${targetItem.wordMeaningBn})` : ""}
             </h3>
           </div>
-        ) : gameMode === "case-match" && isEng ? (
+        ) : gameMode === "case-match" && isEng && targetItem.type !== "number" ? (
           <div className="space-y-3">
             <span className="text-xs font-bold text-blue-600 uppercase tracking-widest block">
               Find the matching Small Letter (ছোটহাতের বর্ণ) for this Capital Letter:
@@ -340,7 +404,13 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
         ) : (
           <div className="space-y-4">
             <span className="text-xs font-bold text-purple-600 uppercase tracking-widest block">
-              {isEng ? "Listen carefully and select the correct letter" : "মন দিয়ে শুনে সঠিক বর্ণটি নির্বাচন করো"}
+              {isEng
+                ? targetItem.type === "number"
+                  ? "Listen carefully and select the correct number"
+                  : "Listen carefully and select the correct letter"
+                : targetItem.type === "number"
+                ? "মন দিয়ে শুনে সঠিক সংখ্যাটি নির্বাচন করো"
+                : "মন দিয়ে শুনে সঠিক বর্ণটি নির্বাচন করো"}
             </span>
             <div className="w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-3xl bg-purple-100 flex items-center justify-center text-purple-600 text-5xl shadow-md">
               🎧
@@ -402,7 +472,11 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
                 <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                 <span>
                   {isEng
-                    ? `Great! '${targetItem.char}' is for ${targetItem.word} — Correct! 🎉`
+                    ? targetItem.type === "number"
+                      ? `Great! '${targetItem.char}' — ${targetItem.word} — Correct! 🎉`
+                      : `Great! '${targetItem.char}' is for ${targetItem.word} — Correct! 🎉`
+                    : targetItem.type === "number"
+                    ? `দারুণ! '${targetItem.char}' (${targetItem.word}) — সঠিক উত্তর! 🎉`
                     : `দারুণ! '${targetItem.char}'-তে ${targetItem.word} — সঠিক উত্তর! 🎉`}
                 </span>
               </div>
@@ -411,7 +485,11 @@ export default function BornomalaMiniGame({ onBackToCanvas, onAddStars, language
                 <XCircle className="w-5 h-5 text-rose-600" />
                 <span>
                   {isEng
-                    ? `Incorrect! The correct letter was: '${targetItem.char}' (${targetItem.word})`
+                    ? targetItem.type === "number"
+                      ? `Incorrect! The correct number was: '${targetItem.char}' (${targetItem.word})`
+                      : `Incorrect! The correct letter was: '${targetItem.char}' (${targetItem.word})`
+                    : targetItem.type === "number"
+                    ? `ভুল উত্তর! সঠিক সংখ্যা হলো: '${targetItem.char}' (${targetItem.word})`
                     : `ভুল উত্তর! সঠিক উত্তর হলো: '${targetItem.char}' (${targetItem.word})`}
                 </span>
               </div>

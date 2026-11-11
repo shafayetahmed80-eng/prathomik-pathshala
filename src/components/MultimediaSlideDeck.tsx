@@ -63,6 +63,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { SLIDE_DECKS, PILOT_SLIDE_DECK, SlideItem, SyllableWord, SortingItem, PunctuationChallenge, SlideDeck } from "@/data/slidesData";
+import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
 import ActivityAColoringCanvas from "./ActivityAColoringCanvas";
 import StoryVisualStage from "./StoryVisualStage";
 import KiteCraftingVisualStage from "./KiteCraftingVisualStage";
@@ -120,10 +121,13 @@ export default function MultimediaSlideDeck() {
   const [activeSentenceIndex, setActiveSentenceIndex] = useState<number | null>(null);
   const [activeWordIndex, setActiveWordIndex] = useState<number | null>(null);
 
-  // Robust Audio Engine: Edge Neural Bengali TTS & Speech Anchoring
+  // Robust Audio Engine: Edge Neural TTS & Speech Anchoring
   const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const speechWatchdogRef = useRef<NodeJS.Timeout | null>(null);
+  const karaokeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioStreamPlayerRef = useRef<HTMLAudioElement | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const speechRecognitionRef = useRef<any>(null);
   const [isBanglaSpeaking, setIsBanglaSpeaking] = useState<boolean>(false);
 
   // Lesson Picker Filter & Search State
@@ -410,30 +414,43 @@ export default function MultimediaSlideDeck() {
     }
   }, []);
 
-  // Helper to pick best available voice on this device
+  // Helper to pick best available English system voice on this device
   const getDeviceVoiceAndLang = (mode: "bd" | "intl") => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) {
-      return { voice: null, lang: "en-US" };
+      return { voice: null, lang: "en-US", hasEnglishVoice: false };
     }
     const voices = window.speechSynthesis.getVoices() || [];
     let chosen: SpeechSynthesisVoice | null = null;
-    let fallbackLang = "en-US";
 
     if (mode === "bd") {
-      chosen = voices.find((v) => v.lang.includes("en-IN") || v.name.includes("India") || v.name.includes("Ravi") || v.name.includes("Heera"))
-            || voices.find((v) => v.lang.startsWith("en-GB"))
-            || voices.find((v) => v.lang.startsWith("en-US") || v.lang.startsWith("en"))
-            || (voices.length > 0 ? voices[0] : null);
-      fallbackLang = chosen ? chosen.lang : "en-IN";
+      chosen =
+        voices.find(
+          (v) =>
+            v.lang.includes("en-IN") ||
+            v.name.includes("India") ||
+            v.name.includes("Ravi") ||
+            v.name.includes("Heera")
+        ) ||
+        voices.find((v) => v.lang.startsWith("en-GB")) ||
+        voices.find((v) => v.lang.startsWith("en")) ||
+        null;
     } else {
-      chosen = voices.find((v) => (v.lang.startsWith("en-US") || v.lang.startsWith("en-GB")) && (v.name.includes("Natural") || v.name.includes("Google") || v.name.includes("Online")))
-            || voices.find((v) => v.lang.startsWith("en-US") || v.lang.startsWith("en-GB"))
-            || voices.find((v) => v.lang.startsWith("en"))
-            || (voices.length > 0 ? voices[0] : null);
-      fallbackLang = chosen ? chosen.lang : "en-US";
+      chosen =
+        voices.find(
+          (v) =>
+            (v.lang.startsWith("en-US") || v.lang.startsWith("en-GB")) &&
+            (v.name.includes("Natural") || v.name.includes("Google") || v.name.includes("Online"))
+        ) ||
+        voices.find((v) => v.lang.startsWith("en-US") || v.lang.startsWith("en-GB")) ||
+        voices.find((v) => v.lang.startsWith("en")) ||
+        null;
     }
 
-    return { voice: chosen, lang: fallbackLang };
+    return {
+      voice: chosen,
+      lang: chosen ? chosen.lang : mode === "bd" ? "en-IN" : "en-US",
+      hasEnglishVoice: Boolean(chosen),
+    };
   };
 
   // Safe speed for mobile TTS engines (Android Google TTS crashes if rate < 0.5)
@@ -444,8 +461,9 @@ export default function MultimediaSlideDeck() {
     return spd;
   };
 
-  // Stop all active audio streams, syntheses, and recognition
+  // Stop all active audio streams, syntheses, karaoke timers, and mic recognition
   const stopAllSpeech = () => {
+    stopSpeech();
     if (typeof window !== "undefined" && "speechSynthesis" in window) {
       try {
         window.speechSynthesis.cancel();
@@ -458,9 +476,19 @@ export default function MultimediaSlideDeck() {
       } catch {}
       audioStreamPlayerRef.current = null;
     }
+    if (karaokeIntervalRef.current) {
+      clearInterval(karaokeIntervalRef.current);
+      karaokeIntervalRef.current = null;
+    }
     if (speechWatchdogRef.current) {
       clearTimeout(speechWatchdogRef.current);
       speechWatchdogRef.current = null;
+    }
+    if (speechRecognitionRef.current) {
+      try {
+        speechRecognitionRef.current.abort();
+      } catch {}
+      speechRecognitionRef.current = null;
     }
     activeUtteranceRef.current = null;
     setIsSpeaking(false);
@@ -470,127 +498,216 @@ export default function MultimediaSlideDeck() {
     setActiveMicSentence(null);
   };
 
+  // Cleanup all audio streams, Web Audio oscillators, and mic recognition when leaving /slides
+  useEffect(() => {
+    return () => {
+      stopSpeech();
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        try {
+          window.speechSynthesis.cancel();
+        } catch {}
+      }
+      if (karaokeIntervalRef.current) {
+        clearInterval(karaokeIntervalRef.current);
+        karaokeIntervalRef.current = null;
+      }
+      if (speechWatchdogRef.current) {
+        clearTimeout(speechWatchdogRef.current);
+        speechWatchdogRef.current = null;
+      }
+      if (audioStreamPlayerRef.current) {
+        try {
+          audioStreamPlayerRef.current.pause();
+        } catch {}
+        audioStreamPlayerRef.current = null;
+      }
+      if (speechRecognitionRef.current) {
+        try {
+          speechRecognitionRef.current.abort();
+        } catch {}
+        speechRecognitionRef.current = null;
+      }
+      if (ambienceOscRef.current) {
+        try {
+          ambienceOscRef.current.stop();
+        } catch {}
+        ambienceOscRef.current = null;
+      }
+      if (audioCtxRef.current) {
+        try {
+          audioCtxRef.current.close();
+        } catch {}
+        audioCtxRef.current = null;
+      }
+    };
+  }, []);
+
   // Auto-stop speech on slide change or deck switch
   useEffect(() => {
     stopAllSpeech();
   }, [selectedDeckId, currentSlideIndex]);
 
-  // Stream Microsoft Edge Neural Bengali Voice (/api/tts)
-  const speakBangla = async (text: string) => {
+  // Stream Microsoft Edge Neural Bengali Voice (/api/tts with offline cache & watchdog)
+  const speakBangla = (text: string) => {
     stopAllSpeech();
-    try {
-      setIsBanglaSpeaking(true);
-      const url = `/api/tts?text=${encodeURIComponent(text)}&lang=bn-BD&voice=nabanita`;
-      const audio = new Audio(url);
-      audioStreamPlayerRef.current = audio;
-      audio.onended = () => {
-        setIsBanglaSpeaking(false);
-        audioStreamPlayerRef.current = null;
-      };
-      audio.onerror = () => {
-        setIsBanglaSpeaking(false);
-        audioStreamPlayerRef.current = null;
-      };
-      await audio.play();
-    } catch (err) {
-      console.warn("Bengali TTS stream playback failed", err);
-      setIsBanglaSpeaking(false);
-    }
+    setIsBanglaSpeaking(true);
+    safeSpeak(text, {
+      lang: "bn-BD",
+      voice: "nabanita",
+      rate: 0.9,
+      onEnd: () => setIsBanglaSpeaking(false),
+      onError: () => setIsBanglaSpeaking(false),
+    });
   };
 
-  // Play an individual sentence with word-by-word motion karaoke & GC-leak protection
+  // Play an individual sentence with word-by-word motion karaoke & Neural TTS fallback
   const playSentence = (
-    sentenceText: string, 
-    sentenceIndex: number, 
-    speaker?: string, 
+    sentenceText: string,
+    sentenceIndex: number,
+    speaker?: string,
     onComplete?: () => void
   ) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    if (typeof window === "undefined") return;
     stopAllSpeech();
 
     setActiveSentenceIndex(sentenceIndex);
     setActiveWordIndex(0);
-
-    const utterance = new SpeechSynthesisUtterance(sentenceText);
-    activeUtteranceRef.current = utterance; // Anchor reference against Chromium GC bug
-
-    const { voice, lang } = getDeviceVoiceAndLang(accentMode);
-    if (voice) utterance.voice = voice;
-    utterance.lang = lang;
-
-    const effectiveSpeed = getSafeSpeed(speechSpeed);
-    utterance.rate = effectiveSpeed;
-    utterance.pitch = (speaker === "Ant" || speaker?.includes("Ant") || speaker?.includes("Guide") || speaker?.includes("Student A")) 
-      ? 1.15 
-      : (speaker === "Grasshopper" || speaker?.includes("Maker") || speaker?.includes("Student B")) 
-      ? 0.95 
-      : (accentMode === "bd" ? 1.05 : 1.0);
-
-    // Fallback word highlighting for mobile devices where onboundary is not supported
-    const words = sentenceText.split(" ");
-    let currentWordIdx = 0;
-    let boundaryFired = false;
-    let fallbackTimer: NodeJS.Timeout | null = null;
-
-    const approxMsPerWord = Math.max(220, (sentenceText.length * 60) / (effectiveSpeed * (words.length || 1)));
-
-    // Word boundary tracking for real-time motion karaoke
-    utterance.onboundary = (event) => {
-      if (event.name === "word") {
-        boundaryFired = true;
-        if (fallbackTimer) clearInterval(fallbackTimer);
-        const idx = getWordIndexAtChar(sentenceText, event.charIndex);
-        setActiveWordIndex(idx);
-      }
-    };
-
-    // If boundary doesn't fire within approx duration, start fallback pacing
-    fallbackTimer = setInterval(() => {
-      if (boundaryFired) {
-        if (fallbackTimer) clearInterval(fallbackTimer);
-        return;
-      }
-      currentWordIdx++;
-      if (currentWordIdx < words.length) {
-        setActiveWordIndex(currentWordIdx);
-      } else {
-        if (fallbackTimer) clearInterval(fallbackTimer);
-      }
-    }, approxMsPerWord);
-
     setIsSpeaking(true);
 
+    const effectiveSpeed = getSafeSpeed(speechSpeed);
+    const words = sentenceText.split(" ");
+    const approxMsPerWord = Math.max(
+      220,
+      (sentenceText.length * 60) / (effectiveSpeed * (words.length || 1))
+    );
+
     const cleanup = () => {
-      if (fallbackTimer) clearInterval(fallbackTimer);
+      if (karaokeIntervalRef.current) {
+        clearInterval(karaokeIntervalRef.current);
+        karaokeIntervalRef.current = null;
+      }
       if (speechWatchdogRef.current) {
         clearTimeout(speechWatchdogRef.current);
         speechWatchdogRef.current = null;
       }
-      if (activeUtteranceRef.current === utterance) {
-        activeUtteranceRef.current = null;
-      }
+      activeUtteranceRef.current = null;
       setIsSpeaking(false);
       setActiveSentenceIndex(null);
       setActiveWordIndex(null);
     };
 
+    const startKaraokePacer = (checkBoundaryFired?: () => boolean) => {
+      if (karaokeIntervalRef.current) {
+        clearInterval(karaokeIntervalRef.current);
+      }
+      let currentWordIdx = 0;
+      karaokeIntervalRef.current = setInterval(() => {
+        if (checkBoundaryFired?.()) {
+          if (karaokeIntervalRef.current) {
+            clearInterval(karaokeIntervalRef.current);
+            karaokeIntervalRef.current = null;
+          }
+          return;
+        }
+        currentWordIdx++;
+        if (currentWordIdx < words.length) {
+          setActiveWordIndex(currentWordIdx);
+        } else if (karaokeIntervalRef.current) {
+          clearInterval(karaokeIntervalRef.current);
+          karaokeIntervalRef.current = null;
+        }
+      }, approxMsPerWord);
+    };
+
+    const playWithNeuralTts = () => {
+      const isBn = /[\u0980-\u09FF]/.test(sentenceText);
+      const isMaleSpeaker = Boolean(
+        speaker &&
+          /Grasshopper|Maker|Student B|Raju|Sunil|Rahat|Saikat|Sagar|Osman|Fazle|Crow|Lion|Father|Doctor/i.test(
+            speaker
+          )
+      );
+      safeSpeak(sentenceText, {
+        lang: isBn ? "bn-BD" : "en-US",
+        voice: isBn ? "nabanita" : isMaleSpeaker ? "guy" : "ana",
+        rate: effectiveSpeed,
+        onStart: () => startKaraokePacer(),
+        onEnd: () => {
+          cleanup();
+          onComplete?.();
+        },
+        onError: () => {
+          cleanup();
+        },
+      });
+    };
+
+    const isBnText = /[\u0980-\u09FF]/.test(sentenceText);
+    const { voice, lang, hasEnglishVoice } = getDeviceVoiceAndLang(accentMode);
+
+    // Use studio Neural TTS for Bengali, International accent, or devices lacking English system voices
+    if (
+      isBnText ||
+      accentMode === "intl" ||
+      !hasEnglishVoice ||
+      !("speechSynthesis" in window)
+    ) {
+      playWithNeuralTts();
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(sentenceText);
+    activeUtteranceRef.current = utterance; // Anchor reference against Chromium GC bug
+    if (voice) utterance.voice = voice;
+    utterance.lang = lang;
+    utterance.rate = effectiveSpeed;
+    utterance.pitch =
+      speaker === "Ant" ||
+      speaker?.includes("Ant") ||
+      speaker?.includes("Guide") ||
+      speaker?.includes("Student A")
+        ? 1.15
+        : speaker === "Grasshopper" || speaker?.includes("Maker") || speaker?.includes("Student B")
+        ? 0.95
+        : 1.05;
+
+    let boundaryFired = false;
+    utterance.onboundary = (event) => {
+      if (event.name === "word") {
+        boundaryFired = true;
+        if (karaokeIntervalRef.current) {
+          clearInterval(karaokeIntervalRef.current);
+          karaokeIntervalRef.current = null;
+        }
+        const idx = getWordIndexAtChar(sentenceText, event.charIndex);
+        setActiveWordIndex(idx);
+      }
+    };
+
+    startKaraokePacer(() => boundaryFired);
+
     utterance.onend = () => {
       cleanup();
-      if (onComplete) onComplete();
+      onComplete?.();
     };
 
     utterance.onerror = () => {
-      cleanup();
+      if (karaokeIntervalRef.current) {
+        clearInterval(karaokeIntervalRef.current);
+        karaokeIntervalRef.current = null;
+      }
+      playWithNeuralTts();
     };
 
     // Adaptive watchdog timer to prevent speech engine freezing indefinitely
     const maxSafeDuration = Math.max(12000, approxMsPerWord * words.length * 1.6);
-    if (speechWatchdogRef.current) clearTimeout(speechWatchdogRef.current);
     speechWatchdogRef.current = setTimeout(() => {
       if (activeUtteranceRef.current === utterance) {
-        try { window.speechSynthesis.cancel(); } catch {}
+        try {
+          window.speechSynthesis.cancel();
+        } catch {}
         cleanup();
-        if (onComplete) onComplete();
+        onComplete?.();
       }
     }, maxSafeDuration);
 
@@ -600,13 +717,13 @@ export default function MultimediaSlideDeck() {
       }
       window.speechSynthesis.speak(utterance);
     } catch {
-      cleanup();
+      playWithNeuralTts();
     }
   };
 
   // Play all sentences & dialogues sequentially on the slide with word-by-word karaoke
   const playSlideAudio = () => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    if (typeof window === "undefined") return;
     if (isSpeaking || isBanglaSpeaking) {
       stopAllSpeech();
       return;
@@ -645,9 +762,13 @@ export default function MultimediaSlideDeck() {
     playNextSentence();
   };
 
-  // Dual-Accent Speech Synthesis Engine (🇧🇩 Bangladeshi Classroom Phonics vs 🌐 International Accent)
-  // Auto-routes Bengali phrases to Microsoft Edge Neural Bengali Voice (/api/tts)
-  const handleSpeak = (text: string, forceAccent?: "bd" | "intl", customSpeed?: 0.25 | 0.5 | 0.7 | 0.85) => {
+  // Dual-Accent Speech Synthesis Engine (🇧🇩 Bangladeshi Classroom Phonics vs 🌐 International Neural Accent)
+  // Auto-routes Bengali phrases & International accent to Microsoft Edge Neural Voice (/api/tts)
+  const handleSpeak = (
+    text: string,
+    forceAccent?: "bd" | "intl",
+    customSpeed?: 0.25 | 0.5 | 0.7 | 0.85
+  ) => {
     if (!text || text.trim().length === 0) return;
 
     // If text contains Bengali characters, route to Edge Neural Bengali Voice
@@ -656,7 +777,7 @@ export default function MultimediaSlideDeck() {
       return;
     }
 
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    if (typeof window === "undefined") return;
     stopAllSpeech();
 
     // Strip punctuation for crisp single-word articulation
@@ -665,15 +786,34 @@ export default function MultimediaSlideDeck() {
 
     const effectiveAccent = forceAccent || accentMode;
     const effectiveSpeed = getSafeSpeed(customSpeed || speechSpeed);
+    const { voice, lang, hasEnglishVoice } = getDeviceVoiceAndLang(effectiveAccent);
+
+    const speakWithNeuralEnglish = () => {
+      setIsSpeaking(true);
+      safeSpeak(targetText, {
+        lang: "en-US",
+        voice: "ana",
+        rate: effectiveSpeed,
+        onEnd: () => setIsSpeaking(false),
+        onError: () => setIsSpeaking(false),
+      });
+    };
+
+    if (
+      effectiveAccent === "intl" ||
+      !hasEnglishVoice ||
+      !("speechSynthesis" in window)
+    ) {
+      speakWithNeuralEnglish();
+      return;
+    }
+
     const utterance = new SpeechSynthesisUtterance(targetText);
     activeUtteranceRef.current = utterance; // Anchor reference against GC
-
-    const { voice, lang } = getDeviceVoiceAndLang(effectiveAccent);
-
     if (voice) utterance.voice = voice;
     utterance.lang = lang;
     utterance.rate = effectiveSpeed;
-    utterance.pitch = effectiveAccent === "bd" ? 1.05 : 1.0;
+    utterance.pitch = 1.05;
 
     setIsSpeaking(true);
     utterance.onend = () => {
@@ -682,7 +822,7 @@ export default function MultimediaSlideDeck() {
     };
     utterance.onerror = () => {
       if (activeUtteranceRef.current === utterance) activeUtteranceRef.current = null;
-      setIsSpeaking(false);
+      speakWithNeuralEnglish();
     };
 
     try {
@@ -692,15 +832,12 @@ export default function MultimediaSlideDeck() {
       window.speechSynthesis.speak(utterance);
     } catch {
       activeUtteranceRef.current = null;
-      setIsSpeaking(false);
+      speakWithNeuralEnglish();
     }
   };
 
   const handleNext = () => {
-    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    setIsSpeaking(false);
-    setActiveSentenceIndex(null);
-    setActiveWordIndex(null);
+    stopAllSpeech();
     setActiveStorySubTab("reading");
     setIsTeacherNotesExpanded(false);
     if (currentSlideIndex < totalSlides - 1) {
@@ -711,10 +848,7 @@ export default function MultimediaSlideDeck() {
   };
 
   const handlePrev = () => {
-    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    setIsSpeaking(false);
-    setActiveSentenceIndex(null);
-    setActiveWordIndex(null);
+    stopAllSpeech();
     setActiveStorySubTab("reading");
     setIsTeacherNotesExpanded(false);
     if (currentSlideIndex > 0) {
@@ -2065,9 +2199,16 @@ export default function MultimediaSlideDeck() {
   // 1. Voice Practice (Speak & Score with Mic)
   const startVoicePractice = (targetSentence: string, sIdx: number) => {
     if (typeof window === "undefined") return;
+    stopAllSpeech();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      alert("আপনার ডিভাইসের এই ব্রাউজারে সরাসরি মাইক্রোফোন স্পিচ সাপোর্ট পাওয়া যায়নি। গুগল ক্রোম বা এজ ব্রাউজার ব্যবহার করুন।");
+      setSpeechFeedback({
+        sentenceIdx: sIdx,
+        score: 0,
+        text: "এই ব্রাউজারে সরাসরি মাইক্রোফোন স্পিচ সাপোর্ট নেই; ক্রোম বা এজ ব্যবহার করুন।",
+        status: "retry",
+      });
       return;
     }
 
@@ -2076,11 +2217,14 @@ export default function MultimediaSlideDeck() {
       recognition.lang = accentMode === "bd" ? "en-IN" : "en-US";
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
+      speechRecognitionRef.current = recognition;
 
       setSpeechFeedback({ sentenceIdx: sIdx, score: 0, text: "শুনছি... এখন বলো! 🎙️", status: "listening" });
       setActiveMicSentence(sIdx);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       recognition.onresult = (e: any) => {
+        speechRecognitionRef.current = null;
         setActiveMicSentence(null);
         const spokenText = e.results[0][0].transcript.toLowerCase();
         const targetWords = targetSentence.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()?"']/g, "").split(" ");
@@ -2113,6 +2257,7 @@ export default function MultimediaSlideDeck() {
       };
 
       recognition.onerror = () => {
+        speechRecognitionRef.current = null;
         setActiveMicSentence(null);
         setSpeechFeedback({
           sentenceIdx: sIdx,
@@ -2124,11 +2269,13 @@ export default function MultimediaSlideDeck() {
       };
 
       recognition.onend = () => {
+        speechRecognitionRef.current = null;
         setActiveMicSentence(null);
       };
 
       recognition.start();
     } catch {
+      speechRecognitionRef.current = null;
       setActiveMicSentence(null);
       setSpeechFeedback({
         sentenceIdx: sIdx,
@@ -5547,7 +5694,7 @@ export default function MultimediaSlideDeck() {
           aria-modal="true" 
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-2 sm:p-4 animate-fade-in overflow-y-auto"
         >
-          <div className="bg-white rounded-3xl p-4 sm:p-8 max-w-3xl w-full border border-slate-200 shadow-2xl space-y-6 my-auto max-h-[92vh] overflow-y-auto no-scrollbar">
+          <div className="bg-white rounded-3xl p-4 sm:p-8 max-w-3xl w-full border border-slate-200 shadow-2xl space-y-6 my-auto max-h-[92vh] overflow-y-auto no-scrollbar print:max-h-none print:overflow-visible">
             {/* Modal Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 print:hidden">
               <div className="flex items-center gap-2">

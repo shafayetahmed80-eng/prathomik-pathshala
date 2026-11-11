@@ -103,18 +103,21 @@ export function preloadSpeech(text: string, options?: SafeSpeakOptions) {
   } catch {}
 }
 
-export function stopSpeech() {
+export function stopSpeech(options?: { preserveBgm?: boolean }) {
   activeRequestId++; // Invalidate any ongoing speech callbacks
   if (watchdogTimer) {
     clearTimeout(watchdogTimer);
     watchdogTimer = null;
   }
 
-  try {
-    bgmEngine.stopBgm();
-  } catch {}
+  if (!options?.preserveBgm) {
+    try {
+      bgmEngine.stopBgm();
+    } catch {}
+  }
 
   if (activeAudio) {
+    activeAudio.onplaying = null;
     activeAudio.onended = null;
     activeAudio.onerror = null;
     try {
@@ -212,15 +215,15 @@ export function safeSpeak(text: string, options?: SafeSpeakOptions) {
     /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const safeRate = isMobile ? Math.max(0.65, rawRate) : rawRate;
 
-  // Cancel prior audio and advance sequence token
-  stopSpeech();
+  // Cancel prior spoken audio without killing active poetry BGM, and advance sequence token
+  stopSpeech({ preserveBgm: true });
   const currentReqId = activeRequestId;
 
   // Set adaptive safety watchdog timer to prevent stuck pulsing button state
   const adaptiveTimeout = Math.max(4500, Math.min(14000, text.length * 180));
   watchdogTimer = setTimeout(() => {
     if (activeRequestId === currentReqId) {
-      stopSpeech();
+      stopSpeech({ preserveBgm: true });
       options?.onEnd?.();
     }
   }, adaptiveTimeout);
