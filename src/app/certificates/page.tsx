@@ -10,7 +10,7 @@ import SiteFooter from "@/components/SiteFooter";
 export default function CertificatesPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-amber-50/40 via-white to-emerald-50/30 text-slate-900">
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-white/95 border-b border-amber-100 shadow-xs print:hidden">
+      <header id="site-header" className="sticky top-0 z-40 backdrop-blur-md bg-white/95 border-b border-amber-100 shadow-xs print:hidden">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
             <Link
