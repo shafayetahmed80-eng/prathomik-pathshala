@@ -652,19 +652,32 @@ export const NCTB_2026_BLUEPRINTS: Record<string, NctbExamBlueprint> = {
  * সহকারী ফাংশন: যেকোনো শ্রেণি ও বিষয়ের জন্য এনসিটিবি ২০২৬ ব্লুপ্রিন্ট খুঁজে বের করা
  */
 export function getNctb2026Blueprint(classId: string, subjectKey: string): NctbExamBlueprint {
+  const normalizedSubject = (subjectKey === "islamic" || subjectKey === "hindu") ? "religion" : subjectKey;
   const specificKey = `${classId}-${subjectKey}`;
   if (NCTB_2026_BLUEPRINTS[specificKey]) {
     return NCTB_2026_BLUEPRINTS[specificKey];
   }
 
+  const religionSpecificKey = `${classId}-${normalizedSubject}`;
+  if (NCTB_2026_BLUEPRINTS[religionSpecificKey]) {
+    const base = NCTB_2026_BLUEPRINTS[religionSpecificKey];
+    return {
+      ...base,
+      subjectKey: subjectKey as any,
+      subjectName: subjectKey === "islamic" ? "ইসলাম ও নৈতিক শিক্ষা" : (subjectKey === "hindu" ? "হিন্দুধর্ম ও নৈতিক শিক্ষা" : base.subjectName)
+    };
+  }
+
   // Fallback to class generic or Class 3/1 equivalent
   const isClass1Or2 = classId === "class-1" || classId === "class-2";
-  const fallbackKey = isClass1Or2 ? `class-1-${subjectKey}` : `class-3-${subjectKey}`;
+  const fallbackKey = isClass1Or2 ? `class-1-${normalizedSubject}` : `class-3-${normalizedSubject}`;
 
   if (NCTB_2026_BLUEPRINTS[fallbackKey]) {
     return {
       ...NCTB_2026_BLUEPRINTS[fallbackKey],
       classId: classId as any,
+      subjectKey: subjectKey as any,
+      subjectName: subjectKey === "islamic" ? "ইসলাম ও নৈতিক শিক্ষা" : (subjectKey === "hindu" ? "হিন্দুধর্ম ও নৈতিক শিক্ষা" : NCTB_2026_BLUEPRINTS[fallbackKey].subjectName)
     };
   }
 

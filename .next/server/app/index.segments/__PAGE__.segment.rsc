@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-3:"static/chunks/app/layout-ee274ef52e145a17.js"
+3:"static/chunks/app/layout-fd859b1a6ba92473.js"
 4:I[8346,["177","$3"],"default"]
 5:I[6626,[],""]
 6:I[7632,[],""]
-:HL["/_next/static/css/b47643a0fde12d38.css","style"]
+:HL["/_next/static/css/cd88027c1af4cf0e.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","style"]
 2:T6aa,
               try {
@@ -35,24 +35,24 @@
               } catch (e) {}
             9:X
 a:[["children",{"s":"__PAGE__","h":160,"d":{"r":"$Lb","p":"$@c","v":null,"s":"$9"}}]]
-0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/b47643a0fde12d38.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":"$L7"}]]}]}]],[]]}]]}]]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":"$Ld","p":"$@e","v":null,"s":"$9"}},"a":"$@f","u":"$@10","b":"mJ-kqCQnIBR4PPvKnLegO"}
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/cd88027c1af4cf0e.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":"$L7"}]]}]}]],[]]}]]}]]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":"$Ld","p":"$@e","v":null,"s":"$9"}},"a":"$@f","u":"$@10","b":"_UeA-XcmxvJ0bbBWlbQgo"}
 11:I[4659,[],"ClientPageRoot"]
 12:"static/chunks/325-c66616a62dcd567e.js"
 13:"static/chunks/160-144399ea2bd47fde.js"
 14:"static/chunks/112-1b95ae01b2ce46c0.js"
 15:"static/chunks/232-37020f11324e034a.js"
 16:"static/chunks/595-b3bbe4e380399af9.js"
-17:"static/chunks/344-16eb8517efcb2c61.js"
-18:"static/chunks/280-db485813ceedc2bc.js"
-19:"static/chunks/438-4099f745b19a17c1.js"
+17:"static/chunks/344-dbc165ae94f377f3.js"
+18:"static/chunks/96-ec0c4df7752572f8.js"
+19:"static/chunks/438-21d7d93a6679dcba.js"
 1a:"static/chunks/207-2f204320f04ea288.js"
 1b:"static/chunks/557-71eb9776d2eb2ac8.js"
 1c:"static/chunks/276-2c5d839e79b1f88b.js"
 1d:"static/chunks/857-5c37b6a41deff4c9.js"
 1e:"static/chunks/322-7cb8534afeaad181.js"
 1f:"static/chunks/767-d17887f41411878d.js"
-20:"static/chunks/app/page-e98c26fe98469c82.js"
-21:I[2677,["325","$12","160","$13","112","$14","232","$15","595","$16","344","$17","280","$18","438","$19","207","$1a","557","$1b","276","$1c","857","$1d","322","$1e","767","$1f","974","$20"],"default"]
+20:"static/chunks/app/page-090f052a79ad6af9.js"
+21:I[2677,["325","$12","160","$13","112","$14","232","$15","595","$16","344","$17","96","$18","438","$19","207","$1a","557","$1b","276","$1c","857","$1d","322","$1e","767","$1f","974","$20"],"default"]
 24:I[4395,[],"OutletBoundary"]
 25:"$Sreact.suspense"
 27:"ViewportBoundary"

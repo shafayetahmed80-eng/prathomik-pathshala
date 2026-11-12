@@ -13,12 +13,12 @@ export interface CategoryMeta {
 
 export const ALL_CATEGORIES_META: CategoryMeta[] = [
   // 🏛️ মৌলিক প্রশ্ন ক্যাটাগরি (Core Categories - সকল বিষয়ে প্রযোজ্য)
-  { key: "mcq", label: "সঠিক উত্তর / টিক চিহ্ন (MCQ)", defaultMarks: 1, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "combined"], description: "৪টি অপশন থেকে ১টি সঠিক উত্তর নির্বাচন", group: "core" },
-  { key: "fillInTheBlanks", label: "শূন্যস্থান পূরণ (Fill in blanks)", defaultMarks: 1, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "combined"], description: "উপযুক্ত শব্দ দিয়ে খালি ঘর পূরণ", group: "core" },
-  { key: "trueFalse", label: "সত্য বা মিথ্যা যাচাই (True / False)", defaultMarks: 1, applicableSubjects: ["english", "science", "bgs", "religion", "bangla"], description: "প্রদত্ত তথ্যটি সত্য নাকি মিথ্যা নির্ণয়", group: "core" },
-  { key: "shortQuestions", label: "সংক্ষিপ্ত প্রশ্নোত্তর (Short Questions)", defaultMarks: 2, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "combined"], description: "১-২ বাক্যে নির্দিষ্ট উত্তর লিখন", group: "core" },
-  { key: "matching", label: "বাম-ডান মিলকরণ (Matching)", defaultMarks: 5, applicableSubjects: ["bangla", "english", "science", "bgs", "religion", "math", "combined"], description: "বাম পাশের বাক্যাংশের সাথে ডান পাশ মিলকরণ", group: "core" },
-  { key: "broadQuestions", label: "বর্ণনামূলক / বড় প্রশ্ন (Broad)", defaultMarks: 5, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "combined"], description: "সৃজনশীল বা বিস্তারিত বর্ণনামূলক উত্তর", group: "core" },
+  { key: "mcq", label: "সঠিক উত্তর / টিক চিহ্ন (MCQ)", defaultMarks: 1, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "islamic", "hindu", "combined"], description: "৪টি অপশন থেকে ১টি সঠিক উত্তর নির্বাচন", group: "core" },
+  { key: "fillInTheBlanks", label: "শূন্যস্থান পূরণ (Fill in blanks)", defaultMarks: 1, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "islamic", "hindu", "combined"], description: "উপযুক্ত শব্দ দিয়ে খালি ঘর পূরণ", group: "core" },
+  { key: "trueFalse", label: "সত্য বা মিথ্যা যাচাই (True / False)", defaultMarks: 1, applicableSubjects: ["english", "science", "bgs", "religion", "islamic", "hindu", "bangla"], description: "প্রদত্ত তথ্যটি সত্য নাকি মিথ্যা নির্ণয়", group: "core" },
+  { key: "shortQuestions", label: "সংক্ষিপ্ত প্রশ্নোত্তর (Short Questions)", defaultMarks: 2, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "islamic", "hindu", "combined"], description: "১-২ বাক্যে নির্দিষ্ট উত্তর লিখন", group: "core" },
+  { key: "matching", label: "বাম-ডান মিলকরণ (Matching)", defaultMarks: 5, applicableSubjects: ["bangla", "english", "science", "bgs", "religion", "islamic", "hindu", "math", "combined"], description: "বাম পাশের বাক্যাংশের সাথে ডান পাশ মিলকরণ", group: "core" },
+  { key: "broadQuestions", label: "বর্ণনামূলক / বড় প্রশ্ন (Broad)", defaultMarks: 5, applicableSubjects: ["bangla", "english", "math", "science", "bgs", "religion", "islamic", "hindu", "combined"], description: "সৃজনশীল বা বিস্তারিত বর্ণনামূলক উত্তর", group: "core" },
 
   // 📖 ভাষা ও ব্যাকরণ ক্যাটাগরি (Language & Grammar - বাংলা ও ইংরেজি)
   { key: "rearrange", label: "শব্দ/বাক্য পুনর্বিন্যাস (Rearrange)", defaultMarks: 1, applicableSubjects: ["english", "bangla"], description: "এলোমেলো শব্দ সাজিয়ে অর্থপূর্ণ বাক্য গঠন", group: "language" },
@@ -44,8 +44,8 @@ export const ALL_CATEGORIES_META: CategoryMeta[] = [
   { key: "timeMeasurement", label: "পরিমাপ ও সময় সম্পর্কিত হিসাব (Time & Measure)", defaultMarks: 3, applicableSubjects: ["math"], description: "ঘণ্টা-মিনিট, মিটার-সেন্টিমিটার ও ক্যালেন্ডারের সমস্যা", group: "math" },
 
   // 🔬 বিজ্ঞান, সমাজ ও ধর্ম ক্যাটাগরি (Science, BGS & Religion)
-  { key: "classification", label: "ছক পূরণ ও শ্রেণিবিন্যাস (Classification)", defaultMarks: 5, applicableSubjects: ["science", "bgs", "religion"], description: "প্রাকৃতিক/মানবসৃষ্ট বা উদ্ভিজ্জ/প্রাণিজ উপাদানের ছক পূরণ", group: "science" },
-  { key: "differences", label: "পার্থক্য বা তুলনা লিখন (Differences)", defaultMarks: 5, applicableSubjects: ["science", "bgs", "religion"], description: "দুটি বিষয়ের মধ্যে ৩-৪টি সুস্পষ্ট পার্থক্য লেখা", group: "science" },
+  { key: "classification", label: "ছক পূরণ ও শ্রেণিবিন্যাস (Classification)", defaultMarks: 5, applicableSubjects: ["science", "bgs", "religion", "islamic", "hindu"], description: "প্রাকৃতিক/মানবসৃষ্ট বা উদ্ভিজ্জ/প্রাণিজ উপাদানের ছক পূরণ", group: "science" },
+  { key: "differences", label: "পার্থক্য বা তুলনা লিখন (Differences)", defaultMarks: 5, applicableSubjects: ["science", "bgs", "religion", "islamic", "hindu"], description: "দুটি বিষয়ের মধ্যে ৩-৪টি সুস্পষ্ট পার্থক্য লেখা", group: "science" },
   { key: "causeEffect", label: "কারণ ও ফলাফল নির্ণয় (Cause & Effect)", defaultMarks: 4, applicableSubjects: ["science", "bgs"], description: "পরিবেশ দূষণ বা প্রাকৃতিক ঘটনার কারণ ও ক্ষতিকর প্রভাব", group: "science" }
 ];
 
@@ -196,7 +196,7 @@ export function getDefaultBlueprint(
       }
     } else {
       // শ্রেণি ৩, ৪ ও ৫: ৭০ নম্বর
-      if (subjectKey === "science" || subjectKey === "bgs" || subjectKey === "religion") {
+      if (subjectKey === "science" || subjectKey === "bgs" || subjectKey === "religion" || subjectKey === "islamic" || subjectKey === "hindu") {
         if (blueprint["mcq"]) { blueprint["mcq"].enabled = true; blueprint["mcq"].count = 10; blueprint["mcq"].marksPerQuestion = 1; } // 10
         if (blueprint["fillInTheBlanks"]) { blueprint["fillInTheBlanks"].enabled = true; blueprint["fillInTheBlanks"].count = 5; blueprint["fillInTheBlanks"].marksPerQuestion = 1; } // 5
         if (blueprint["trueFalse"]) { blueprint["trueFalse"].enabled = true; blueprint["trueFalse"].count = 5; blueprint["trueFalse"].marksPerQuestion = 1; } // 5
