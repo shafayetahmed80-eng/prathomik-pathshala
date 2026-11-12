@@ -1265,12 +1265,20 @@ export default function BanglaBornomalaLab() {
             }}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs ${
               showMiniGame
-                ? "bg-purple-600 text-white"
+                ? "bg-purple-600 text-white hover:bg-purple-700 shadow-sm"
                 : "bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
             }`}
           >
-            <Gamepad2 className="w-4 h-4" />
-            <span>{showMiniGame ? "ক্যানভাসে ফিরুন" : "🎮 বর্ণ খেলা"}</span>
+            <Gamepad2 className={`w-4 h-4 ${showMiniGame ? "text-white" : "text-purple-600"}`} />
+            <span>
+              {showMiniGame
+                ? languageMode === "english"
+                  ? "Back to Canvas"
+                  : "ক্যানভাসে ফিরুন"
+                : languageMode === "english"
+                ? "🎮 Game Arcade"
+                : "🎮 বর্ণ খেলা"}
+            </span>
           </button>
 
           {/* Flashcard Modal Toggle */}

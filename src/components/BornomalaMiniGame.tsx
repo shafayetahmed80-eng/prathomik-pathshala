@@ -9,6 +9,7 @@ import {
   ArrowRight,
   CheckCircle2,
   XCircle,
+  Gamepad2,
 } from "lucide-react";
 import { VOWELS_DATA, CONSONANTS_DATA, NUMBERS_DATA, BornomalaItem } from "@/data/bornomalaData";
 import {
@@ -20,6 +21,8 @@ import {
 } from "@/data/englishAlphabetData";
 import { safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import { playSuccessChime, playStarDing, playGentlePlop, playPopSound } from "@/utils/bornomalaAudio";
+import BornomalaBalloonPopGame from "./BornomalaBalloonPopGame";
+import BornomalaMemoryGame from "./BornomalaMemoryGame";
 
 interface Props {
   onBackToCanvas: () => void;
@@ -29,6 +32,7 @@ interface Props {
   initialSeed?: number;
 }
 
+type ArcadeTab = "balloon-pop" | "quiz" | "memory";
 type GameMode = "picture-to-letter" | "listen-to-letter" | "case-match";
 type QuizCategory = "all" | "vowels" | "consonants" | "numbers";
 
@@ -132,6 +136,7 @@ export default function BornomalaMiniGame({
   initialSeed = 0,
 }: Props) {
   const isEng = languageMode === "english";
+  const [arcadeTab, setArcadeTab] = useState<ArcadeTab>("balloon-pop");
   const [gameMode, setGameMode] = useState<GameMode>("picture-to-letter");
   const [selectedCategory, setSelectedCategory] = useState<QuizCategory>("all");
   const [round, setRound] = useState(() =>
@@ -262,10 +267,9 @@ export default function BornomalaMiniGame({
   const targetItem = currentPool[currentIndex] || currentPool[0];
 
   const handleSelectOption = (item: BornomalaItem | EnglishAlphabetItem) => {
-    if (isCorrect === true || wrongOptionIds.includes(item.id)) return;
-
-    playPopSound();
     unlockMobileAudio({ primeSilent: true });
+    if (isCorrect !== null) return;
+    if (wrongOptionIds.includes(item.id)) return;
 
     if (item.id === targetItem.id) {
       const earnedStars = wrongOptionIds.length === 0 ? 10 : 5;
@@ -331,267 +335,358 @@ export default function BornomalaMiniGame({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
-      {/* Game Mode Switcher & Stats Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl border border-pink-200">
-        <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => handleModeSwitch("picture-to-letter")}
-            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              gameMode === "picture-to-letter"
-                ? "bg-pink-600 text-white shadow-md scale-102"
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-            }`}
-          >
-            {isEng ? "🖼️ Picture to Letter" : "🖼️ ছবি দেখে বর্ণ মেলাও"}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleModeSwitch("listen-to-letter")}
-            className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              gameMode === "listen-to-letter"
-                ? "bg-purple-600 text-white shadow-md scale-102"
-                : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-            }`}
-          >
-            {isEng ? "🎧 Listen & Pick" : "🎧 শুনে বর্ণ বাছাই করো"}
-          </button>
-          {isEng && selectedCategory !== "numbers" && (
-            <button
-              type="button"
-              onClick={() => handleModeSwitch("case-match")}
-              className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                gameMode === "case-match"
-                  ? "bg-blue-600 text-white shadow-md scale-102"
-                  : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-              }`}
-            >
-              🔤 Capital ➔ Small Match
-            </button>
-          )}
-        </div>
-
+      {/* 🎮 Bornomala Game Arcade Master Header */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl shadow-xl border border-indigo-700/60">
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 text-xs sm:text-sm font-bold">
-            <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-            <span>{isEng ? `Score: ${score}` : `স্কোর: ${score}`}</span>
+          <div className="p-2 bg-white/10 rounded-2xl border border-white/20">
+            <Gamepad2 className="w-6 h-6 text-amber-400 animate-pulse" />
           </div>
-          {streak > 1 && (
-            <div className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-900 text-xs font-bold animate-pulse">
-              🔥 {streak} {isEng ? "Streak!" : "একটানা সঠিক!"}
-            </div>
-          )}
+          <div>
+            <h3 className="font-extrabold text-sm sm:text-base tracking-wide flex items-center gap-2">
+              <span>{isEng ? "Bornomala Game Arcade" : "বর্ণমালা গেম আর্কেড"}</span>
+              <span className="text-[10px] bg-amber-400 text-slate-900 font-black px-2 py-0.5 rounded-full uppercase">
+                {isEng ? "Play & Learn" : "খেলাচ্ছলে শিক্ষা"}
+              </span>
+            </h3>
+            <p className="text-[11px] text-indigo-200 hidden sm:block">
+              {isEng
+                ? "Fun educational games for literacy & foundational numeracy"
+                : "প্রাক-প্রাথমিক ও প্রাথমিক শিশুদের জন্য আনন্দময় শিক্ষামূলক গেম"}
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Category Filter Pills (Vowels, Consonants, Numbers) */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-        <span className="font-bold text-slate-500 shrink-0">{isEng ? "Topic:" : "বিষয়:"}</span>
-        {(
-          [
-            {
-              id: "all",
-              label: isEng ? "🌈 All Letters" : "🌈 সকল বর্ণ ও সংখ্যা",
-              activeCls: "bg-slate-800 text-white shadow-xs",
-              idleCls: "bg-slate-100 text-slate-600 hover:bg-slate-200",
-            },
-            {
-              id: "vowels",
-              label: isEng ? "🌸 Vowels (5)" : "🌸 স্বরবর্ণ (১১)",
-              activeCls: "bg-pink-600 text-white shadow-xs",
-              idleCls: "bg-pink-50 text-pink-700 hover:bg-pink-100",
-            },
-            {
-              id: "consonants",
-              label: isEng ? "🌿 Consonants (21)" : "🌿 ব্যঞ্জনবর্ণ (৩৯)",
-              activeCls: "bg-emerald-600 text-white shadow-xs",
-              idleCls: "bg-emerald-50 text-emerald-700 hover:bg-emerald-100",
-            },
-            {
-              id: "numbers",
-              label: isEng ? "🔢 Numbers (0-20)" : "🔢 সংখ্যা (০-২০)",
-              activeCls: "bg-amber-600 text-white shadow-xs",
-              idleCls: "bg-amber-50 text-amber-700 hover:bg-amber-100",
-            },
-          ] as const
-        ).map((cat) => (
+        {/* Master Arcade Game Switcher Tabs */}
+        <div className="flex items-center gap-1.5 bg-black/40 p-1 rounded-2xl border border-white/10">
           <button
-            key={cat.id}
             type="button"
-            onClick={() => handleCategorySwitch(cat.id)}
-            className={`px-3 py-1.5 rounded-xl font-bold transition-all shrink-0 ${
-              selectedCategory === cat.id ? cat.activeCls : cat.idleCls
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setArcadeTab("balloon-pop");
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+              arcadeTab === "balloon-pop"
+                ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-md scale-102"
+                : "text-indigo-200 hover:text-white hover:bg-white/10"
             }`}
           >
-            {cat.label}
+            <span>🎈</span>
+            <span>{isEng ? "Balloon Pop" : "বেলুন পপ"}</span>
           </button>
-        ))}
+
+          <button
+            type="button"
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setArcadeTab("quiz");
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+              arcadeTab === "quiz"
+                ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md scale-102"
+                : "text-indigo-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>🎯</span>
+            <span>{isEng ? "Letter Quiz" : "বর্ণ কুইজ"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setArcadeTab("memory");
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+              arcadeTab === "memory"
+                ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md scale-102"
+                : "text-indigo-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>🎴</span>
+            <span>{isEng ? "Memory Flip" : "মেমোরি কার্ড"}</span>
+          </button>
+        </div>
       </div>
 
-      {/* Main Question Card */}
-      <div className="p-6 sm:p-10 rounded-3xl bg-white border-2 border-pink-100 shadow-lg text-center space-y-6">
-        {gameMode === "picture-to-letter" ? (
-          <div className="space-y-3">
-            <span className="text-xs font-bold text-pink-600 uppercase tracking-widest block">
-              {isEng
-                ? targetItem.type === "number"
-                  ? "Count / look at the card and tap the matching number"
-                  : "Look at the picture and tap the correct letter"
-                : targetItem.type === "number"
-                ? "ছবি দেখে সঠিক সংখ্যাটিতে ট্যাপ করো"
-                : "ছবি দেখে সঠিক বর্ণটিতে ট্যাপ করো"}
-            </span>
-            <div className="text-8xl sm:text-9xl p-4 bg-pink-50 rounded-3xl inline-block shadow-inner border border-pink-100 animate-bounce duration-1000">
-              {targetItem.imageEmoji}
-            </div>
-            <h3 className="text-2xl sm:text-3xl font-black text-slate-800">
-              {targetItem.word} {"wordMeaningBn" in targetItem && targetItem.wordMeaningBn ? `(${targetItem.wordMeaningBn})` : ""}
-            </h3>
-          </div>
-        ) : gameMode === "case-match" && isEng && targetItem.type !== "number" ? (
-          <div className="space-y-3">
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-widest block">
-              Find the matching Small Letter (ছোটহাতের বর্ণ) for this Capital Letter:
-            </span>
-            <div className="w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-3xl bg-blue-50 border-2 border-blue-200 flex items-center justify-center text-blue-700 font-black text-6xl sm:text-7xl shadow-inner">
-              {"upperChar" in targetItem ? targetItem.upperChar : targetItem.char}
-            </div>
-            <h3 className="text-xl sm:text-2xl font-black text-slate-800">
-              Capital {targetItem.char} ➔ ?
-            </h3>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <span className="text-xs font-bold text-purple-600 uppercase tracking-widest block">
-              {isEng
-                ? targetItem.type === "number"
-                  ? "Listen carefully and select the correct number"
-                  : "Listen carefully and select the correct letter"
-                : targetItem.type === "number"
-                ? "মন দিয়ে শুনে সঠিক সংখ্যাটি নির্বাচন করো"
-                : "মন দিয়ে শুনে সঠিক বর্ণটি নির্বাচন করো"}
-            </span>
-            <button
-              type="button"
-              onClick={handleReplayAudio}
-              className={`w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-3xl flex items-center justify-center text-5xl shadow-md transition-all hover:scale-105 active:scale-95 ${
-                isCorrect === null
-                  ? "bg-purple-100 text-purple-600 ring-4 ring-purple-300/60 animate-pulse cursor-pointer"
-                  : "bg-purple-50 text-purple-400 cursor-default"
-              }`}
-              title={isEng ? "Click to replay audio" : "উচ্চারণ পুনরায় শুনতে ক্লিক করো"}
-              aria-label={isEng ? "Replay audio cue" : "উচ্চারণ আবার শুনুন"}
-            >
-              🎧
-            </button>
-            <div>
+      {/* 🎈 TAB 1: BALLOON POP BLITZ GAME */}
+      {arcadeTab === "balloon-pop" && (
+        <BornomalaBalloonPopGame
+          key={`balloon-${languageMode}`}
+          onAddStars={onAddStars}
+          languageMode={languageMode}
+          teacherVoice={teacherVoice}
+        />
+      )}
+
+      {/* 🎴 TAB 3: MEMORY MATCH FLIP GAME */}
+      {arcadeTab === "memory" && (
+        <BornomalaMemoryGame
+          key={`memory-${languageMode}`}
+          onAddStars={onAddStars}
+          languageMode={languageMode}
+          teacherVoice={teacherVoice}
+        />
+      )}
+
+      {/* 🎯 TAB 2: CLASSIC PICTURE & PHONICS QUIZ */}
+      {arcadeTab === "quiz" && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          {/* Game Mode Switcher & Stats Bar */}
+          <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl border border-pink-200">
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                onClick={handleReplayAudio}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-md transition-all hover:scale-105 active:scale-95"
+                onClick={() => handleModeSwitch("picture-to-letter")}
+                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                  gameMode === "picture-to-letter"
+                    ? "bg-pink-600 text-white shadow-md scale-102"
+                    : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                }`}
               >
-                <Volume2 className="w-5 h-5 animate-pulse" />
-                <span>{isEng ? "Listen Again (Replay)" : "উচ্চারণ আবার শোনো"}</span>
+                {isEng ? "🖼️ Picture to Letter" : "🖼️ ছবি দেখে বর্ণ মেলাও"}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleModeSwitch("listen-to-letter")}
+                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                  gameMode === "listen-to-letter"
+                    ? "bg-purple-600 text-white shadow-md scale-102"
+                    : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                }`}
+              >
+                {isEng ? "🎧 Listen & Pick" : "🎧 শুনে বর্ণ বাছাই করো"}
+              </button>
+              {isEng && selectedCategory !== "numbers" && (
+                <button
+                  type="button"
+                  onClick={() => handleModeSwitch("case-match")}
+                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                    gameMode === "case-match"
+                      ? "bg-blue-600 text-white shadow-md scale-102"
+                      : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
+                  }`}
+                >
+                  🔤 Capital ➔ Small Match
+                </button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 text-xs sm:text-sm font-bold">
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span>{isEng ? `Score: ${score}` : `স্কোর: ${score}`}</span>
+              </div>
+              {streak > 1 && (
+                <div className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-900 text-xs font-bold animate-pulse">
+                  🔥 {streak} {isEng ? "Streak!" : "একটানা সঠিক!"}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Category Filter Pills (Vowels, Consonants, Numbers) */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
+            <span className="font-bold text-slate-500 shrink-0">{isEng ? "Topic:" : "বিষয়:"}</span>
+            {(
+              [
+                { id: "all", label: isEng ? "All" : "সকল" },
+                { id: "vowels", label: isEng ? "Vowels" : "স্বরবর্ণ" },
+                { id: "consonants", label: isEng ? "Consonants" : "ব্যঞ্জনবর্ণ" },
+                { id: "numbers", label: isEng ? "Numbers (০-১০০)" : "সংখ্যা (০-১০০)" },
+              ] as { id: QuizCategory; label: string }[]
+            ).map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => handleCategorySwitch(cat.id)}
+                className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
+                  selectedCategory === cat.id
+                    ? "bg-slate-800 text-white shadow-sm"
+                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Question Stage Card */}
+          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm text-center space-y-6">
+            {/* Mode: Picture-to-Letter */}
+            {gameMode === "picture-to-letter" && (
+              <div className="space-y-4">
+                <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">
+                  {isEng ? "Which letter starts this word?" : "এই ছবিটি কোন বর্ণের সাথে সম্পর্কিত?"}
+                </p>
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <span className="text-6xl sm:text-7xl filter drop-shadow-md select-none transform hover:scale-110 transition-transform">
+                    {"imageEmoji" in targetItem && targetItem.imageEmoji ? targetItem.imageEmoji : "⭐"}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl sm:text-2xl font-black text-slate-800">
+                      {targetItem.word}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleReplayAudio}
+                      className="p-1.5 rounded-full hover:bg-slate-100 text-pink-600 transition-colors"
+                      title={isEng ? "Listen audio" : "উচ্চারণ শুনুন"}
+                    >
+                      <Volume2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                  {"wordMeaningBn" in targetItem && targetItem.wordMeaningBn && (
+                    <span className="text-xs font-semibold text-slate-500">
+                      ({targetItem.wordMeaningBn})
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Mode: Listen-to-Letter */}
+            {gameMode === "listen-to-letter" && (
+              <div className="space-y-4">
+                <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">
+                  {isEng ? "Listen carefully and choose the matching letter:" : "মনোযোগ দিয়ে শুনে সঠিক বর্ণটি নির্বাচন করো:"}
+                </p>
+                <div className="flex flex-col items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleReplayAudio}
+                    className="relative group p-6 rounded-3xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-xl hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-4 focus:ring-purple-300"
+                    title={isEng ? "Click to replay audio" : "পুনরায় শুনতে ক্লিক করুন"}
+                  >
+                    <span className="absolute -inset-1 rounded-3xl bg-purple-400 opacity-40 group-hover:opacity-75 blur-sm animate-pulse" />
+                    <span className="relative text-5xl sm:text-6xl filter drop-shadow select-none">
+                      🎧
+                    </span>
+                  </button>
+                  <span className="text-xs font-bold text-purple-700 animate-pulse">
+                    {isEng ? "Tap headphone to listen again" : "শব্দ শুনতে হেডফোনে ট্যাপ করো"}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Mode: Capital to Small Match */}
+            {gameMode === "case-match" && isEng && (
+              <div className="space-y-4">
+                <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">
+                  Match the Small Letter for:
+                </p>
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-24 h-24 rounded-3xl bg-blue-50 border-2 border-blue-300 flex items-center justify-center shadow-inner">
+                    <span className="text-6xl font-black text-blue-700">
+                      {targetItem.char}
+                    </span>
+                  </div>
+                  <span className="text-xs font-bold text-slate-500">
+                    Capital {targetItem.char}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* 4 Interactive Option Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto pt-2">
+              {options.map((item) => {
+                const isSelectedAndCorrect = isCorrect === true && item.id === targetItem.id;
+                const isWrong = wrongOptionIds.includes(item.id);
+
+                const displayGlyph =
+                  gameMode === "case-match" && "lowerChar" in item
+                    ? item.lowerChar
+                    : item.char;
+
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    disabled={isCorrect === true || isWrong}
+                    onClick={() => handleSelectOption(item)}
+                    className={`relative p-5 sm:p-6 rounded-2xl border-2 font-black transition-all transform active:scale-95 flex flex-col items-center justify-center gap-2 shadow-sm ${
+                      isSelectedAndCorrect
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-700 scale-105 shadow-md ring-4 ring-emerald-200"
+                        : isWrong
+                        ? "border-rose-300 bg-rose-50 text-rose-400 opacity-50 cursor-not-allowed scale-95"
+                        : "border-slate-200 bg-white hover:border-pink-400 hover:bg-pink-50/50 text-slate-800 hover:scale-102 shadow-xs"
+                    }`}
+                  >
+                    <span className="text-3xl sm:text-4xl">
+                      {displayGlyph}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-500 truncate max-w-full">
+                      {item.name}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Feedback Alert */}
+            {(isCorrect === true || (isCorrect === false && lastWrongItem)) && (
+              <div className="pt-2 animate-in zoom-in-95 duration-200">
+                {isCorrect === true ? (
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-100 text-emerald-800 font-bold text-sm border border-emerald-200 shadow-sm">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                    <span>
+                      {isEng
+                        ? targetItem.type === "number"
+                          ? `Great! '${targetItem.char}' — ${targetItem.word} — Correct! 🎉`
+                          : `Great! '${targetItem.char}' is for ${targetItem.word} — Correct! 🎉`
+                        : targetItem.type === "number"
+                        ? `দারুণ! '${targetItem.char}' (${targetItem.word}) — সঠিক উত্তর! 🎉`
+                        : `দারুণ! '${targetItem.char}'-তে ${targetItem.word} — সঠিক উত্তর! 🎉`}
+                    </span>
+                  </div>
+                ) : lastWrongItem ? (
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-100 text-amber-900 font-bold text-sm border border-amber-200 shadow-sm">
+                    <XCircle className="w-5 h-5 text-rose-600" />
+                    <span>
+                      {(() => {
+                        const wrongGlyph =
+                          gameMode === "case-match" && "lowerChar" in lastWrongItem
+                            ? lastWrongItem.lowerChar
+                            : lastWrongItem.char;
+                        return isEng
+                          ? `Not '${wrongGlyph}' — try another option!`
+                          : `'${wrongGlyph}' নয় — আরেকটি বিকল্প চেষ্টা করো!`;
+                      })()}
+                    </span>
+                  </div>
+                ) : null}
+              </div>
+            )}
+
+            {/* Actions Footer */}
+            <div className="pt-4 flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={generateQuestion}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>{isEng ? "Next Question" : "পরের প্রশ্ন"}</span>
               </button>
             </div>
           </div>
-        )}
-
-        {/* 4 Multi-choice Option Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto pt-4">
-          {options.map((opt) => {
-            const isWrongPicked = wrongOptionIds.includes(opt.id);
-            const isThisTarget = opt.id === targetItem.id;
-            const showOptionName = gameMode !== "case-match" || isCorrect === true;
-
-            let buttonStyle = "bg-slate-50 hover:bg-pink-50 border-2 border-slate-200 text-slate-800";
-            if (isCorrect === true) {
-              if (isThisTarget) {
-                buttonStyle = "bg-emerald-500 text-white border-2 border-emerald-600 scale-105 shadow-lg";
-              } else if (isWrongPicked) {
-                buttonStyle = "bg-rose-100 text-rose-500 border-2 border-rose-200 opacity-70";
-              } else {
-                buttonStyle = "opacity-40 bg-slate-100 border-slate-200 text-slate-400";
-              }
-            } else if (isWrongPicked) {
-              buttonStyle = "bg-rose-500 text-white border-2 border-rose-600 animate-shake cursor-not-allowed opacity-90";
-            }
-
-            const optionGlyph = gameMode === "case-match" && "lowerChar" in opt
-              ? opt.lowerChar
-              : opt.char;
-
-            return (
-              <button
-                key={opt.id}
-                type="button"
-                disabled={isCorrect === true || isWrongPicked}
-                onClick={() => handleSelectOption(opt)}
-                className={`h-24 sm:h-28 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all duration-200 active:scale-95 font-black text-4xl sm:text-5xl ${buttonStyle}`}
-              >
-                <span>{optionGlyph}</span>
-                {showOptionName && (
-                  <span className="text-[11px] font-semibold opacity-80">{opt.name}</span>
-                )}
-              </button>
-            );
-          })}
         </div>
+      )}
 
-        {/* Feedback Alert */}
-        {(isCorrect === true || (isCorrect === false && lastWrongItem)) && (
-          <div className="pt-2 animate-in zoom-in-95 duration-200">
-            {isCorrect === true ? (
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-100 text-emerald-800 font-bold text-sm border border-emerald-200 shadow-sm">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                <span>
-                  {isEng
-                    ? targetItem.type === "number"
-                      ? `Great! '${targetItem.char}' — ${targetItem.word} — Correct! 🎉`
-                      : `Great! '${targetItem.char}' is for ${targetItem.word} — Correct! 🎉`
-                    : targetItem.type === "number"
-                    ? `দারুণ! '${targetItem.char}' (${targetItem.word}) — সঠিক উত্তর! 🎉`
-                    : `দারুণ! '${targetItem.char}'-তে ${targetItem.word} — সঠিক উত্তর! 🎉`}
-                </span>
-              </div>
-            ) : lastWrongItem ? (
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-100 text-amber-900 font-bold text-sm border border-amber-200 shadow-sm">
-                <XCircle className="w-5 h-5 text-rose-600" />
-                <span>
-                  {(() => {
-                    const wrongGlyph =
-                      gameMode === "case-match" && "lowerChar" in lastWrongItem
-                        ? lastWrongItem.lowerChar
-                        : lastWrongItem.char;
-                    return isEng
-                      ? `Not '${wrongGlyph}' — try another option!`
-                      : `'${wrongGlyph}' নয় — আরেকটি বিকল্প চেষ্টা করো!`;
-                  })()}
-                </span>
-              </div>
-            ) : null}
-          </div>
-        )}
-
-        {/* Actions Footer */}
-        <div className="pt-4 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={generateQuestion}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-colors"
-          >
-            <RotateCcw className="w-4 h-4" />
-            <span>{isEng ? "Next Question" : "পরের প্রশ্ন"}</span>
-          </button>
-          <button
-            type="button"
-            onClick={onBackToCanvas}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs sm:text-sm transition-colors"
-          >
-            <span>{isEng ? "Back to Canvas" : "হাতেখড়ি ক্যানভাসে ফিরুন"}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
+      {/* Global Arcade Bottom Action: Return to Handwriting Canvas */}
+      <div className="pt-2 flex items-center justify-center">
+        <button
+          type="button"
+          onClick={onBackToCanvas}
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-slate-900 hover:bg-black text-white font-black text-xs sm:text-sm shadow-md transition-all active:scale-95"
+        >
+          <span>{isEng ? "Back to Tracing Canvas" : "হাতেখড়ি ক্যানভাসে ফিরুন"}</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
