@@ -27,9 +27,10 @@ interface RuledCellProps {
 function RuledTracingCell({ isEng, isNumber = false, char }: RuledCellProps) {
   const isCombiningKar = Boolean(char && /^[\u09BE-\u09CC\u09D7]$/.test(char));
   // Single Bengali conjuncts like ক্ষ, জ্ঞ, হ্ম have UTF-16 length 3 even though they occupy 1 glyph cell.
+  const is3DigitNumber = Boolean(char && isNumber && char.length >= 3);
   const isWideChar = Boolean(char && ((isEng && char.length >= 2) || (isNumber && char.length >= 2) || isCombiningKar));
-  const engFontSize = isWideChar ? 48 : 62;
-  const bnFontSize = isWideChar ? 44 : 58;
+  const engFontSize = is3DigitNumber ? 38 : isWideChar ? 48 : 62;
+  const bnFontSize = is3DigitNumber ? 36 : isWideChar ? 44 : 58;
   const displayChar = isCombiningKar ? `\u25CC${char}` : char;
 
   return (
