@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-3:"static/chunks/app/layout-ebddcc03233524ee.js"
-4:I[8995,["177","$3"],"default"]
-5:I[3013,[],""]
-6:I[4497,[],""]
-:HL["/_next/static/css/ec5eb4e4bc12e85c.css","style"]
+3:"static/chunks/app/layout-fd859b1a6ba92473.js"
+4:I[8346,["177","$3"],"default"]
+5:I[6626,[],""]
+6:I[7632,[],""]
+:HL["/_next/static/css/88843d4bbf731ed6.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","style"]
 2:T6aa,
               try {
@@ -38,21 +38,21 @@ d:X
 d:C
 e:[["children",{"s":"__PAGE__","h":160,"d":{"r":"$Lf","p":"$@10","v":null,"s":"$9"}}]]
 a:[["children",{"s":"books","h":96,"d":{"r":"$Lb","p":"$@c","v":"$d","s":"$9"},"c":"$Qe"}]]
-0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/ec5eb4e4bc12e85c.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":"$L7"}]]}]}]],[]]}]]}]]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":"$L11","p":"$@12","v":null,"s":"$9"}},"a":"$@13","u":"$@14","b":"EP7c8xlNOwPqQVb9ltxEI"}
-15:I[1980,[],"ClientPageRoot"]
-16:"static/chunks/860-dd3bc16808666e15.js"
-17:"static/chunks/258-2b6fd93878fb684d.js"
-18:"static/chunks/109-e1af5dce86bf910d.js"
-19:"static/chunks/361-c121ab39abb22bcd.js"
-1a:"static/chunks/app/books/page-47a416eb8b562216.js"
-1b:I[6791,["860","$16","258","$17","109","$18","361","$19","495","$1a"],"default"]
-1e:I[7688,[],"OutletBoundary"]
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/88843d4bbf731ed6.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":"$L7"}]]}]}]],[]]}]]}]]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":"$L11","p":"$@12","v":null,"s":"$9"}},"a":"$@13","u":"$@14","b":"L91aV1zXjYS8X6xrAKZxc"}
+15:I[4659,[],"ClientPageRoot"]
+16:"static/chunks/325-c66616a62dcd567e.js"
+17:"static/chunks/232-37020f11324e034a.js"
+18:"static/chunks/595-b3bbe4e380399af9.js"
+19:"static/chunks/857-5c37b6a41deff4c9.js"
+1a:"static/chunks/app/books/page-98100b4c510b8c28.js"
+1b:I[2166,["325","$16","232","$17","595","$18","857","$19","495","$1a"],"default"]
+1e:I[4395,[],"OutletBoundary"]
 1f:"$Sreact.suspense"
 21:"ViewportBoundary"
-22:I[7688,[],"$21"]
+22:I[4395,[],"$21"]
 23:"MetadataBoundary"
-24:I[7688,[],"$23"]
-25:I[9521,[],"IconMark"]
+24:I[4395,[],"$23"]
+25:I[466,[],"IconMark"]
 7:["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]
 b:["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}]
 f:["$","$1","c",{"children":[["$","$L15",null,{"Component":"$1b","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@1c","$@1d"]}}],null,["$","$L1e",null,{"children":["$","$1f",null,{"name":"Next.MetadataOutlet","children":"$@20"}]}]]}]

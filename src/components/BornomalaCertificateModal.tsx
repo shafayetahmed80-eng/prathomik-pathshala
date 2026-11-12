@@ -1,9 +1,40 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useSyncExternalStore } from "react";
 import { Printer, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import { playSuccessChime } from "@/utils/bornomalaAudio";
+
+const STUDENT_NAME_STORAGE_KEY = "prathomik_cert_student_name";
+const STUDENT_NAME_CHANGE_EVENT = "prathomik:cert-name-change";
+
+function getStudentNameSnapshot(): string {
+  if (typeof window === "undefined") return "";
+  try {
+    return window.localStorage.getItem(STUDENT_NAME_STORAGE_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+
+function getStudentNameServerSnapshot(): string {
+  return "";
+}
+
+function subscribeStudentName(callback: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  const handleStorage = (e: StorageEvent) => {
+    if (!e.key || e.key === STUDENT_NAME_STORAGE_KEY) {
+      callback();
+    }
+  };
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(STUDENT_NAME_CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(STUDENT_NAME_CHANGE_EVENT, callback);
+  };
+}
 
 interface Props {
   isOpen: boolean;
@@ -17,12 +48,27 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
   const [nameOverride, setNameOverride] = useState<{ baseLang: "bangla" | "english"; value: string } | null>(null);
 
   const certLang = langOverride?.base === languageMode ? langOverride.value : languageMode;
+  const isEn = certLang === "english";
+  const defaultFallbackName = isEn ? "Champion Learner" : "সোনামণি";
+
+  const storedName = useSyncExternalStore(
+    subscribeStudentName,
+    getStudentNameSnapshot,
+    getStudentNameServerSnapshot
+  );
+
   const studentName =
     nameOverride?.baseLang === certLang
       ? nameOverride.value
-      : certLang === "english"
-        ? "Champion Learner"
-        : "সোনামণি";
+      : storedName || defaultFallbackName;
+
+  const handleNameChange = (val: string) => {
+    setNameOverride({ baseLang: certLang, value: val });
+    try {
+      window.localStorage.setItem(STUDENT_NAME_STORAGE_KEY, val);
+      window.dispatchEvent(new Event(STUDENT_NAME_CHANGE_EVENT));
+    } catch {}
+  };
 
   const todayDate = useMemo(() => {
     if (!isOpen) return "";
@@ -48,6 +94,19 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
   if (!isOpen) return null;
 
   const handlePrint = () => {
+    const originalTitle = document.title;
+    const safeName = (studentName || defaultFallbackName).trim().replace(/[\\/:*?"<>|]/g, "_");
+    document.title = isEn
+      ? `Certificate_${safeName}_Prathomik_Pathshala`
+      : `হাতেখড়ি_সনদপত্র_${safeName}_প্রাথমিক_পাঠশালা`;
+
+    const restoreTitle = () => {
+      document.title = originalTitle;
+      window.removeEventListener("afterprint", restoreTitle);
+    };
+    window.addEventListener("afterprint", restoreTitle);
+    setTimeout(restoreTitle, 2500);
+
     confetti({
       particleCount: 100,
       spread: 70,
@@ -56,8 +115,6 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
     playSuccessChime();
     window.print();
   };
-
-  const isEn = certLang === "english";
 
   return (
     <div 
@@ -139,7 +196,7 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
             id="student-name-input"
             type="text"
             value={studentName}
-            onChange={(e) => setNameOverride({ baseLang: certLang, value: e.target.value })}
+            onChange={(e) => handleNameChange(e.target.value)}
             placeholder={isEn ? "e.g., Aayan Ahmed" : "যেমন: আয়ান আহমেদ"}
             className="px-3.5 py-1.5 rounded-xl border border-amber-300 text-xs sm:text-sm font-bold bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500 max-w-xs flex-1"
           />
@@ -177,7 +234,7 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
             {/* Recipient Name */}
             <div className="my-6 py-2 border-b-2 border-amber-400 max-w-md mx-auto">
               <span className="text-2xl sm:text-4xl font-black text-pink-600 font-serif">
-                {studentName || (isEn ? "Champion Learner" : "সোনামণি")}
+                {studentName || defaultFallbackName}
               </span>
             </div>
 
@@ -186,12 +243,12 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
                 <>
                   For demonstrating exceptional enthusiasm and mastering the 26 English letters (A-Z, a-z), 
                   Phonics pronunciations, and 4-line ruled handwriting, earning a total of{" "}
-                  <strong className="text-amber-800 font-bold">{stars || 50} Golden Stars</strong>!
+                  <strong className="text-amber-800 font-bold">{Math.max(0, stars ?? 0)} Golden Stars</strong>!
                 </>
               ) : (
                 <>
                   যিনি ডিজিটাল বর্ণমালা ও হাতেখড়ি ল্যাবে স্বরবর্ণ, ব্যঞ্জনবর্ণ ও সংখ্যা হাত ঘুরিয়ে সুন্দরভাবে লিখে এবং শুদ্ধ উচ্চারণে 
-                  মোট <strong className="text-amber-800 font-bold">{stars || 50} স্টার পয়েন্ট</strong> অর্জন করেছেন।
+                  মোট <strong className="text-amber-800 font-bold">{Math.max(0, stars ?? 0)} স্টার পয়েন্ট</strong> অর্জন করেছেন।
                 </>
               )}
             </p>

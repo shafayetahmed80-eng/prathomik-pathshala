@@ -101,21 +101,7 @@ export default function BornomalaFlashcardModal({
     };
   }, [isPlaying, safeIndex, isOpen, safeLength, currentItem, handleSpeakCurrent, clearAdvanceTimer]);
 
-  // Keyboard Escape listener
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        handleClose();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, handleClose]);
-
-  if (!isOpen || !currentItem) return null;
-
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     playPopSound();
     unlockMobileAudio({ primeSilent: true });
     clearAdvanceTimer();
@@ -125,9 +111,9 @@ export default function BornomalaFlashcardModal({
     if (!isPlaying && items[nextIdx]) {
       handleSpeakCurrent(items[nextIdx]);
     }
-  };
+  }, [clearAdvanceTimer, handleSpeakCurrent, isPlaying, items, safeIndex, safeLength]);
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     playPopSound();
     unlockMobileAudio({ primeSilent: true });
     clearAdvanceTimer();
@@ -137,7 +123,38 @@ export default function BornomalaFlashcardModal({
     if (!isPlaying && items[prevIdx]) {
       handleSpeakCurrent(items[prevIdx]);
     }
-  };
+  }, [clearAdvanceTimer, handleSpeakCurrent, isPlaying, items, safeIndex, safeLength]);
+
+  // Keyboard navigation listeners: Escape to close, Arrows to flip, Space to speak
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const targetTag = (e.target as HTMLElement)?.tagName?.toLowerCase();
+      if (targetTag === "input" || targetTag === "textarea") return;
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleClose();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        handleNext();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handlePrev();
+      } else if (e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        if (currentItem) {
+          playPopSound();
+          unlockMobileAudio({ primeSilent: true });
+          handleSpeakCurrent(currentItem);
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, handleClose, handleNext, handlePrev, currentItem, handleSpeakCurrent]);
+
+  if (!isOpen || !currentItem) return null;
 
   return (
     <div 
@@ -232,46 +249,53 @@ export default function BornomalaFlashcardModal({
         </div>
 
         {/* Footer Navigation Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-6 py-4 border-t border-slate-200 bg-slate-50">
           <button
             type="button"
             onClick={handlePrev}
             className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all"
+            title="আগের বর্ণ (কিবোর্ড: ⬅️)"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>আগের বর্ণ</span>
           </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setIsPlaying(!isPlaying);
-            }}
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all ${
-              isPlaying
-                ? "bg-amber-500 text-white animate-pulse"
-                : "bg-slate-800 hover:bg-slate-900 text-white"
-            }`}
-          >
-            {isPlaying ? (
-              <>
-                <Pause className="w-4 h-4" />
-                <span>বিরতি দাও</span>
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4" />
-                <span>অটোপ্লে (স্মার্টবোর্ড)</span>
-              </>
-            )}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                playPopSound();
+                unlockMobileAudio({ primeSilent: true });
+                setIsPlaying(!isPlaying);
+              }}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all ${
+                isPlaying
+                  ? "bg-amber-500 text-white animate-pulse"
+                  : "bg-slate-800 hover:bg-slate-900 text-white"
+              }`}
+            >
+              {isPlaying ? (
+                <>
+                  <Pause className="w-4 h-4" />
+                  <span>বিরতি দাও</span>
+                </>
+              ) : (
+                <>
+                  <Play className="w-4 h-4" />
+                  <span>অটোপ্লে (স্মার্টবোর্ড)</span>
+                </>
+              )}
+            </button>
+            <span className="text-[11px] font-medium text-slate-400 hidden md:inline-block">
+              কিবোর্ড: ⬅️ ➡️ • Space উচ্চারণ
+            </span>
+          </div>
 
           <button
             type="button"
             onClick={handleNext}
             className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all"
+            title="পরের বর্ণ (কিবোর্ড: ➡️)"
           >
             <span>পরের বর্ণ</span>
             <ChevronRight className="w-4 h-4" />

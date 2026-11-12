@@ -170,7 +170,8 @@ function computeCanvasTextLayout(
     }
 
     const activeMetrics = ctx.measureText(text);
-    const maxAllowedWidth = width * 0.8;
+    const isTwoDigitNum = text.length >= 2 && /^\d+$/.test(text);
+    const maxAllowedWidth = width * (isTwoDigitNum ? 0.86 : 0.8);
     if (activeMetrics.width > maxAllowedWidth && activeMetrics.width > 0) {
       fontSize = Math.max(28, Math.floor(fontSize * (maxAllowedWidth / activeMetrics.width)));
       ctx.font = `bold ${fontSize}px ${fontFamily}`;
@@ -201,7 +202,9 @@ function computeCanvasTextLayout(
 
   let fontSize = Math.round(Math.min(width, height) * 0.54);
   ctx.font = `bold ${fontSize}px ${dynamicFont}`;
-  const metrics = ctx.measureText(text);
+  const isCombiningKar = Boolean(text && /^[\u09BE-\u09CC\u09D7]$/.test(text));
+  const textToMeasure = isCombiningKar ? `\u25CC${text}` : text;
+  const metrics = ctx.measureText(textToMeasure);
   const maxAllowedWidth = width * 0.8;
   if (metrics.width > maxAllowedWidth && metrics.width > 0) {
     fontSize = Math.max(28, Math.floor(fontSize * (maxAllowedWidth / metrics.width)));
@@ -947,12 +950,15 @@ export default function BanglaBornomalaLab() {
   // Manual Celebrate (awards +10 stars once per selected item)
   const handleCelebrateManual = () => {
     unlockMobileAudio({ primeSilent: true });
+    stopSpeech();
     if (!hasCelebratedCurrentRef.current) {
       hasCelebratedCurrentRef.current = true;
       persistAddStars(10);
     }
     playSuccessChime();
-    playStarDing();
+    setTimeout(() => {
+      playStarDing();
+    }, 220);
     confetti({
       particleCount: 90,
       spread: 70,
@@ -964,7 +970,7 @@ export default function BanglaBornomalaLab() {
       } else {
         handleSpeak(`চমৎকার! তুমি '${selectedItem.char}' খুব সুন্দর লিখেছ!`);
       }
-    }, 400);
+    }, 550);
   };
 
   // Download Child's Art as PNG (composite background sheet + user ink)
@@ -2205,7 +2211,7 @@ export default function BanglaBornomalaLab() {
 
               {/* Dual-layer Interactive Canvas Board (bgCanvas = sheet + lines + watermark; canvas = user ink) */}
               <div className="relative rounded-3xl border-2 border-dashed border-slate-300 bg-white p-1 overflow-hidden shadow-inner flex items-center justify-center touch-none select-none overscroll-none">
-                <div className="relative w-full max-w-[560px] h-[270px] sm:h-[330px] rounded-2xl overflow-hidden bg-white">
+                <div className="relative w-full max-w-[560px] h-[270px] sm:h-[330px] rounded-2xl overflow-hidden bg-white touch-none select-none overscroll-none">
                   <canvas
                     ref={bgCanvasRef}
                     aria-hidden="true"
