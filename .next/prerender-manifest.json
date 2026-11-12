@@ -5,7 +5,7 @@
       "routeType": "page",
       "response": "complete",
       "compute": "static",
-      "htmlSize": 50090,
+      "htmlSize": 51641,
       "experimentalBypassFor": [
         {
           "type": "header",
@@ -133,6 +133,34 @@
       "initialRevalidateSeconds": false,
       "srcRoute": "/bornomala",
       "dataRoute": "/bornomala.rsc",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/certificates": {
+      "routeType": "page",
+      "response": "complete",
+      "compute": "static",
+      "htmlSize": 58819,
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/certificates",
+      "dataRoute": "/certificates.rsc",
       "allowHeader": [
         "host",
         "x-matched-path",
@@ -350,8 +378,8 @@
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "96dff4c9427b4b7fbdc970a962a5e2a0",
-    "previewModeSigningKey": "5a547e2082f7b59a93a4e99cd30d9eba48651ac6ada3de17802b38c832596f85",
-    "previewModeEncryptionKey": "75c46b4ae07d3b37292148d5b5371a87d1c31e498cae9fba63b7a22aeaa115d2"
+    "previewModeId": "cccfe6ddedccb34d9874fbf038e01650",
+    "previewModeSigningKey": "e099992326c44806d7ea8f2bcb50d7f2ec349c81fda149aa05602fa01145f4c1",
+    "previewModeEncryptionKey": "98589f093886bdd7ce1201c78ae075afb970e1abcc0c7f5804fc0e74559e85f6"
   }
 }

@@ -8,17 +8,14 @@ import {
   Sparkles, 
   ChevronRight, 
   ExternalLink,
-  Layers,
   Search,
   Smile,
   Pencil,
   FileText,
   Volume2,
-  Heart,
   Presentation,
-  CheckCircle2,
-  HelpCircle,
-  Clock
+  Clock,
+  Award
 } from "lucide-react";
 import { CLASSES_DATA, ClassGrade } from "@/data/curriculum";
 import BookReaderModal from "@/components/BookReaderModal";
@@ -27,6 +24,7 @@ import InteractiveQuizHub from "@/components/InteractiveQuizHub";
 import ExamWorksheetGenerator from "@/components/ExamWorksheetGenerator";
 import BanglaBornomalaLab from "@/components/BanglaBornomalaLab";
 import MultimediaSlideDeck from "@/components/MultimediaSlideDeck";
+import StudentCertificateStudio from "@/components/StudentCertificateStudio";
 import GlobalNCTBSearch from "@/components/GlobalNCTBSearch";
 import AudioRhymesCorner from "@/components/AudioRhymesCorner";
 import BrandHomeLink from "@/components/BrandHomeLink";
@@ -35,7 +33,7 @@ import SiteFooter from "@/components/SiteFooter";
 
 type UserRole = "student" | "teacher";
 type StudentTab = "books" | "bornomala" | "quiz" | "rhymes" | "search";
-type TeacherTab = "exams" | "slides" | "planner" | "guides" | "search";
+type TeacherTab = "exams" | "slides" | "planner" | "certificates" | "guides" | "search";
 
 export default function HomePage() {
   const [role, setRole] = useState<UserRole>("student");
@@ -72,6 +70,7 @@ export default function HomePage() {
         case "exams": return "/exams";
         case "slides": return "/slides";
         case "planner": return "/lesson-planner";
+        case "certificates": return "/certificates";
         case "guides": return "/books";
         default: return "/exams";
       }
@@ -98,6 +97,9 @@ export default function HomePage() {
             </Link>
             <Link href="/exams" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-sky-700 transition-colors">
               প্রশ্নপত্র মেকার
+            </Link>
+            <Link href="/certificates" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-amber-700 transition-colors">
+              প্রত্যয়নপত্র
             </Link>
             <Link href="/quiz" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-amber-700 transition-colors">
               কুইজ
@@ -357,6 +359,18 @@ export default function HomePage() {
                   <button
                     type="button"
                     role="tab"
+                    aria-selected={teacherTab === "certificates"}
+                    onClick={() => setTeacherTab("certificates")}
+                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
+                      teacherTab === "certificates" ? "bg-white text-amber-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    <Award className="w-3.5 h-3.5" />
+                    <span>প্রত্যয়নপত্র মেকার</span>
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
                     aria-selected={teacherTab === "guides"}
                     onClick={() => setTeacherTab("guides")}
                     className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
@@ -495,6 +509,8 @@ export default function HomePage() {
                 <MultimediaSlideDeck />
               ) : teacherTab === "planner" ? (
                 <TeacherLessonPlanner />
+              ) : teacherTab === "certificates" ? (
+                <StudentCertificateStudio />
               ) : teacherTab === "guides" ? (
                 /* Teacher Guides Browser */
                 <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-md space-y-6">
@@ -753,7 +769,31 @@ export default function HomePage() {
               </span>
             </Link>
 
-            {/* Card 8: Search */}
+            {/* Card 8: Certificate Studio */}
+            <Link 
+              href="/certificates"
+              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <span className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                  📜
+                </span>
+                <div>
+                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-amber-700 transition-colors">
+                    প্রত্যয়নপত্র ও সনদপত্র স্টুডিও
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-1">
+                    ৫টি সরকারি ফরম্যাটে প্রত্যয়নপত্র ও সনদপত্র তৈরি, প্রিন্ট ও আসল জিপ ফাইল ডাউনলোড।
+                  </p>
+                </div>
+              </div>
+              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-amber-600 flex items-center gap-1">
+                <span>স্টুডিও খুলুন</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </span>
+            </Link>
+
+            {/* Card 9: Search */}
             <button
               type="button"
               onClick={() => {
