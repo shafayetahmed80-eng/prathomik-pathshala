@@ -104,7 +104,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala",
+    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\cert-fix-worktree",
     "enablePrerenderSourceMaps": true,
     "cacheComponents": false,
     "cacheLife": {
@@ -342,13 +342,13 @@
           "as": "*.css"
         }
       },
-      "root": "C:\\Projects\\prathomik-pathshala"
+      "root": "C:\\Projects\\prathomik-pathshala\\scratch\\cert-fix-worktree"
     },
-    "repoRoot": "C:\\Projects\\prathomik-pathshala",
+    "repoRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\cert-fix-worktree",
     "distDirRoot": ".next",
     "supportsImmutableAssets": false
   },
-  "appDir": "C:\\Projects\\prathomik-pathshala",
+  "appDir": "C:\\Projects\\prathomik-pathshala\\scratch\\cert-fix-worktree",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",
