@@ -68,6 +68,7 @@ export type LanguageMode = "bangla" | "english";
 type ActiveTab = "vowels" | "consonants" | "karchinho" | "juktoborno" | "numbers";
 type EnglishTab = "all" | "vowels" | "consonants" | "numbers";
 type EnglishAnatomyFilter = "all" | EnglishLetterAnatomy;
+type NumberRangeFilter = "all" | "0-20" | "21-40" | "41-60" | "61-80" | "81-100";
 type BrushMode = "pencil" | "chalk" | "rainbow" | "eraser";
 
 const STARS_STORAGE_KEY = "prathomik_bornomala_stars_v1";
@@ -170,10 +171,10 @@ function computeCanvasTextLayout(
     }
 
     const activeMetrics = ctx.measureText(text);
-    const isTwoDigitNum = text.length >= 2 && /^\d+$/.test(text);
-    const maxAllowedWidth = width * (isTwoDigitNum ? 0.86 : 0.8);
+    const isMultiDigitNum = text.length >= 2 && /^\d+$/.test(text);
+    const maxAllowedWidth = width * (text.length >= 3 ? 0.90 : isMultiDigitNum ? 0.86 : 0.8);
     if (activeMetrics.width > maxAllowedWidth && activeMetrics.width > 0) {
-      fontSize = Math.max(28, Math.floor(fontSize * (maxAllowedWidth / activeMetrics.width)));
+      fontSize = Math.max(26, Math.floor(fontSize * (maxAllowedWidth / activeMetrics.width)));
       ctx.font = `bold ${fontSize}px ${fontFamily}`;
     }
 
@@ -205,9 +206,10 @@ function computeCanvasTextLayout(
   const isCombiningKar = Boolean(text && /^[\u09BE-\u09CC\u09D7]$/.test(text));
   const textToMeasure = isCombiningKar ? `\u25CC${text}` : text;
   const metrics = ctx.measureText(textToMeasure);
-  const maxAllowedWidth = width * 0.8;
+  const isMultiDigitBn = text.length >= 2 && /^[০-৯]+$/.test(text);
+  const maxAllowedWidth = width * (text.length >= 3 ? 0.88 : isMultiDigitBn ? 0.84 : 0.8);
   if (metrics.width > maxAllowedWidth && metrics.width > 0) {
-    fontSize = Math.max(28, Math.floor(fontSize * (maxAllowedWidth / metrics.width)));
+    fontSize = Math.max(26, Math.floor(fontSize * (maxAllowedWidth / metrics.width)));
     ctx.font = `bold ${fontSize}px ${dynamicFont}`;
   }
 
@@ -231,6 +233,9 @@ export default function BanglaBornomalaLab() {
   const [englishTab, setEnglishTab] = useState<EnglishTab>("all");
   const [englishCase, setEnglishCase] = useState<EnglishCaseType>("upper");
   const [englishAnatomyFilter, setEnglishAnatomyFilter] = useState<EnglishAnatomyFilter>("all");
+
+  // Number Decade Range Filter (0-100)
+  const [numberRangeFilter, setNumberRangeFilter] = useState<NumberRangeFilter>("all");
 
   // Active item (can be Bangla or English)
   const [selectedItem, setSelectedItem] = useState<BornomalaItem | EnglishAlphabetItem>(VOWELS_DATA[0]);
@@ -308,10 +313,24 @@ export default function BanglaBornomalaLab() {
   const rawList = getTabList();
   const filteredList = rawList.filter((item) => {
     if (languageMode === "english") {
+      if (englishTab === "numbers" && numberRangeFilter !== "all" && typeof item.count === "number") {
+        if (numberRangeFilter === "0-20") return item.count <= 20;
+        if (numberRangeFilter === "21-40") return item.count >= 21 && item.count <= 40;
+        if (numberRangeFilter === "41-60") return item.count >= 41 && item.count <= 60;
+        if (numberRangeFilter === "61-80") return item.count >= 61 && item.count <= 80;
+        if (numberRangeFilter === "81-100") return item.count >= 81 && item.count <= 100;
+      }
       if (englishTab !== "numbers" && englishAnatomyFilter !== "all" && "anatomy" in item) {
         return item.anatomy === englishAnatomyFilter;
       }
       return true;
+    }
+    if (activeTab === "numbers" && numberRangeFilter !== "all" && typeof item.count === "number") {
+      if (numberRangeFilter === "0-20") return item.count <= 20;
+      if (numberRangeFilter === "21-40") return item.count >= 21 && item.count <= 40;
+      if (numberRangeFilter === "41-60") return item.count >= 41 && item.count <= 60;
+      if (numberRangeFilter === "61-80") return item.count >= 61 && item.count <= 80;
+      if (numberRangeFilter === "81-100") return item.count >= 81 && item.count <= 100;
     }
     if ((activeTab === "vowels" || activeTab === "consonants") && selectedMatraFilter !== "all") {
       return item.matra === selectedMatraFilter;
@@ -619,6 +638,23 @@ export default function BanglaBornomalaLab() {
     const nextList = rawList.filter((item) => {
       if ((activeTab === "vowels" || activeTab === "consonants") && nextFilter !== "all") {
         return item.matra === nextFilter;
+      }
+      return true;
+    });
+    if (nextList.length > 0 && !nextList.some((item) => item.id === selectedItem.id)) {
+      selectItem(nextList[0]);
+    }
+  };
+
+  const applyNumberRangeFilter = (nextFilter: NumberRangeFilter) => {
+    setNumberRangeFilter(nextFilter);
+    const nextList = rawList.filter((item) => {
+      if (nextFilter !== "all" && typeof item.count === "number") {
+        if (nextFilter === "0-20") return item.count <= 20;
+        if (nextFilter === "21-40") return item.count >= 21 && item.count <= 40;
+        if (nextFilter === "41-60") return item.count >= 41 && item.count <= 60;
+        if (nextFilter === "61-80") return item.count >= 61 && item.count <= 80;
+        if (nextFilter === "81-100") return item.count >= 81 && item.count <= 100;
       }
       return true;
     });
@@ -1369,9 +1405,42 @@ export default function BanglaBornomalaLab() {
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    Numbers (0-20)
+                    Numbers (0-100)
                   </button>
                 </nav>
+
+                {/* Numbers Range Filter Sub-bar (English) */}
+                {englishTab === "numbers" && (
+                  <div className="flex items-center gap-1.5 px-2 overflow-x-auto no-scrollbar py-0.5">
+                    <span className="text-[11px] font-bold text-slate-500 shrink-0">Range:</span>
+                    {(
+                      [
+                        { id: "all", label: "All (0-100)" },
+                        { id: "0-20", label: "0–20" },
+                        { id: "21-40", label: "21–40" },
+                        { id: "41-60", label: "41–60" },
+                        { id: "61-80", label: "61–80" },
+                        { id: "81-100", label: "81–100" },
+                      ] as const
+                    ).map((range) => (
+                      <button
+                        key={range.id}
+                        type="button"
+                        onClick={() => {
+                          playPopSound();
+                          applyNumberRangeFilter(range.id);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                          numberRangeFilter === range.id
+                            ? "bg-amber-600 text-white shadow-xs"
+                            : "bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60"
+                        }`}
+                      >
+                        {range.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 {/* English Sub-bar: Case Switcher (Upper / Lower / Pair) + Letter Anatomy Filter */}
                 {englishTab !== "numbers" && (
@@ -1579,9 +1648,42 @@ export default function BanglaBornomalaLab() {
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    সংখ্যা (০-২০)
+                    সংখ্যা (০-১০০)
                   </button>
                 </nav>
+
+                {/* Numbers Range Filter Sub-bar (Bangla) */}
+                {activeTab === "numbers" && (
+                  <div className="flex items-center gap-1.5 px-2 overflow-x-auto no-scrollbar py-0.5">
+                    <span className="text-xs font-bold text-slate-500 shrink-0">পরিসর:</span>
+                    {(
+                      [
+                        { id: "all", label: "সকল (০-১০০)" },
+                        { id: "0-20", label: "০–২০" },
+                        { id: "21-40", label: "২১–৪০" },
+                        { id: "41-60", label: "৪১–৬০" },
+                        { id: "61-80", label: "৬১–৮০" },
+                        { id: "81-100", label: "৮১–১০০" },
+                      ] as const
+                    ).map((range) => (
+                      <button
+                        key={range.id}
+                        type="button"
+                        onClick={() => {
+                          playPopSound();
+                          applyNumberRangeFilter(range.id);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                          numberRangeFilter === range.id
+                            ? "bg-amber-600 text-white shadow-xs"
+                            : "bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60"
+                        }`}
+                      >
+                        {range.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
                 {/* Matra Filter Sub-bar (Only for Vowels and Consonants) */}
                 {(activeTab === "vowels" || activeTab === "consonants") && (
@@ -1668,6 +1770,7 @@ export default function BanglaBornomalaLab() {
                     playPopSound();
                     setEnglishAnatomyFilter("all");
                     setSelectedMatraFilter("all");
+                    setNumberRangeFilter("all");
                   }}
                   className="px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold shadow-xs"
                 >
