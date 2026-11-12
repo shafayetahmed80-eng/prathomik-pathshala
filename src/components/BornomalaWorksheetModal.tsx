@@ -25,10 +25,12 @@ interface RuledCellProps {
  * traceable dotted glyphs snap cleanly to the baseline without distortion.
  */
 function RuledTracingCell({ isEng, isNumber = false, char }: RuledCellProps) {
+  const isCombiningKar = Boolean(char && /^[\u09BE-\u09CC\u09D7]$/.test(char));
   // Single Bengali conjuncts like ক্ষ, জ্ঞ, হ্ম have UTF-16 length 3 even though they occupy 1 glyph cell.
-  const isWideChar = Boolean(char && ((isEng && char.length >= 2) || (isNumber && char.length >= 2)));
+  const isWideChar = Boolean(char && ((isEng && char.length >= 2) || (isNumber && char.length >= 2) || isCombiningKar));
   const engFontSize = isWideChar ? 48 : 62;
   const bnFontSize = isWideChar ? 44 : 58;
+  const displayChar = isCombiningKar ? `\u25CC${char}` : char;
 
   return (
     <div
@@ -90,7 +92,7 @@ function RuledTracingCell({ isEng, isNumber = false, char }: RuledCellProps) {
             strokeLinejoin="round"
             style={{ paintOrder: "stroke fill" }}
           >
-            {char}
+            {displayChar}
           </text>
         </svg>
       )}
@@ -188,6 +190,19 @@ export default function BornomalaWorksheetModal({
       : item.char;
 
   const handlePrint = () => {
+    const originalTitle = document.title;
+    const safeChar = (activeChar || item.char || "বর্ণ").trim().replace(/[\\/:*?"<>|]/g, "_");
+    document.title = isEng
+      ? `Worksheet_${safeChar}_Prathomik_Pathshala`
+      : `ওয়ার্কশিট_${safeChar}_প্রাথমিক_পাঠশালা`;
+
+    const restoreTitle = () => {
+      document.title = originalTitle;
+      window.removeEventListener("afterprint", restoreTitle);
+    };
+    window.addEventListener("afterprint", restoreTitle);
+    setTimeout(restoreTitle, 2500);
+
     window.print();
   };
 

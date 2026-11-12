@@ -471,17 +471,27 @@ export default function BornomalaMiniGame({
                 ? "মন দিয়ে শুনে সঠিক সংখ্যাটি নির্বাচন করো"
                 : "মন দিয়ে শুনে সঠিক বর্ণটি নির্বাচন করো"}
             </span>
-            <div className="w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-3xl bg-purple-100 flex items-center justify-center text-purple-600 text-5xl shadow-md">
+            <button
+              type="button"
+              onClick={handleReplayAudio}
+              className={`w-28 h-28 sm:w-32 sm:h-32 mx-auto rounded-3xl flex items-center justify-center text-5xl shadow-md transition-all hover:scale-105 active:scale-95 ${
+                isCorrect === null
+                  ? "bg-purple-100 text-purple-600 ring-4 ring-purple-300/60 animate-pulse cursor-pointer"
+                  : "bg-purple-50 text-purple-400 cursor-default"
+              }`}
+              title={isEng ? "Click to replay audio" : "উচ্চারণ পুনরায় শুনতে ক্লিক করো"}
+              aria-label={isEng ? "Replay audio cue" : "উচ্চারণ আবার শুনুন"}
+            >
               🎧
-            </div>
+            </button>
             <div>
               <button
                 type="button"
                 onClick={handleReplayAudio}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-md transition-all hover:scale-105"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-md transition-all hover:scale-105 active:scale-95"
               >
                 <Volume2 className="w-5 h-5 animate-pulse" />
-                <span>{isEng ? "Listen Again" : "উচ্চারণ আবার শোনো"}</span>
+                <span>{isEng ? "Listen Again (Replay)" : "উচ্চারণ আবার শোনো"}</span>
               </button>
             </div>
           </div>
