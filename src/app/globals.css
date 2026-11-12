@@ -756,8 +756,7 @@ html.glass-dark-mode .certificate-print-area .text-amber-900 {
   html.glass-dark-mode [data-paper-card="true"],
   html.glass-dark-mode [data-paper-inner="true"],
   #printable-exam-sheet,
-  .worksheet-print-area,
-  .certificate-print-area {
+  .worksheet-print-area {
     background: white !important;
     background-color: white !important;
     background-image: none !important;
@@ -768,6 +767,14 @@ html.glass-dark-mode .certificate-print-area .text-amber-900 {
     margin: 0 auto !important;
     max-width: 100% !important;
     width: 100% !important;
+  }
+
+  .certificate-print-area {
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
   #printable-exam-sheet header {
     display: block !important;
