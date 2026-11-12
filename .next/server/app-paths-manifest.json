@@ -13,5 +13,6 @@
   "/page": "app/page.js",
   "/quiz/page": "app/quiz/page.js",
   "/rhymes/page": "app/rhymes/page.js",
-  "/slides/page": "app/slides/page.js"
+  "/slides/page": "app/slides/page.js",
+  "/certificates/page": "app/certificates/page.js"
 }

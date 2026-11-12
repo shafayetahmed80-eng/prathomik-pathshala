@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\src\app\rhymes\page.tsx
+// File: C:\Projects\prathomik-pathshala\scratch\certificate-worktree\src\app\rhymes\page.tsx
 import * as entry from '../../../../src/app/rhymes/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

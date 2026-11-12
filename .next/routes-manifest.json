@@ -121,6 +121,12 @@
       "namedRegex": "^/bornomala(?:/)?$"
     },
     {
+      "page": "/certificates",
+      "regex": "^/certificates(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/certificates(?:/)?$"
+    },
+    {
       "page": "/exams",
       "regex": "^/exams(?:/)?$",
       "routeKeys": {},
