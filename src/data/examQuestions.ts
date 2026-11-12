@@ -276,21 +276,27 @@ export const CLASS_SUBJECTS_MAP: Record<string, SubjectOption[]> = {
     { key: "english", name: "English" },
     { key: "math", name: "গণিত" },
     { key: "science", name: "প্রাথমিক বিজ্ঞান" },
-    { key: "bgs", name: "বাংলাদেশ ও বিশ্বপরিচয়" }
+    { key: "bgs", name: "বাংলাদেশ ও বিশ্বপরিচয়" },
+    { key: "islamic", name: "ইসলাম ও নৈতিক শিক্ষা" },
+    { key: "hindu", name: "হিন্দুধর্ম ও নৈতিক শিক্ষা" }
   ],
   "class-4": [
     { key: "bangla", name: "বাংলা" },
     { key: "english", name: "English" },
     { key: "math", name: "গণিত" },
     { key: "science", name: "প্রাথমিক বিজ্ঞান" },
-    { key: "bgs", name: "বাংলাদেশ ও বিশ্বপরিচয়" }
+    { key: "bgs", name: "বাংলাদেশ ও বিশ্বপরিচয়" },
+    { key: "islamic", name: "ইসলাম ও নৈতিক শিক্ষা" },
+    { key: "hindu", name: "হিন্দুধর্ম ও নৈতিক শিক্ষা" }
   ],
   "class-5": [
     { key: "bangla", name: "বাংলা" },
     { key: "english", name: "English" },
     { key: "math", name: "গণিত" },
     { key: "science", name: "প্রাথমিক বিজ্ঞান" },
-    { key: "bgs", name: "বাংলাদেশ ও বিশ্বপরিচয়" }
+    { key: "bgs", name: "বাংলাদেশ ও বিশ্বপরিচয়" },
+    { key: "islamic", name: "ইসলাম ও নৈতিক শিক্ষা" },
+    { key: "hindu", name: "হিন্দুধর্ম ও নৈতিক শিক্ষা" }
   ]
 };
 

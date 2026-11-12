@@ -89,6 +89,7 @@ export default function ExamWorksheetGenerator() {
   const currentChapters = activeSubjectData?.chapters || [];
   const isEnglish = selectedSubjectKey === "english";
   const unitLabel = isEnglish ? "Unit" : "অধ্যায়";
+  const isClass1Or2 = selectedClassId === "pre-primary" || selectedClassId === "class-1" || selectedClassId === "class-2";
 
   // Active editable exam questions in state initialized with deterministic baseline
   const [activeExam, setActiveExam] = useState<ExamQuestionItem>(() => {
@@ -113,7 +114,7 @@ export default function ExamWorksheetGenerator() {
     if (preset === "nctb_summative") {
       setExamTime(isClass1Or2 ? "১ ঘণ্টা" : "২ ঘণ্টা ৩০ মিনিট");
       setPaperMode(isClass1Or2 ? "worksheet" : "exam");
-      setExamType(prev => prev.includes("প্রান্তিক") || prev.includes("অর্ধবার্ষিক") ? prev : "১ম প্রান্তিক মূল্যায়ন ২০২৬");
+      setExamType(prev => isClass1Or2 ? "ধারাবাহিক শিখনকালীন মূল্যায়ন ও কার্যপত্র ২০২৬" : (prev.includes("প্রান্তিক") || prev.includes("অর্ধবার্ষিক") ? prev : "১ম প্রান্তিক মূল্যায়ন ২০২৬"));
     } else if (preset === "class_test") {
       setExamTime(isClass1Or2 ? "৩০ মিনিট" : "২০ মিনিট");
       setExamType("ধারাবাহিক মূল্যায়ন ও ক্লাস টেস্ট");
@@ -155,6 +156,11 @@ export default function ExamWorksheetGenerator() {
     if (selectedPreset === "nctb_summative") {
       setExamTime(isClass1Or2 ? "১ ঘণ্টা" : "২ ঘণ্টা ৩০ মিনিট");
       setPaperMode(isClass1Or2 ? "worksheet" : "exam");
+      if (isClass1Or2) {
+        setExamType("ধারাবাহিক শিখনকালীন মূল্যায়ন ও কার্যপত্র ২০২৬");
+      } else {
+        setExamType("১ম/২য়/৩য় প্রান্তিক সামষ্টিক মূল্যায়ন ২০২৬");
+      }
     } else if (selectedPreset === "class_test") {
       setExamTime(isClass1Or2 ? "৩০ মিনিট" : "২০ মিনিট");
     }
@@ -1058,7 +1064,7 @@ ${questionsText.trim()}
             <span>পূর্ণমান: <strong>{calculatedTotalMarks}</strong></span>
             {selectedPreset === "nctb_summative" && (
               <span className="text-[10px] text-emerald-800 font-bold bg-emerald-50 border border-emerald-300 rounded-md px-2 py-0.5 print:hidden">
-                ✓ এনসিটিবি ২০২৬ সরকারি কাঠামো
+                {isClass1Or2 ? "✓ এনসিটিবি ২০২৬ সরকারি নিয়ম: ১ম ও ২য় শ্রেণিতে ১০০% ধারাবাহিক শিখন মূল্যায়ন" : "✓ এনসিটিবি ২০২৬ সরকারি কাঠামো"}
               </span>
             )}
           </div>
