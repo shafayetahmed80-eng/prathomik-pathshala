@@ -226,6 +226,16 @@ class PoetryBgmEngine {
   }
 
   /**
+   * Adjust overall BGM volume level (0.0 to 1.0)
+   */
+  public setVolume(vol: number) {
+    if (!this.bgmGain || !this.ctx) return;
+    const clamped = Math.max(0, Math.min(1, vol));
+    const targetVolume = clamped * 0.12;
+    this.bgmGain.gain.setTargetAtTime(targetVolume, this.ctx.currentTime, 0.1);
+  }
+
+  /**
    * Auto-ducking: dynamically lower BGM volume when recitation voice is speaking
    */
   public duckBgm(duck: boolean) {

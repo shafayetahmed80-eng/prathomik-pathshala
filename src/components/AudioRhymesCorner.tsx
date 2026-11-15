@@ -17,7 +17,8 @@ import {
   Drama, 
   Radio, 
   Trash2,
-  Filter
+  Filter,
+  Gauge
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { RHYMES_STORIES_DATA, AudioRhymeStory } from "@/data/rhymesData";
@@ -131,6 +132,12 @@ const CATEGORY_OPTIONS: { id: string; label: string; icon: string }[] = [
   { id: "শিক্ষণীয় গল্প", label: "শিক্ষণীয় গল্প", icon: "💡" },
 ];
 
+const SPEED_OPTIONS = [
+  { value: 0.75, label: "০.৭৫x", title: "ধীর গতি (Slow)" },
+  { value: 1.0, label: "১x", title: "স্বাভাবিক গতি (Normal)" },
+  { value: 1.25, label: "১.২৫x", title: "দ্রুত গতি (Fast)" },
+];
+
 export default function AudioRhymesCorner() {
   const [selectedClassId, setSelectedClassId] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -147,13 +154,17 @@ export default function AudioRhymesCorner() {
   const effectiveVoice = isEnglishItem ? selectedEnVoice : selectedBnVoice;
 
   const [selectedMood, setSelectedMood] = useState<BgmMood>("melody");
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
   const [isBgmEnabled, setIsBgmEnabled] = useState<boolean>(true);
 
   // 🌟 Feature 3: Listen & Repeat Practice Mode State
   const [isRepeatMode, setIsRepeatMode] = useState<boolean>(false);
   const [repeatPhase, setRepeatPhase] = useState<"idle" | "speaking_system" | "waiting_user" | "user_success">("idle");
-  const [starsEarned, setStarsEarned] = useState<number>(0);
+  const [completedLineIndices, setCompletedLineIndices] = useState<Set<number>>(new Set());
   const [countdown, setCountdown] = useState<number>(4);
+
+  // Clamped earned stars (strictly bounded by total lines: 0 <= earnedStars <= totalLines)
+  const earnedStars = Math.min(selectedItem.lines.length, completedLineIndices.size);
 
   // 🌟 Phase 3: Speech Recognition States for 'Listen & Repeat'
   const [userTranscript, setUserTranscript] = useState<string>("");
@@ -175,6 +186,7 @@ export default function AudioRhymesCorner() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const recordTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const recordStartTimeRef = useRef<number>(0);
 
   // Stop playback and reset transient states
   const stopAudio = () => {
@@ -191,6 +203,16 @@ export default function AudioRhymesCorner() {
     if (wordPacerRef.current) {
       clearTimeout(wordPacerRef.current);
       wordPacerRef.current = null;
+    }
+    if (recordTimerRef.current) {
+      clearInterval(recordTimerRef.current);
+      recordTimerRef.current = null;
+    }
+    if (mediaRecorderRef.current && isRecording) {
+      try {
+        mediaRecorderRef.current.stop();
+      } catch {}
+      setIsRecording(false);
     }
     if (speechRecognizerRef.current) {
       try {
@@ -210,7 +232,7 @@ export default function AudioRhymesCorner() {
   const handleSelectItem = (item: AudioRhymeStory) => {
     stopAudio();
     setIsCompletedPoem(false);
-    setStarsEarned(0);
+    setCompletedLineIndices(new Set());
     setRecordedAudioUrl(null);
     setSelectedItem(item);
 
@@ -218,9 +240,10 @@ export default function AudioRhymesCorner() {
     if (item.lines.length > 0) {
       const isEng = item.language === "en-US" || item.category === "English Rhymes";
       const voice = isEng ? selectedEnVoice : selectedBnVoice;
-      preloadSpeech(item.lines[0], { lang: item.language, rate: 0.85, voice });
+      const rate = getEffectiveRate();
+      preloadSpeech(item.lines[0], { lang: item.language, rate, voice });
       if (item.lines.length > 1) {
-        preloadSpeech(item.lines[1], { lang: item.language, rate: 0.85, voice });
+        preloadSpeech(item.lines[1], { lang: item.language, rate, voice });
       }
     }
   };
@@ -272,11 +295,12 @@ export default function AudioRhymesCorner() {
     }
   };
 
-  // Mood-based playback rate
+  // Mood and Speed combined playback rate
   const getEffectiveRate = () => {
-    if (selectedMood === "beat") return 1.05;
-    if (selectedMood === "drama") return 0.75;
-    return 0.85; // Melody
+    let baseRate = 0.88;
+    if (selectedMood === "beat") baseRate = 1.02;
+    else if (selectedMood === "drama") baseRate = 0.78;
+    return Number((baseRate * playbackSpeed).toFixed(2));
   };
 
   // 🌟 Phase 2: Syllable-Aware Bouncing Ball Word-by-Word Pacer
@@ -318,14 +342,18 @@ export default function AudioRhymesCorner() {
   };
 
   // 🌟 Phase 3: Interactive user completion with speech recognition scoring
-  const handleUserFinishedLine = (index: number, score?: number) => {
+  const handleUserFinishedLine = (index: number) => {
     stopSpeechRecognition();
     if (countdownTimerRef.current) {
       clearInterval(countdownTimerRef.current);
       countdownTimerRef.current = null;
     }
     setRepeatPhase("user_success");
-    setStarsEarned((prev) => prev + (score && score >= 75 ? 2 : 1));
+    setCompletedLineIndices((prev) => {
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
     bgmEngine.playCelebrationChime();
     confetti({
       particleCount: 75,
@@ -394,7 +422,7 @@ export default function AudioRhymesCorner() {
         if (score >= 50) {
           // Successful recitation detected
           stopSpeechRecognition();
-          handleUserFinishedLine(index, score);
+          handleUserFinishedLine(index);
         }
       };
 
@@ -498,7 +526,7 @@ export default function AudioRhymesCorner() {
 
   const handleRestart = () => {
     stopAudio();
-    setStarsEarned(0);
+    setCompletedLineIndices(new Set());
     setTimeout(() => {
       setIsPlaying(true);
       speakLine(0);
@@ -531,13 +559,20 @@ export default function AudioRhymesCorner() {
         stream.getTracks().forEach((track) => track.stop());
       };
 
+      if (recordTimerRef.current) {
+        clearInterval(recordTimerRef.current);
+        recordTimerRef.current = null;
+      }
+
       mediaRecorderRef.current = mediaRecorder;
+      recordStartTimeRef.current = Date.now();
+      setRecordingSeconds(0);
       mediaRecorder.start();
       setIsRecording(true);
-      setRecordingSeconds(0);
 
       recordTimerRef.current = setInterval(() => {
-        setRecordingSeconds((prev) => prev + 1);
+        const elapsed = Math.max(0, Math.floor((Date.now() - recordStartTimeRef.current) / 1000));
+        setRecordingSeconds(elapsed);
       }, 1000);
     } catch {
       setRecorderError("মাইক্রোফোন চালু করা যায়নি। ব্রাউজারের অডিও পারমিশন চেক করুন।");
@@ -546,16 +581,31 @@ export default function AudioRhymesCorner() {
   };
 
   const stopRecording = () => {
+    if (recordTimerRef.current) {
+      clearInterval(recordTimerRef.current);
+      recordTimerRef.current = null;
+    }
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-      if (recordTimerRef.current) {
-        clearInterval(recordTimerRef.current);
-        recordTimerRef.current = null;
-      }
       bgmEngine.playCelebrationChime();
     }
   };
+
+  const itemTypeLabel =
+    selectedItem.category === "শিক্ষণীয় গল্প"
+      ? "গল্পটি"
+      : isEnglishItem
+      ? "Rhyme-টি"
+      : "ছড়াটি";
+
+  const playButtonLabel = isPlaying
+    ? "থামাও"
+    : isRepeatMode
+    ? "অনুশীলন শুরু করো"
+    : selectedItem.category === "শিক্ষণীয় গল্প"
+    ? "গল্পটি শোনো"
+    : "আবৃত্তি শোনো";
 
   return (
     <article 
@@ -645,7 +695,8 @@ export default function AudioRhymesCorner() {
                 key={grade.id}
                 type="button"
                 onClick={() => handleClassFilter(grade.id)}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs sm:text-sm font-bold shrink-0 transition-all border ${
+                aria-pressed={isSelected}
+                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs sm:text-sm font-bold shrink-0 transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   isSelected
                     ? "bg-rose-600 text-white border-rose-600 shadow-md scale-102"
                     : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
@@ -670,10 +721,11 @@ export default function AudioRhymesCorner() {
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryFilter(cat.id)}
-                className={`px-3 py-1 rounded-xl font-bold shrink-0 transition-all border ${
+                aria-pressed={isSelected}
+                className={`px-3 py-1.5 rounded-xl font-bold shrink-0 transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                   isSelected
-                    ? "bg-amber-500 text-white border-amber-500 shadow-xs"
-                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                    ? "bg-amber-500 text-white border-amber-500 shadow-xs scale-102"
+                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-900"
                 }`}
               >
                 <span>{cat.icon} </span>
@@ -731,7 +783,7 @@ export default function AudioRhymesCorner() {
       {/* 🎛️ Interactive Classroom Studio Control Ribbon */}
       <div className="bg-slate-50/90 p-3 sm:p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3">
         {/* Dynamic Voice Selector (Bengali vs English Rhymes) */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-bold text-slate-600 flex items-center gap-1">
             🎤 কণ্ঠশিল্পী:
           </span>
@@ -788,6 +840,28 @@ export default function AudioRhymesCorner() {
               </button>
             </>
           )}
+
+          {/* ⚡ Playback Speed Selector (০.৭৫x, ১x, ১.২৫x) */}
+          <div className="flex items-center gap-1 bg-white p-0.5 rounded-xl border border-slate-200 shadow-2xs ml-1">
+            <span className="text-[11px] font-bold text-slate-500 pl-2 pr-1 flex items-center gap-1">
+              <Gauge className="w-3 h-3 text-slate-400" /> গতি:
+            </span>
+            {SPEED_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setPlaybackSpeed(opt.value)}
+                className={`px-2 py-1 rounded-lg text-xs font-bold transition-all ${
+                  playbackSpeed === opt.value
+                    ? "bg-rose-600 text-white shadow-xs"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                }`}
+                title={opt.title}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Feature Switches: BGM & Repeat Mode */}
@@ -850,7 +924,7 @@ export default function AudioRhymesCorner() {
             {isRepeatMode && (
               <span className="text-xs font-black px-3 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1 shadow-2xs animate-bounce">
                 <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-600" />
-                <span>স্টার: {starsEarned} / {selectedItem.lines.length}</span>
+                <span>স্টার: {earnedStars} / {selectedItem.lines.length}</span>
               </span>
             )}
           </div>
@@ -966,7 +1040,7 @@ export default function AudioRhymesCorner() {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 type="button"
-                onClick={() => handleUserFinishedLine(currentLineIndex, matchScore ?? 100)}
+                onClick={() => handleUserFinishedLine(currentLineIndex)}
                 className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-xs shadow-md transition-all active:scale-95 flex items-center gap-1.5"
                 title="পরবর্তী লাইনে যেতে ক্লিক করুন"
               >
@@ -989,10 +1063,10 @@ export default function AudioRhymesCorner() {
           <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow-2xl space-y-3 animate-in zoom-in-95 duration-200 relative z-10 border border-amber-300/40">
             <span className="text-4xl" aria-hidden="true">🏆</span>
             <h4 className="text-xl sm:text-2xl font-black tracking-tight">
-              অভিনন্দন! তুমি সম্পূর্ণ কবিতাটি সফলভাবে শেষ করেছো!
+              অভিনন্দন! তুমি সম্পূর্ণ {itemTypeLabel} সফলভাবে শেষ করেছো!
             </h4>
             <p className="text-xs sm:text-sm text-amber-100 font-medium">
-              তুমি অর্জন করেছো মোট <strong className="text-white text-base font-black px-1.5 py-0.5 rounded-md bg-white/20">{starsEarned}</strong>টি স্টার! ⭐
+              তুমি অর্জন করেছো মোট <strong className="text-white text-base font-black px-1.5 py-0.5 rounded-md bg-white/20">{earnedStars}</strong>টি স্টার! ⭐
             </p>
             <div className="pt-2 flex items-center justify-center gap-3">
               <button
@@ -1012,9 +1086,9 @@ export default function AudioRhymesCorner() {
           <button
             type="button"
             onClick={handleRestart}
-            className="p-3.5 rounded-2xl bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-rose-200/80 shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+            className="p-3.5 rounded-2xl bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
             title="প্রথম থেকে শুরু করুন"
-            aria-label="ছড়াটি প্রথম থেকে শুরু করুন"
+            aria-label="প্রথম থেকে শুরু করুন"
           >
             <RotateCcw className="w-5 h-5" aria-hidden="true" />
           </button>
@@ -1036,7 +1110,7 @@ export default function AudioRhymesCorner() {
             ) : (
               <>
                 <Play className="w-5 h-5 fill-current" aria-hidden="true" />
-                <span>{isRepeatMode ? "অনুশীলন শুরু করো" : "আবৃত্তি শোনো"}</span>
+                <span>{playButtonLabel}</span>
               </>
             )}
           </button>
@@ -1044,7 +1118,7 @@ export default function AudioRhymesCorner() {
           <button
             type="button"
             onClick={stopAudio}
-            className="p-3.5 rounded-2xl bg-white hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-rose-200/80 shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+            className="p-3.5 rounded-2xl bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
             title="বন্ধ করো"
             aria-label="অডিও বন্ধ করো"
           >
