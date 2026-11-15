@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Printer,
   Download,
@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   ZoomIn,
   ZoomOut,
+  Maximize2,
   FolderArchive,
   Building2,
   GraduationCap,
@@ -393,6 +394,32 @@ export default function StudentCertificateStudio() {
   const [previewSampleModal, setPreviewSampleModal] = useState<string | null>(null);
 
   const printAreaRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-fit calculation for any screen width
+  const handleAutoFit = useCallback(() => {
+    if (!containerRef.current) return;
+    const availableWidth = containerRef.current.clientWidth - 24;
+    const targetWidthPx = 1077; // ~285mm at 96dpi
+    const fitPercent = Math.max(30, Math.min(100, Math.floor((availableWidth / targetWidthPx) * 100)));
+    setZoomScale(fitPercent);
+    setToastMessage(`স্ক্রিন অনুযায়ী জুম ${fitPercent}% অ্যাডজাস্ট করা হয়েছে`);
+    setTimeout(() => setToastMessage(null), 2500);
+  }, []);
+
+  // Run auto-fit on mount when loaded on small screens (mobile/tablet < 1150px)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 1150) {
+      const timer = setTimeout(() => {
+        if (containerRef.current) {
+          const availableWidth = containerRef.current.clientWidth - 24;
+          const fitPercent = Math.max(30, Math.min(100, Math.floor((availableWidth / 1077) * 100)));
+          setZoomScale(fitPercent);
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Save school metadata to localStorage on update
   const saveSchoolMetaLocally = (updated: CertificateData) => {
@@ -463,31 +490,41 @@ export default function StudentCertificateStudio() {
         @media print {
           @page {
             size: A4 landscape !important;
-            margin: 6mm 8mm !important;
+            margin: 5mm 6mm !important;
           }
-          header, footer, nav, aside, .print\\:hidden, #site-header, #site-footer {
+          #site-header, #site-footer, nav, aside, .print\\:hidden, [role="tablist"], .studio-controls {
             display: none !important;
           }
           body {
             background: white !important;
             margin: 0 !important;
             padding: 0 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
           .certificate-print-area {
             position: absolute !important;
             left: 0 !important;
+            right: 0 !important;
             top: 0 !important;
-            width: 283mm !important;
+            width: 285mm !important;
             height: 198mm !important;
-            max-width: 283mm !important;
+            max-width: 285mm !important;
             max-height: 198mm !important;
             margin: 0 auto !important;
-            padding: 0 !important;
-            border: none !important;
+            box-sizing: border-box !important;
             box-shadow: none !important;
             transform: none !important;
             page-break-inside: avoid !important;
+            break-inside: avoid !important;
             page-break-after: avoid !important;
+            break-after: avoid !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          .certificate-print-area * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
         }
       `
@@ -593,6 +630,7 @@ export default function StudentCertificateStudio() {
                   key={t.id}
                   type="button"
                   onClick={() => setTemplate(t.id)}
+                  aria-pressed={isSelected}
                   className={`p-3 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-2 touch-manipulation ${
                     isSelected
                       ? "border-emerald-600 bg-emerald-50/40 ring-2 ring-emerald-500/20 shadow-xs scale-101"
@@ -603,13 +641,14 @@ export default function StudentCertificateStudio() {
                     <span
                       className="w-3.5 h-3.5 rounded-full border border-black/10"
                       style={{ backgroundColor: t.accentColor }}
+                      aria-hidden="true"
                     />
                     <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-700">
                       {t.badge}
                     </span>
                   </div>
                   <div>
-                    <h2 className="text-xs font-black text-slate-900 leading-tight">{t.name}</h2>
+                    <h3 className="text-xs font-black text-slate-900 leading-tight">{t.name}</h3>
                     <p className="text-[10px] text-slate-500 mt-0.5 line-clamp-1">{t.englishTitle}</p>
                   </div>
                   {isSelected && (
@@ -626,8 +665,16 @@ export default function StudentCertificateStudio() {
 
         {/* 🎛️ DATA ENTRY TABS (SCHOOL / STUDENT / SIGNATURES / SAMPLES) */}
         <div className="pt-2">
-          <div className="flex items-center gap-1 overflow-x-auto pb-1 border-b border-slate-200 no-scrollbar">
+          <div
+            role="tablist"
+            aria-label="তথ্য এন্ট্রি ফরম"
+            className="flex items-center gap-1 overflow-x-auto pb-1 border-b border-slate-200 no-scrollbar"
+          >
             <button
+              id="tab-school"
+              role="tab"
+              aria-selected={activeFormTab === "school"}
+              aria-controls="panel-school"
               type="button"
               onClick={() => setActiveFormTab("school")}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-t-xl text-xs font-bold transition-all border-b-2 shrink-0 ${
@@ -636,11 +683,16 @@ export default function StudentCertificateStudio() {
                   : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <Building2 className="w-3.5 h-3.5" />
-              <span>১. বিদ্যালয়ের তথ্য (অটো-সেভ)</span>
+              <Building2 className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">১. বিদ্যালয়</span>
+              <span className="hidden sm:inline">১. বিদ্যালয়ের তথ্য (অটো-সেভ)</span>
             </button>
 
             <button
+              id="tab-student"
+              role="tab"
+              aria-selected={activeFormTab === "student"}
+              aria-controls="panel-student"
               type="button"
               onClick={() => setActiveFormTab("student")}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-t-xl text-xs font-bold transition-all border-b-2 shrink-0 ${
@@ -649,11 +701,16 @@ export default function StudentCertificateStudio() {
                   : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <GraduationCap className="w-3.5 h-3.5" />
-              <span>২. শিক্ষার্থীর তথ্য ও ফলাফল</span>
+              <GraduationCap className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">২. শিক্ষার্থী</span>
+              <span className="hidden sm:inline">২. শিক্ষার্থীর তথ্য ও ফলাফল</span>
             </button>
 
             <button
+              id="tab-signatures"
+              role="tab"
+              aria-selected={activeFormTab === "signatures"}
+              aria-controls="panel-signatures"
               type="button"
               onClick={() => setActiveFormTab("signatures")}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-t-xl text-xs font-bold transition-all border-b-2 shrink-0 ${
@@ -662,11 +719,16 @@ export default function StudentCertificateStudio() {
                   : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <PenTool className="w-3.5 h-3.5" />
-              <span>৩. স্মারক, স্বাক্ষর ও সিলমোহর</span>
+              <PenTool className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">৩. স্বাক্ষর ও সিল</span>
+              <span className="hidden sm:inline">৩. স্মারক, স্বাক্ষর ও সিলমোহর</span>
             </button>
 
             <button
+              id="tab-gallery"
+              role="tab"
+              aria-selected={activeFormTab === "gallery"}
+              aria-controls="panel-gallery"
               type="button"
               onClick={() => setActiveFormTab("gallery")}
               className={`flex items-center gap-1.5 px-3.5 py-2 rounded-t-xl text-xs font-bold transition-all border-b-2 shrink-0 ${
@@ -675,17 +737,26 @@ export default function StudentCertificateStudio() {
                   : "border-transparent text-slate-600 hover:text-slate-900"
               }`}
             >
-              <FolderArchive className="w-3.5 h-3.5" />
-              <span>৪. নমুনা জিপ ও ডাউনলোড গ্যালারি</span>
+              <FolderArchive className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">৪. নমুনা গ্যালারি</span>
+              <span className="hidden sm:inline">৪. নমুনা জিপ ও ডাউনলোড গ্যালারি</span>
             </button>
           </div>
 
           {/* TAB 1: SCHOOL INFORMATION */}
           {activeFormTab === "school" && (
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div
+              role="tabpanel"
+              id="panel-school"
+              aria-labelledby="tab-school"
+              className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+            >
               <div className="space-y-1 sm:col-span-2">
-                <label className="text-xs font-bold text-slate-700">বিদ্যালয়ের নাম (পূর্ণ নাম)*</label>
+                <label htmlFor="cert-school-name" className="text-xs font-bold text-slate-700">
+                  বিদ্যালয়ের নাম (পূর্ণ নাম)*
+                </label>
                 <input
+                  id="cert-school-name"
                   type="text"
                   value={data.schoolName}
                   onChange={(e) => handleInputChange("schoolName", e.target.value)}
@@ -695,8 +766,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">ইএমআইএস (EMIS) কোড</label>
+                <label htmlFor="cert-emis-code" className="text-xs font-bold text-slate-700">
+                  ইএমআইএস (EMIS) কোড
+                </label>
                 <input
+                  id="cert-emis-code"
                   type="text"
                   value={data.emisCode}
                   onChange={(e) => handleInputChange("emisCode", e.target.value)}
@@ -706,16 +780,24 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">বিদ্যালয় কোড / স্থাপিত</label>
+                <span className="text-xs font-bold text-slate-700 block">বিদ্যালয় কোড / স্থাপিত</span>
                 <div className="flex gap-1.5">
+                  <label htmlFor="cert-school-code" className="sr-only">
+                    বিদ্যালয় কোড
+                  </label>
                   <input
+                    id="cert-school-code"
                     type="text"
                     value={data.schoolCode}
                     onChange={(e) => handleInputChange("schoolCode", e.target.value)}
                     className="w-1/2 px-2.5 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="কোড: ০৫"
                   />
+                  <label htmlFor="cert-established-year" className="sr-only">
+                    স্থাপিত বছর
+                  </label>
                   <input
+                    id="cert-established-year"
                     type="text"
                     value={data.establishedYear}
                     onChange={(e) => handleInputChange("establishedYear", e.target.value)}
@@ -726,8 +808,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">গ্রাম / এলাকা</label>
+                <label htmlFor="cert-village" className="text-xs font-bold text-slate-700">
+                  গ্রাম / এলাকা
+                </label>
                 <input
+                  id="cert-village"
                   type="text"
                   value={data.village}
                   onChange={(e) => handleInputChange("village", e.target.value)}
@@ -737,8 +822,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">ডাকঘর</label>
+                <label htmlFor="cert-post-office" className="text-xs font-bold text-slate-700">
+                  ডাকঘর
+                </label>
                 <input
+                  id="cert-post-office"
                   type="text"
                   value={data.postOffice}
                   onChange={(e) => handleInputChange("postOffice", e.target.value)}
@@ -748,8 +836,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">উপজেলা / থানা</label>
+                <label htmlFor="cert-upazila" className="text-xs font-bold text-slate-700">
+                  উপজেলা / থানা
+                </label>
                 <input
+                  id="cert-upazila"
                   type="text"
                   value={data.upazila}
                   onChange={(e) => handleInputChange("upazila", e.target.value)}
@@ -759,8 +850,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">জেলা</label>
+                <label htmlFor="cert-zilla" className="text-xs font-bold text-slate-700">
+                  জেলা
+                </label>
                 <input
+                  id="cert-zilla"
                   type="text"
                   value={data.zilla}
                   onChange={(e) => handleInputChange("zilla", e.target.value)}
@@ -773,10 +867,18 @@ export default function StudentCertificateStudio() {
 
           {/* TAB 2: STUDENT & ASSESSMENT INFORMATION */}
           {activeFormTab === "student" && (
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div
+              role="tabpanel"
+              id="panel-student"
+              aria-labelledby="tab-student"
+              className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+            >
               <div className="space-y-1 sm:col-span-2">
-                <label className="text-xs font-bold text-slate-700">শিক্ষার্থীর নাম*</label>
+                <label htmlFor="cert-student-name" className="text-xs font-bold text-slate-700">
+                  শিক্ষার্থীর নাম*
+                </label>
                 <input
+                  id="cert-student-name"
                   type="text"
                   value={data.studentName}
                   onChange={(e) => handleInputChange("studentName", e.target.value)}
@@ -786,8 +888,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">পিতার নাম*</label>
+                <label htmlFor="cert-father-name" className="text-xs font-bold text-slate-700">
+                  পিতার নাম*
+                </label>
                 <input
+                  id="cert-father-name"
                   type="text"
                   value={data.fatherName}
                   onChange={(e) => handleInputChange("fatherName", e.target.value)}
@@ -797,8 +902,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">মাতার নাম*</label>
+                <label htmlFor="cert-mother-name" className="text-xs font-bold text-slate-700">
+                  মাতার নাম*
+                </label>
                 <input
+                  id="cert-mother-name"
                   type="text"
                   value={data.motherName}
                   onChange={(e) => handleInputChange("motherName", e.target.value)}
@@ -808,16 +916,24 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">শিক্ষার্থীর ঠিকানা (গ্রাম ও ডাক)</label>
+                <span className="text-xs font-bold text-slate-700 block">শিক্ষার্থীর ঠিকানা (গ্রাম ও ডাক)</span>
                 <div className="flex gap-1.5">
+                  <label htmlFor="cert-student-village" className="sr-only">
+                    গ্রাম
+                  </label>
                   <input
+                    id="cert-student-village"
                     type="text"
                     value={data.studentVillage}
                     onChange={(e) => handleInputChange("studentVillage", e.target.value)}
                     className="w-1/2 px-2.5 py-2 rounded-xl border border-slate-300 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="গ্রাম"
                   />
+                  <label htmlFor="cert-student-post" className="sr-only">
+                    ডাকঘর
+                  </label>
                   <input
+                    id="cert-student-post"
                     type="text"
                     value={data.studentPost}
                     onChange={(e) => handleInputChange("studentPost", e.target.value)}
@@ -828,9 +944,13 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">শ্রেণি ও শিক্ষাবর্ষ</label>
+                <span className="text-xs font-bold text-slate-700 block">শ্রেণি ও শিক্ষাবর্ষ</span>
                 <div className="flex gap-1.5">
+                  <label htmlFor="cert-passed-class" className="sr-only">
+                    উত্তীর্ণ শ্রেণি
+                  </label>
                   <select
+                    id="cert-passed-class"
                     value={data.passedClass}
                     onChange={(e) => handleInputChange("passedClass", e.target.value)}
                     className="w-1/2 px-2 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -842,7 +962,11 @@ export default function StudentCertificateStudio() {
                     <option value="৪র্থ শ্রেণি">৪র্থ শ্রেণি</option>
                     <option value="৫ম শ্রেণি">৫ম শ্রেণি</option>
                   </select>
+                  <label htmlFor="cert-academic-year" className="sr-only">
+                    শিক্ষাবর্ষ
+                  </label>
                   <input
+                    id="cert-academic-year"
                     type="text"
                     value={data.academicYear}
                     onChange={(e) => handleInputChange("academicYear", e.target.value)}
@@ -853,8 +977,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">মূল্যায়ন পর্যায়</label>
+                <label htmlFor="cert-assessment-stage" className="text-xs font-bold text-slate-700">
+                  মূল্যায়ন পর্যায়
+                </label>
                 <select
+                  id="cert-assessment-stage"
                   value={data.assessmentStage}
                   onChange={(e) => handleInputChange("assessmentStage", e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
@@ -867,23 +994,35 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">রোল, শাখা ও প্রাপ্ত গ্রেড</label>
+                <span className="text-xs font-bold text-slate-700 block">রোল, শাখা ও প্রাপ্ত গ্রেড</span>
                 <div className="flex gap-1.5">
+                  <label htmlFor="cert-roll-no" className="sr-only">
+                    রোল
+                  </label>
                   <input
+                    id="cert-roll-no"
                     type="text"
                     value={data.rollNo}
                     onChange={(e) => handleInputChange("rollNo", e.target.value)}
                     className="w-1/3 px-2 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="রোল: ০৩"
                   />
+                  <label htmlFor="cert-section" className="sr-only">
+                    শাখা
+                  </label>
                   <input
+                    id="cert-section"
                     type="text"
                     value={data.section}
                     onChange={(e) => handleInputChange("section", e.target.value)}
                     className="w-1/3 px-2 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="শাখা: ক"
                   />
+                  <label htmlFor="cert-grade" className="sr-only">
+                    গ্রেড
+                  </label>
                   <select
+                    id="cert-grade"
                     value={data.grade}
                     onChange={(e) => {
                       const g = e.target.value;
@@ -944,10 +1083,18 @@ export default function StudentCertificateStudio() {
 
           {/* TAB 3: SIGNATURES, MEMO & STAMPS */}
           {activeFormTab === "signatures" && (
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div
+              role="tabpanel"
+              id="panel-signatures"
+              aria-labelledby="tab-signatures"
+              className="pt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"
+            >
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">সনদের শিরোনাম</label>
+                <label htmlFor="cert-certificate-type" className="text-xs font-bold text-slate-700">
+                  সনদের শিরোনাম
+                </label>
                 <select
+                  id="cert-certificate-type"
                   value={data.certificateType}
                   onChange={(e) =>
                     handleInputChange("certificateType", e.target.value as CertificateData["certificateType"])
@@ -962,8 +1109,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">স্মারক নম্বর (মেমো নং)</label>
+                <label htmlFor="cert-memo-no" className="text-xs font-bold text-slate-700">
+                  স্মারক নম্বর (মেমো নং)
+                </label>
                 <input
+                  id="cert-memo-no"
                   type="text"
                   value={data.memoNo}
                   onChange={(e) => handleInputChange("memoNo", e.target.value)}
@@ -973,8 +1123,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">ইস্যু তারিখ</label>
+                <label htmlFor="cert-issue-date" className="text-xs font-bold text-slate-700">
+                  ইস্যু তারিখ
+                </label>
                 <input
+                  id="cert-issue-date"
                   type="text"
                   value={data.issueDate}
                   onChange={(e) => handleInputChange("issueDate", e.target.value)}
@@ -984,7 +1137,9 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-700">অফিসিয়াল গোল সিলমোহর</label>
+                <label htmlFor="round-seal-checkbox" className="text-xs font-bold text-slate-700">
+                  অফিসিয়াল গোল সিলমোহর
+                </label>
                 <div className="flex items-center gap-2 pt-2">
                   <input
                     type="checkbox"
@@ -1000,16 +1155,24 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1 sm:col-span-2">
-                <label className="text-xs font-bold text-slate-700">প্রধান শিক্ষকের নাম ও পদবি</label>
+                <span className="text-xs font-bold text-slate-700 block">প্রধান শিক্ষকের নাম ও পদবি</span>
                 <div className="flex gap-2">
+                  <label htmlFor="cert-head-teacher-name" className="sr-only">
+                    প্রধান শিক্ষকের নাম
+                  </label>
                   <input
+                    id="cert-head-teacher-name"
                     type="text"
                     value={data.headTeacherName}
                     onChange={(e) => handleInputChange("headTeacherName", e.target.value)}
                     className="w-2/3 px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="প্রধান শিক্ষকের নাম"
                   />
+                  <label htmlFor="cert-head-teacher-designation" className="sr-only">
+                    পদবি
+                  </label>
                   <input
+                    id="cert-head-teacher-designation"
                     type="text"
                     value={data.headTeacherDesignation}
                     onChange={(e) => handleInputChange("headTeacherDesignation", e.target.value)}
@@ -1020,8 +1183,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1 sm:col-span-2">
-                <label className="text-xs font-bold text-slate-700">শ্রেণি শিক্ষকের নাম (ঐচ্ছিক)</label>
+                <label htmlFor="cert-class-teacher-name" className="text-xs font-bold text-slate-700">
+                  শ্রেণি শিক্ষকের নাম (ঐচ্ছিক)
+                </label>
                 <input
+                  id="cert-class-teacher-name"
                   type="text"
                   value={data.classTeacherName}
                   onChange={(e) => handleInputChange("classTeacherName", e.target.value)}
@@ -1031,8 +1197,11 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="space-y-1 sm:col-span-4">
-                <label className="text-xs font-bold text-slate-700">চারিত্রিক প্রশংসাসূচক বাক্য</label>
+                <label htmlFor="cert-conduct-remark" className="text-xs font-bold text-slate-700">
+                  চারিত্রিক প্রশংসাসূচক বাক্য
+                </label>
                 <input
+                  id="cert-conduct-remark"
                   type="text"
                   value={data.conductRemark}
                   onChange={(e) => handleInputChange("conductRemark", e.target.value)}
@@ -1133,7 +1302,7 @@ export default function StudentCertificateStudio() {
       </div>
 
       {/* 🔍 PREVIEW ZOOM & WORKSPACE TOOLBAR */}
-      <div className="flex items-center justify-between gap-4 px-2 print:hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-2 print:hidden">
         <div className="flex items-center gap-2 text-xs font-bold text-slate-600">
           <span>লাইভ সনদপত্র প্রিভিউ (A4 ল্যান্ডস্কেপ):</span>
           <span className="px-2 py-0.5 rounded-md bg-slate-200 text-slate-700">
@@ -1141,29 +1310,43 @@ export default function StudentCertificateStudio() {
           </span>
         </div>
 
-        {/* Zoom Controls */}
-        <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
+        {/* Zoom Controls with Auto-Fit */}
+        <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs self-start sm:self-auto">
           <button
             type="button"
-            onClick={() => setZoomScale((prev) => Math.max(50, prev - 15))}
+            onClick={handleAutoFit}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 transition-colors"
+            title="স্ক্রিনের সাথে অটো-ফিট করুন"
+          >
+            <Maximize2 className="w-3.5 h-3.5" />
+            <span>অটো-ফিট</span>
+          </button>
+          <div className="h-4 w-px bg-slate-200" />
+          <button
+            type="button"
+            onClick={() => setZoomScale((prev) => Math.max(30, prev - 10))}
             className="p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             title="জুম আউট"
+            aria-label="জুম আউট"
           >
             <ZoomOut className="w-4 h-4" />
           </button>
-          <span className="text-xs font-black text-slate-700 w-12 text-center">{zoomScale}%</span>
+          <span className="text-xs font-black text-slate-700 w-12 text-center" aria-live="polite">
+            {zoomScale}%
+          </span>
           <button
             type="button"
-            onClick={() => setZoomScale((prev) => Math.min(130, prev + 15))}
+            onClick={() => setZoomScale((prev) => Math.min(130, prev + 10))}
             className="p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             title="জুম ইন"
+            aria-label="জুম ইন"
           >
             <ZoomIn className="w-4 h-4" />
           </button>
           <button
             type="button"
             onClick={() => setZoomScale(100)}
-            className="px-2 py-0.5 rounded-lg text-[11px] font-bold text-slate-600 hover:bg-slate-100"
+            className="px-2 py-0.5 rounded-lg text-[11px] font-bold text-slate-600 hover:bg-slate-100 transition-colors"
           >
             ১০০%
           </button>
@@ -1174,19 +1357,32 @@ export default function StudentCertificateStudio() {
           📜 A4 LANDSCAPE CERTIFICATE CANVAS (PRINT & PREVIEW)
           Standard A4 Landscape: 297mm x 210mm (Ratio: ~1.414)
           ======================================================== */}
-      <div className="w-full overflow-x-auto pb-8 flex justify-center bg-slate-200/60 p-2 sm:p-6 rounded-3xl border border-slate-300/80 shadow-inner">
+      <div
+        ref={containerRef}
+        className="w-full overflow-x-auto pb-8 flex flex-col items-center bg-slate-200/60 p-2 sm:p-6 rounded-3xl border border-slate-300/80 shadow-inner"
+      >
         <div
           style={{
-            transform: `scale(${zoomScale / 100})`,
-            transformOrigin: "top center",
-            transition: "transform 0.15s ease-out"
+            width: `${285 * (zoomScale / 100)}mm`,
+            height: `${200 * (zoomScale / 100)}mm`,
+            maxWidth: "100%"
           }}
-          className="shrink-0"
+          className="relative overflow-hidden transition-[width,height] duration-200 shrink-0"
         >
-          {/* Certificate Container */}
           <div
-            ref={printAreaRef}
-            className={`certificate-print-area relative w-[285mm] h-[200mm] p-6 sm:p-8 bg-white shadow-2xl rounded-sm transition-all duration-300 font-['Hind_Siliguri',sans-serif] selection:bg-amber-200 overflow-hidden flex flex-col justify-between border-[12px] ${
+            style={{
+              transform: `scale(${zoomScale / 100})`,
+              transformOrigin: "top left",
+              width: "285mm",
+              height: "200mm"
+            }}
+            className="absolute top-0 left-0"
+          >
+            {/* Certificate Container */}
+            <article
+              ref={printAreaRef}
+              aria-label="প্রত্যয়নপত্র প্রিন্ট প্রিভিউ"
+              className={`certificate-print-area relative w-[285mm] h-[200mm] p-6 sm:p-8 bg-white shadow-2xl rounded-sm transition-all duration-300 font-['Hind_Siliguri',sans-serif] selection:bg-amber-200 overflow-hidden flex flex-col justify-between border-[12px] box-border ${
               template === "classic-black"
                 ? "border-slate-950 text-slate-950"
                 : template === "official-sonod"
@@ -1294,7 +1490,7 @@ export default function StudentCertificateStudio() {
             {/* -------------------------------------------
                 1. HEADER SECTION (GOVT, DPE & SCHOOL NAME)
                 ------------------------------------------- */}
-            <header className="relative z-10 space-y-1.5 text-center">
+            <div className="certificate-print-header relative z-10 space-y-1.5 text-center">
               {/* Top Subheaders & Side Grading Scale Table */}
               <div className="flex items-start justify-between gap-2 px-6">
                 {/* Left: DPE / Govt Logo & School Code */}
@@ -1323,7 +1519,7 @@ export default function StudentCertificateStudio() {
                     {data.ministryName || "প্রাথমিক ও গণশিক্ষা মন্ত্রণালয় • প্রাথমিক শিক্ষা অধিদপ্তর"}
                   </p>
                   {/* Primary School Name */}
-                  <h1
+                  <h2
                     className={`text-2xl sm:text-3xl font-black tracking-tight leading-tight pt-1 ${
                       template === "dpe-green"
                         ? "text-emerald-900"
@@ -1335,7 +1531,7 @@ export default function StudentCertificateStudio() {
                     }`}
                   >
                     {data.schoolName || "৭৭নং উত্তর বারপাড়া সরকারি প্রাথমিক বিদ্যালয়"}
-                  </h1>
+                  </h2>
                   {/* Address & EMIS */}
                   <p className="text-xs sm:text-sm font-semibold text-slate-700">
                     গ্রাম: {data.village || "..."} • ডাকঘর: {data.postOffice || "..."} • উপজেলা:{" "}
@@ -1412,12 +1608,16 @@ export default function StudentCertificateStudio() {
                   </span>
                 </div>
               </div>
-            </header>
+            </div>
 
             {/* -------------------------------------------
                 2. BODY TEXT (FILLED VS BLANK FORMAT)
                 ------------------------------------------- */}
-            <main className="relative z-10 px-6 sm:px-10 py-3 text-slate-950 leading-relaxed sm:leading-[2.4] text-justify text-sm sm:text-base md:text-[17px]">
+            <div
+              role="region"
+              aria-label="প্রত্যয়নপত্রের মূল বিবরণ"
+              className="certificate-print-body relative z-10 px-6 sm:px-10 py-3 text-slate-950 leading-relaxed sm:leading-[2.4] text-justify text-sm sm:text-base md:text-[17px]"
+            >
               {printMode === "filled" ? (
                 /* 🌟 DIGITAL FILLED MODE */
                 <p>
@@ -1528,12 +1728,12 @@ export default function StudentCertificateStudio() {
                   </span>
                 </p>
               )}
-            </main>
+            </div>
 
             {/* -------------------------------------------
                 3. FOOTER SIGNATURES & ROUND STAMP
                 ------------------------------------------- */}
-            <footer className="relative z-10 px-8 pb-3 pt-2">
+            <div className="certificate-print-footer relative z-10 px-8 pb-3 pt-2">
               <div className="flex items-end justify-between gap-4">
                 {/* Left: Class Teacher Signature */}
                 <div className="w-56 text-center space-y-1">
@@ -1576,18 +1776,19 @@ export default function StudentCertificateStudio() {
                       {data.headTeacherDesignation || "প্রধান শিক্ষক"}
                     </p>
                     <p className="text-xs font-bold text-slate-700 leading-tight">
-                      {data.schoolName.length > 26 ? data.schoolName.slice(0, 24) + "..." : data.schoolName}
+                      {data.schoolName}
                     </p>
                     <p className="text-[11px] text-slate-500">
-                      {data.upazila}, {data.zilla}।
+                      {data.upazila ? `${data.upazila}, ` : ""}{data.zilla}।
                     </p>
                   </div>
                 </div>
               </div>
-            </footer>
-          </div>
+            </div>
+          </article>
         </div>
       </div>
+    </div>
 
       {/* 🖼️ LIGHTBOX MODAL FOR ORIGINAL SCANNED SAMPLES */}
       {previewSampleModal && (
