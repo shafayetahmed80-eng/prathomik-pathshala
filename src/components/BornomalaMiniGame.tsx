@@ -25,6 +25,8 @@ import BornomalaBalloonPopGame from "./BornomalaBalloonPopGame";
 import BornomalaMemoryGame from "./BornomalaMemoryGame";
 import BornomalaNumberCountingGame from "./BornomalaNumberCountingGame";
 import BornomalaWordBuilderGame from "./BornomalaWordBuilderGame";
+import BornomalaJuktobornoGame from "./BornomalaJuktobornoGame";
+import BornomalaSequenceRunnerGame from "./BornomalaSequenceRunnerGame";
 
 interface Props {
   onBackToCanvas: () => void;
@@ -34,7 +36,14 @@ interface Props {
   initialSeed?: number;
 }
 
-type ArcadeTab = "balloon-pop" | "counting" | "word-builder" | "memory" | "quiz";
+type ArcadeTab =
+  | "balloon-pop"
+  | "counting"
+  | "word-builder"
+  | "juktoborno"
+  | "sequence"
+  | "memory"
+  | "quiz";
 type GameMode = "picture-to-letter" | "listen-to-letter" | "case-match";
 type QuizCategory = "all" | "vowels" | "consonants" | "numbers";
 
@@ -416,6 +425,40 @@ export default function BornomalaMiniGame({
             onClick={() => {
               playPopSound();
               unlockMobileAudio({ primeSilent: true });
+              setArcadeTab("juktoborno");
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+              arcadeTab === "juktoborno"
+                ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md scale-102"
+                : "text-indigo-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>✨</span>
+            <span>{isEng ? "Magic Blends" : "যুক্তবর্ণ ম্যাজিক"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setArcadeTab("sequence");
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+              arcadeTab === "sequence"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md scale-102"
+                : "text-indigo-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>🧩</span>
+            <span>{isEng ? "Sequence Gap" : "ক্রমধারা রানার"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
               setArcadeTab("memory");
             }}
             className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
@@ -477,7 +520,27 @@ export default function BornomalaMiniGame({
         />
       )}
 
-      {/* 🎴 TAB 4: MEMORY MATCH FLIP GAME */}
+      {/* ✨ TAB 4: JUKTOBORNO MAGIC WORKSHOP GAME */}
+      {arcadeTab === "juktoborno" && (
+        <BornomalaJuktobornoGame
+          key={`juktoborno-${languageMode}`}
+          onAddStars={onAddStars}
+          languageMode={languageMode}
+          teacherVoice={teacherVoice}
+        />
+      )}
+
+      {/* 🧩 TAB 5: SEQUENCE RUNNER & MISSING LINK GAME */}
+      {arcadeTab === "sequence" && (
+        <BornomalaSequenceRunnerGame
+          key={`sequence-${languageMode}`}
+          onAddStars={onAddStars}
+          languageMode={languageMode}
+          teacherVoice={teacherVoice}
+        />
+      )}
+
+      {/* 🎴 TAB 6: MEMORY MATCH FLIP GAME */}
       {arcadeTab === "memory" && (
         <BornomalaMemoryGame
           key={`memory-${languageMode}`}
