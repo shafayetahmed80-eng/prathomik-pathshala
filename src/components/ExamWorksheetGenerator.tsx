@@ -659,8 +659,9 @@ ${questionsText.trim()}
 
   return (
     <article 
+      id="exam-paper-container"
       aria-labelledby="exam-maker-heading"
-      className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 print:p-0 print:border-none print:shadow-none w-full"
+      className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 print:p-0 print:border-none print:shadow-none w-full pb-28 md:pb-10"
     >
       {/* Toast Notification */}
       {toastMessage && (
@@ -1349,6 +1350,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, mcq: moveItem(activeExam.mcq, idx, "up") })}
                             disabled={idx === 0}
+                            title="উপরে নিন"
+                            aria-label="প্রশ্নটি উপরে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowUp className="w-3 h-3 text-slate-700" />
@@ -1357,6 +1360,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, mcq: moveItem(activeExam.mcq, idx, "down") })}
                             disabled={idx === activeExam.mcq.length - 1}
+                            title="নিচে নিন"
+                            aria-label="প্রশ্নটি নিচে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowDown className="w-3 h-3 text-slate-700" />
@@ -1364,6 +1369,8 @@ ${questionsText.trim()}
                           <button
                             type="button"
                             onClick={() => handleDeleteMcq(idx)}
+                            title="প্রশ্নটি মুছুন"
+                            aria-label="প্রশ্নটি মুছে ফেলুন"
                             className="p-1 rounded hover:bg-rose-100 text-rose-600"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -1459,6 +1466,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, fillInTheBlanks: moveItem(activeExam.fillInTheBlanks, idx, "up") })}
                             disabled={idx === 0}
+                            title="উপরে নিন"
+                            aria-label="শূন্যস্থান প্রশ্নটি উপরে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowUp className="w-3 h-3 text-slate-700" />
@@ -1467,6 +1476,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, fillInTheBlanks: moveItem(activeExam.fillInTheBlanks, idx, "down") })}
                             disabled={idx === activeExam.fillInTheBlanks.length - 1}
+                            title="নিচে নিন"
+                            aria-label="শূন্যস্থান প্রশ্নটি নিচে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowDown className="w-3 h-3 text-slate-700" />
@@ -1474,6 +1485,8 @@ ${questionsText.trim()}
                           <button
                             type="button"
                             onClick={() => handleDeleteFill(idx)}
+                            title="প্রশ্নটি মুছুন"
+                            aria-label="শূন্যস্থান প্রশ্নটি মুছে ফেলুন"
                             className="p-1 rounded hover:bg-rose-100 text-rose-600"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -1549,6 +1562,8 @@ ${questionsText.trim()}
                           <button
                             type="button"
                             onClick={() => handleDeleteTrueFalse(idx)}
+                            title="প্রশ্নটি মুছুন"
+                            aria-label="সত্য/মিথ্যা প্রশ্নটি মুছে ফেলুন"
                             className="p-1 rounded hover:bg-rose-100 text-rose-600"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -1632,6 +1647,8 @@ ${questionsText.trim()}
                             <button
                               type="button"
                               onClick={() => handleDeleteMatchingRow(idx)}
+                              title="সারিটি মুছুন"
+                              aria-label="মিলকরণের এই সারিটি মুছে ফেলুন"
                               className="p-1 rounded hover:bg-rose-100 text-rose-600"
                             >
                               <Trash2 className="w-3 h-3" />
@@ -1697,6 +1714,8 @@ ${questionsText.trim()}
                         <button
                           type="button"
                           onClick={() => handleDeleteWord(idx)}
+                          title="শব্দটি মুছুন"
+                          aria-label="শব্দার্থটি মুছে ফেলুন"
                           className="p-1 rounded hover:bg-rose-100 text-rose-600 print:hidden shrink-0 ml-1"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -1758,6 +1777,8 @@ ${questionsText.trim()}
                         <button
                           type="button"
                           onClick={() => handleDeleteYukta(idx)}
+                          title="যুক্তবর্ণটি মুছুন"
+                          aria-label="যুক্তবর্ণটি মুছে ফেলুন"
                           className="p-1 rounded hover:bg-rose-100 text-rose-600 print:hidden"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -1930,6 +1951,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, shortQuestions: moveItem(activeExam.shortQuestions, idx, "up") })}
                             disabled={idx === 0}
+                            title="উপরে নিন"
+                            aria-label="সংক্ষিপ্ত প্রশ্নটি উপরে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowUp className="w-3 h-3 text-slate-700" />
@@ -1938,6 +1961,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, shortQuestions: moveItem(activeExam.shortQuestions, idx, "down") })}
                             disabled={idx === activeExam.shortQuestions.length - 1}
+                            title="নিচে নিন"
+                            aria-label="সংক্ষিপ্ত প্রশ্নটি নিচে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowDown className="w-3 h-3 text-slate-700" />
@@ -1945,6 +1970,8 @@ ${questionsText.trim()}
                           <button
                             type="button"
                             onClick={() => handleDeleteShort(idx)}
+                            title="প্রশ্নটি মুছুন"
+                            aria-label="সংক্ষিপ্ত প্রশ্নটি মুছে ফেলুন"
                             className="p-1 rounded hover:bg-rose-100 text-rose-600"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -2018,6 +2045,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, broadQuestions: moveItem(activeExam.broadQuestions, idx, "up") })}
                             disabled={idx === 0}
+                            title="উপরে নিন"
+                            aria-label="বর্ণনামূলক প্রশ্নটি উপরে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowUp className="w-3 h-3 text-slate-700" />
@@ -2026,6 +2055,8 @@ ${questionsText.trim()}
                             type="button"
                             onClick={() => setActiveExam({ ...activeExam, broadQuestions: moveItem(activeExam.broadQuestions, idx, "down") })}
                             disabled={idx === activeExam.broadQuestions.length - 1}
+                            title="নিচে নিন"
+                            aria-label="বর্ণনামূলক প্রশ্নটি নিচে নিন"
                             className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
                           >
                             <ArrowDown className="w-3 h-3 text-slate-700" />
@@ -2033,6 +2064,8 @@ ${questionsText.trim()}
                           <button
                             type="button"
                             onClick={() => handleDeleteBroad(idx)}
+                            title="প্রশ্নটি মুছুন"
+                            aria-label="বর্ণনামূলক প্রশ্নটি মুছে ফেলুন"
                             className="p-1 rounded hover:bg-rose-100 text-rose-600"
                           >
                             <Trash2 className="w-3 h-3" />
@@ -2495,6 +2528,57 @@ ${questionsText.trim()}
         currentSubjectKey={selectedSubjectKey}
         onExamGenerated={handleAiExamGenerated}
       />
+
+      {/* 📱 Mobile Floating Sticky Bottom Action Bar (WCAG & Mobile Ergonomics) */}
+      <nav 
+        aria-label="মোবাইল কুইক অ্যাকশন কন্ট্রোল"
+        className="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 z-40 p-2.5 px-3 flex items-center justify-between shadow-2xl gap-2 print:hidden"
+      >
+        <button
+          type="button"
+          onClick={() => handlePrint(false)}
+          className="flex-1 py-2 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-all cursor-pointer"
+          aria-label="প্রশ্নপত্র প্রিন্ট বা PDF হিসেবে সংরক্ষণ"
+        >
+          <Printer className="w-3.5 h-3.5" />
+          <span>প্রিন্ট/PDF</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={handleExportWord}
+          className="py-2 px-2.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs flex items-center justify-center gap-1 border border-blue-200 active:scale-95 transition-all cursor-pointer"
+          aria-label="Microsoft Word (.doc) ফরম্যাটে ডাউনলোড"
+        >
+          <FileDown className="w-3.5 h-3.5 text-blue-600" />
+          <span>Word</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setShowAnswerKey(!showAnswerKey)}
+          className={`py-2 px-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1 border active:scale-95 transition-all cursor-pointer ${
+            showAnswerKey
+              ? "bg-emerald-100 text-emerald-900 border-emerald-300"
+              : "bg-slate-100 text-slate-700 border-slate-200"
+          }`}
+          aria-label={showAnswerKey ? "উত্তরমালা লুকান" : "উত্তরমালা দেখুন"}
+          aria-pressed={showAnswerKey}
+        >
+          {showAnswerKey ? <EyeOff className="w-3.5 h-3.5 text-emerald-700" /> : <Eye className="w-3.5 h-3.5 text-slate-600" />}
+          <span>উত্তরমালা</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer"
+          title="উপরে স্ক্রোল করুন"
+          aria-label="পৃষ্ঠার শুরুতে স্ক্রোল করুন"
+        >
+          <ArrowUp className="w-4 h-4" />
+        </button>
+      </nav>
     </article>
   );
 }
