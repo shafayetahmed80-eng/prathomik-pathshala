@@ -941,457 +941,37 @@ export const KITE_SLIDE_DECK: SlideDeck = {
 };
 
 // =========================================================================
-// DECK 3: CLASS 3 ENGLISH - INTRODUCING MYSELF: JERIN (UNIT 1 LESSON 7)
+// 🎈 PRIMARY PATHSHALA (NCTB 2026 OFFICIAL CURRICULUM)
+// CLASS 3 ENGLISH: UNIT 1 (LESSONS 1 TO 9) & UNIT 7 (LESSON 2) — 100% VERBATIM
+// Ground Truth: C:/Projects/prathomik-pathshala/NCTB_Primary_Collection_Web/...
 // =========================================================================
-export const JERIN_INTRODUCING_DECK: SlideDeck = {
-  id: "introducing-jerin",
-  grade: "Class 3 (৩য় শ্রেণি)",
-  subject: "English for Today",
-  unit: "Unit 1: Greetings & Introductions",
-  lesson: "Lesson 7: Introducing Myself — Jerin",
-  topic: "এনসিটিবি পাঠ্যবই পৃষ্ঠা ১৫-১৭ (Self-Introduction & Family)",
-  category: "english",
-  thumbnailEmoji: "👧 🏫",
-  totalSlides: 8,
-  slides: [
-    {
-      id: 1,
-      title: "Activity A: Meet Jerin at School!",
-      subtitle: "Unit 1: Greetings & Introductions | Lesson 7 (Page 15 Activity A)",
-      phase: "১. প্রেষণা ও পূর্বজ্ঞান যাচাই (Warm-up)",
-      duration: "৫ মিনিট",
-      themeColor: "from-sky-500 to-indigo-500",
-      imageEmoji: "👧 🏫 🎒",
-      sceneType: "campus",
-      hasVisualStage: true,
-      content: {
-        englishText: [
-          "Hello! Welcome to our school.",
-          "What is your name? How old are you?",
-          "Let's meet our new friend Jerin at Mohonpur Primary School!"
-        ],
-        activityTask: "শিক্ষার্থীদের স্ক্রিনের মোহনপুর প্রাইমারি স্কুলের ছবি দেখিয়ে নিজেদের স্কুলের নাম ও বন্ধুদের পরিচয় নিয়ে ক্লাসে আলোচনা করুন।",
-        banglaExplanation: "এনসিটিবি পৃষ্ঠা ১৫ Activity A: নতুন সহপাঠীদের সাথে শুভেচ্ছা বিনিময় এবং নিজের পরিচয় দেওয়া। জেরিনের সাথে পরিচিত হয়ে শিক্ষার্থীরা নিজেদের নাম ও বয়স ইংরেজিতে বলা শিখবে।"
-      },
-      teacherNotes: "ক্লাসের শুরুতে শিক্ষার্থীদের হাত তুলে নিজের নাম ইংরেজিতে বলতে উৎসাহিত করুন। স্ক্রিনের স্কুলে জাতীয় পতাকা ও স্কুলের সাইনবোর্ড দেখিয়ে আলোচনা শুরু করুন।",
-      quickTeachingSteps: [
-        "ধাপ ১: স্ক্রিনের মোহনপুর প্রাথমিক বিদ্যালয়ের আঙিনা শিক্ষার্থীদের দেখান।",
-        "ধাপ ২: জেরিনের হাত নাড়ার অঙ্গভঙ্গি দেখে নিজেদের নাম ইংরেজিতে বলতে বলুন।",
-        "ধাপ ৩: প্রাক-পঠন আলোচনা শেষে পরবর্তী শব্দভাণ্ডার (Vocabulary) ল্যাবে যান।"
-      ]
-    },
-    {
-      id: 2,
-      title: "Key Vocabulary & Syllables Lab",
-      subtitle: "পাঠ্যবই পৃষ্ঠা ১৫-১৭: আত্মপরিচয় ও পারিবারিক পেশার শব্দভাণ্ডার (Vocabulary & Syllables)",
-      phase: "২. শব্দ পরিচিতি ও সরব পাঠ (Vocabulary Lab)",
-      duration: "৭ মিনিট",
-      themeColor: "from-emerald-500 to-teal-500",
-      imageEmoji: "🔤 👧 👨‍👩‍👦",
-      sceneType: "campus",
-      content: {
-        englishText: [],
-        vocabulary: [
-          {
-            word: "Eight",
-            syllables: ["Eight"],
-            phonetic: "/eɪt/",
-            meaning: "আট (বয়স নির্দেশক সংখ্যা)",
-            partOfSpeech: "Number",
-            example: "I am eight years old.",
-            icon: "8️⃣"
-          },
-          {
-            word: "Primary",
-            syllables: ["Pri", "ma", "ry"],
-            phonetic: "/ˈpraɪ.mer.i/",
-            meaning: "প্রাথমিক (বিদ্যালয় স্তর)",
-            partOfSpeech: "Noun/Adjective",
-            example: "Mohonpur Primary School is beautiful.",
-            icon: "🏫"
-          },
-          {
-            word: "Teacher",
-            syllables: ["Teach", "er"],
-            phonetic: "/ˈtiː.tʃər/",
-            meaning: "শিক্ষক (সম্মানিত পেশা)",
-            partOfSpeech: "Noun",
-            example: "My father is a teacher.",
-            icon: "👨‍🏫"
-          },
-          {
-            word: "Banker",
-            syllables: ["Bank", "er"],
-            phonetic: "/ˈbæŋ.kər/",
-            meaning: "ব্যাংক কর্মকর্তা (অর্থনৈতিক পেশা)",
-            partOfSpeech: "Noun",
-            example: "My mother is a banker.",
-            icon: "👩‍💼"
-          },
-          {
-            word: "Brother",
-            syllables: ["Bro", "ther"],
-            phonetic: "/ˈbrʌð.ər/",
-            meaning: "ভাই / সহোদর",
-            partOfSpeech: "Noun",
-            example: "My brother is two years old.",
-            icon: "👶"
-          },
-          {
-            word: "Family",
-            syllables: ["Fam", "i", "ly"],
-            phonetic: "/ˈfæm.əl.i/",
-            meaning: "পরিবার / পরিজন",
-            partOfSpeech: "Noun",
-            example: "We are a very happy family.",
-            icon: "👨‍👩‍👦"
-          },
-          {
-            word: "Mohonpur",
-            syllables: ["Mo", "hon", "pur"],
-            phonetic: "/moʊ.hɒn.pʊr/",
-            meaning: "মোহনপুর (জেরিনের গ্রাম ও স্কুলের এলাকা)",
-            partOfSpeech: "Proper Noun",
-            example: "I live with my family in Mohonpur.",
-            icon: "🏡"
-          }
-        ]
-      },
-      teacherNotes: "প্রতিটি শব্দের ওপর ক্লিক করে দেশীয় সহজ উচ্চারণ শিক্ষার্থীদের শোনান। পরিবারের সদস্যদের পেশা (Teacher, Banker) নিয়ে শিক্ষার্থীদের পরিবারের সাথে মিল আলোচনা করুন।",
-      quickTeachingSteps: [
-        "ধাপ ১: শব্দের কার্ডে ক্লিক করে সঠিক ফোনেটিক্স সাউন্ড শোনান।",
-        "ধাপ ২: সিলেবল ভাঙন (যেমন: Pri-ma-ry, Teach-er, Bank-er) হাততালি দিয়ে ড্রিল করান।",
-        "ধাপ ৩: বাক্যে প্রয়োগটি পড়ে শুনিয়ে বাংলা অর্থ পরিষ্কার করুন।"
-      ]
-    },
-    {
-      id: 3,
-      title: "Main Text: Introducing Jerin",
-      subtitle: "পাঠ্যবই পৃষ্ঠা ১৫: মূল আত্মপরিচয় পাঠ (Textbook Activity B)",
-      phase: "৩. মূল পাঠ উপস্থাপন (Text Presentation)",
-      duration: "৮ মিনিট",
-      themeColor: "from-amber-400 to-orange-500",
-      imageEmoji: "📖 👧 🏫",
-      sceneType: "campus",
-      hasVisualStage: true,
-      content: {
-        englishText: [
-          "Hello! I am Jerin.",
-          "I am eight years old.",
-          "I'm in Class 3 at Mohonpur Primary School.",
-          "I live with my family in Mohonpur.",
-          "My father is a teacher and my mother is a banker.",
-          "My brother is two years old.",
-          "We are a very happy family."
-        ],
-        banglaExplanation: "এনসিটিবি পাঠ্য: হ্যালো! আমি জেরিন। আমার বয়স আট বছর। আমি মোহনপুর প্রাথমিক বিদ্যালয়ে ৩য় শ্রেণিতে পড়ি। আমি মোহনপুরে আমার পরিবারের সাথে বাস করি। আমার বাবা একজন শিক্ষক এবং আমার মা একজন ব্যাংক কর্মকর্তা। আমার ভাইয়ের বয়স দুই বছর। আমরা একটি অত্যন্ত সুখী পরিবার।"
-      },
-      teacherNotes: "শিক্ষার্থীদের প্রতিটি বাক্যের প্রতি মনোযোগ দিতে বলুন। 'I am' এবং 'My father is' এর ব্যবহারের পার্থক্য বুঝিয়ে দিন। শব্দে ক্লিক করে ইন্টারঅ্যাক্টিভ স্পিচ শোনান।",
-      quickTeachingSteps: [
-        "ধাপ ১: বাম পাশের দৃশ্যে জেরিনের পরিবার ও স্কুলের পরিচয় দিন।",
-        "ধাপ ২: মূল টেক্সটের বাক্যগুলোতে শব্দ ধরে ধরে সরব পাঠ করান।",
-        "ধাপ ৩: সম্পূর্ণ পাঠ শেষে জেরিন সম্পর্কে ছোট ছোট প্রশ্ন করুন।"
-      ]
-    },
-    {
-      id: 4,
-      title: "Pair Dialogue: Getting to Know Each Other",
-      subtitle: "সহপাঠীর সাথে জোড়ায় সংলাপ: একে অপরের পরিচয় জানা (Activity C Dialogue)",
-      phase: "৪. চরিত্র সংলাপ ও দ্বৈত অভিনয় (Roleplay)",
-      duration: "৮ মিনিট",
-      themeColor: "from-blue-500 to-indigo-500",
-      imageEmoji: "🗣️ 🤝 👧",
-      sceneType: "dialogue",
-      hasVisualStage: true,
-      content: {
-        englishText: [
-          "Practice the dialogue in pairs.",
-          "Student A asks questions and Student B (Jerin) answers politely:"
-        ],
-        banglaExplanation: "এনসিটিবি নির্দেশিকা অনুযায়ী শ্রেণিকক্ষে জোড়ায় সংলাপ চর্চা (Pair Work): একজন শিক্ষার্থী প্রশ্ন করবে এবং অন্যজন জেরিনের চরিত্র হয়ে সঠিক উত্তর প্রদান করবে।",
-        dialogue: [
-          {
-            speaker: "Student A (Friend)",
-            team: "Team A (Friend)",
-            text: "Hello! What is your name?",
-            avatar: "👦"
-          },
-          {
-            speaker: "Student B (Jerin)",
-            team: "Team B (Jerin)",
-            text: "Hello! I am Jerin. Nice to meet you!",
-            avatar: "👧"
-          },
-          {
-            speaker: "Student A (Friend)",
-            team: "Team A (Friend)",
-            text: "How old are you, Jerin?",
-            avatar: "👦"
-          },
-          {
-            speaker: "Student B (Jerin)",
-            team: "Team B (Jerin)",
-            text: "I am eight years old. What about you?",
-            avatar: "👧"
-          },
-          {
-            speaker: "Student A (Friend)",
-            team: "Team A (Friend)",
-            text: "I am eight years old too! What class are you in?",
-            avatar: "👦"
-          },
-          {
-            speaker: "Student B (Jerin)",
-            team: "Team B (Jerin)",
-            text: "I am in Class 3 at Mohonpur Primary School.",
-            avatar: "👧"
-          },
-          {
-            speaker: "Student A (Friend)",
-            team: "Team A (Friend)",
-            text: "What do your parents do?",
-            avatar: "👦"
-          },
-          {
-            speaker: "Student B (Jerin)",
-            team: "Team B (Jerin)",
-            text: "My father is a teacher and my mother is a banker!",
-            avatar: "👧"
-          }
-        ]
-      },
-      teacherNotes: "শিক্ষার্থীদের জোড়ায় ভাগ করে দিন: একজন প্রশ্নকারী ও অন্যজন জেরিন। ডায়লগে মুখের ভাব ও স্বরের ওঠানামা বজায় রাখতে বলুন। এরপর ভূমিকা বদল করান।",
-      quickTeachingSteps: [
-        "ধাপ ১: Team A ও Team B-কে সংলাপের কার্ড বুঝিয়ে দিন।",
-        "ধাপ ২: প্রশ্ন ও উত্তরের স্বরভঙ্গি ঠিক রেখে শিক্ষার্থীদের রিডিং ড্রিল করান।",
-        "ধাপ ৩: এবার শিক্ষার্থীরা নিজেদের আসল নাম ও পরিবার দিয়ে ডায়লগটি বলবে।"
-      ]
-    },
-    {
-      id: 5,
-      title: "Student ID Studio: Create Your Identity Card",
-      subtitle: "স্ক্রিনে নিজের ছবি ও তথ্য দিয়ে ডিজিটাল আইডি কার্ড তৈরি করো (ID Badge Studio)",
-      phase: "৫. ব্যবহারিক প্রয়োগ ও অভিজ্ঞতা (ID Studio)",
-      duration: "৭ মিনিট",
-      themeColor: "from-purple-500 to-indigo-600",
-      imageEmoji: "🆔 📸 🌟",
-      sceneType: "id_card",
-      hasVisualStage: true,
-      content: {
-        englishText: [
-          "Step 1: Choose your student avatar (জেরিন, আলিফ, রিয়া, ফারহান).",
-          "Step 2: Read and check your Class 3 identity card details.",
-          "Step 3: Click 'পরিচয় শোনো' to listen to the full self-introduction.",
-          "Step 4: Now stand up and introduce yourself in English to your classmates!"
-        ],
-        banglaExplanation: "শিক্ষার্থীরা বোর্ডে এসে নিজের পছন্দের স্টুডেন্ট কার্ড নির্বাচন করবে এবং 'পরিচয় শোনো' বাটনে চাপ দিয়ে স্পষ্ট উচ্চারণে নিজের আত্মপরিচয় ক্লাসের সবার সামনে উপস্থাপন করবে।"
-      },
-      teacherNotes: "শিক্ষার্থীদের একে একে প্রজেক্টরের সামনে ডেকে আনুন। তারা নিজের নাম, বয়স ও পেশার তথ্য বোর্ডে দেখে আত্মবিশ্বাসের সাথে ক্লাসে ইংরেজি বলবে।",
-      quickTeachingSteps: [
-        "ধাপ ১: আইডি কার্ডের বিভিন্ন অংশ (Name, Age, School, Parents) চিহ্নিত করতে বলুন।",
-        "ধাপ ২: 'পরিচয় শোনো' বোতামে চাপ দিয়ে ফ্লুয়েন্ট স্পিচ শোনান।",
-        "ধাপ ৩: প্রতিটি শিক্ষার্থীকে দাঁড়িয়ে নিজের পরিচয় ইংরেজিতে দেওয়ার সুযোগ দিন।"
-      ]
-    },
-    {
-      id: 6,
-      title: "Activity D: Occupations vs. Places Sorting",
-      subtitle: "পাঠ্যবই: পেশা ও স্থানের নাম আলাদা করার মজার খেলা (Sorting Game)",
-      phase: "৬. আনন্দদায়ক খেলা ও মূল্যায়ন (Interactive Game)",
-      duration: "৬ মিনিট",
-      themeColor: "from-rose-500 to-amber-500",
-      imageEmoji: "🧺 👨‍💼 🏫",
-      sceneType: "activity",
-      content: {
-        englishText: [],
-        banglaExplanation: "পেশা (Occupations) এবং স্থান বা জায়গার নাম (Places) আলাদা করো। কার্ডে ক্লিক করে সঠিক ঝুড়িতে পাঠাও:",
-        sortingGame: {
-          instruction: "পেশাগুলোকে 'Occupations' ঝুড়িতে এবং স্থানগুলোকে 'Places' ঝুড়িতে পাঠাও:",
-          categories: {
-            cat1: { id: "occupations", label: "💼 Occupations (পেশাসমূহ)", icon: "💼", theme: "amber" },
-            cat2: { id: "places", label: "🏫 Places (স্থানসমূহ)", icon: "🏫", theme: "sky" }
-          },
-          items: [
-            { id: "j-item-1", label: "Teacher (শিক্ষক)", category: "occupations", icon: "👨‍🏫" },
-            { id: "j-item-2", label: "Mohonpur (মোহনপুর)", category: "places", icon: "🏡" },
-            { id: "j-item-3", label: "Banker (ব্যাংক কর্মকর্তা)", category: "occupations", icon: "👩‍💼" },
-            { id: "j-item-4", label: "Primary School (বিদ্যালয়)", category: "places", icon: "🏫" },
-            { id: "j-item-5", label: "Doctor (চিকিৎসক)", category: "occupations", icon: "👨‍⚕️" },
-            { id: "j-item-6", label: "Classroom (শ্রেণিকক্ষ)", category: "places", icon: "🚪" }
-          ]
-        }
-      },
-      teacherNotes: "শিক্ষার্থীদের বোর্ডে ডেকে পেশা ও স্থানের পার্থক্য জিজ্ঞেস করুন। সঠিক ঝুড়িতে ড্র্যাগ বা ক্লিক করলে পয়েন্ট দিন।",
-      quickTeachingSteps: [
-        "ধাপ ১: Occupations (পেশা) ও Places (স্থান)-এর অর্থ ব্যাখ্যা করুন।",
-        "ধাপ ২: শিক্ষার্থীদের বোতামে চাপ দিয়ে শব্দগুলোকে সঠিক ঝুড়িতে বাছাই করতে দিন।",
-        "ধাপ ৩: খেলা শেষ হলে দলগত স্কোরবোর্ডে পয়েন্ট যোগ করুন।"
-      ]
-    },
-    {
-      id: 7,
-      title: "Grammar Focus: Use of 'am', 'is', 'are' and 'My'",
-      subtitle: "কীভাবে নিজের ও অন্যের পরিচয় দিয়ে বাক্য গঠন করতে হয় (Language Focus)",
-      phase: "৭. ভাষার গঠন ও ব্যাকরণ (Language Focus)",
-      duration: "৫ মিনিট",
-      themeColor: "from-indigo-600 to-purple-600",
-      imageEmoji: "💡 ✏️ 🎯",
-      sceneType: "grammar",
-      content: {
-        englishText: [
-          "Simple Present Be-Verbs Rules:",
-          "1. I 'am' eight years old. (I-এর সাথে 'am')",
-          "2. My father 'is' a teacher. (Singular ব্যক্তি-র সাথে 'is')",
-          "3. My mother 'is' a banker.",
-          "4. My brother 'is' two years old.",
-          "5. We 'are' a very happy family. (We/Plural-এর সাথে 'are')"
-        ],
-        banglaExplanation: "ইংরেজি ব্যাকরণ নিয়ম: নিজের পরিচয় দিতে 'I am', একবচনে কারও পরিচয় দিতে 'is' (যেমন: My father is, My brother is), এবং বহুবচনে 'are' (যেমন: We are) বসে।",
-        punctuationDrill: {
-          instruction: "সঠিক Be-Verb (am / is / are) বাছাই করে বাক্য সম্পূর্ণ করো:",
-          challenges: [
-            {
-              id: "be-1",
-              sentenceBefore: "I",
-              missingMark: "am",
-              sentenceAfter: "eight years old.",
-              meaning: "আমার বয়স আট বছর।",
-              options: ["am", "is", "are"]
-            },
-            {
-              id: "be-2",
-              sentenceBefore: "My father",
-              missingMark: "is",
-              sentenceAfter: "a teacher.",
-              meaning: "আমার বাবা একজন শিক্ষক।",
-              options: ["is", "am", "are"]
-            },
-            {
-              id: "be-3",
-              sentenceBefore: "My brother",
-              missingMark: "is",
-              sentenceAfter: "two years old.",
-              meaning: "আমার ভাইয়ের বয়স দুই বছর।",
-              options: ["is", "are", "am"]
-            },
-            {
-              id: "be-4",
-              sentenceBefore: "We",
-              missingMark: "are",
-              sentenceAfter: "a very happy family.",
-              meaning: "আমরা একটি অত্যন্ত সুখী পরিবার।",
-              options: ["are", "is", "am"]
-            }
-          ]
-        }
-      },
-      teacherNotes: "বোর্ডে শিক্ষার্থীদের দিয়ে am, is, are এর শূন্যস্থান পূরণ করান। বিশেষ করে I am বনাম My father is এর পার্থক্য স্পষ্ট করুন।",
-      quickTeachingSteps: [
-        "ধাপ ১: Be-Verb গুলোর ব্যবহারের নিয়ম সহজে বুঝিয়ে দিন।",
-        "ধাপ ২: স্ক্রিনে ক্লিক করে সঠিক অপশন বাছাই করতে দিন।",
-        "ধাপ ৩: শিক্ষার্থীদের নিজের বাবা-মায়ের পেশা নিয়ে একটি করে বাক্য বলতে বলুন।"
-      ]
-    },
-    {
-      id: 8,
-      title: "Comprehension Quiz & Wrap-up",
-      subtitle: "পাঠ শেষে দ্রুত প্রশ্নোত্তর ও বাড়ির কাজের প্রস্তুতি (Assessment)",
-      phase: "৮. মূল্যায়ন ও সমাপনী (Assessment & Wrap-up)",
-      duration: "৫ মিনিট",
-      themeColor: "from-emerald-600 to-teal-700",
-      imageEmoji: "📝 🌟 🏅",
-      sceneType: "activity",
-      content: {
-        englishText: [
-          "Activity E: Ask and answer the questions in pairs:",
-          "1. How old is Jerin? -> Jerin is eight years old.",
-          "2. What class is she in? -> She is in Class 3.",
-          "3. Where does she live? -> She lives with her family in Mohonpur.",
-          "4. What does her father do? -> Her father is a teacher.",
-          "5. What does her mother do? -> Her mother is a banker.",
-          "6. How old is her brother? -> Her brother is two years old."
-        ],
-        banglaExplanation: "পাঠ সমাপ্তি: শিক্ষার্থীরা ইংরেজিতে আত্মপরিচয় দেওয়া এবং সহপাঠীর পরিচয় জানতে চাওয়া শিখেছে। ক্লাস শেষে ১-ক্লিকে বাড়ির কাজের প্রিন্ট শিট দিন।",
-        activityTask: "সহপাঠীর সাথে প্রশ্ন-উত্তর অনুশীলন: একজন প্রশ্ন করবে, অন্যজন উত্তর দেবে।"
-      },
-      teacherNotes: "ক্লাস শেষে শিক্ষার্থীদের প্রশংসা করুন এবং 'ওয়ার্কশিট প্রিন্ট' বোতামে চাপ দিয়ে সবার জন্য অফলাইন অনুশীলন শিট সংগ্রহ করুন।",
-      quickTeachingSteps: [
-        "ধাপ ১: প্রশ্নগুলো বোর্ডে উচ্চারণ করিয়ে শোনান।",
-        "ধাপ ২: শিশুদের মুখে মুখে উত্তর বলতে বলুন।",
-        "ধাপ ৩: 'ওয়ার্কশিট প্রিন্ট' বাটনে ক্লিক করে বাড়ির কাজ বিতরণ করুন।"
-      ]
-    }
-  ],
-  worksheetCompanion: {
-    schoolHeader: "সরকারি প্রাথমিক বিদ্যালয়, মডেল ক্লাসরুম",
-    examTitle: "Classroom Practice Worksheet: Introducing Jerin (Unit 1, Lesson 7)",
-    classGrade: "Class 3 (তৃতীয় শ্রেণি)",
-    subject: "English for Today (Pages 15-17)",
-    time: "20 Minutes",
-    marks: 20,
-    sections: [
-      {
-        type: "mcq",
-        title: "Section A: Choose the best answer (Textbook Activity C)",
-        instruction: "Read the questions and tick (✓) the correct answer:",
-        content: [
-          {
-            q: "1. How old is Jerin?",
-            options: ["A) Six years old", "B) Seven years old", "C) Eight years old", "D) Nine years old"],
-            answer: "C) Eight years old"
-          },
-          {
-            q: "2. What school does Jerin go to?",
-            options: ["A) Dhaka Primary", "B) Mohonpur Primary School", "C) Model Primary", "D) Green Primary"],
-            answer: "B) Mohonpur Primary School"
-          },
-          {
-            q: "3. What is Jerin's mother's profession?",
-            options: ["A) Teacher", "B) Banker", "C) Doctor", "D) Pilot"],
-            answer: "B) Banker"
-          },
-          {
-            q: "4. How old is Jerin's brother?",
-            options: ["A) Two years old", "B) Three years old", "C) Four years old", "D) Five years old"],
-            answer: "A) Two years old"
-          }
-        ]
-      },
-      {
-        type: "matching",
-        title: "Section B: Column Matching",
-        instruction: "Match Column A with Column B according to the text:",
-        content: [
-          { a: "Jerin's Father", b: "A teacher" },
-          { a: "Jerin's Mother", b: "A banker" },
-          { a: "Jerin's Age", b: "Eight years old" },
-          { a: "Little Brother", b: "Two years old" }
-        ]
-      },
-      {
-        type: "fillInTheBlanks",
-        title: "Section C: Complete with 'am', 'is' or 'are'",
-        instruction: "Fill in each blank with the correct be-verb: [am, is, are]",
-        content: [
-          "a) I ________ eight years old.",
-          "b) My father ________ a teacher.",
-          "c) My mother ________ a banker.",
-          "d) We ________ a very happy family."
-        ]
-      },
-      {
-        type: "drawing",
-        title: "Section D: Write 4 sentences about yourself",
-        instruction: "Fill in the lines with your own information: [My name is... | I am... | I read in... | My father is...]",
-        content: [
-          "1. My name is ___________________________________________________________.",
-          "2. I am ________________________________________________________ years old.",
-          "3. I read in Class 3 at ____________________________________ Primary School.",
-          "4. My family lives in ____________________________________________________."
-        ]
-      }
-    ]
-  }
+import {
+  HELLO_GREETINGS_SLIDE_DECK,
+  TALKING_ABOUT_MYSELF_SLIDE_DECK,
+  CLASSROOM_GREETINGS_SLIDE_DECK,
+  GOODBYE_PART1_SLIDE_DECK,
+  GOODBYE_SONG_SLIDE_DECK,
+  NUMBERS_1_30_SLIDE_DECK,
+  JERIN_INTRODUCING_DECK,
+  INTRODUCING_SOMEONE_SLIDE_DECK,
+  NUMBERS_11_20_WORDS_SLIDE_DECK,
+} from "./slidesUnit1";
+
+import {
+  USES_OF_WATER_SLIDE_DECK,
+} from "./slidesUnit7";
+
+export {
+  HELLO_GREETINGS_SLIDE_DECK,
+  TALKING_ABOUT_MYSELF_SLIDE_DECK,
+  CLASSROOM_GREETINGS_SLIDE_DECK,
+  GOODBYE_PART1_SLIDE_DECK,
+  GOODBYE_SONG_SLIDE_DECK,
+  NUMBERS_1_30_SLIDE_DECK,
+  JERIN_INTRODUCING_DECK,
+  INTRODUCING_SOMEONE_SLIDE_DECK,
+  NUMBERS_11_20_WORDS_SLIDE_DECK,
+  USES_OF_WATER_SLIDE_DECK,
 };
 
 // =========================================================================
@@ -14890,6 +14470,20 @@ export const MARIA_BEAUTIFUL_SLIDE_DECK: SlideDeck = {
 // REGISTRY OF ALL AVAILABLE SLIDE DECKS
 // =========================================================================
 export const SLIDE_DECKS: Record<string, SlideDeck> = {
+  // --- Class 3 English: Unit 1 (Lessons 1-9) — 100% Verbatim NCTB 2026 ---
+  "hello-greetings": HELLO_GREETINGS_SLIDE_DECK,
+  "talking-about-myself": TALKING_ABOUT_MYSELF_SLIDE_DECK,
+  "classroom-greetings": CLASSROOM_GREETINGS_SLIDE_DECK,
+  "goodbye-part1": GOODBYE_PART1_SLIDE_DECK,
+  "goodbye-song": GOODBYE_SONG_SLIDE_DECK,
+  "numbers-1-30-calendar": NUMBERS_1_30_SLIDE_DECK,
+  "introducing-jerin": JERIN_INTRODUCING_DECK,
+  "introducing-someone": INTRODUCING_SOMEONE_SLIDE_DECK,
+  "numbers-11-20-words": NUMBERS_11_20_WORDS_SLIDE_DECK,
+
+  // --- Class 3 English: Unit 7 (Lesson 2) — 100% Verbatim NCTB 2026 ---
+  "uses-of-water": USES_OF_WATER_SLIDE_DECK,
+
   "maria-life-is-beautiful": MARIA_BEAUTIFUL_SLIDE_DECK,
   "liberation-war-museum": LIBERATION_WAR_MUSEUM_SLIDE_DECK,
   "hare-and-tortoise": HARE_AND_TORTOISE_SLIDE_DECK,
@@ -14910,7 +14504,6 @@ export const SLIDE_DECKS: Record<string, SlideDeck> = {
   "sagar-family": SAGAR_FAMILY_SLIDE_DECK,
   "sagar-week": SAGARS_WEEK_SLIDE_DECK,
   "stationery-shop": STATIONERY_SHOP_SLIDE_DECK,
-  "introducing-jerin": JERIN_INTRODUCING_DECK,
   "sabiha-family": SABIHA_FAMILY_SLIDE_DECK,
   "sunil-rahat-friends": SUNIL_RAHAT_SLIDE_DECK,
   "school-library-card": SCHOOL_LIBRARY_SLIDE_DECK,

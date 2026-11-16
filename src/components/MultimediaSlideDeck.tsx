@@ -66,6 +66,7 @@ import { SLIDE_DECKS, PILOT_SLIDE_DECK, SlideItem, SyllableWord, SortingItem, Pu
 import { isMobileBrowser, safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import ActivityAColoringCanvas from "./ActivityAColoringCanvas";
 import StoryVisualStage from "./StoryVisualStage";
+import GenericLessonVisualStage from "./GenericLessonVisualStage";
 import KiteCraftingVisualStage from "./KiteCraftingVisualStage";
 import IntroducingJerinVisualStage from "./IntroducingJerinVisualStage";
 import SabihasFamilyVisualStage from "./SabihasFamilyVisualStage";
@@ -4387,7 +4388,7 @@ export default function MultimediaSlideDeck() {
                           handleSpeak={handleSpeak}
                           isFullTheater={false}
                         />
-                      ) : selectedDeckId === "save-water" ? (
+                      ) : selectedDeckId === "save-water" || selectedDeckId === "uses-of-water" ? (
                         <SaveWaterVisualStage
                           slideId={currentSlide.id}
                           playChime={playChime}
@@ -4625,12 +4626,22 @@ export default function MultimediaSlideDeck() {
                           handleSpeak={handleSpeak}
                           isFullTheater={false}
                         />
-                      ) : (
+                      ) : selectedDeckId === "ant-and-grasshopper" ? (
                         <StoryVisualStage
                           slideId={currentSlide.id}
                           playChime={playChime}
                           handleSpeak={handleSpeak}
                           isFullTheater={false}
+                        />
+                      ) : (
+                        <GenericLessonVisualStage
+                          slideId={currentSlide.id}
+                          currentSlide={currentSlide}
+                          deck={activeDeck}
+                          playChime={playChime}
+                          handleSpeak={handleSpeak}
+                          isFullTheater={false}
+                          onOpenWorksheet={() => setShowWorksheetModal(true)}
                         />
                       )}
                     </div>
@@ -4680,7 +4691,7 @@ export default function MultimediaSlideDeck() {
                             handleSpeak={handleSpeak}
                             isFullTheater={true}
                           />
-                        ) : selectedDeckId === "save-water" ? (
+                        ) : selectedDeckId === "save-water" || selectedDeckId === "uses-of-water" ? (
                           <SaveWaterVisualStage
                             slideId={currentSlide.id}
                             playChime={playChime}
@@ -4918,12 +4929,22 @@ export default function MultimediaSlideDeck() {
                             handleSpeak={handleSpeak}
                             isFullTheater={true}
                           />
-                        ) : (
+                        ) : selectedDeckId === "ant-and-grasshopper" ? (
                           <StoryVisualStage
                             slideId={currentSlide.id}
                             playChime={playChime}
                             handleSpeak={handleSpeak}
                             isFullTheater={true}
+                          />
+                        ) : (
+                          <GenericLessonVisualStage
+                            slideId={currentSlide.id}
+                            currentSlide={currentSlide}
+                            deck={activeDeck}
+                            playChime={playChime}
+                            handleSpeak={handleSpeak}
+                            isFullTheater={true}
+                            onOpenWorksheet={() => setShowWorksheetModal(true)}
                           />
                         )}
                         {/* Cinema Subtitle Bar below the visual stage */}
@@ -5803,7 +5824,7 @@ export default function MultimediaSlideDeck() {
 
               {/* Sections */}
               <div className="space-y-4 text-xs sm:text-sm">
-                {activeDeck.worksheetCompanion.sections.map((sec, idx) => (
+                {activeDeck.worksheetCompanion?.sections?.map((sec, idx) => (
                   <div key={idx} className="space-y-2">
                     <h4 className="font-black text-slate-900">{sec.title}</h4>
                     <p className="text-slate-600 font-medium italic">{sec.instruction}</p>
@@ -5935,12 +5956,20 @@ export default function MultimediaSlideDeck() {
 
               {/* Class Tabs */}
               <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5 text-xs font-bold">
-                {[
-                  { id: "all", label: "সকল পাঠ (৩৭)" },
-                  { id: "class3", label: "৩য় শ্রেণি (১৭)" },
-                  { id: "class4", label: "৪র্থ শ্রেণি (১০)" },
-                  { id: "class5", label: "৫ম শ্রেণি (১০)" },
-                ].map((tab) => (
+                {(() => {
+                  const allDecksList = Object.values(SLIDE_DECKS);
+                  const c3Count = allDecksList.filter((d) => d.grade.includes("3") || d.grade.includes("৩")).length;
+                  const c4Count = allDecksList.filter((d) => d.grade.includes("4") || d.grade.includes("৪")).length;
+                  const c5Count = allDecksList.filter((d) => d.grade.includes("5") || d.grade.includes("৫")).length;
+                  const toBn = (n: number) => n.toString().replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[parseInt(digit, 10)]);
+
+                  return [
+                    { id: "all", label: `সকল পাঠ (${toBn(allDecksList.length)})` },
+                    { id: "class3", label: `৩য় শ্রেণি (${toBn(c3Count)})` },
+                    { id: "class4", label: `৪র্থ শ্রেণি (${toBn(c4Count)})` },
+                    { id: "class5", label: `৫ম শ্রেণি (${toBn(c5Count)})` },
+                  ];
+                })().map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
