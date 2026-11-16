@@ -356,6 +356,7 @@ export default function AiExamGeneratorModal({
               type="button"
               onClick={() => setShowKeyInput(!showKeyInput)}
               title="Gemini API Key সেটিংস"
+              aria-label="Gemini API Key সেটিংস"
               className={`p-2 rounded-xl transition-colors ${showKeyInput ? "bg-white text-slate-900" : "bg-white/10 hover:bg-white/20 text-white"}`}
             >
               <Key className="w-4 h-4" />
@@ -364,6 +365,8 @@ export default function AiExamGeneratorModal({
               type="button"
               onClick={onClose}
               disabled={isLoading}
+              title="বন্ধ করুন"
+              aria-label="বন্ধ করুন"
               className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
             >
               <X className="w-4 h-4" />
