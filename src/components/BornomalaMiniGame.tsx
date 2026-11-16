@@ -23,6 +23,8 @@ import { safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import { playSuccessChime, playStarDing, playGentlePlop, playPopSound } from "@/utils/bornomalaAudio";
 import BornomalaBalloonPopGame from "./BornomalaBalloonPopGame";
 import BornomalaMemoryGame from "./BornomalaMemoryGame";
+import BornomalaNumberCountingGame from "./BornomalaNumberCountingGame";
+import BornomalaWordBuilderGame from "./BornomalaWordBuilderGame";
 
 interface Props {
   onBackToCanvas: () => void;
@@ -32,7 +34,7 @@ interface Props {
   initialSeed?: number;
 }
 
-type ArcadeTab = "balloon-pop" | "quiz" | "memory";
+type ArcadeTab = "balloon-pop" | "counting" | "word-builder" | "memory" | "quiz";
 type GameMode = "picture-to-letter" | "listen-to-letter" | "case-match";
 type QuizCategory = "all" | "vowels" | "consonants" | "numbers";
 
@@ -357,7 +359,7 @@ export default function BornomalaMiniGame({
         </div>
 
         {/* Master Arcade Game Switcher Tabs */}
-        <div className="flex items-center gap-1.5 bg-black/40 p-1 rounded-2xl border border-white/10">
+        <div className="flex flex-wrap items-center gap-1.5 bg-black/40 p-1 rounded-2xl border border-white/10">
           <button
             type="button"
             onClick={() => {
@@ -380,16 +382,33 @@ export default function BornomalaMiniGame({
             onClick={() => {
               playPopSound();
               unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("quiz");
+              setArcadeTab("counting");
             }}
             className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "quiz"
-                ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md scale-102"
+              arcadeTab === "counting"
+                ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md scale-102"
                 : "text-indigo-200 hover:text-white hover:bg-white/10"
             }`}
           >
-            <span>🎯</span>
-            <span>{isEng ? "Letter Quiz" : "বর্ণ কুইজ"}</span>
+            <span>🍎</span>
+            <span>{isEng ? "Number Safari" : "ফল গণনা ট্রেন"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setArcadeTab("word-builder");
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+              arcadeTab === "word-builder"
+                ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md scale-102"
+                : "text-indigo-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>🚂</span>
+            <span>{isEng ? "Word Train" : "শব্দ ট্রেন"}</span>
           </button>
 
           <button
@@ -401,12 +420,29 @@ export default function BornomalaMiniGame({
             }}
             className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
               arcadeTab === "memory"
-                ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md scale-102"
+                ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md scale-102"
                 : "text-indigo-200 hover:text-white hover:bg-white/10"
             }`}
           >
             <span>🎴</span>
             <span>{isEng ? "Memory Flip" : "মেমোরি কার্ড"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              playPopSound();
+              unlockMobileAudio({ primeSilent: true });
+              setArcadeTab("quiz");
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
+              arcadeTab === "quiz"
+                ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md scale-102"
+                : "text-indigo-200 hover:text-white hover:bg-white/10"
+            }`}
+          >
+            <span>🎯</span>
+            <span>{isEng ? "Letter Quiz" : "বর্ণ কুইজ"}</span>
           </button>
         </div>
       </div>
@@ -421,7 +457,27 @@ export default function BornomalaMiniGame({
         />
       )}
 
-      {/* 🎴 TAB 3: MEMORY MATCH FLIP GAME */}
+      {/* 🍎 TAB 2: NUMBER COUNTING & FRUIT BASKET GAME */}
+      {arcadeTab === "counting" && (
+        <BornomalaNumberCountingGame
+          key={`counting-${languageMode}`}
+          onAddStars={onAddStars}
+          languageMode={languageMode}
+          teacherVoice={teacherVoice}
+        />
+      )}
+
+      {/* 🚂 TAB 3: WORD BUILDER TRAIN GAME */}
+      {arcadeTab === "word-builder" && (
+        <BornomalaWordBuilderGame
+          key={`word-builder-${languageMode}`}
+          onAddStars={onAddStars}
+          languageMode={languageMode}
+          teacherVoice={teacherVoice}
+        />
+      )}
+
+      {/* 🎴 TAB 4: MEMORY MATCH FLIP GAME */}
       {arcadeTab === "memory" && (
         <BornomalaMemoryGame
           key={`memory-${languageMode}`}
