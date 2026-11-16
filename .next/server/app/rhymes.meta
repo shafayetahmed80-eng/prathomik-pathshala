@@ -1,0 +1,34 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/rhymes/layout,_N_T_/rhymes/page,_N_T_/rhymes"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/rhymes/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/d6a152a573372f868c1a6f4fb77d9f08c5dfdb6f469da2ff647c59d34f10ba5e/$/rhymes",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/rhymes/page"
+    },
+    "isFallback": false
+  }
+}

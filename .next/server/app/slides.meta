@@ -1,0 +1,34 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/slides/layout,_N_T_/slides/page,_N_T_/slides"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/slides/__PAGE__"
+  ],
+  "prefetchHints": {
+    "hints": 64,
+    "slots": {
+      "children": {
+        "hints": 96,
+        "slots": {
+          "children": {
+            "hints": 160,
+            "slots": null
+          }
+        }
+      }
+    }
+  },
+  "routeCache": {
+    "key": "/route-cache/APP_PAGE/a837d07cf833fb5b96aaa1e9e0bddefe988e6176c79a5d411415eaecc5ff47f0/$/slides",
+    "owner": {
+      "kind": "APP_PAGE",
+      "sourceRoute": "/slides/page"
+    },
+    "isFallback": false
+  }
+}
