@@ -209,3 +209,29 @@ export function playCarriageSnap() {
   osc.stop(ctx.currentTime + 0.06);
 }
 
+// ✨ Magic Wand / Cauldron Sparkle Sound (mystical cascading chime)
+export function playMagicSparkle() {
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  const freqs = [523.25, 659.25, 783.99, 1046.5, 1318.51, 1567.98]; // C5, E5, G5, C6, E6, G6
+  freqs.forEach((freq, idx) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.05);
+
+    gain.gain.setValueAtTime(0, ctx.currentTime + idx * 0.05);
+    gain.gain.linearRampToValueAtTime(0.14, ctx.currentTime + idx * 0.05 + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.05 + 0.3);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(ctx.currentTime + idx * 0.05);
+    osc.stop(ctx.currentTime + idx * 0.05 + 0.35);
+  });
+}
+
+
