@@ -10608,6 +10608,7 @@ export const SEEN_PASSAGES_POOL: SeenPassageItem[] = [
 ];
 
 export function getPassagesForSubject(classId: string, subjectKey: string): SeenPassageItem[] {
+  if (subjectKey !== "english") return [];
   return SEEN_PASSAGES_POOL.filter(p => p.classId === classId && p.subjectKey === subjectKey);
 }
 
@@ -10621,7 +10622,7 @@ export function matchPassageForLessons(
   selectedLessonIds?: string[],
   selectedChapterIds?: string[]
 ): SeenPassageItem | undefined {
-  if (subjectKey !== "english" && subjectKey !== "bangla") return undefined;
+  if (subjectKey !== "english") return undefined;
   const pool = getPassagesForSubject(classId, subjectKey);
   if (pool.length === 0) return undefined;
 

@@ -1,21 +1,21 @@
 {
-  "..\\..\\..\\node_modules\\.pnpm\\next@16.4.5_@babel+core@7.2_9c6c294c4a0c5220b93f7070e1e4378b\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
-    "id": 7230,
+  "..\\node_modules\\.pnpm\\next@16.4.5_@babel+core@7.2_9c6c294c4a0c5220b93f7070e1e4378b\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
+    "id": 6142,
     "files": [
-      "static/chunks/230.fe5166598f645b89.js"
+      "static/chunks/142.b8d7a0d47dcc5f12.js"
     ]
   },
-  "..\\..\\..\\node_modules\\.pnpm\\next@16.4.5_@babel+core@7.2_9c6c294c4a0c5220b93f7070e1e4378b\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
-    "id": 3979,
+  "..\\node_modules\\.pnpm\\next@16.4.5_@babel+core@7.2_9c6c294c4a0c5220b93f7070e1e4378b\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
+    "id": 6683,
     "files": [
-      "static/chunks/979.d6ae0fd0296e3a2d.js"
+      "static/chunks/683.c9e61ebd1ed0da84.js"
     ]
   },
   "components\\BookReaderModal.tsx -> pdfjs-dist/legacy/build/pdf.mjs": {
-    "id": 249,
+    "id": 3040,
     "files": [
-      "static/chunks/b676bf63.4540709987a45376.js",
-      "static/chunks/490.cf0026b258179c28.js"
+      "static/chunks/7f1df392.97f2afc2ad0b7275.js",
+      "static/chunks/995.b665b9707767d2d7.js"
     ]
   }
 }

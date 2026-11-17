@@ -479,8 +479,8 @@ export default function ExamWorksheetGenerator() {
   const diffMarks = (activeExam.differences || []).reduce((acc, df) => acc + (Number(df.marks) || 0), 0);
   const causeMarks = (activeExam.causeEffect || []).reduce((acc, ce) => acc + (Number(ce.marks) || 0), 0);
 
-  // 📖 Seen Comprehension Marks (ইংরেজি ও বাংলা বিষয়ের জন্য)
-  const hasSeenSubject = selectedSubjectKey === "english" || selectedSubjectKey === "bangla";
+  // 📖 Seen Comprehension Marks (শুধুমাত্র ইংরেজি বিষয়ের জন্য প্রযোজ্য)
+  const hasSeenSubject = selectedSubjectKey === "english";
   const seenPassage = hasSeenSubject ? activeExam.seenPassage : undefined;
   const seenMcqMarks = (seenPassage?.mcq || []).reduce((acc, m) => acc + (Number(m.marks) || 0), 0);
   const seenFillMarks = (seenPassage?.fillInTheBlanks || []).reduce((acc, f) => acc + (Number(f.marks) || 0), 0);
@@ -572,19 +572,18 @@ export default function ExamWorksheetGenerator() {
 
     if (hasSeenSubject && activeExam.seenPassage) {
       const sp = activeExam.seenPassage;
-      const isBengali = selectedSubjectKey === "bangla";
-      questionsText += (isBengali ? `ক - বিভাগ: পাঠ্যবইয়ের পাঠ্যাংশ বা অনুচ্ছেদভিত্তিক মূল্যায়ন (পূর্ণমান: ${seenTotalMarks})\n` : `PART - A: SEEN COMPREHENSION (Mark: ${seenTotalMarks})\n`) +
-        (isBengali ? `নিচের অনুচ্ছেদটি মনোযোগ দিয়ে পড়ো এবং ১, ২, ৩ ও ৪ নং প্রশ্নের উত্তর দাও:\n` : `Read the text carefully and answer questions 1, 2, 3 and 4:\n`) +
+      questionsText += `PART - A: SEEN COMPREHENSION (Mark: ${seenTotalMarks})\n` +
+        `Read the text carefully and answer questions 1, 2, 3 and 4:\n` +
         `"${sp.sourceText}"\n\n` +
-        (isBengali ? `১. সঠিক উত্তরটি খাতায় লেখো:\n` : `1. Choose the best answer from the alternatives:\n`) +
-        sp.mcq.map((m, i) => `   (${isBengali ? ['ক','খ','গ','ঘ'][i] || (i+1) : String.fromCharCode(97 + i)}) ${m.question}\n      ${isBengali ? 'ক)' : 'i)'} ${m.options[0]}  ${isBengali ? 'খ)' : 'ii)'} ${m.options[1]}  ${isBengali ? 'গ)' : 'iii)'} ${m.options[2]}  ${isBengali ? 'ঘ)' : 'iv)'} ${m.options[3]}`).join("\n") + "\n\n" +
-        (isBengali ? `২. নিচের শব্দগুলো দিয়ে শূন্যস্থান পূরণ করো [${sp.clues.join(", ")}]:\n` : `2. Fill in the blanks with the given words from the box [${sp.clues.join(", ")}]:\n`) +
-        sp.fillInTheBlanks.map((f, i) => `   (${isBengali ? ['ক','খ','গ','ঘ','ঙ'][i] || (i+1) : String.fromCharCode(97 + i)}) ${f.sentence}`).join("\n") + "\n\n" +
-        (isBengali ? `৩. সত্য অথবা মিথ্যা নির্ণয় করো:\n` : `3. Write 'True' or 'False':\n`) +
-        sp.trueFalse.map((tf, i) => `   (${isBengali ? ['ক','খ','গ','ঘ','ঙ'][i] || (i+1) : String.fromCharCode(97 + i)}) ${tf.statement}`).join("\n") + "\n\n" +
-        (isBengali ? `৪. নিচের প্রশ্নগুলোর সংক্ষেপে উত্তর দাও:\n` : `4. Answer the following short questions:\n`) +
-        sp.shortQuestions.map((q, i) => `   (${isBengali ? ['ক','খ','গ','ঘ','ঙ'][i] || (i+1) : String.fromCharCode(97 + i)}) ${q.question}`).join("\n") + "\n\n" +
-        (isBengali ? `খ - বিভাগ: ব্যাকরণ, নির্মিতি ও অন্যান্য মূল্যায়ন\n` : `PART - B: GRAMMAR, VOCABULARY & WRITING\n`);
+        `1. Choose the best answer from the alternatives:\n` +
+        sp.mcq.map((m, i) => `   (${String.fromCharCode(97 + i)}) ${m.question}\n      i) ${m.options[0]}  ii) ${m.options[1]}  iii) ${m.options[2]}  iv) ${m.options[3]}`).join("\n") + "\n\n" +
+        `2. Fill in the blanks with the given words from the box [${sp.clues.join(", ")}]:\n` +
+        sp.fillInTheBlanks.map((f, i) => `   (${String.fromCharCode(97 + i)}) ${f.sentence}`).join("\n") + "\n\n" +
+        `3. Write 'True' or 'False':\n` +
+        sp.trueFalse.map((tf, i) => `   (${String.fromCharCode(97 + i)}) ${tf.statement}`).join("\n") + "\n\n" +
+        `4. Answer the following short questions:\n` +
+        sp.shortQuestions.map((q, i) => `   (${String.fromCharCode(97 + i)}) ${q.question}`).join("\n") + "\n\n" +
+        `PART - B: GRAMMAR, VOCABULARY & WRITING\n`;
     }
 
     if (activeExam.mcq.length > 0) {
@@ -1110,10 +1109,10 @@ ${questionsText.trim()}
               <div className="flex items-center justify-between border-b-2 border-slate-900 pb-2">
                 <div className="flex items-center gap-2">
                   <span className="bg-slate-900 text-white text-xs font-black px-2.5 py-1 rounded">
-                    {selectedSubjectKey === "bangla" ? "ক - বিভাগ" : "PART - A"}
+                    PART - A
                   </span>
                   <h3 id="sec-seen-part-a" className="font-black text-sm sm:text-base text-slate-900 tracking-wide uppercase">
-                    {selectedSubjectKey === "bangla" ? "পাঠ্যবইয়ের পাঠ্যাংশ বা অনুচ্ছেদভিত্তিক মূল্যায়ন" : "SEEN COMPREHENSION (পাঠ্যাংশ ভিত্তিক মূল্যায়ন)"}
+                    SEEN COMPREHENSION (পাঠ্যাংশ ভিত্তিক মূল্যায়ন)
                   </h3>
                 </div>
                 <span className="text-xs font-black bg-white border border-slate-300 px-2.5 py-1 rounded shadow-2xs">
@@ -1125,9 +1124,7 @@ ${questionsText.trim()}
               <div className="p-4 sm:p-5 rounded-xl border border-amber-300/80 bg-amber-50/50 text-slate-900 space-y-2 break-inside-avoid">
                 <div className="border-b border-amber-200/70 pb-1.5">
                   <span className="italic font-serif text-xs font-bold text-slate-700">
-                    {selectedSubjectKey === "bangla"
-                      ? "নিচের অনুচ্ছেদটি মনোযোগ দিয়ে পড়ো এবং ১, ২, ৩ ও ৪ নং প্রশ্নের উত্তর দাও:"
-                      : "Read the text carefully and answer questions 1, 2, 3 and 4:"}
+                    Read the text carefully and answer questions 1, 2, 3 and 4:
                   </span>
                 </div>
                 {isEditMode ? (
@@ -1297,10 +1294,10 @@ ${questionsText.trim()}
             <div className="flex items-center justify-between border-b-2 border-slate-900 pb-2 mb-6 break-inside-avoid">
               <div className="flex items-center gap-2">
                 <span className="bg-slate-900 text-white text-xs font-black px-2.5 py-1 rounded">
-                  {selectedSubjectKey === "bangla" ? "খ - বিভাগ" : "PART - B"}
+                  PART - B
                 </span>
                 <h3 className="font-black text-sm sm:text-base text-slate-900 tracking-wide uppercase">
-                  {selectedSubjectKey === "bangla" ? "ব্যাকরণ, নির্মিতি ও অন্যান্য মূল্যায়ন" : "GRAMMAR, VOCABULARY & WRITING (ভাষাগত দক্ষতা ও অন্যান্য)"}
+                  GRAMMAR, VOCABULARY & WRITING (ভাষাগত দক্ষতা ও অন্যান্য)
                 </h3>
               </div>
             </div>

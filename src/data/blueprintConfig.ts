@@ -219,12 +219,17 @@ export function getDefaultBlueprint(
         if (blueprint["shortQuestions"]) { blueprint["shortQuestions"].enabled = true; blueprint["shortQuestions"].count = 5; blueprint["shortQuestions"].marksPerQuestion = 3; } // 15
         if (blueprint["broadQuestions"]) { blueprint["broadQuestions"].enabled = true; blueprint["broadQuestions"].count = 5; blueprint["broadQuestions"].marksPerQuestion = 8; } // 40
       } else {
-        // বাংলা (৭০ নম্বর: সিন অনুচ্ছেদ ২৫ নম্বর + ব্যাকরণ ও নির্মিতি ৪৫ নম্বর)
+        // বাংলা (৭০ নম্বর: সরাসরি অধ্যায়ভিত্তিক পূর্ণাঙ্গ মূল্যায়ন — কোনো সিন অনুচ্ছেদ থাকে না)
+        if (blueprint["mcq"]) { blueprint["mcq"].enabled = true; blueprint["mcq"].count = 5; blueprint["mcq"].marksPerQuestion = 1; } // 5
+        if (blueprint["fillInTheBlanks"]) { blueprint["fillInTheBlanks"].enabled = true; blueprint["fillInTheBlanks"].count = 5; blueprint["fillInTheBlanks"].marksPerQuestion = 1; } // 5
+        if (blueprint["trueFalse"]) { blueprint["trueFalse"].enabled = true; blueprint["trueFalse"].count = 5; blueprint["trueFalse"].marksPerQuestion = 1; } // 5
+        if (blueprint["matching"]) { blueprint["matching"].enabled = true; blueprint["matching"].count = 1; blueprint["matching"].marksPerQuestion = 5; } // 5
+        if (blueprint["wordMeaning"]) { blueprint["wordMeaning"].enabled = true; blueprint["wordMeaning"].count = 5; blueprint["wordMeaning"].marksPerQuestion = 1; } // 5
         if (blueprint["yuktaborno"]) { blueprint["yuktaborno"].enabled = true; blueprint["yuktaborno"].count = 5; blueprint["yuktaborno"].marksPerQuestion = 2; } // 10
-        if (blueprint["punctuation"]) { blueprint["punctuation"].enabled = true; blueprint["punctuation"].count = 1; blueprint["punctuation"].marksPerQuestion = 5; } // 5
         if (blueprint["oppositeWords"]) { blueprint["oppositeWords"].enabled = true; blueprint["oppositeWords"].count = 5; blueprint["oppositeWords"].marksPerQuestion = 1; } // 5
-        if (blueprint["oneWord"]) { blueprint["oneWord"].enabled = true; blueprint["oneWord"].count = 5; blueprint["oneWord"].marksPerQuestion = 1; } // 5
-        if (blueprint["poemCompletion"]) { blueprint["poemCompletion"].enabled = true; blueprint["poemCompletion"].count = 1; blueprint["poemCompletion"].marksPerQuestion = 10; } // 10
+        if (blueprint["punctuation"]) { blueprint["punctuation"].enabled = true; blueprint["punctuation"].count = 1; blueprint["punctuation"].marksPerQuestion = 5; } // 5
+        if (blueprint["shortQuestions"]) { blueprint["shortQuestions"].enabled = true; blueprint["shortQuestions"].count = 5; blueprint["shortQuestions"].marksPerQuestion = 2; } // 10
+        if (blueprint["poemCompletion"]) { blueprint["poemCompletion"].enabled = true; blueprint["poemCompletion"].count = 1; blueprint["poemCompletion"].marksPerQuestion = 5; } // 5
         if (blueprint["broadQuestions"]) { blueprint["broadQuestions"].enabled = true; blueprint["broadQuestions"].count = 1; blueprint["broadQuestions"].marksPerQuestion = 10; } // 10
       }
     }
@@ -238,9 +243,9 @@ export function getDefaultSeenConfig(
   subjectKey: string,
   preset: PresetType
 ): SeenBlueprintConfig {
-  const isEnglishOrBangla = subjectKey === "english" || subjectKey === "bangla";
+  const isEnglish = subjectKey === "english";
   const isEarlyClass = classId === "pre-primary" || classId === "class-1" || classId === "class-2";
-  const shouldEnable = isEnglishOrBangla && !isEarlyClass && (preset === "nctb_summative" || preset === "annual");
+  const shouldEnable = isEnglish && !isEarlyClass && (preset === "nctb_summative" || preset === "annual");
   return {
     enabled: shouldEnable,
     passageId: "auto",

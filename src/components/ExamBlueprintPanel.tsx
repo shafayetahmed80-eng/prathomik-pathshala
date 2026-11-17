@@ -60,7 +60,7 @@ export default function ExamBlueprintPanel({
   const { totalQuestions, totalMarks } = calculateBlueprintTotal(blueprint, seenConfig);
 
   const availablePassages = getPassagesForSubject(classId, subjectKey);
-  const isSeenApplicable = (subjectKey === "english" || subjectKey === "bangla") && availablePassages.length > 0;
+  const isSeenApplicable = subjectKey === "english" && availablePassages.length > 0;
   const seenMarksData = calculateSeenMarks(seenConfig);
 
   const handleToggleSeen = () => {
@@ -291,18 +291,14 @@ export default function ExamBlueprintPanel({
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-base">📖</span>
                       <h4 className="font-extrabold text-sm sm:text-base text-slate-900">
-                        {subjectKey === "bangla"
-                          ? "পাঠ্যবইয়ের পাঠ্যাংশ বা অনুচ্ছেদভিত্তিক মূল্যায়ন"
-                          : "SEEN COMPREHENSION (পাঠ্যবইয়ের পাঠ্যাংশ)"}
+                        SEEN COMPREHENSION (পাঠ্যবইয়ের পাঠ্যাংশ)
                       </h4>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300">
-                        {subjectKey === "bangla" ? "ক - বিভাগ" : "PART - A"} • {seenMarksData.totalMarks} নম্বর
+                        PART - A • {seenMarksData.totalMarks} নম্বর
                       </span>
                     </div>
                     <p className="text-xs text-slate-600 mt-0.5">
-                      {subjectKey === "bangla"
-                        ? "পাঠ্যবইয়ের গল্প বা অনুচ্ছেদের আলোকে ১ (MCQ), ২ (শূন্যস্থান), ৩ (সত্য/মিথ্যা), ৪ (প্রশ্নোত্তর) স্বয়ংক্রিয়ভাবে তৈরি হবে"
-                        : "পাঠ্যবইয়ের প্যাসেজের আলোকে ১ (MCQ), ২ (Fill in blanks), ৩ (True/False), ৪ (Short Questions) তৈরি হবে"}
+                      পাঠ্যবইয়ের প্যাসেজের আলোকে ১ (MCQ), ২ (Fill in blanks), ৩ (True/False), ৪ (Short Questions) তৈরি হবে
                     </p>
                   </div>
                 </div>

@@ -17315,8 +17315,8 @@ export function buildDynamicExamFromPool(
     customMarks
   );
 
-  // 📖 Seen Comprehension (পাঠ্যাংশ ভিত্তিক মূল্যায়ন) - ইংরেজি ও বাংলা বিষয়ের জন্য প্রযোজ্য
-  if ((subjectKey === "english" || subjectKey === "bangla") && seenConfig && seenConfig.enabled) {
+  // 📖 Seen Comprehension (পাঠ্যাংশ ভিত্তিক মূল্যায়ন) - শুধুমাত্র ইংরেজি বিষয়ের জন্য প্রযোজ্য
+  if (subjectKey === "english" && seenConfig && seenConfig.enabled) {
     let passage: SeenPassageItem | undefined;
     if (seenConfig.passageId && seenConfig.passageId !== "auto") {
       passage = findPassageById(seenConfig.passageId);
