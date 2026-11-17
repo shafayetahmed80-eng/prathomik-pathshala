@@ -521,23 +521,23 @@ export const NCTB_2026_BLUEPRINTS: Record<string, NctbExamBlueprint> = {
     "totalMarks": 70,
     "duration": "২ ঘণ্টা ৩০ মিনিট",
     "recommendedMode": "exam",
-    "notes": "এনসিটিবি ২০২৬ অনুযায়ী ৫ম শ্রেণির বাংলা মূল্যায়ন কাঠামো: পাঠ্যবইয়ের অনুচ্ছেদ, ব্যাকরণিক দক্ষতা ও নির্মিতি সমন্বিত।",
+    "notes": "এনসিটিবি ২০২৬ অনুযায়ী ৫ম শ্রেণির বাংলা মূল্যায়ন কাঠামো: ব্যাকরণিক দক্ষতা, পাঠভিত্তিক প্রশ্নোত্তর ও নির্মিতি সমন্বিত (বাংলায় কোনো অনুচ্ছেদ থাকে না)।",
     "sections": [
         {
             "itemNo": 1,
-            "name": "পাঠ্যবইয়ের অনুচ্ছেদ পড়ে শব্দার্থ লিখন (Word Meaning)",
+            "name": "শব্দার্থ লিখন (Word Meaning)",
             "marksPerQuestion": 1,
             "totalMarks": 5,
             "type": "wordMeaning",
-            "instructions": "প্রদত্ত অনুচ্ছেদ থেকে যেকোনো ৫টি শব্দের অর্থ লেখো (১×৫=৫)"
+            "instructions": "পাঠ্যবইয়ের পাঠ ও শব্দভাণ্ডার থেকে যেকোনো ৫টি শব্দের অর্থ লেখো (১×৫=৫)"
         },
         {
             "itemNo": 2,
-            "name": "অনুচ্ছেদ পড়ে ৩টি প্রশ্নের উত্তর লিখন (Short Questions)",
+            "name": "পাঠভিত্তিক প্রশ্নের উত্তর লিখন (Short Questions)",
             "marksPerQuestion": 3.33,
             "totalMarks": 10,
             "type": "shortQuestions",
-            "instructions": "অনুচ্ছেদের আলোকে নিচের প্রশ্নগুলোর উত্তর লেখো (১০ নম্বর)"
+            "instructions": "পাঠ্যবইয়ের পাঠের আলোকে নিচের প্রশ্নগুলোর উত্তর লেখো (১০ নম্বর)"
         },
         {
             "itemNo": 3,
@@ -553,7 +553,7 @@ export const NCTB_2026_BLUEPRINTS: Record<string, NctbExamBlueprint> = {
             "marksPerQuestion": 1,
             "totalMarks": 5,
             "type": "shortQuestions",
-            "instructions": "অনুচ্ছেদটিতে উপযুক্ত বিরামচিহ্ন (দাঁড়ি, কমা, কোলন, প্রশ্নচিহ্ন) বসাও (৫ নম্বর)"
+            "instructions": "প্রদত্ত অংশে উপযুক্ত বিরামচিহ্ন (দাঁড়ি, কমা, কোলন, প্রশ্নচিহ্ন) বসাও (৫ নম্বর)"
         },
         {
             "itemNo": 5,
