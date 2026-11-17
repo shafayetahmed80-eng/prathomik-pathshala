@@ -1,4 +1,4 @@
-// File: C:\Projects\prathomik-pathshala\scratch\exam-ui-worktree\src\app\exams\page.tsx
+// File: C:\Projects\prathomik-pathshala\scratch\class4-bangla-worktree\src\app\exams\page.tsx
 import * as entry from '../../../../src/app/exams/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

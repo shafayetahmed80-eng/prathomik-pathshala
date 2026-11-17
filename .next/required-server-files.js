@@ -104,7 +104,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\exam-ui-worktree",
+    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\class4-bangla-worktree",
     "enablePrerenderSourceMaps": true,
     "cacheComponents": false,
     "cacheLife": {
@@ -342,13 +342,13 @@ self.__SERVER_FILES_MANIFEST={
           "as": "*.css"
         }
       },
-      "root": "C:\\Projects\\prathomik-pathshala\\scratch\\exam-ui-worktree"
+      "root": "C:\\Projects\\prathomik-pathshala\\scratch\\class4-bangla-worktree"
     },
-    "repoRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\exam-ui-worktree",
+    "repoRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\class4-bangla-worktree",
     "distDirRoot": ".next",
     "supportsImmutableAssets": false
   },
-  "appDir": "C:\\Projects\\prathomik-pathshala\\scratch\\exam-ui-worktree",
+  "appDir": "C:\\Projects\\prathomik-pathshala\\scratch\\class4-bangla-worktree",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",
