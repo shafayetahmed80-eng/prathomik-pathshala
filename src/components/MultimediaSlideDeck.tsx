@@ -109,6 +109,7 @@ export default function MultimediaSlideDeck() {
   const [isDeckSelectorOpen, setIsDeckSelectorOpen] = useState<boolean>(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [isZenMode, setIsZenMode] = useState<boolean>(false);
   const deckContainerRef = useRef<HTMLElement | null>(null);
   const [isTeacherNotesExpanded, setIsTeacherNotesExpanded] = useState<boolean>(false);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
@@ -992,7 +993,16 @@ export default function MultimediaSlideDeck() {
       } else if ((e.key === "f" || e.key === "F") && !e.ctrlKey && !e.metaKey && !e.altKey) {
         e.preventDefault();
         toggleFullscreen();
+      } else if ((e.key === "z" || e.key === "Z") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        setIsZenMode((prev) => !prev);
+        playChime("click");
       } else if (e.key === "Escape") {
+        if (isZenMode) {
+          setIsZenMode(false);
+          playChime("click");
+          return;
+        }
         if (isTeacherNotesExpanded) {
           setIsTeacherNotesExpanded(false);
           playChime("click");
@@ -1010,7 +1020,7 @@ export default function MultimediaSlideDeck() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentSlideIndex, totalSlides, isFullscreen, isDrawing]);
+  }, [currentSlideIndex, totalSlides, isFullscreen, isZenMode, isDrawing]);
 
   // Smart Marker Size Presets (Phase 1)
   const getPenWidth = (size: "fine" | "medium" | "bold") => {
@@ -3353,10 +3363,68 @@ export default function MultimediaSlideDeck() {
       className={`bg-white border border-slate-200 shadow-xl transition-all flex flex-col relative select-none ${
         isFullscreen 
           ? "fixed inset-0 z-50 rounded-none h-screen w-screen overflow-hidden bg-slate-900" 
+          : isZenMode
+          ? "fixed inset-0 z-50 rounded-none h-screen w-screen overflow-hidden bg-slate-950 text-slate-100"
           : "w-full min-h-[520px] sm:min-h-[680px] rounded-2xl sm:rounded-3xl overflow-visible sm:overflow-hidden"
       }`}
     >
-      {/* 🌟 Consolidated Command Header & Classroom Studio Dock (Row 1) */}
+      {/* 🧘 Minimalist Zen / Classroom Focus Bar */}
+      {isZenMode ? (
+        <header className="px-3 sm:px-6 py-2.5 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-slate-100 flex items-center justify-between z-30 shrink-0 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className="text-xl sm:text-2xl" aria-hidden="true">🧘</span>
+            <div className="min-w-0">
+              <span className="text-xs sm:text-sm font-black text-white truncate block">
+                {activeDeck.lesson} {currentSlide?.title ? `• ${currentSlide.title}` : ""}
+              </span>
+              <span className="text-[10px] sm:text-[11px] text-purple-300 font-bold block">
+                {activeDeck.grade} • স্লাইড {currentSlideIndex + 1} / {totalSlides}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Quick Play Audio Button */}
+            <button
+              type="button"
+              onClick={playSlideAudio}
+              className={`p-2 rounded-xl transition-all cursor-pointer ${
+                isSpeaking 
+                  ? "bg-rose-600 text-white animate-pulse" 
+                  : "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700"
+              }`}
+              title={isSpeaking ? "অডিও থামান" : "স্লাইড অডিও শুনুন"}
+            >
+              {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </button>
+
+            {/* Native Fullscreen Button */}
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors cursor-pointer"
+              title={isFullscreen ? "ফুলস্ক্রিন বন্ধ (F)" : "ফুলস্ক্রিন করুন (F)"}
+            >
+              {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            </button>
+
+            {/* Exit Zen Mode Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsZenMode(false);
+                playChime("click");
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-xs transition-all active:scale-95 cursor-pointer"
+              title="ফোকাস মোড বন্ধ করুন (Z / Esc)"
+            >
+              <Minimize2 className="w-3.5 h-3.5" />
+              <span>ফোকাস বন্ধ (Z)</span>
+            </button>
+          </div>
+        </header>
+      ) : (
+      /* 🌟 Consolidated Command Header & Classroom Studio Dock (Row 1) */
       <header className={`px-3 sm:px-6 bg-gradient-to-r from-purple-50/95 via-white to-sky-50/95 backdrop-blur-md flex flex-wrap items-center justify-between border-b border-purple-100/90 shrink-0 gap-2 print:hidden shadow-2xs z-30 transition-all ${
         isFullscreen ? "py-1.5" : "py-2 sm:py-2.5"
       }`}>
@@ -3563,11 +3631,29 @@ export default function MultimediaSlideDeck() {
             <span className="hidden sm:inline">টাইমার</span>
           </button>
 
+          {/* Zen / Focus Presentation Mode Toggle */}
+          <button
+            type="button"
+            onClick={() => {
+              setIsZenMode((prev) => !prev);
+              playChime("click");
+            }}
+            className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all cursor-pointer ${
+              isZenMode
+                ? "bg-purple-600 text-white shadow-xs font-black"
+                : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
+            }`}
+            title="ক্লাসরুম ফোকাস / জেন মোড (Z)"
+          >
+            <span>🧘</span>
+            <span className="hidden sm:inline">ফোকাস মোড</span>
+          </button>
+
           {/* Fullscreen Button */}
           <button
             type="button"
             onClick={toggleFullscreen}
-            className={`p-1.5 rounded-xl transition-colors shrink-0 flex items-center gap-1 ${
+            className={`p-1.5 rounded-xl transition-colors shrink-0 flex items-center gap-1 cursor-pointer ${
               isFullscreen
                 ? "bg-purple-100 text-purple-900 border border-purple-300 shadow-2xs"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
@@ -3578,8 +3664,10 @@ export default function MultimediaSlideDeck() {
           </button>
         </div>
       </header>
+      )}
 
       {/* 🌟 Slide Context & Utilities Ribbon (Row 2 - Meta Ribbon) */}
+      {!isZenMode && (
       <div className={`px-3 sm:px-6 bg-purple-50/60 backdrop-blur-md border-b border-purple-100/80 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar print:hidden z-20 shadow-2xs touch-pan-x shrink-0 transition-all ${
         isFullscreen ? "py-1" : "py-1.5"
       }`}>
@@ -3701,9 +3789,10 @@ export default function MultimediaSlideDeck() {
           </button>
         </div>
       </div>
+      )}
 
       {/* ⏱️ Floating Classroom Activity Countdown Timer Widget */}
-      {showTimerWidget && (
+      {showTimerWidget && !isZenMode && (
         <aside 
           aria-label="ক্লাসরুম টাইমার"
           className="absolute top-28 right-4 z-40 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-amber-200 shadow-xl space-y-3 w-64 animate-fade-in"
@@ -3762,7 +3851,7 @@ export default function MultimediaSlideDeck() {
 
       {/* 📽️ Main Slide Display Arena with Dynamic Motion Scenery Engine */}
       <main className={`flex-1 flex flex-col justify-between relative bg-gradient-to-br from-slate-50/80 via-white to-purple-50/20 min-h-0 overflow-y-auto transition-all ${
-        isFullscreen ? "p-3 sm:p-6 lg:p-8" : "p-3.5 sm:p-8 lg:p-10"
+        isFullscreen || isZenMode ? "p-3 sm:p-6 lg:p-8" : "p-3.5 sm:p-8 lg:p-10"
       }`}>
         {/* 🖍️ Teacher Smart Marker / Annotation Suite (Phase 1) */}
         {isPenActive && (
@@ -4240,7 +4329,7 @@ export default function MultimediaSlideDeck() {
           />
         )}
 
-        <div className={`mx-auto w-full space-y-3 sm:space-y-4 relative z-10 transition-all ${isFullscreen ? "max-w-6xl" : "max-w-5xl"}`}>
+        <div className={`mx-auto w-full space-y-3 sm:space-y-4 relative z-10 transition-all ${isFullscreen || isZenMode ? "max-w-6xl" : "max-w-5xl"}`}>
           {/* 🏆 Classroom Team Battle Scoreboard (Collapsible when toggled from top bar) */}
           {showScoreboard && (
             <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-amber-50/90 via-white to-purple-50/90 border border-amber-200 shadow-sm animate-scale-up space-y-3">
@@ -5377,7 +5466,7 @@ export default function MultimediaSlideDeck() {
         <nav 
           aria-label="স্লাইড নেভিগেশন ও জাম্প বার"
           className={`mx-auto w-full pt-2 sm:pt-2.5 mt-2 sm:mt-3 border-t border-purple-100/80 flex flex-col sm:flex-row items-center justify-between gap-2.5 z-10 sticky bottom-0 bg-white/95 backdrop-blur-md pb-1.5 rounded-t-2xl px-3 shadow-2xs transition-all ${
-            isFullscreen ? "max-w-6xl" : "max-w-5xl"
+            isFullscreen || isZenMode ? "max-w-6xl" : "max-w-5xl"
           }`}
         >
           {/* Prev / Next Buttons */}
