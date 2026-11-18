@@ -4,7 +4,7 @@
 5:I[6626,[],""]
 6:I[7632,[],""]
 e:I[2410,[],"default",1]
-:HL["/_next/static/css/359f52f1dd5904ca.css","style"]
+:HL["/_next/static/css/2ebcd6935c67da03.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","style"]
 2:T6aa,
               try {
@@ -37,30 +37,29 @@ e:I[2410,[],"default",1]
             a:X
 b:[["children",{"s":"__PAGE__","h":512,"d":{"r":"$Lc","p":false,"v":null}}]]
 8:[["children",{"s":"slides","h":512,"d":{"r":"$L9","p":false,"v":"$a"},"c":"$Qb"}]]
-0:{"P":null,"c":["","slides"],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/359f52f1dd5904ca.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],"$L7"]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]]}]]}]]}],"p":false,"v":null},"c":"$Q8"},"h":{"r":"$Ld","p":false,"v":null}},"m":"$undefined","G":["$e",[]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"WE5TxYMqz1iM67SGsu3hc"}
+0:{"P":null,"c":["","slides"],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2ebcd6935c67da03.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],"$L7"]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]]}]]}]]}],"p":false,"v":null},"c":"$Q8"},"h":{"r":"$Ld","p":false,"v":null}},"m":"$undefined","G":["$e",[]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"gpVAAQfEPm7ECoCvGSBVo"}
 f:I[4659,[],"ClientPageRoot"]
-10:"static/chunks/325-c66616a62dcd567e.js"
-11:"static/chunks/176-4b99cb73811958b0.js"
-12:"static/chunks/310-12f02562503c4024.js"
-13:"static/chunks/232-66be56f4bda396d4.js"
-14:"static/chunks/595-4e03e982a099d3da.js"
-15:"static/chunks/865-f3e1c37fa3133fcf.js"
-16:"static/chunks/app/slides/page-8c115cf97adc6711.js"
-17:I[791,["325","$10","176","$11","310","$12","232","$13","595","$14","865","$15","613","$16"],"default"]
-1a:I[4395,[],"OutletBoundary"]
-1b:"$Sreact.suspense"
-1d:"ViewportBoundary"
-1e:I[4395,[],"$1d"]
-20:"MetadataBoundary"
-21:I[4395,[],"$20"]
+10:"static/chunks/568-eaec14f81ebfc140.js"
+11:"static/chunks/392-309e25e20f984f91.js"
+12:"static/chunks/597-1ca311ca7df18ded.js"
+13:"static/chunks/595-4e03e982a099d3da.js"
+14:"static/chunks/865-b83c2406f0c2089b.js"
+15:"static/chunks/app/slides/page-ca8422b903cd50e8.js"
+16:I[791,["568","$10","392","$11","597","$12","595","$13","865","$14","613","$15"],"default"]
+19:I[4395,[],"OutletBoundary"]
+1a:"$Sreact.suspense"
+1c:"ViewportBoundary"
+1d:I[4395,[],"$1c"]
+1f:"MetadataBoundary"
+20:I[4395,[],"$1f"]
 7:["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]
 9:["$","$1","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L6",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}]
-c:["$","$1","c",{"children":[["$","$Lf",null,{"Component":"$17","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@18","$@19"]}}],null,["$","$L1a",null,{"children":["$","$1b",null,{"name":"Next.MetadataOutlet","children":"$@1c"}]}]]}]
-d:["$","$1","h",{"children":[null,["$","$L1e",null,{"children":"$L1f"}],["$","$L21",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1b",null,{"name":"Next.Metadata","children":"$L22"}]}],null]}],null]}]
+c:["$","$1","c",{"children":[["$","$Lf",null,{"Component":"$16","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@17","$@18"]}}],null,["$","$L19",null,{"children":["$","$1a",null,{"name":"Next.MetadataOutlet","children":"$@1b"}]}]]}]
+d:["$","$1","h",{"children":[null,["$","$L1d",null,{"children":"$L1e"}],["$","$L20",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$1a",null,{"name":"Next.Metadata","children":"$L21"}]}],null]}],null]}]
 a:C
-18:{}
-19:"$c:props:children:0:props:serverProvidedParams:params"
-1f:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=5"}],["$","meta","2",{"name":"theme-color","content":"#059669"}]]
-23:I[466,[],"IconMark"]
-1c:null
-22:[["$","title","0",{"children":"প্রাথমিক পাঠশালা | Prathomik Pathshala"}],["$","meta","1",{"name":"description","content":"বাংলাদেশের প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির শিক্ষার্থী ও শিক্ষকদের জন্য আধুনিক, ইন্টারঅ্যাক্টিভ ও আনন্দময় শিক্ষামূলক প্ল্যাটফর্ম।"}],["$","meta","2",{"name":"application-name","content":"প্রাথমিক পাঠশালা"}],["$","link","3",{"rel":"manifest","href":"/manifest.webmanifest","crossOrigin":"$undefined"}],["$","meta","4",{"name":"mobile-web-app-capable","content":"yes"}],["$","meta","5",{"name":"apple-mobile-web-app-title","content":"প্রাথমিক পাঠশালা"}],["$","meta","6",{"name":"apple-mobile-web-app-status-bar-style","content":"default"}],["$","link","7",{"rel":"icon","href":"/favicon.ico?7161ee1d105bc9c7","type":"image/x-icon","sizes":"48x48"}],["$","link","8",{"rel":"icon","href":"/pwa-192x192.png","sizes":"192x192","type":"image/png"}],["$","link","9",{"rel":"icon","href":"/pwa-512x512.png","sizes":"512x512","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"}],["$","$L23","11",{}]]
+17:{}
+18:"$c:props:children:0:props:serverProvidedParams:params"
+1e:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, maximum-scale=5"}],["$","meta","2",{"name":"theme-color","content":"#059669"}]]
+22:I[466,[],"IconMark"]
+1b:null
+21:[["$","title","0",{"children":"প্রাথমিক পাঠশালা | Prathomik Pathshala"}],["$","meta","1",{"name":"description","content":"বাংলাদেশের প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির শিক্ষার্থী ও শিক্ষকদের জন্য আধুনিক, ইন্টারঅ্যাক্টিভ ও আনন্দময় শিক্ষামূলক প্ল্যাটফর্ম।"}],["$","meta","2",{"name":"application-name","content":"প্রাথমিক পাঠশালা"}],["$","link","3",{"rel":"manifest","href":"/manifest.webmanifest","crossOrigin":"$undefined"}],["$","meta","4",{"name":"mobile-web-app-capable","content":"yes"}],["$","meta","5",{"name":"apple-mobile-web-app-title","content":"প্রাথমিক পাঠশালা"}],["$","meta","6",{"name":"apple-mobile-web-app-status-bar-style","content":"default"}],["$","link","7",{"rel":"icon","href":"/favicon.ico?7161ee1d105bc9c7","type":"image/x-icon","sizes":"48x48"}],["$","link","8",{"rel":"icon","href":"/pwa-192x192.png","sizes":"192x192","type":"image/png"}],["$","link","9",{"rel":"icon","href":"/pwa-512x512.png","sizes":"512x512","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"}],["$","$L22","11",{}]]

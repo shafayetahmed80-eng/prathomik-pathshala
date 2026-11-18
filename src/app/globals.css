@@ -262,7 +262,8 @@ html.glass-light-mode textarea {
 html.glass-light-mode canvas:not([data-bornomala-ink="true"]),
 html.glass-light-mode #printable-exam-sheet,
 html.glass-light-mode .worksheet-print-area,
-html.glass-light-mode .certificate-print-area {
+html.glass-light-mode .certificate-print-area,
+html.glass-light-mode .lesson-plan-print-area {
   background-color: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -655,7 +656,8 @@ html.glass-dark-mode [data-theme-switcher="true"] [data-theme-option="glass-dark
 /* Protect A4 Printable Mockup Sheets (Exam Papers, Worksheets & Certificates stay paper-white on screen) */
 html.glass-dark-mode #printable-exam-sheet,
 html.glass-dark-mode .worksheet-print-area,
-html.glass-dark-mode .certificate-print-area {
+html.glass-dark-mode .certificate-print-area,
+html.glass-dark-mode .lesson-plan-print-area {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border-color: #cbd5e1 !important;
@@ -670,7 +672,8 @@ html.glass-dark-mode .certificate-print-area {
 
 html.glass-dark-mode #printable-exam-sheet .bg-white,
 html.glass-dark-mode .worksheet-print-area .bg-white,
-html.glass-dark-mode .certificate-print-area .bg-white {
+html.glass-dark-mode .certificate-print-area .bg-white,
+html.glass-dark-mode .lesson-plan-print-area .bg-white {
   background-color: #ffffff !important;
   backdrop-filter: none !important;
 }
@@ -689,7 +692,12 @@ html.glass-dark-mode .certificate-print-area h1,
 html.glass-dark-mode .certificate-print-area h2,
 html.glass-dark-mode .certificate-print-area h3,
 html.glass-dark-mode .certificate-print-area .text-slate-900,
-html.glass-dark-mode .certificate-print-area .text-slate-800 {
+html.glass-dark-mode .certificate-print-area .text-slate-800,
+html.glass-dark-mode .lesson-plan-print-area h1,
+html.glass-dark-mode .lesson-plan-print-area h2,
+html.glass-dark-mode .lesson-plan-print-area h3,
+html.glass-dark-mode .lesson-plan-print-area .text-slate-900,
+html.glass-dark-mode .lesson-plan-print-area .text-slate-800 {
   color: #0f172a !important;
 }
 
@@ -700,7 +708,9 @@ html.glass-dark-mode .worksheet-print-area .text-slate-700,
 html.glass-dark-mode .worksheet-print-area .text-slate-600,
 html.glass-dark-mode .worksheet-print-area .text-pink-900,
 html.glass-dark-mode .certificate-print-area .text-slate-700,
-html.glass-dark-mode .certificate-print-area .text-slate-600 {
+html.glass-dark-mode .certificate-print-area .text-slate-600,
+html.glass-dark-mode .lesson-plan-print-area .text-slate-700,
+html.glass-dark-mode .lesson-plan-print-area .text-slate-600 {
   color: #334155 !important;
 }
 
@@ -756,7 +766,8 @@ html.glass-dark-mode .certificate-print-area .text-amber-900 {
   html.glass-dark-mode [data-paper-card="true"],
   html.glass-dark-mode [data-paper-inner="true"],
   #printable-exam-sheet,
-  .worksheet-print-area {
+  .worksheet-print-area,
+  .lesson-plan-print-area {
     background: white !important;
     background-color: white !important;
     background-image: none !important;
@@ -784,11 +795,12 @@ html.glass-dark-mode .certificate-print-area .text-amber-900 {
   }
   #printable-exam-sheet header,
   .certificate-print-header,
-  .certificate-print-footer {
+  .certificate-print-footer,
+  .lesson-plan-print-header {
     display: block !important;
   }
   .print\:hidden,
-  header:not(#printable-exam-sheet header):not(.certificate-print-header),
+  header:not(#printable-exam-sheet header):not(.certificate-print-header):not(.lesson-plan-print-header),
   footer:not(#printable-exam-sheet footer):not(.certificate-print-footer) {
     display: none !important;
   }

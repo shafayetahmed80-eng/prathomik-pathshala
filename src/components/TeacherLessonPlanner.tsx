@@ -1,7 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, Printer, Copy, Check, BookOpen, Clock, Target, HelpCircle, Layers, Award } from "lucide-react";
+import {
+  Sparkles,
+  Printer,
+  Copy,
+  Check,
+  BookOpen,
+  Clock,
+  Target,
+  HelpCircle,
+  Layers,
+  Award,
+  User,
+  School,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  Table as TableIcon,
+  LayoutList,
+} from "lucide-react";
 
 interface LessonPlanData {
   title: string;
@@ -333,6 +351,20 @@ export default function TeacherLessonPlanner() {
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
 
+  // Official Metadata for Print & PDF
+  const [teacherName, setTeacherName] = useState<string>("সহকারী শিক্ষক / শিক্ষিকা");
+  const [schoolName, setSchoolName] = useState<string>("মডেল সরকারি প্রাথমিক বিদ্যালয়");
+  const [lessonDate, setLessonDate] = useState<string>(() => {
+    try {
+      return new Intl.DateTimeFormat("bn-BD", { dateStyle: "long" }).format(new Date());
+    } catch {
+      return "১৮ নভেম্বর ২০২৬";
+    }
+  });
+  const [period, setPeriod] = useState<string>("২য় পিরিয়ড");
+  const [showMetadataEditor, setShowMetadataEditor] = useState<boolean>(false);
+  const [isTableView, setIsTableView] = useState<boolean>(false);
+
   const handleGenerate = () => {
     setIsGenerating(true);
     setTimeout(() => {
@@ -344,23 +376,32 @@ export default function TeacherLessonPlanner() {
 
   const handleCopy = () => {
     const text = `
-পাঠ পরিকল্পনা: ${currentPlan.title}
-শ্রেণি: ${currentPlan.grade} | বিষয়: ${currentPlan.subject} | সময়: ${currentPlan.duration}
+গণপ্রজাতন্ত্রী বাংলাদেশ সরকার • প্রাথমিক ও গণশিক্ষা মন্ত্রণালয়
+জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) ২০২৬ শিক্ষাক্রম অনুযায়ী দৈনিক পাঠ পরিকল্পনা
 
-শিখনফল:
+বিদ্যালয়: ${schoolName}
+শিক্ষক/শিক্ষিকা: ${teacherName}
+তারিখ: ${lessonDate} | পিরিয়ড: ${period} | সময়: ${currentPlan.duration}
+শ্রেণি: ${currentPlan.grade} | বিষয়: ${currentPlan.subject}
+পাঠের শিরোনাম: ${currentPlan.title}
+
+১. নির্দিষ্ট শিখনফল:
 ${currentPlan.outcomes.map((o, i) => `${i + 1}. ${o}`).join("\n")}
 
-প্রয়োজনীয় উপকরণ:
+২. প্রয়োজনীয় শিখন-শেখানো উপকরণ:
 ${currentPlan.materials.join(", ")}
 
-পর্যায়ক্রমিক ক্লাস পরিচালনা:
+৩. পর্যায়ক্রমিক শ্রেণি পরিচালনা:
 ${currentPlan.steps.map((s) => `${s.phase} (${s.time}):\n- কার্যকলাপ: ${s.activities}\n- শিক্ষকের কাজ: ${s.teacherRole}\n- শিক্ষার্থীর কাজ: ${s.studentRole}`).join("\n\n")}
 
-মূল্যায়ন:
+৪. শিখন মূল্যায়ন:
 ${currentPlan.evaluation.join("\n")}
 
-বাড়ির কাজ:
+৫. অর্থবহ বাড়ির কাজ:
 ${currentPlan.homework}
+
+স্বাক্ষর:
+শ্রেণি শিক্ষক: ${teacherName}                প্রধান শিক্ষক ও সিলমোহর: ${schoolName}
     `.trim();
 
     navigator.clipboard.writeText(text);
@@ -483,44 +524,147 @@ ${currentPlan.homework}
           <button
             type="submit"
             disabled={isGenerating}
-            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer"
           >
             <Sparkles className="w-4 h-4" aria-hidden="true" />
             <span>{isGenerating ? "তৈরি হচ্ছে..." : "পরিকল্পনা তৈরি করুন"}</span>
           </button>
         </div>
+
+        {/* Toggleable Teacher & School Info Editor + View Switcher */}
+        <div className="sm:col-span-2 lg:col-span-4 pt-3 border-t border-slate-200">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setShowMetadataEditor((prev) => !prev)}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
+            >
+              <User className="w-3.5 h-3.5 text-purple-600" />
+              <span>বিদ্যালয় ও শিক্ষকের তথ্য {showMetadataEditor ? "লুকান" : "সম্পাদনা করুন"}</span>
+              {showMetadataEditor ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            {/* View Mode Toggle: Card vs Table View */}
+            <div className="flex items-center gap-1 bg-slate-200/80 p-1 rounded-xl text-xs font-bold text-slate-700">
+              <button
+                type="button"
+                onClick={() => setIsTableView(false)}
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                  !isTableView ? "bg-white text-purple-900 shadow-xs font-black" : "hover:text-slate-900"
+                }`}
+                title="কার্ড আকারে দেখুন"
+              >
+                <LayoutList className="w-3.5 h-3.5" />
+                <span className="hidden xs:inline">কার্ড ভিউ</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsTableView(true)}
+                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                  isTableView ? "bg-white text-purple-900 shadow-xs font-black" : "hover:text-slate-900"
+                }`}
+                title="সরকারি ছক আকারে দেখুন"
+              >
+                <TableIcon className="w-3.5 h-3.5" />
+                <span className="hidden xs:inline">ছক ভিউ (Table)</span>
+              </button>
+            </div>
+          </div>
+
+          {showMetadataEditor && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 animate-fade-in">
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                  বিদ্যালয়ের নাম
+                </label>
+                <input
+                  type="text"
+                  value={schoolName}
+                  onChange={(e) => setSchoolName(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                  শিক্ষক/শিক্ষিকার নাম
+                </label>
+                <input
+                  type="text"
+                  value={teacherName}
+                  onChange={(e) => setTeacherName(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                  তারিখ
+                </label>
+                <input
+                  type="text"
+                  value={lessonDate}
+                  onChange={(e) => setLessonDate(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                  পিরিয়ড / ঘণ্টা
+                </label>
+                <input
+                  type="text"
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </form>
 
-      {/* Structured Document Body */}
+      {/* Structured Document Body (Print Perfection Area) */}
       <section 
         aria-label="পাঠ পরিকল্পনার বিবরণ"
-        className="space-y-6 sm:space-y-8 text-slate-800 border-2 border-slate-200 rounded-3xl p-5 sm:p-8 bg-white"
+        className="lesson-plan-print-area space-y-6 sm:space-y-8 text-slate-800 border-2 border-slate-200 print:border-none rounded-3xl p-5 sm:p-8 lg:p-10 bg-white print:p-0 w-full"
       >
-        {/* Document Header */}
-        <div className="border-b-2 border-slate-800 pb-4 text-center space-y-1">
-          <h3 className="text-xl sm:text-2xl font-black text-slate-900">
+        {/* Official NCTB 2026 Bangladesh Primary Education Header */}
+        <div className="lesson-plan-print-header text-center pb-5 border-b-2 border-slate-900 space-y-1.5">
+          <div className="flex items-center justify-center gap-2">
+            <span className="text-xl" aria-hidden="true">🇧🇩</span>
+            <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-slate-900">
+              গণপ্রজাতন্ত্রী বাংলাদেশ সরকার • প্রাথমিক ও গণশিক্ষা মন্ত্রণালয়
+            </h3>
+          </div>
+          <p className="text-xs font-semibold text-slate-600">
+            জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) ২০২৬ শিক্ষাক্রম অনুযায়ী দৈনিক পাঠ পরিকল্পনা
+          </p>
+          <h2 className="text-xl sm:text-2xl font-black text-slate-950 pt-1">
             {currentPlan.title}
-          </h3>
-          <div className="flex items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm font-bold text-slate-600 flex-wrap pt-1">
-            <span className="flex items-center gap-1.5">
-              <Layers className="w-4 h-4 text-purple-600" aria-hidden="true" />
-              <span>শ্রেণি: {currentPlan.grade}</span>
-            </span>
-            <span aria-hidden="true">•</span>
-            <span className="flex items-center gap-1.5">
-              <BookOpen className="w-4 h-4 text-purple-600" aria-hidden="true" />
-              <span>বিষয়: {currentPlan.subject}</span>
-            </span>
-            <span aria-hidden="true">•</span>
-            <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-purple-600" aria-hidden="true" />
-              <span>সময়: {currentPlan.duration}</span>
-            </span>
+          </h2>
+
+          {/* Official Metadata Info Box */}
+          <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-medium bg-slate-50 print:bg-transparent p-3 rounded-2xl border border-slate-200 print:border-slate-800 text-left">
+            <div>
+              <span className="text-slate-500 block text-[10px] font-bold">বিদ্যালয়:</span>
+              <span className="text-slate-900 font-bold text-xs">{schoolName}</span>
+            </div>
+            <div>
+              <span className="text-slate-500 block text-[10px] font-bold">শিক্ষক/শিক্ষিকা:</span>
+              <span className="text-slate-900 font-bold text-xs">{teacherName}</span>
+            </div>
+            <div>
+              <span className="text-slate-500 block text-[10px] font-bold">শ্রেণি ও বিষয়:</span>
+              <span className="text-slate-900 font-bold text-xs">{currentPlan.grade} • {currentPlan.subject}</span>
+            </div>
+            <div>
+              <span className="text-slate-500 block text-[10px] font-bold">তারিখ ও সময়:</span>
+              <span className="text-slate-900 font-bold text-xs">{lessonDate} • {period} ({currentPlan.duration})</span>
+            </div>
           </div>
         </div>
 
         {/* Section 1: Learning Outcomes */}
-        <div className="space-y-3">
+        <div className="space-y-3 break-inside-avoid">
           <h4 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-1.5">
             <Target className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0" aria-hidden="true" />
             <span>১. নির্দিষ্ট শিখনফল (Learning Outcomes)</span>
@@ -536,7 +680,7 @@ ${currentPlan.homework}
         </div>
 
         {/* Section 2: Materials & Teaching Aids */}
-        <div className="space-y-3">
+        <div className="space-y-3 break-inside-avoid">
           <h4 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-1.5">
             <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-sky-600 shrink-0" aria-hidden="true" />
             <span>২. প্রয়োজনীয় শিখন-শেখানো উপকরণ (Teaching Aids)</span>
@@ -545,7 +689,7 @@ ${currentPlan.homework}
             {currentPlan.materials.map((mat, idx) => (
               <span 
                 key={idx} 
-                className="px-3 py-1 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 text-xs sm:text-sm font-semibold"
+                className="px-3 py-1 rounded-xl bg-sky-50 border border-sky-200 text-sky-900 text-xs sm:text-sm font-semibold print:bg-transparent print:border-slate-400"
               >
                 {mat}
               </span>
@@ -560,45 +704,84 @@ ${currentPlan.homework}
             <span>৩. পর্যায়ক্রমিক শ্রেণি পরিচালনা (Pedagogical Steps)</span>
           </h4>
           
-          <div className="space-y-4">
-            {currentPlan.steps.map((step, idx) => (
-              <div 
-                key={idx}
-                className="p-4 rounded-2xl border border-slate-200 bg-slate-50/60 space-y-2 hover:bg-slate-50 transition-colors"
-              >
-                <div className="flex items-center justify-between font-black text-xs sm:text-sm text-indigo-950 border-b border-slate-200/80 pb-1.5">
-                  <span>{step.phase}</span>
-                  <span className="px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 text-[11px] font-bold">
-                    {step.time}
-                  </span>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                  <strong>কার্যক্রম:</strong> {step.activities}
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs pt-1">
-                  <div className="p-2.5 rounded-xl bg-white border border-slate-200">
-                    <span className="font-bold text-slate-900 block mb-0.5">👩‍🏫 শিক্ষকের কাজ:</span>
-                    <p className="text-slate-600">{step.teacherRole}</p>
+          {/* Card View for Screen (Shown when isTableView is false and hidden on print) */}
+          {!isTableView && (
+            <div className="space-y-4 print:hidden">
+              {currentPlan.steps.map((step, idx) => (
+                <div 
+                  key={idx}
+                  className="p-4 rounded-2xl border border-slate-200 bg-slate-50/60 space-y-2 hover:bg-slate-50 transition-colors"
+                >
+                  <div className="flex items-center justify-between font-black text-xs sm:text-sm text-indigo-950 border-b border-slate-200/80 pb-1.5">
+                    <span>{step.phase}</span>
+                    <span className="px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 text-[11px] font-bold">
+                      {step.time}
+                    </span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-slate-200">
-                    <span className="font-bold text-slate-900 block mb-0.5">🎒 শিক্ষার্থীর কাজ:</span>
-                    <p className="text-slate-600">{step.studentRole}</p>
+                  <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                    <strong>কার্যক্রম:</strong> {step.activities}
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs pt-1">
+                    <div className="p-2.5 rounded-xl bg-white border border-slate-200">
+                      <span className="font-bold text-slate-900 block mb-0.5">👩‍🏫 শিক্ষকের কাজ:</span>
+                      <p className="text-slate-600">{step.teacherRole}</p>
+                    </div>
+                    <div className="p-2.5 rounded-xl bg-white border border-slate-200">
+                      <span className="font-bold text-slate-900 block mb-0.5">🎒 শিক্ষার্থীর কাজ:</span>
+                      <p className="text-slate-600">{step.studentRole}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          )}
+
+          {/* Official Structured Table for Print and Table View */}
+          <div className={`${isTableView ? "block" : "hidden"} print:block overflow-x-auto`}>
+            <table className="w-full border-collapse border border-slate-800 text-xs text-left">
+              <thead>
+                <tr className="bg-slate-100 border-b border-slate-800 text-slate-900 font-black">
+                  <th className="p-2.5 border-r border-slate-800 w-32">পর্যায় ও সময়</th>
+                  <th className="p-2.5 border-r border-slate-800">কার্যক্রম ও বিষয়বস্তু</th>
+                  <th className="p-2.5 border-r border-slate-800 w-44">শিক্ষকের কাজ ও সহায়তা</th>
+                  <th className="p-2.5 w-44">শিক্ষার্থীর সক্রিয় অংশগ্রহণ</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentPlan.steps.map((step, idx) => (
+                  <tr key={idx} className="border-b border-slate-300 print:border-slate-600 break-inside-avoid">
+                    <td className="p-2.5 border-r border-slate-800 align-top font-bold text-slate-900">
+                      <div>{step.phase}</div>
+                      <div className="text-[11px] text-slate-600 font-semibold mt-0.5">({step.time})</div>
+                    </td>
+                    <td className="p-2.5 border-r border-slate-800 align-top leading-relaxed text-slate-800">
+                      {step.activities}
+                    </td>
+                    <td className="p-2.5 border-r border-slate-800 align-top leading-relaxed text-slate-700">
+                      {step.teacherRole}
+                    </td>
+                    <td className="p-2.5 align-top leading-relaxed text-slate-700">
+                      {step.studentRole}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
         {/* Section 4: Evaluation and Assessment */}
-        <div className="space-y-3">
+        <div className="space-y-3 break-inside-avoid">
           <h4 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-1.5">
             <Award className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 shrink-0" aria-hidden="true" />
             <span>৪. শিখন মূল্যায়ন (Assessment for Learning)</span>
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-2">
             {currentPlan.evaluation.map((evalItem, idx) => (
-              <div key={idx} className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 font-medium">
+              <div 
+                key={idx} 
+                className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs sm:text-sm text-amber-950 font-medium print:bg-transparent print:border-slate-400"
+              >
                 {evalItem}
               </div>
             ))}
@@ -606,14 +789,28 @@ ${currentPlan.homework}
         </div>
 
         {/* Section 5: Homework */}
-        <div className="space-y-2 p-4 rounded-2xl bg-purple-50 border border-purple-200 text-purple-950">
-          <div className="flex items-center gap-2 font-black text-xs sm:text-sm text-purple-900">
-            <HelpCircle className="w-4 h-4 text-purple-600" aria-hidden="true" />
+        <div className="space-y-2 p-4 rounded-2xl bg-purple-50 border border-purple-200 text-purple-950 print:bg-transparent print:border-slate-400 break-inside-avoid">
+          <div className="flex items-center gap-2 font-black text-xs sm:text-sm text-purple-900 print:text-slate-900">
+            <HelpCircle className="w-4 h-4 text-purple-600 print:text-slate-900" aria-hidden="true" />
             <span>৫. অর্থবহ বাড়ির কাজ (Meaningful Homework):</span>
           </div>
-          <p className="text-xs sm:text-sm font-medium leading-relaxed pl-6">
+          <p className="text-xs sm:text-sm font-medium leading-relaxed pl-6 text-slate-800">
             {currentPlan.homework}
           </p>
+        </div>
+
+        {/* Section 6: Official Signatures Block (Visible in Print & Official Display) */}
+        <div className="pt-8 sm:pt-10 grid grid-cols-2 gap-8 text-center text-xs font-bold text-slate-800 break-inside-avoid print:pt-12">
+          <div className="space-y-1.5">
+            <div className="w-44 sm:w-56 mx-auto border-b border-dashed border-slate-800 pb-1" />
+            <span className="block text-slate-900">শ্রেণি শিক্ষক / বিষয় শিক্ষকের স্বাক্ষর</span>
+            <span className="text-[11px] text-slate-600 font-normal">তারিখ: {lessonDate}</span>
+          </div>
+          <div className="space-y-1.5">
+            <div className="w-44 sm:w-56 mx-auto border-b border-dashed border-slate-800 pb-1" />
+            <span className="block text-slate-900">প্রধান শিক্ষকের প্রতিস্বাক্ষর ও বিদ্যালয় সিলমোহর</span>
+            <span className="text-[11px] text-slate-600 font-normal">প্রতিষ্ঠান: {schoolName}</span>
+          </div>
         </div>
       </section>
     </article>
