@@ -3007,8 +3007,8 @@ export default function MultimediaSlideDeck() {
 
       {/* Mode 1: Natural Flowing Textbook Paragraph */}
       {storyLayoutMode === "paragraph" ? (
-        <div className="p-4 sm:p-6 md:p-7 rounded-3xl bg-gradient-to-br from-amber-50/40 via-white to-purple-50/30 border border-purple-200/80 shadow-2xs space-y-4">
-          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-3.5 text-xl sm:text-2xl md:text-[27px] font-bold text-slate-800 leading-relaxed sm:leading-[1.85]">
+        <div data-paper-card="true" className="p-4 sm:p-6 md:p-7 rounded-3xl bg-white/95 border border-purple-200/80 shadow-2xs space-y-4">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-3.5 text-xl sm:text-2xl md:text-[27px] font-bold text-slate-900 leading-relaxed sm:leading-[1.85]">
             {currentSlide.content.englishText.map((sentence, sIdx) => {
               const words = sentence.split(" ");
               const isCurrentSentence = activeSentenceIndex === sIdx;
@@ -3058,7 +3058,7 @@ export default function MultimediaSlideDeck() {
                             className={`cursor-pointer select-none active:scale-95 touch-manipulation transition-all duration-150 inline-block px-1 rounded-lg ${
                               isHighlighted
                                 ? "bg-gradient-to-r from-amber-300 to-yellow-300 text-amber-950 font-black scale-110 shadow-xs ring-2 ring-amber-400 border border-amber-400 animate-pulse"
-                                : "hover:bg-purple-200/60 hover:text-purple-900"
+                                : "text-slate-900 hover:bg-purple-200/70 hover:text-purple-950"
                             }`}
                             title="উচ্চারণ শুনতে ক্লিক করুন"
                           >
@@ -3158,7 +3158,7 @@ export default function MultimediaSlideDeck() {
                   </span>
 
                   {/* Words with Karaoke, Memory Blinder & Interlinear */}
-                  <div className="flex flex-wrap gap-x-2 gap-y-1.5 items-end text-lg sm:text-xl md:text-2xl font-bold text-slate-800 leading-normal flex-1">
+                  <div className="flex flex-wrap gap-x-2 gap-y-1.5 items-end text-lg sm:text-xl md:text-2xl font-bold text-slate-900 leading-normal flex-1">
                     {words.map((w, wIdx) => {
                       const cleanWord = w.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_\x60~()?"']/g, "");
                       const isHighlighted = isCurrentSentence && activeWordIndex === wIdx;
@@ -3192,7 +3192,7 @@ export default function MultimediaSlideDeck() {
                               className={`cursor-pointer select-none active:scale-95 touch-manipulation transition-all duration-150 inline-block px-1.5 py-0.5 rounded-xl ${
                                 isHighlighted
                                   ? "bg-gradient-to-r from-amber-300 to-yellow-300 text-amber-950 font-black scale-110 shadow-xs ring-2 ring-amber-400 border border-amber-400 animate-pulse"
-                                  : "hover:bg-purple-100 hover:text-purple-800"
+                                  : "text-slate-900 hover:bg-purple-100 hover:text-purple-950"
                               }`}
                               title="উচ্চারণ শুনতে ক্লিক করুন"
                             >
@@ -3327,7 +3327,7 @@ export default function MultimediaSlideDeck() {
                           <span
                             key={dwIdx}
                             className={`inline-block px-1 py-0.5 rounded transition-all ${
-                              isDwHighlighted ? "bg-amber-300 text-amber-950 font-black scale-110 ring-2 ring-amber-400" : ""
+                              isDwHighlighted ? "bg-amber-300 text-amber-950 font-black scale-110 ring-2 ring-amber-400" : "text-slate-900"
                             }`}
                           >
                             {dw}

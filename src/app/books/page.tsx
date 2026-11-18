@@ -7,6 +7,7 @@ import { CLASSES_DATA, ClassGrade } from "@/data/curriculum";
 import BookReaderModal from "@/components/BookReaderModal";
 import BrandHomeLink from "@/components/BrandHomeLink";
 import InstallAppButton from "@/components/InstallAppButton";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 export default function BooksPage() {
@@ -25,36 +26,17 @@ export default function BooksPage() {
   const totalBooks = CLASSES_DATA.reduce((acc, c) => acc + c.textbooks.length + c.teachersGuides.length, 0);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 via-white to-amber-50/40 text-slate-900">
-      {/* Top Header */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-white/90 border-b border-sky-100 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>হোমে ফিরুন</span>
-            </Link>
-            <div className="h-6 w-px bg-slate-200 hidden sm:block" />
-            <div>
-              <h1 className="text-sm sm:text-xl font-black text-slate-900 truncate max-w-[200px] sm:max-w-none">
-                এনসিটিবি পাঠ্যবই ও শিক্ষক সহায়িকা
-              </h1>
-              <p className="text-[11px] text-slate-500 hidden sm:block">প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির সকল বোর্ড বই</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 hidden md:inline-block">
-              {totalBooks}টি বই সংরক্ষিত
-            </span>
-            <InstallAppButton variant="compact" />
-            <BrandHomeLink variant="compact" className="hidden sm:inline-flex" />
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 via-white to-amber-50/40 text-slate-900 w-full overflow-x-clip">
+      {/* 🌟 Universal Responsive Header with Global Navigation */}
+      <SiteHeader
+        pageTitle="এনসিটিবি পাঠ্যবই ও শিক্ষক সহায়িকা"
+        pageSubtitle="প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির সকল বোর্ড বই"
+        rightActions={
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 hidden md:inline-block">
+            {totalBooks}টি বই সংরক্ষিত
+          </span>
+        }
+      />
 
       {/* Main Content */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8">

@@ -374,14 +374,14 @@ export default function BookReaderModal({
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-1 sm:p-4 animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-1 sm:p-4 animate-fade-in w-full max-w-[100vw] overflow-x-hidden"
     >
       <div
         data-paper-card="true"
-        className={`bg-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 transition-all ${
+        className={`bg-white rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 transition-all w-full max-w-full ${
           isFullscreen
             ? "w-full h-full rounded-none"
-            : "w-full max-w-6xl h-[95vh] sm:h-[92vh]"
+            : "max-w-6xl h-[95vh] sm:h-[92vh]"
         }`}
       >
         {/* Header Bar - Eye-Friendly Soft Light Theme */}
@@ -503,7 +503,7 @@ export default function BookReaderModal({
               }
             }
           }}
-          className="relative flex-1 bg-slate-200/80 overflow-auto p-2 sm:p-6 flex flex-col items-center touch-pan-x touch-pan-y"
+          className="relative flex-1 bg-slate-200/80 overflow-auto p-2 sm:p-6 flex flex-col items-center touch-pan-x touch-pan-y w-full max-w-full"
         >
           {hasError ? (
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-50 gap-4 p-6 text-center animate-fade-in">
@@ -581,11 +581,11 @@ export default function BookReaderModal({
                 </div>
               )}
 
-              <div className="my-auto shadow-xl rounded-lg overflow-hidden bg-white border border-slate-300/80">
+              <div className="my-auto shadow-xl rounded-lg overflow-hidden bg-white border border-slate-300/80 max-w-full">
                 <canvas
                   ref={canvasRef}
                   aria-label={`${bookName} - পৃষ্ঠা ${currentPage}`}
-                  className="block"
+                  className="block max-w-full h-auto"
                 />
               </div>
             </>

@@ -397,28 +397,44 @@ export default function StudentCertificateStudio() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Auto-fit calculation for any screen width
-  const handleAutoFit = useCallback(() => {
+  const handleAutoFit = useCallback((showToast: boolean | React.SyntheticEvent = true) => {
     if (!containerRef.current) return;
-    const availableWidth = containerRef.current.clientWidth - 24;
+    const availableWidth = containerRef.current.clientWidth - 20;
     const targetWidthPx = 1077; // ~285mm at 96dpi
-    const fitPercent = Math.max(30, Math.min(100, Math.floor((availableWidth / targetWidthPx) * 100)));
+    const fitPercent = Math.max(25, Math.min(100, Math.floor((availableWidth / targetWidthPx) * 100)));
     setZoomScale(fitPercent);
-    setToastMessage(`স্ক্রিন অনুযায়ী জুম ${fitPercent}% অ্যাডজাস্ট করা হয়েছে`);
-    setTimeout(() => setToastMessage(null), 2500);
+    const shouldToast = typeof showToast === "boolean" ? showToast : true;
+    if (shouldToast) {
+      setToastMessage(`স্ক্রিন অনুযায়ী জুম ${fitPercent}% অ্যাডজাস্ট করা হয়েছে`);
+      setTimeout(() => setToastMessage(null), 2500);
+    }
   }, []);
 
-  // Run auto-fit on mount when loaded on small screens (mobile/tablet < 1150px)
+  // Run auto-fit on mount and whenever the viewport/container resizes
   useEffect(() => {
-    if (typeof window !== "undefined" && window.innerWidth < 1150) {
-      const timer = setTimeout(() => {
-        if (containerRef.current) {
-          const availableWidth = containerRef.current.clientWidth - 24;
-          const fitPercent = Math.max(30, Math.min(100, Math.floor((availableWidth / 1077) * 100)));
+    const runFit = () => {
+      if (containerRef.current) {
+        const availableWidth = containerRef.current.clientWidth - 20;
+        if (availableWidth < 1077) {
+          const fitPercent = Math.max(25, Math.min(100, Math.floor((availableWidth / 1077) * 100)));
           setZoomScale(fitPercent);
         }
-      }, 150);
-      return () => clearTimeout(timer);
+      }
+    };
+
+    runFit();
+    window.addEventListener("resize", runFit);
+
+    let observer: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && containerRef.current) {
+      observer = new ResizeObserver(() => runFit());
+      observer.observe(containerRef.current);
     }
+
+    return () => {
+      window.removeEventListener("resize", runFit);
+      observer?.disconnect();
+    };
   }, []);
 
   // Save school metadata to localStorage on update
@@ -1365,7 +1381,6 @@ export default function StudentCertificateStudio() {
           style={{
             width: `${285 * (zoomScale / 100)}mm`,
             height: `${200 * (zoomScale / 100)}mm`,
-            maxWidth: "100%"
           }}
           className="relative overflow-hidden transition-[width,height] duration-200 shrink-0"
         >

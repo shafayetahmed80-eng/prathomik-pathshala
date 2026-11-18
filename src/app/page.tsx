@@ -29,6 +29,7 @@ import GlobalNCTBSearch from "@/components/GlobalNCTBSearch";
 import AudioRhymesCorner from "@/components/AudioRhymesCorner";
 import BrandHomeLink from "@/components/BrandHomeLink";
 import InstallAppButton from "@/components/InstallAppButton";
+import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 
 type UserRole = "student" | "teacher";
@@ -79,75 +80,45 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 via-white to-amber-50/40 text-slate-900 antialiased selection:bg-emerald-200">
-      {/* 🌟 Semantic Header */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-white/95 border-b border-sky-100 shadow-xs print:hidden">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2">
-          <BrandHomeLink />
-
-          {/* Quick Nav Links */}
-          <nav aria-label="প্রধান লিঙ্কসমূহ" className="hidden lg:flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/60">
-            <Link href="/books" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-emerald-700 transition-colors">
-              পাঠ্যবই
-            </Link>
-            <Link href="/bornomala" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-pink-700 transition-colors">
-              বর্ণমালা
-            </Link>
-            <Link href="/slides" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-purple-700 transition-colors">
-              স্লাইড হাব
-            </Link>
-            <Link href="/exams" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-sky-700 transition-colors">
-              প্রশ্নপত্র মেকার
-            </Link>
-            <Link href="/certificates" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-amber-700 transition-colors">
-              প্রত্যয়নপত্র
-            </Link>
-            <Link href="/quiz" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-amber-700 transition-colors">
-              কুইজ
-            </Link>
-            <Link href="/rhymes" className="px-3 py-1.5 rounded-xl hover:bg-white hover:text-rose-700 transition-colors">
-              ছড়া ও গল্প
-            </Link>
-          </nav>
-
-          {/* PWA Install & Role Mode Segmented Switcher in Header */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <InstallAppButton variant="header" />
-            <div 
-              role="radiogroup" 
-              aria-label="ব্যবহারকারীর ভূমিকা নির্বাচন"
-              className="flex items-center p-0.5 sm:p-1 bg-slate-100 rounded-xl sm:rounded-2xl border border-slate-200/80"
+      {/* 🌟 Universal Responsive Site Header with Mobile Navigation Drawer */}
+      <SiteHeader
+        showBackLink={false}
+        rightActions={
+          <div
+            role="radiogroup"
+            aria-label="ব্যবহারকারীর ভূমিকা নির্বাচন"
+            className="flex items-center p-0.5 sm:p-1 bg-slate-100 rounded-xl sm:rounded-2xl border border-slate-200/80"
+          >
+            <button
+              type="button"
+              onClick={() => setRole("student")}
+              aria-checked={role === "student"}
+              role="radio"
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
+                role === "student"
+                  ? "bg-white text-emerald-700 shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
             >
-              <button
-                type="button"
-                onClick={() => setRole("student")}
-                aria-checked={role === "student"}
-                role="radio"
-                className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
-                  role === "student"
-                    ? "bg-white text-emerald-700 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <span>🎈 শিক্ষার্থী</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setRole("teacher")}
-                aria-checked={role === "teacher"}
-                role="radio"
-                className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
-                  role === "teacher"
-                    ? "bg-purple-600 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />
-                <span>শিক্ষক</span>
-              </button>
-            </div>
+              <span>🎈 শিক্ষার্থী</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole("teacher")}
+              aria-checked={role === "teacher"}
+              role="radio"
+              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
+                role === "teacher"
+                  ? "bg-purple-600 text-white shadow-xs"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>শিক্ষক</span>
+            </button>
           </div>
-        </div>
-      </header>
+        }
+      />
 
       {/* 🚀 Semantic Main Landmark */}
       <main id="main-content" className="flex-1 w-full flex flex-col items-center">
