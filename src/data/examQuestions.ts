@@ -283,11 +283,13 @@ export const CLASS_SUBJECTS_MAP: Record<string, SubjectOption[]> = {
   "class-4": [
     { key: "bangla", name: "বাংলা" },
     { key: "english", name: "English" },
-    { key: "math", name: "গণিত" },
+    { key: "math", name: "প্রাথমিক গণিত" },
     { key: "science", name: "প্রাথমিক বিজ্ঞান" },
     { key: "bgs", name: "বাংলাদেশ ও বিশ্বপরিচয়" },
     { key: "islamic", name: "ইসলাম ও নৈতিক শিক্ষা" },
-    { key: "hindu", name: "হিন্দুধর্ম ও নৈতিক শিক্ষা" }
+    { key: "hindu", name: "হিন্দুধর্ম ও নৈতিক শিক্ষা" },
+    { key: "buddhist", name: "বৌদ্ধধর্ম ও নৈতিক শিক্ষা" },
+    { key: "christian", name: "খ্রিষ্টধর্ম ও নৈতিক শিক্ষা" }
   ],
   "class-5": [
     { key: "bangla", name: "বাংলা" },
@@ -881,78 +883,94 @@ export const EXAM_DATABASE: Record<string, ExamQuestionItem> = {
     ]
   },
 
-  "class-4-english": {
+    "class-4-english": {
     id: "c4-e",
     classId: "class-4",
     subject: "English",
     mcq: [
-      { id: "c4e-m1", chapterId: "c4-e-u1", question: "How old is Mahi in Unit 1?", options: ["8 years old", "9 years old", "10 years old", "11 years old"], answer: "9 years old", marks: 1 },
-      { id: "c4e-m2", chapterId: "c4-e-u2", question: "What time does Mita get up in the morning?", options: ["At 5:00 AM", "At 6:00 AM", "At 7:00 AM", "At 8:00 AM"], answer: "At 6:00 AM", marks: 1 },
-      { id: "c4e-m3", chapterId: "c4-e-u3", question: "What is Sagar's father's profession?", options: ["A doctor", "A lawyer", "A teacher", "A banker"], answer: "A lawyer", marks: 1 },
-      { id: "c4e-m4", chapterId: "c4-e-u7", question: "What does the red traffic light tell drivers to do?", options: ["Go fast", "Wait", "Stop", "Turn back"], answer: "Stop", marks: 1 },
-      { id: "c4e-m5", chapterId: "c4-e-u8", question: "What is Raju's present occupation?", options: ["A doctor", "A full-time firefighter", "A driver", "A pilot"], answer: "A full-time firefighter", marks: 1 }
+      { id: "c4e-m1", chapterId: "c4-e-u1", question: "Where is Fariha from in Unit 1?", options: ["Sylhet", "Chattogram", "Khulna", "Rajshahi"], answer: "Chattogram", marks: 1 },
+      { id: "c4e-m2", chapterId: "c4-e-u5", question: "What is the primary role of the Little Doctor Team in school?", options: ["Checking basic health and hygiene", "Teaching English", "Driving a school bus", "Cooking school meals"], answer: "Checking basic health and hygiene", marks: 1 },
+      { id: "c4e-m3", chapterId: "c4-e-u8", question: "What was Alvi's grandfather's profession?", options: ["A retired school teacher", "A lawyer", "A banker", "A shopkeeper"], answer: "A retired school teacher", marks: 1 },
+      { id: "c4e-m4", chapterId: "c4-e-u15", question: "Which human activity causes severe air pollution?", options: ["Planting green trees", "Black smoke from vehicles and factories", "Drinking pure water", "Cleaning classrooms"], answer: "Black smoke from vehicles and factories", marks: 1 },
+      { id: "c4e-m5", chapterId: "c4-e-u16", question: "Where does Pasang live?", options: ["In Nepal", "In Bhutan", "In India", "In Bangladesh"], answer: "In Nepal", marks: 1 }
     ],
     fillInTheBlanks: [
-      { id: "c4e-f1", chapterId: "c4-e-u1", sentence: "Mahi is ____ years old and reads in Class 4.", answer: "nine / 9", marks: 1 },
-      { id: "c4e-f2", chapterId: "c4-e-u2", sentence: "Mita gets up from bed at ____ o'clock in the morning.", answer: "six / 6", marks: 1 },
-      { id: "c4e-f3", chapterId: "c4-e-u3", sentence: "Sagar's father is a ____ and his mother is a housewife.", answer: "lawyer", marks: 1 },
-      { id: "c4e-f4", chapterId: "c4-e-u7", sentence: "A traffic light has three colors: red, yellow, and ____.", answer: "green", marks: 1 },
-      { id: "c4e-f5", chapterId: "c4-e-u8", sentence: "Raju put out fires as a ____ without getting paid.", answer: "volunteer", marks: 1 }
+      { id: "c4e-f1", chapterId: "c4-e-u1", sentence: "Fariha and Shuvo are students in Class ____.", answer: "4", marks: 1 },
+      { id: "c4e-f2", chapterId: "c4-e-u5", sentence: "We must wash our hands with soap before ____ and after using the toilet.", answer: "meals", marks: 1 },
+      { id: "c4e-f3", chapterId: "c4-e-u8", sentence: "Alvi lives with his ____ in a peaceful village.", answer: "family", marks: 1 },
+      { id: "c4e-f4", chapterId: "c4-e-u14", sentence: "In the poem 'Tears of the Earth', cutting down trees makes the Earth ____.", answer: "sad / cry", marks: 1 },
+      { id: "c4e-f5", chapterId: "c4-e-u15", sentence: "Dumping polythene bags into drains causes serious water ____.", answer: "pollution", marks: 1 }
     ],
     trueFalse: [
-      { id: "c4e-tf1", chapterId: "c4-e-u1", statement: "Mahi reads in Class 4 at a primary school.", isTrue: true, answer: "True", marks: 1 },
-      { id: "c4e-tf2", chapterId: "c4-e-u2", statement: "Mita walks to school because it is close to her house.", isTrue: true, answer: "True", marks: 1 },
-      { id: "c4e-tf3", chapterId: "c4-e-u3", statement: "Sagar's father is a doctor in a government hospital.", isTrue: false, answer: "False (His father is a lawyer)", marks: 1 },
-      { id: "c4e-tf4", chapterId: "c4-e-u7", statement: "Green traffic light gives vehicles permission to go.", isTrue: true, answer: "True", marks: 1 },
-      { id: "c4e-tf5", chapterId: "c4-e-u8", statement: "Raju visits schools to educate students about fire prevention.", isTrue: true, answer: "True", marks: 1 }
+      { id: "c4e-tf1", chapterId: "c4-e-u1", statement: "Fariha and Shuvo introduce themselves politely to each other.", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4e-tf2", chapterId: "c4-e-u5", statement: "The Little Doctors check height, weight, and fingernails of their peers.", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4e-tf3", chapterId: "c4-e-u8", statement: "Alvi's grandfather assists him in his studies and loves gardening.", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4e-tf4", chapterId: "c4-e-u14", statement: "The poem 'Tears of the Earth' encourages us to plant more trees to heal the Earth.", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4e-tf5", chapterId: "c4-e-u16", statement: "Pasang enjoys walking to school across the mountain paths.", isTrue: true, answer: "True", marks: 1 }
     ],
     matching: {
       id: "c4e-mat1",
-      chapterId: "c4-e-u7",
-      left: ["Red light", "Yellow light", "Green light", "Zebra crossing"],
-      right: ["Tells vehicles to stop immediately", "Tells drivers to wait and get ready", "Tells vehicles they can go", "Safe pathway for crossing the road"],
-      marks: 5
+      chapterId: "c4-e-u5",
+      left: ["Little Doctor", "Soap & Water", "Fingernails", "Healthy habits"],
+      right: ["Inspects health & cleanliness", "Essential for washing hands", "Must be kept short and trimmed", "Keep us cheerful and strong"],
+      marks: 4
     },
     shortQuestions: [
-      { id: "c4e-s1", chapterId: "c4-e-u1", question: "Who is Mahi and which class does he read in?", answer: "Mahi is a nine-year-old student who reads in Class 4.", marks: 2 },
-      { id: "c4e-s2", chapterId: "c4-e-u2", question: "When does Mita get up and what does she do first?", answer: "Mita gets up at 6:00 AM, washes her face, and brushes her teeth.", marks: 2 },
-      { id: "c4e-s3", chapterId: "c4-e-u3", question: "How many members are there in Sagar's family? Name them.", answer: "There are six members: Sagar, his parents, little sister Keya, and his grandparents.", marks: 2 },
-      { id: "c4e-s4", chapterId: "c4-e-u7", question: "What do the three colors of a traffic light indicate?", answer: "Red means stop, yellow means wait and get ready, and green means go.", marks: 2 },
-      { id: "c4e-s5", chapterId: "c4-e-u8", question: "What was Raju's role as a volunteer firefighter?", answer: "He put out dangerous fires bravely without taking any money or salary.", marks: 2 }
+      { id: "c4e-s1", chapterId: "c4-e-u1", question: "How do you introduce yourself to a new classmate?", answer: "Hello! My name is [Name]. I am in Class 4. Nice to meet you!", marks: 2 },
+      { id: "c4e-s2", chapterId: "c4-e-u5", question: "Mention two duties performed by the Little Doctor Team in your school.", answer: "1. Checking height, weight, and eyesight. 2. Teaching proper handwashing with soap before meals.", marks: 2 },
+      { id: "c4e-s3", chapterId: "c4-e-u8", question: "Who are the family members of Alvi?", answer: "Alvi lives with his parents, younger sister, and loving grandparents.", marks: 2 },
+      { id: "c4e-s4", chapterId: "c4-e-u14", question: "Why is the Earth weeping in the poem 'Tears of the Earth'?", answer: "Because humans are cutting down trees indiscriminately and polluting nature.", marks: 2 },
+      { id: "c4e-s5", chapterId: "c4-e-u16", question: "What does Pasang love doing in his free time?", answer: "Pasang loves playing with his friends and enjoying the scenic beauty of the mountains.", marks: 2 }
     ],
     broadQuestions: [
-      { id: "c4e-b1", chapterId: "c4-e-u2", question: "Write a short paragraph of 5-7 sentences about 'Mita's Daily Routine'.", answer: "1. Mita is a diligent student who reads in Class 4. 2. She gets up early at 6:00 AM and washes her face. 3. She has her breakfast at 7:00 AM and brushes her teeth. 4. She walks to school with a cheerful heart at 8:30 AM. 5. Her classes begin at 9:00 AM and end in the afternoon. 6. At 5:00 PM, she visits her beloved grandmother. 7. She returns home, studies carefully, and goes to bed by 10:00 PM.", marks: 5 },
-      { id: "c4e-b2", chapterId: "c4-e-u3", question: "Write 5-7 sentences describing 'Sagar and His Family'.", answer: "1. Sagar is a nine-year-old student reading in Class 4. 2. There are six members in his loving family. 3. His father is an honest lawyer and his mother is a dedicated homemaker. 4. His little sister Keya is three years old and very playful. 5. His grandfather was a respected school teacher who helps Sagar with his studies. 6. His grandmother grows fresh vegetables and makes delicious traditional pithas. 7. Sagar feels proud and blessed to live in such a happy family.", marks: 5 },
-      { id: "c4e-b3", chapterId: "c4-e-u8", question: "Write a short composition of 5-7 sentences about 'Raju, The Brave Firefighter'.", answer: "1. Raju is a dedicated full-time firefighter in Bangladesh. 2. When he was in Class 5, he saw a fire in his school building. 3. The courage of the firefighters inspired him deeply to join the service. 4. After finishing his studies, he served as a volunteer firefighter without salary. 5. Now he works as a full-time professional firefighter protecting people's lives. 6. In his leisure time, he visits schools to educate students about fire prevention. 7. Raju's bravery and selfless devotion make him a role model for everyone.", marks: 5 },
-      { id: "c4e-b4", chapterId: "c4-e-u11", question: "Write 5-7 sentences about 'Reshma: The Garments Worker'.", answer: "1. Reshma is an eighteen-year-old hardworking girl from Kurigram. 2. Her family lost their home and farmland due to severe river erosion by the Jamuna. 3. They moved to Dhaka in search of livelihood and settled in Mirpur. 4. Reshma works in a garment factory stitching quality garments. 5. She works long hours with patience and dignity. 6. She sends part of her earnings to educate her younger brother Babul. 7. Reshma represents the courage and resilience of working women in Bangladesh.", marks: 5 }
+      { id: "c4e-b1", chapterId: "c4-e-u5", question: "Write a short composition of 5-7 sentences about 'The Little Doctor Team in My School'.", answer: "1. In our school, we have an active Little Doctor Team. 2. Students from Class 4 and 5 are selected as members. 3. Every month, they check our height, weight, and eyesight. 4. They teach us to wash hands with soap before meals. 5. They guide us to keep our fingernails clean and short. 6. A local medical doctor trains our little doctors every year. 7. We are very proud of our helpful Little Doctor Team.", marks: 5 },
+      { id: "c4e-b2", chapterId: "c4-e-u8", question: "Write 5-7 sentences about 'My Family'.", answer: "1. I live in a warm and happy family with six members. 2. My father works hard and my mother takes caring steps for everyone. 3. My grandparents tell us fascinating moral stories every evening. 4. My younger sibling and I go to school together with joy. 5. We always share our meals and spend quality leisure time together. 6. We respect and help each other during difficulties. 7. I am deeply thankful to God for blessed family life.", marks: 5 },
+      { id: "c4e-b3", chapterId: "c4-e-u15", question: "Write 5-7 sentences describing how we can prevent environment pollution.", answer: "1. We must plant more green trees around our houses and schools. 2. We should never throw plastic packets or bottles into ponds and drains. 3. Dustbins should always be used to dispose of household garbage. 4. We should use bicycles or walk for short trips instead of motorized vehicles. 5. Industries should filter smoke and purify liquid waste before release. 6. Awareness campaigns should be conducted among students. 7. Keeping nature clean keeps all living beings healthy.", marks: 5 }
     ]
   },
 
   "class-4-math": {
     id: "c4-m",
     classId: "class-4",
-    subject: "গণিত",
+    subject: "প্রাথমিক গণিত",
     mcq: [
-      { id: "c4m-m1", question: "পাঁচ অঙ্কের ক্ষুদ্রতম সংখ্যা কোনটি?", options: ["১০০০১", "১০০০০", "৯৯৯৯৯", "১০১১১"], answer: "১০০০০", marks: 2 },
-      { id: "c4m-m2", question: "১২ ও ১৮ এর গরিষ্ঠ সাধারণ গুণনীয়ক (গ.সা.গু) কত?", options: ["২", "৩", "৬", "৩৬"], answer: "৬", marks: 2 },
-      { id: "c4m-m3", question: "সমকোণের মান কত ডিগ্রি?", options: ["৪৫°", "৬০°", "৯০°", "১৮০°"], answer: "৯০°", marks: 2 }
+      { id: "c4m-m1", chapterId: "c4-m-ch1", question: "৮৭,৬৫,৪৩২ সংখ্যাটিতে ৭ এর স্থানীয় মান কত?", options: ["৭ শত", "৭ হাজার", "৭ অযুত", "৭ লক্ষ"], answer: "৭ লক্ষ", marks: 1 },
+      { id: "c4m-m2", chapterId: "c4-m-ch2", question: "৮৫,০০০ - ৩৫,০০০ = কত?", options: ["৪০,০০০", "৪৫,০০০", "৫০,০০০", "৫৫,০০০"], answer: "৫০,০০০", marks: 1 },
+      { id: "c4m-m3", chapterId: "c4-m-ch3", question: "২৫০ × ২০ = কত?", options: ["২,৫০০", "৪,০০০", "৫,০০০", "১০,০০০"], answer: "৫,০০০", marks: 1 },
+      { id: "c4m-m4", chapterId: "c4-m-ch4", question: "৮,৪০০ ÷ ১০০ = কত?", options: ["৮৪", "৮৪০", "৮", "৮৪০৪"], answer: "৮৪", marks: 1 },
+      { id: "c4m-m5", chapterId: "c4-m-ch5", question: "গাণিতিক বাক্যে খালি ঘরে কোন সংখ্যা বসবে? (১২ + [ ]) × ৪ = ৮০", options: ["৬", "৮", "১০", "১২"], answer: "৮", marks: 1 },
+      { id: "c4m-m6", chapterId: "c4-m-ch6", question: "১২ ও ১৮ এর গরিষ্ঠ সাধারণ গুণনীয়ক (গ.সা.গু) কত?", options: ["২", "৩", "৬", "৩৬"], answer: "৬", marks: 1 },
+      { id: "c4m-m7", chapterId: "c4-m-ch7", question: "নিচের কোনটি প্রকৃত ভগ্নাংশ?", options: ["৩/৫", "৫/৩", "৭/৪", "৯/২"], answer: "৩/৫", marks: 1 },
+      { id: "c4m-m8", chapterId: "c4-m-ch8", question: "০.৭ + ০.৫ = কত?", options: ["১.০", "১.১", "১.২", "০.১২"], answer: "১.২", marks: 1 },
+      { id: "c4m-m9", chapterId: "c4-m-ch9", question: "১ কিলোমিটার = কত মিটার?", options: ["১০০ মিটার", "১০০০ মিটার", "১০,০০০ মিটার", "৫০ মিটার"], answer: "১০০০ মিটার", marks: 1 },
+      { id: "c4m-m10", chapterId: "c4-m-ch10", question: "সমকোণের পরিমাপ কত ডিগ্রি?", options: ["৪৫°", "৬০°", "৯০°", "১৮০°"], answer: "৯০°", marks: 1 }
     ],
     fillInTheBlanks: [
-      { id: "c4m-f1", sentence: "১ কিলোমিটার = ____ মিটার।", answer: "১০০০", marks: 2 },
-      { id: "c4m-f2", sentence: "ত্রিভুজের তিন কোণের সমষ্টি ____ ডিগ্রি।", answer: "১৮০", marks: 2 },
-      { id: "c4m-f3", sentence: "যেকোনো সংখ্যাকে সেই সংখ্যা দ্বারা ভাগ করলে ভাগফল হয় ____।", answer: "১", marks: 2 }
+      { id: "c4m-f1", chapterId: "c4-m-ch1", sentence: "১০টি দশ হাজার মিলে তৈরি হয় এক ____।", answer: "লক্ষ", marks: 1 },
+      { id: "c4m-f2", chapterId: "c4-m-ch2", sentence: "যে সংখ্যা থেকে অন্য সংখ্যা বিয়োগ করা হয় তাকে ____ বলে।", answer: "বিয়োজ্য", marks: 1 },
+      { id: "c4m-f3", chapterId: "c4-m-ch4", sentence: "ভাজ্য = (ভাজক × ____) + ভাগশেষ।", answer: "ভাগফল", marks: 1 },
+      { id: "c4m-f4", chapterId: "c4-m-ch7", sentence: "যে ভগ্নাংশের লব হরের চেয়ে ছোট তাকে ____ ভগ্নাংশ বলে।", answer: "প্রকৃত", marks: 1 },
+      { id: "c4m-f5", chapterId: "c4-m-ch10", sentence: "ত্রিভুজের তিন কোণের সমষ্টি ____ ডিগ্রি।", answer: "১৮০", marks: 1 }
     ],
     matching: {
+      id: "c4m-mat1",
+      chapterId: "c4-m-ch10",
       left: ["সমকোণ", "সরলকোণ", "সূক্ষ্মকোণ", "স্থূলকোণ"],
-      right: ["১৮০ ডিগ্রি", "৯০ ডিগ্রি", "৯০ ডিগ্রির বেশি", "৯০ ডিগ্রির কম"],
+      right: ["৯০ ডিগ্রি", "১৮০ ডিগ্রি", "৯০ ডিগ্রির চেয়ে কম", "৯০ ডিগ্রির চেয়ে বেশি কিন্তু ১৮০ ডিগ্রির চেয়ে কম"],
       marks: 4
     },
     shortQuestions: [
-      { id: "c4m-s1", question: "গ.সা.গু এবং ল.সা.গু এর পূর্ণরূপ কী?", answer: "গ.সা.গু = গরিষ্ঠ সাধারণ গুণনীয়ক। ল.সা.গু = লঘিষ্ঠ সাধারণ গুণিতক।", marks: 3 },
-      { id: "c4m-s2", question: "৩/৭ এবং ৫/৭ এর মধ্যে কোনটি বড় এবং কেন?", answer: "৫/৭ বড়; কারণ হর একই হলে যে ভগ্নাংশের লব বড়, সেই ভগ্নাংশটি বড় হয়।", marks: 3 }
+      { id: "c4m-s1", chapterId: "c4-m-ch1", question: "সম্পর্ক প্রতীক (<, >) ব্যবহার করে তুলনা করো: ৯৫,৪২০ [ ] ৯৫,২৪০", answer: "৯৫,৪২০ > ৯৫,২৪০", marks: 3 },
+      { id: "c4m-s2", chapterId: "c4-m-ch5", question: "বন্ধনী ব্যবহারের নিয়ম মেনে হিসাব করো: ২৪ ÷ (৪ + ২) × ৩", answer: "২৪ ÷ (৪ + ২) × ৩ = ২৪ ÷ ৬ × ৩ = ৪ × ৩ = ১২", marks: 3 },
+      { id: "c4m-s3", chapterId: "c4-m-ch6", question: "গ.সা.গু ও ল.সা.গু-এর পূর্ণরূপ লেখো।", answer: "গ.সা.গু = গরিষ্ঠ সাধারণ গুণনীয়ক, ল.সা.গু = লঘিষ্ঠ সাধারণ গুণিতক।", marks: 3 },
+      { id: "c4m-s4", chapterId: "c4-m-ch7", question: "৩/৮ এবং ৫/৮ এর মধ্যে কোনটি বড় এবং কেন?", answer: "৫/৮ বড়; কারণ হর একই হলে যে ভগ্নাংশের লব বড়, সেই ভগ্নাংশটি বড় হয়।", marks: 3 },
+      { id: "c4m-s5", chapterId: "c4-m-ch9", question: "একটি আয়তাকার মেঝের দৈর্ঘ্য ৮ মিটার এবং প্রস্থ ৫ মিটার হলে এর ক্ষেত্রফল কত?", answer: "ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ = ৮ × ৫ = ৪০ বর্গমিটার।", marks: 3 }
     ],
     broadQuestions: [
-      { id: "c4m-b1", question: "একটি ফলের বাগানে ১২ সারি আম গাছ আছে। প্রতি সারিতে ২৫টি করে গাছ থাকলে বাগানে মোট কতটি আম গাছ আছে? যদি প্রতিটি গাছ থেকে গড়ে ৫০টি আম পাড়া হয়, তবে মোট কতটি আম পাওয়া যাবে?", answer: "মোট আম গাছ = ১২ × ২৫ = ৩০০টি। মোট আম = ৩০০ × ৫০ = ১৫,০০০টি আম।", marks: 5 }
+      { id: "c4m-b1", chapterId: "c4-m-ch2", question: "একটি গুদামে ৮৫,৭৫০ বস্তা চাল ছিল। প্রথম দিন ১২,৪০০ বস্তা এবং দ্বিতীয় দিন ১৮,৩৫০ বস্তা চাল বিক্রি হলো। গুদামে আর কত বস্তা চাল অবশিষ্ট রইল?", answer: "মোট বিক্রি = ১২,৪০০ + ১৮,৩৫০ = ৩০,৭৫০ বস্তা। গুদামে অবশিষ্ট রইল = ৮৫,৭৫০ - ৩০,৭৫০ = ৫৫,০০০ বস্তা চাল।", marks: 6 },
+      { id: "c4m-b2", chapterId: "c4-m-ch3", question: "একটি বিদ্যালয়ের প্রতিটি শ্রেণিতে ৪৫ জন শিক্ষার্থী আছে। বিদ্যালয়ে মোট ৮টি শ্রেণি থাকলে মোট শিক্ষার্থীর সংখ্যা কত? প্রত্যেক শিক্ষার্থীকে ৬টি করে খাতা দেওয়া হলে মোট কতটি খাতা প্রয়োজন হবে?", answer: "মোট শিক্ষার্থী = ৪৫ × ৮ = ৩৬০ জন। মোট খাতা = ৩৬০ × ৬ = ২,১৬০টি খাতা প্রয়োজন।", marks: 6 },
+      { id: "c4m-b3", chapterId: "c4-m-ch6", question: "একটি পরিবারে ১২টি আপেল ও ১৮টি কমলা আছে। কোনো ফল না কেটে সর্বোচ্চ কতজন শিশুর মধ্যে ফলগুলো সমানভাবে ভাগ করে দেওয়া যাবে? প্রত্যেকে কয়টি করে আপেল ও কমলা পাবে?", answer: "১২ ও ১৮ এর গ.সা.গু = ৬। সুতরাং সর্বোচ্চ ৬ জন শিশুর মধ্যে সমানভাবে ভাগ করে দেওয়া যাবে। প্রত্যেকে আপেল পাবে = ১২ ÷ ৬ = ২টি এবং কমলা পাবে = ১৮ ÷ ৬ = ৩টি।", marks: 6 },
+      { id: "c4m-b4", chapterId: "c4-m-ch10", question: "চিত্রসহ সমকোণী ত্রিভুজ ও স্থূলকোণী ত্রিভুজের সংজ্ঞা ও বৈশিষ্ট্য লেখো।", answer: "১. সমকোণী ত্রিভুজ: যে ত্রিভুজের একটি কোণ সমকোণ (৯০°), তাকে সমকোণী ত্রিভুজ বলে। ২. স্থূলকোণী ত্রিভুজ: যে ত্রিভুজের একটি কোণ স্থূলকোণ (৯০° এর চেয়ে বড় কিন্তু ১৮০° এর চেয়ে ছোট), তাকে স্থূলকোণী ত্রিভুজ বলে।", marks: 6 }
     ]
   },
 
@@ -961,26 +979,44 @@ export const EXAM_DATABASE: Record<string, ExamQuestionItem> = {
     classId: "class-4",
     subject: "প্রাথমিক বিজ্ঞান",
     mcq: [
-      { id: "c4s-m1", question: "উদ্ভিদ নিজের খাদ্য তৈরির জন্য বায়ু থেকে সরাসরি কোন গ্যাস গ্রহণ করে?", options: ["অক্সিজেন", "কার্বন ডাই-অক্সাইড", "নাইট্রোজেন", "মিথেন"], answer: "কার্বন ডাই-অক্সাইড", marks: 2 },
-      { id: "c4s-m2", question: "কোন ভিটামিনের অভাবে রাতকানা রোগ হয়?", options: ["ভিটামিন এ", "ভিটামিন বি", "ভিটামিন সি", "ভিটামিন ডি"], answer: "ভিটামিন এ", marks: 2 },
-      { id: "c4s-m3", question: "শব্দদূষণের ফলে মানুষের কোন ইন্দ্রিয়ের মারাত্মক ক্ষতি হয়?", options: ["চোখ", "কান", "নাক", "ত্বক"], answer: "কান", marks: 2 }
+      { id: "c4s-m1", chapterId: "c4-s-ch1", question: "উদ্ভিদ নিজের খাদ্য তৈরির জন্য বায়ু থেকে সরাসরি কোন গ্যাস গ্রহণ করে?", options: ["অক্সিজেন", "কার্বন ডাই-অক্সাইড", "নাইট্রোজেন", "মিথেন"], answer: "কার্বন ডাই-অক্সাইড", marks: 1 },
+      { id: "c4s-m2", chapterId: "c4-s-ch2", question: "কোন ভিটামিনের অভাবে রাতকানা রোগ হয়?", options: ["ভিটামিন এ", "ভিটামিন বি", "ভিটামিন সি", "ভিটামিন ডি"], answer: "ভিটামিন এ", marks: 1 },
+      { id: "c4s-m3", chapterId: "c4-s-ch3", question: "শরীরের কোনো অংশ আগুনে পুড়ে গেলে তৎক্ষণাৎ কী করা উচিত?", options: ["তাজা ঠান্ডা পানি অন্তত ১০ মিনিট ঢালা", "তুলা দিয়ে চেপে ধরা", "তেল মালিশ করা", "বরফ ঘষা"], answer: "তাজা ঠান্ডা পানি অন্তত ১০ মিনিট ঢালা", marks: 1 },
+      { id: "c4s-m4", chapterId: "c4-s-ch4", question: "পদার্থের যে অবস্থায় নির্দিষ্ট আয়তন আছে কিন্তু নির্দিষ্ট আকার নেই তাকে কী বলে?", options: ["কঠিন", "তরল", "বায়বীয়", "প্লাজমা"], answer: "তরল", marks: 1 },
+      { id: "c4s-m5", chapterId: "c4-s-ch5", question: "পৃথিবীতে সকল শক্তির মূল উৎস কোনটি?", options: ["সূর্য", "চাঁদ", "বিদ্যুৎ", "বায়ুপ্রবাহ"], answer: "সূর্য", marks: 1 }
     ],
     fillInTheBlanks: [
-      { id: "c4s-f1", sentence: "ভিটামিন 'ডি'-এর একটি প্রধান প্রাকৃতিক উৎস হলো ____।", answer: "সূর্যালোক", marks: 2 },
-      { id: "c4s-f2", sentence: "আলো এক প্রকার ____।", answer: "শক্তি", marks: 2 },
-      { id: "c4s-f3", sentence: "পানি জমে বরফে পরিণত হলে তা পদার্থের ____ অবস্থা।", answer: "কঠিন", marks: 2 }
+      { id: "c4s-f1", chapterId: "c4-s-ch1", sentence: "উদ্ভিদের বংশবৃদ্ধির স্বাভাবিক প্রক্রিয়াকে ____ বলে।", answer: "প্রজনন", marks: 1 },
+      { id: "c4s-f2", chapterId: "c4-s-ch2", sentence: "সূর্যের আলো আমাদের ত্বকে ভিটামিন ____ তৈরিতে সহায়তা করে।", answer: "ডি", marks: 1 },
+      { id: "c4s-f3", chapterId: "c4-s-ch4", sentence: "যার নির্দিষ্ট ভর আছে এবং স্থান দখল করে তাকে ____ বলে।", answer: "পদার্থ", marks: 1 },
+      { id: "c4s-f4", chapterId: "c4-s-ch5", sentence: "কাজ করার সামর্থ্যকে ____ বলে।", answer: "শক্তি", marks: 1 },
+      { id: "c4s-f5", chapterId: "c4-s-ch7", sentence: "সূর্যের আলো ও বায়ুপ্রবাহ হলো ____ প্রাকৃতিক সম্পদ।", answer: "নবায়নযোগ্য", marks: 1 }
+    ],
+    trueFalse: [
+      { id: "c4s-tf1", chapterId: "c4-s-ch1", statement: "উদ্ভিদ সালোকসংশ্লেষণ প্রক্রিয়ায় নিজের খাদ্য নিজেই তৈরি করে।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4s-tf2", chapterId: "c4-s-ch2", statement: "ভিটামিন 'সি'-এর অভাবে দাঁতের মাড়ি দিয়ে রক্ত পড়ার স্কার্ভি রোগ হয়।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4s-tf3", chapterId: "c4-s-ch3", statement: "পানিতে ডোবা ব্যক্তিকে উদ্ধারের পর পেট থেকে জোর করে পানি বের করতে হয়।", isTrue: false, answer: "False (শ্বাস-প্রশ্বাস চালুর জন্য মুখে মুখ দিয়ে কৃত্রিম শ্বাস দিতে হয়)", marks: 1 },
+      { id: "c4s-tf4", chapterId: "c4-s-ch5", statement: "বিদ্যুৎ শক্তি দিয়ে আমরা ফ্যান ও বাতি চালাই।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4s-tf5", chapterId: "c4-s-ch8", statement: "পৃথিবী সূর্যের চারদিকে একবার ঘুরে আসতে প্রায় ৩৬৫ দিন ৬ ঘণ্টা সময় নেয়।", isTrue: true, answer: "True", marks: 1 }
     ],
     matching: {
+      id: "c4s-mat1",
+      chapterId: "c4-s-ch2",
       left: ["ভিটামিন এ", "ভিটামিন সি", "ভিটামিন ডি", "লৌহ বা আয়রন"],
-      right: ["দাঁতের মাড়ি সুস্থ রাখে", "রাতকানা রোগ প্রতিরোধ করে", "রক্তস্বল্পতা দূর করে", "হাড় ও দাঁত মজবুত করে"],
+      right: ["রাতকানা রোগ প্রতিরোধ করে", "দাঁতের মাড়ি সুস্থ রাখে", "হাড় ও দাঁত মজবুত করে", "রক্তস্বল্পতা দূর করে"],
       marks: 4
     },
     shortQuestions: [
-      { id: "c4s-s1", question: "উদ্ভিদের পুষ্টি উপাদানের প্রধান দুটি উৎস কী কী?", answer: "১. মাটি থেকে প্রাপ্ত পানি ও খনিজ লবণ এবং ২. বাতাস থেকে প্রাপ্ত কার্বন ডাই-অক্সাইড ও সূর্যের আলো।", marks: 3 },
-      { id: "c4s-s2", question: "বায়ুদূষণ রোধে ২টি কার্যকর পদক্ষেপ লেখো।", answer: "১. বেশি করে গাছ লাগানো। ২. কালো ধোঁয়া সৃষ্টিকারী যানবাহন ও কলকারখানায় ফিল্টার ব্যবহার করা।", marks: 3 }
+      { id: "c4s-s1", chapterId: "c4-s-ch1", question: "উদ্ভিদের খাদ্য তৈরির জন্য কী কী উপাদান প্রয়োজন?", answer: "১. সূর্যের আলো, ২. বাতাস থেকে কার্বন ডাই-অক্সাইড এবং ৩. মাটি থেকে পানি ও খনিজ লবণ।", marks: 3 },
+      { id: "c4s-s2", chapterId: "c4-s-ch2", question: "সুষম খাদ্যের প্রধান উপাদান কয়টি ও কী কী?", answer: "প্রধান উপাদান ৬টি: শর্করা, আমিষ, স্নেহ বা চর্বি, ভিটামিন, খনিজ লবণ এবং পানি।", marks: 3 },
+      { id: "c4s-s3", chapterId: "c4-s-ch3", question: "শরীরের কোনো অংশ আগুনে পুড়ে গেলে তৎক্ষণাৎ করণীয় দুটি কাজ লেখো।", answer: "১. সাথে সাথে পরিষ্কার ঠান্ডা পানি অন্তত ১০ মিনিট ঢালতে হবে। ২. ফোস্কা পড়লে তা গলানো যাবে না এবং পরিষ্কার কাপড়ে ঢেকে চিকিৎসকের কাছে নিতে হবে।", marks: 3 },
+      { id: "c4s-s4", chapterId: "c4-s-ch4", question: "পদার্থের তিনটি অবস্থার নাম ও গঠন বৈশিষ্ট্য সংক্ষেপে লেখো।", answer: "কঠিন (কণাগুলো খুব ঘন সন্নিবিষ্ট), তরল (কণাগুলো কিছুটা আলগা ও প্রবাহিত হয়), এবং বায়বীয় (কণাগুলো অনেক দূরে ও মুক্ত)।", marks: 3 },
+      { id: "c4s-s5", chapterId: "c4-s-ch7", question: "নবায়নযোগ্য প্রাকৃতিক সম্পদ কাকে বলে? দুটি উদাহরণ দাও।", answer: "যেসব প্রাকৃতিক সম্পদ ব্যবহার করলেও নিঃশেষ হয়ে যায় না এবং বারবার ব্যবহার করা যায়, তাদের নবায়নযোগ্য সম্পদ বলে। যেমন: সূর্যের আলো ও বায়ুপ্রবাহ।", marks: 3 }
     ],
     broadQuestions: [
-      { id: "c4s-b1", question: "পদার্থ কাকে বলে? পদার্থের তিনটি অবস্থার নাম লিখে এদের কণার বৈশিষ্ট্য ও গঠন ব্যাখ্যা করো।", answer: "যার নির্দিষ্ট ভর আছে এবং স্থান দখল করে তাকে পদার্থ বলে। তিনটি অবস্থা: কঠিন (কণাগুলো খুব ঘন ও সুশৃঙ্খল), তরল (কণাগুলোর দূরত্ব কিছুটা বেশি ও সহজে প্রবাহিত হয়), এবং বায়বীয় (কণাগুলো পরস্পর অনেক দূরে ও মুক্তভাবে ছোটাছুটি করে)।", marks: 5 }
+      { id: "c4s-b1", chapterId: "c4-s-ch2", question: "সুষম খাদ্য কাকে বলে? সুষম খাদ্য নিয়মিত গ্রহণের গুরুত্ব ৫টি বাক্যে লেখো।", answer: "যে খাদ্যে খাদ্যের ছয়টি উপাদানই সঠিক অনুপাতে উপস্থিত থাকে তাকে সুষম খাদ্য বলে। গুরুত্ব: ১. এটি দেহের যথাযথ বৃদ্ধি নিশ্চিত করে। ২. রোগ প্রতিরোধ ক্ষমতা বাড়িয়ে সুস্থ রাখে। ৩. কাজ করার প্রয়োজনীয় শক্তি জোগায়। ৪. মেধার বিকাশ ও মনোযোগ বৃদ্ধিতে সহায়তা করে। ৫. অপুষ্টিজনিত মারাত্মক রোগব্যাধি থেকে শরীরকে সুরক্ষা দেয়।", marks: 6 },
+      { id: "c4s-b2", chapterId: "c4-s-ch5", question: "শক্তির রূপান্তর কাকে বলে? বিদ্যুৎ শক্তি কীভাবে আলো ও তাপ শক্তিতে রূপান্তরিত হয় ব্যাখ্যা করো।", answer: "শক্তি এক রূপ থেকে অন্য রূপে পরিবর্তিত হওয়াকে শক্তির রূপান্তর বলে। যেমন: যখন আমরা বৈদ্যুতিক সুইচে চাপ দিয়ে বাল্ব জ্বালাই, তখন তারের মধ্য দিয়ে প্রবাহিত বিদ্যুৎ শক্তি বাল্বের ফিলামেন্টে গিয়ে আলোক শক্তি ও তাপ শক্তিতে রূপান্তরিত হয়। এভাবে বিদ্যুৎ শক্তি থেকে আমরা আলো ও উত্তাপ পাই।", marks: 6 },
+      { id: "c4s-b3", chapterId: "c4-s-ch7", question: "প্রাকৃতিক সম্পদ সংরক্ষণের প্রয়োজনীয়তা এবং সম্পদ সংরক্ষণে আমাদের তিনটি করণীয় লেখো।", answer: "প্রাকৃতিক সম্পদের সঠিক সংরক্ষণ আমাদের ভবিষ্যৎ বংশধরদের বেঁচে থাকার জন্য অপরিহার্য। করণীয়: ১. বিনা প্রয়োজনে বৈদ্যুতিক বাতি ও ফ্যান বন্ধ রাখা। ২. রান্নার পর গ্যাসের চুলা এবং ব্যবহারের পর পানির কল সাথে সাথে বন্ধ করা। ৩. কাগজের অপচয় রোধ করা এবং বৃক্ষরোপণ বাড়ানো।", marks: 6 }
     ]
   },
 
@@ -989,26 +1025,228 @@ export const EXAM_DATABASE: Record<string, ExamQuestionItem> = {
     classId: "class-4",
     subject: "বাংলাদেশ ও বিশ্বপরিচয়",
     mcq: [
-      { id: "c4bgs-m1", question: "১৯৭১ সালের মুক্তিযুদ্ধে বাংলাদেশের সর্বাধিনায়ক কে ছিলেন?", options: ["বঙ্গবন্ধু শেখ মুজিবুর রহমান", "জেনারেল এম এ জি ওসমানী", "তাজউদ্দীন আহমদ", "সৈয়দ নজরুল ইসলাম"], answer: "বঙ্গবন্ধু শেখ মুজিবুর রহমান", marks: 2 },
-      { id: "c4bgs-m2", question: "বরেন্দ্রভূমি অঞ্চলের মাটির রং সাধারণত কেমন?", options: ["কালো", "লালচে ও ধুসর", "সাদা", "হলুদ"], answer: "লালচে ও ধুসর", marks: 2 },
-      { id: "c4bgs-m3", question: "বাংলাদেশের জাতীয় সংসদের সদস্য সংখ্যা কত?", options: ["৩০০", "৩৩০", "৩৫০", "৪০০"], answer: "৩৫০", marks: 2 }
+      { id: "c4bgs-m1", chapterId: "c4-bgs-ch1", question: "আমাদের প্রাকৃতিক পরিবেশের প্রধান উপাদান কোনটি?", options: ["মাটি, পানি ও বাতাস", "ঘরবাড়ি", "রাস্তাঘাট", "সেতু"], answer: "মাটি, পানি ও বাতাস", marks: 1 },
+      { id: "c4bgs-m2", chapterId: "c4-bgs-ch2", question: "ধর্ম যার যার, উৎসব সবার—এটি সমাজে কী বৃদ্ধি করে?", options: ["সাম্প্রদায়িক সম্প্রীতি", "বিভেদ", "অসহিষ্ণুতা", "হিংসা"], answer: "সাম্প্রদায়িক সম্প্রীতি", marks: 1 },
+      { id: "c4bgs-m3", chapterId: "c4-bgs-ch4", question: "গারো জনগোষ্ঠীর প্রধান ধর্মীয় ও সামাজিক উৎসবের নাম কী?", options: ["ওয়ানগালা", "বিঝু", "সাংগ্রাই", "বৈসাবি"], answer: "ওয়ানগালা", marks: 1 },
+      { id: "c4bgs-m4", chapterId: "c4-bgs-ch5", question: "১৯৭১ সালের মহান মুক্তিযুদ্ধে সর্বাধিনায়ক কে ছিলেন?", options: ["বঙ্গবন্ধু শেখ মুজিবুর রহমান", "জেনারেল এম এ জি ওসমানী", "তাজউদ্দীন আহমদ", "সৈয়দ নজরুল ইসলাম"], answer: "বঙ্গবন্ধু শেখ মুজিবুর রহমান", marks: 1 },
+      { id: "c4bgs-m5", chapterId: "c4-bgs-ch8", question: "রাস্তা পারাপারের সময় আমাদের সবসময় কী ব্যবহার করা উচিত?", options: ["জেব্রা ক্রসিং ও ফুটওভার ব্রিজ", "রাস্তার মাঝখান দিয়ে দৌড় দেওয়া", "গাড়ির সামনে দিয়ে যাওয়া", "রেললাইন ধরে হাঁটা"], answer: "জেব্রা ক্রসিং ও ফুটওভার ব্রিজ", marks: 1 }
     ],
     fillInTheBlanks: [
-      { id: "c4bgs-f1", sentence: "১৯৭১ সালের ____ মার্চ মুক্তিযুদ্ধ শুরু হয়।", answer: "২৬", marks: 2 },
-      { id: "c4bgs-f2", sentence: "বাংলাদেশের সর্বোচ্চ পর্বতশৃঙ্গ হলো ____।", answer: "তাজিংডং / বিজয়", marks: 2 },
-      { id: "c4bgs-f3", sentence: "আইন মান্য করা প্রত্যেক নাগরিকের অন্যতম প্রধান ____।", answer: "দায়িত্ব বা কর্তব্য", marks: 2 }
+      { id: "c4bgs-f1", chapterId: "c4-bgs-ch3", sentence: "ছেলে ও মেয়ে উভয়েই পরিবারের সমান গুরুত্বপূর্ণ ____।", answer: "সদস্য", marks: 1 },
+      { id: "c4bgs-f2", chapterId: "c4-bgs-ch5", sentence: "১৯৭১ সালের ____ মার্চ মুক্তিযুদ্ধ শুরু হয়।", answer: "২৬", marks: 1 },
+      { id: "c4bgs-f3", chapterId: "c4-bgs-ch8", sentence: "আইন মান্য করা প্রত্যেক নাগরিকের অন্যতম প্রধান ____।", answer: "দায়িত্ব বা কর্তব্য", marks: 1 },
+      { id: "c4bgs-f4", chapterId: "c4-bgs-ch10", sentence: "বাংলাদেশের রাজধানী ঢাকা ____ নদীর তীরে অবস্থিত।", answer: "বুড়িগঙ্গা", marks: 1 },
+      { id: "c4bgs-f5", chapterId: "c4-bgs-ch14", sentence: "বন্যা ও ঘূর্ণিঝড় হলো আমাদের দেশের প্রধান দুটি ____ দুর্যোগ।", answer: "প্রাকৃতিক", marks: 1 }
+    ],
+    trueFalse: [
+      { id: "c4bgs-tf1", chapterId: "c4-bgs-ch2", statement: "বাংলাদেশে সকল ধর্মের মানুষ পারস্পরিক সম্প্রীতি ও শ্রদ্ধাবোধ নিয়ে বসবাস করে।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4bgs-tf2", chapterId: "c4-bgs-ch3", statement: "পরিবারে ছেলে ও মেয়েকে সমান সুযোগ এবং শিক্ষা দেওয়া উচিত।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4bgs-tf3", chapterId: "c4-bgs-ch5", statement: "১৯৭১ সালের ১৬ ডিসেম্বর বাংলাদেশ চূড়ান্ত বিজয় অর্জন করে।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4bgs-tf4", chapterId: "c4-bgs-ch8", statement: "বিদ্যালয়ের সম্পদ নষ্ট করা একজন সচেতন শিক্ষার্থীর বৈশিষ্ট্য।", isTrue: false, answer: "False (বিদ্যালয়ের সম্পদ রক্ষা করা শিক্ষার্থীর দায়িত্ব)", marks: 1 },
+      { id: "c4bgs-tf5", chapterId: "c4-bgs-ch14", statement: "ঘূর্ণিঝড়ের সংকেত পেলে সাথে সাথে আশ্রয়কেন্দ্রে যাওয়া উচিত।", isTrue: true, answer: "True", marks: 1 }
     ],
     matching: {
-      left: ["২৫ মার্চ", "২৬ মার্চ", "১৬ ডিসেম্বর", "২১ ফেব্রুয়ারি"],
-      right: ["মহান স্বাধীনতা দিবস", "কালরাত", "আন্তর্জাতিক মাতৃভাষা দিবস", "মহান বিজয় দিবস"],
+      id: "c4bgs-mat1",
+      chapterId: "c4-bgs-ch5",
+      left: ["২৬ মার্চ", "১৬ ডিসেম্বর", "২১ ফেব্রুয়ারি", "১৪ ডিসেম্বর"],
+      right: ["মহান স্বাধীনতা দিবস", "মহান বিজয় দিবস", "আন্তর্জাতিক মাতৃভাষা দিবস", "শহিদ বুদ্ধিজীবী দিবস"],
       marks: 4
     },
     shortQuestions: [
-      { id: "c4bgs-s1", question: "মুক্তিযুদ্ধের সময় বাংলাদেশকে পরিচালনার সুবিধার্থে কয়টি সেক্টরে ভাগ করা হয়েছিল?", answer: "১১টি সেক্টরে ভাগ করা হয়েছিল।", marks: 3 },
-      { id: "c4bgs-s2", question: "নাগরিকের তিনটি প্রধান মৌলিক অধিকারের নাম লেখো।", answer: "১. খাদ্য ও বস্ত্রের অধিকার, ২. শিক্ষার অধিকার, ৩. চিকিৎসার অধিকার।", marks: 3 }
+      { id: "c4bgs-s1", chapterId: "c4-bgs-ch1", question: "সামাজিক পরিবেশের তিনটি মানবসৃষ্ট উপাদানের নাম লেখো।", answer: "১. বিদ্যালয়, ২. ঘরবাড়ি এবং ৩. রাস্তাঘাট ও সেতু।", marks: 3 },
+      { id: "c4bgs-s2", chapterId: "c4-bgs-ch4", question: "বাংলাদেশের দুটি ক্ষুদ্র নৃগোষ্ঠীর নাম ও তাদের প্রধান উৎসবের নাম লেখো।", answer: "১. গারো (উৎসব: ওয়ানগালা) এবং ২. চাকমা (উৎসব: বিঝু)।", marks: 3 },
+      { id: "c4bgs-s3", chapterId: "c4-bgs-ch5", question: "মুক্তিযুদ্ধে কতজন বীর শ্রেষ্ঠ খেতাব পেয়েছিলেন এবং তাঁদের দু'জনের নাম লেখো।", answer: "মুক্তিযুদ্ধে মোট ৭ জন বীর শ্রেষ্ঠ খেতাব পান। দু'জন হলেন: বীরশ্রেষ্ঠ ক্যাপ্টেন মহিউদ্দীন জাহাঙ্গীর এবং বীরশ্রেষ্ঠ সিপাহি মোস্তফা কামাল।", marks: 3 },
+      { id: "c4bgs-s4", chapterId: "c4-bgs-ch8", question: "নাগরিক হিসেবে রাষ্ট্রের প্রতি আমাদের প্রধান দুটি মৌলিক দায়িত্ব লেখো।", answer: "১. রাষ্ট্রের প্রচলিত আইন মেনে চলা এবং ২. নিয়মিত কর বা খাজনা প্রদান করা।", marks: 3 },
+      { id: "c4bgs-s5", chapterId: "c4-bgs-ch14", question: "বন্যা পরিস্থিতির সময় বিশুদ্ধ পানির অভাবে আমরা কী করতে পারি?", answer: "পানি অন্তত ২০ মিনিট ফুটিয়ে অথবা ফিটকিরি ও পানি বিশুদ্ধকরণ ট্যাবলেট ব্যবহার করে পান করতে হবে।", marks: 3 }
     ],
     broadQuestions: [
-      { id: "c4bgs-b1", question: "প্রাকৃতিক দুর্যোগ কী? বন্যা ও ঘূর্ণিঝড়ের সময় জানমাল রক্ষার্থে আমাদের কী কী প্রস্তুতি নেওয়া উচিত ৫টি বাক্যে লেখো।", answer: "১. রেডিও-টিভির আবহাওয়ার পূর্বাভাস নিয়মিত শোনা। ২. শুকনা খাবার ও বিশুদ্ধ পানি সংরক্ষণ করা। ৩. জরুরি দলিলপত্র পলিথিনে মুড়ে নিরাপদ স্থানে রাখা। ৪. সংকেত পাওয়ার সাথে সাথে আশ্রয়কেন্দ্রে যাওয়া। ৫. দুর্যোগের পর সাবধানে চলাচল করা ও একে অপরকে সাহায্য করা।", marks: 5 }
+      { id: "c4bgs-b1", chapterId: "c4-bgs-ch5", question: "১৯৭১ সালের মহান মুক্তিযুদ্ধের পটভূমি ও ঐতিহাসিক তাৎপর্য বর্ণনা করো।", answer: "১৯৪৭ সালে পাকিস্তান রাষ্ট্র সৃষ্টির পর থেকেই পশ্চিম পাকিস্তানি শাসকগোষ্ঠী পূর্ব পাকিস্তানের ওপর চরম শোষণ ও নির্যাতন চালায়। ১৯৫২-এর ভাষা আন্দোলন, ১৯৬৬-এর ছয় দফা ও ১৯৬৯-এর গণঅভ্যুত্থানের পর ১৯৭০-এর নির্বাচনে বাঙালি জাতি বিপুল ভোটে জয়লাভ করে। কিন্তু পাকিস্তানিরা ক্ষমতা হস্তান্তর না করে ১৯৭১ সালের ২৫ মার্চ কালরাতে নিরস্ত্র বাঙালিদের ওপর গণহত্যা চালায়। ২৬ মার্চ জাতির পিতা বঙ্গবন্ধু শেখ মুজিবুর রহমান স্বাধীনতার ঘোষণা দেন। দীর্ঘ নয় মাসের রক্তক্ষয়ী যুদ্ধের পর ৩০ লাখ শহীদের রক্তের বিনিময়ে ১৬ ডিসেম্বর আমরা চূড়ান্ত বিজয় অর্জন করি।", marks: 6 },
+      { id: "c4bgs-b2", chapterId: "c4-bgs-ch8", question: "পরিবেশ দূষণ রোধে এবং বিদ্যালয় ও সমাজকে পরিচ্ছন্ন রাখতে আমরা কী কী ভূমিকা পালন করতে পারি ৫টি বাক্যে লেখো।", answer: "১. নির্দিষ্ট ময়লা ফেলার পাত্রে সবসময় আবর্জনা ফেলব। ২. পলিথিন ও প্লাস্টিকের ব্যবহার যথাসম্ভব পরিহার করব। ৩. বিদ্যালয়ের আঙিনায় বেশি করে ফলদ ও ওষধি গাছ লাগাব। ৪. শ্রেণিকক্ষের দেয়াল, বেঞ্চ ও ব্ল্যাকবোর্ড সবসময় পরিষ্কার রাখব। ৫. সহপাঠী ও প্রতিবেশীদের পরিবেশ সুরক্ষার গুরুত্ব সম্পর্কে সচেতন করব।", marks: 6 },
+      { id: "c4bgs-b3", chapterId: "c4-bgs-ch14", question: "প্রাকৃতিক দুর্যোগ কী? ঘূর্ণিঝড় ও জলোচ্ছ্বাসের পূর্বে এবং পরে আমাদের করণীয় প্রস্তুতি আলোচনা করো।", answer: "প্রকৃতির স্বাভাবিক নিয়মের ব্যাঘাত ঘটে যখন মানুষের জানমালের ব্যাপক ক্ষতি হয় তাকে প্রাকৃতিক দুর্যোগ বলে। করণীয়: ১. রেডিও ও টেলিভিশনে নিয়মিত আবহাওয়া বার্তা শোনা। ২. শুকনা খাবার, দিয়াশলাই ও বিশুদ্ধ পানি সংরক্ষণ করা। ৩. জরুরি দলিলপত্র পলিথিনে মুড়ে সাথে নিয়ে নিকটস্থ আশ্রয়কেন্দ্রে যাওয়া। ৪. দুর্যোগের পর দ্রুত উপদ্রুতদের উদ্ধার ও চিকিৎসায় এগিয়ে আসা। ৫. পচা-বাসি খাবার না খেয়ে বিশুদ্ধ পানি ও স্যালাইন ব্যবহার করা।", marks: 6 }
+    ]
+  },
+
+  "class-4-islamic": {
+    id: "c4-isl",
+    classId: "class-4",
+    subject: "ইসলাম ও নৈতিক শিক্ষা",
+    mcq: [
+      { id: "c4isl-m1", chapterId: "c4-isl-ch1", question: "আল্লাহ তাআলার সুন্দরতম নামসমূহকে এককথায় কী বলা হয়?", options: ["আসমাউল হুসনা", "কালেমা", "আহকাম", "আরকান"], answer: "আসমাউল হুসনা", marks: 1 },
+      { id: "c4isl-m2", chapterId: "c4-isl-ch2", question: "দৈনিক পাঁচ ওয়াক্ত সালাতে মোট কয়টি ফরজ রাকাত রয়েছে?", options: ["১২টি", "১৪টি", "১৭টি", "২০টি"], answer: "১৭টি", marks: 1 },
+      { id: "c4isl-m3", chapterId: "c4-isl-ch3", question: "পিতা-মাতার অবাধ্য হওয়া ইসলামের দৃষ্টিতে কেমন কাজ?", options: ["মহা পাপ বা কবিরা গুনাহ", "ছোট ভুল", "উত্তম কাজ", "সাধারণ বিষয়"], answer: "মহা পাপ বা কবিরা গুনাহ", marks: 1 },
+      { id: "c4isl-m4", chapterId: "c4-isl-ch4", question: "কুরআন মজিদ শুদ্ধভাবে তিলাওয়াত করার নিয়মকে কী বলে?", options: ["তাজবিদ", "তারতিল", "তাফসির", "হাদিস"], answer: "তাজবিদ", marks: 1 },
+      { id: "c4isl-m5", chapterId: "c4-isl-ch5", question: "সর্বশেষ ও সর্বশ্রেষ্ঠ নবি ও রাসুল কে?", options: ["হজরত মুহাম্মদ (সা.)", "হজরত ইব্রাহিম (আ.)", "হজরত মুসা (আ.)", "হজরত ঈসা (আ.)"], answer: "হজরত মুহাম্মদ (সা.)", marks: 1 }
+    ],
+    fillInTheBlanks: [
+      { id: "c4isl-f1", chapterId: "c4-isl-ch1", sentence: "আল্লাহু খালেকুন অর্থ আল্লাহ আমাদের ____।", answer: "স্রষ্টা", marks: 1 },
+      { id: "c4isl-f2", chapterId: "c4-isl-ch2", sentence: "সালাত হলো ইসলামের ____ স্তম্ভ।", answer: "দ্বিতীয়", marks: 1 },
+      { id: "c4isl-f3", chapterId: "c4-isl-ch3", sentence: "পরোপকার একটি মহৎ মানবিক ও ইসলামিক ____।", answer: "গুণ", marks: 1 },
+      { id: "c4isl-f4", chapterId: "c4-isl-ch4", sentence: "কুরআন মজিদ আল্লাহর ____ বাণী।", answer: "পবিত্র", marks: 1 },
+      { id: "c4isl-f5", chapterId: "c4-isl-ch5", sentence: "আমাদের প্রিয় নবি হজরত মুহাম্মদ (সা.) ____ শহরে জন্মগ্রহণ করেন।", answer: "মক্কা", marks: 1 }
+    ],
+    trueFalse: [
+      { id: "c4isl-tf1", chapterId: "c4-isl-ch1", statement: "আল্লাহ এক ও অদ্বিতীয়, তাঁর কোনো শরিক নেই।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4isl-tf2", chapterId: "c4-isl-ch2", statement: "অজু ছাড়া সালাত আদায় করা যায় না।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4isl-tf3", chapterId: "c4-isl-ch3", statement: "সদা সত্য কথা বলা চরিত্রবান মানুষের শ্রেষ্ঠ বৈশিষ্ট্য।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4isl-tf4", chapterId: "c4-isl-ch4", statement: "কুরআন মজিদ দ্রুত না বুঝে অশুদ্ধভাবে পড়া বেশি সওয়াবের কাজ।", isTrue: false, answer: "False (কুরআন মজিদ তাজবিদ সহকারে সহিহ-শুদ্ধভাবে তিলাওয়াত করতে হয়)", marks: 1 },
+      { id: "c4isl-tf5", chapterId: "c4-isl-ch5", statement: "হিলফুল ফুজুল অসহায় মানুষদের সাহায্যের জন্য গঠিত হয়েছিল।", isTrue: true, answer: "True", marks: 1 }
+    ],
+    matching: {
+      id: "c4isl-mat1",
+      chapterId: "c4-isl-ch1",
+      left: ["আল্লাহু গাফুরুন", "আল্লাহু সামিউন", "আল্লাহু বাসিরুন", "আল্লাহু কাদিরুন"],
+      right: ["আল্লাহ পরম ক্ষমাশীল", "আল্লাহ সর্বশ্রোতা", "আল্লাহ সর্বদ্রষ্টা", "আল্লাহ সর্বশক্তিমান"],
+      marks: 4
+    },
+    shortQuestions: [
+      { id: "c4isl-s1", chapterId: "c4-isl-ch1", question: "ইমান কাকে বলে? ইমানের মূল কথা কী?", answer: "আল্লাহ, তাঁর ফেরেশতাগণ, কিতাবসমূহ, রাসুলগণ, পরকাল ও তকদিরের ওপর অন্তরে দৃঢ় বিশ্বাস স্থাপন করাকে ইমান বলে।", marks: 3 },
+      { id: "c4isl-s2", chapterId: "c4-isl-ch2", question: "অজুর ফরজ কয়টি ও কী কী?", answer: "অজুর ফরজ ৪টি: ১. সম্পূর্ণ মুখমণ্ডল ধোয়া, ২. দুই হাত কনুইসহ ধোয়া, ৩. মাথার এক-চতুর্থাংশ মাসেহ করা এবং ৪. দুই পা টাখনুসহ ধোয়া।", marks: 3 },
+      { id: "c4isl-s3", chapterId: "c4-isl-ch3", question: "প্রতিবেশীর হক বা অধিকার সম্পর্কে নবি করিম (সা.) কী বলেছেন?", answer: "নবি করিম (সা.) বলেছেন, যে ব্যক্তি নিজে পেট পুরে খায় অথচ তার প্রতিবেশী ক্ষুধার্ত থাকে, সে প্রকৃত মুমিন নয়।", marks: 3 },
+      { id: "c4isl-s4", chapterId: "c4-isl-ch4", question: "মাখরাজ কাকে বলে? আরবি হরফের মাখরাজ কয়টি?", answer: "আরবি হরফ উচ্চারণের স্থানকে মাখরাজ বলে। আরবি হরফের মাখরাজ ১৭টি।", marks: 3 },
+      { id: "c4isl-s5", chapterId: "c4-isl-ch5", question: "মক্কার কাফেররা রাসুলুল্লাহ (সা.)-কে কেন 'আল-আমিন' বলত?", answer: "তাঁর অনুপম সত্যবাদিতা, সততা, আমানতদারি ও বিশ্বস্ততার কারণে সবাই তাঁকে 'আল-আমিন' বা পরম বিশ্বাসী উপাধি দিয়েছিল।", marks: 3 }
+    ],
+    broadQuestions: [
+      { id: "c4isl-b1", chapterId: "c4-isl-ch2", question: "সালাতের গুরুত্ব ও নিয়মাবলি বর্ণনা করো। জামায়াতে সালাত আদায়ের ফযিলত কী?", answer: "সালাত ইসলামের অন্যতম প্রধান স্তম্ভ। দৈনিক পাঁচ ওয়াক্ত সালাত আদায় করা প্রত্যেক প্রাপ্তবয়স্ক মুসলমানের ওপর ফরজ। সালাত মানুষকে অন্যায় ও অশ্লীল কাজ থেকে বিরত রাখে এবং অন্তরে আল্লাহর ভয় সৃষ্টি করে। জামায়াতে সালাত আদায়ের ফযিলত অপরিসীম; একা একা পড়ার চেয়ে জামায়াতে সালাত আদায় করলে ২৭ গুণ বেশি সওয়াব পাওয়া যায়। এটি মুসলমানদের মধ্যে পারস্পরিক ভ্রাতৃত্ব ও সাম্য গড়ে তোলে।", marks: 6 },
+      { id: "c4isl-b2", chapterId: "c4-isl-ch3", question: "পিতা-মাতার সেবার গুরুত্ব এবং সত্যবাদিতা সম্পর্কে ইসলামের অনুশাসন আলোচনা করো।", answer: "পিতা-মাতার মর্যাদা ইসলামে অত্যন্ত উচ্চে। কোরআনে কারিমে আল্লাহর ইবাদতের পরেই পিতা-মাতার সাথে সদ্ব্যবহারের নির্দেশ দেওয়া হয়েছে। মহানবি (সা.) বলেছেন, মায়ের পায়ের নিচে সন্তানের জান্নাত। পিতা-মাতার সন্তুষ্টিতে আল্লাহ সন্তুষ্ট হন। অপরদিকে সত্যবাদিতা মানুষকে মুক্তির পথে নিয়ে যায় আর মিথ্যা মানুষকে ধ্বংস করে। একজন প্রকৃত মুসলমান সর্বাবস্থায় সত্য কথা বলে এবং মিথ্যা পরিহার করে।", marks: 6 },
+      { id: "c4isl-b3", chapterId: "c4-isl-ch5", question: "মহানবি হজরত মুহাম্মদ (সা.)-এর শৈশব-কৈশোরের চরিত্র এবং সমাজসেবামূলক কর্মকাণ্ডের বর্ণনা দাও।", answer: "মহানবি (সা.) শৈশব থেকেই ছিলেন অনন্য চরিত্রের অধিকারী। তিনি কখনো মিথ্যা বলেননি, কাউকে কষ্ট দেননি এবং মূর্তিপূজা করেননি। কৈশোরে ফুজ্জারের রক্তক্ষয়ী যুদ্ধ দেখে ব্যথিত হয়ে তিনি শান্তিকামী যুবকদের নিয়ে 'হিলফুল ফুজুল' বা শান্তিসংঘ গঠন করেন। এই সংঘের মাধ্যমে তিনি মজলুম ও অসহায় মানুষের অধিকার রক্ষা করতেন এবং আরবে শান্তি ফিরিয়ে আনেন।", marks: 6 }
+    ]
+  },
+
+  "class-4-hindu": {
+    id: "c4-hin",
+    classId: "class-4",
+    subject: "হিন্দুধর্ম ও নৈতিক শিক্ষা",
+    mcq: [
+      { id: "c4hin-m1", chapterId: "c4-hin-ch1", question: "ঈশ্বর যখন জীবের মধ্যে আত্মারূপে অবস্থান করেন তখন তাঁকে কী বলে?", options: ["জীবাত্মা", "পরমাত্মা", "ভগবান", "ব্রহ্ম"], answer: "জীবাত্মা", marks: 1 },
+      { id: "c4hin-m2", chapterId: "c4-hin-ch2", question: "জ্ঞান ও বিদ্যার দেবী কাকে বলা হয়?", options: ["দেবী সরস্বতী", "দেবী লক্ষ্মী", "দেবী দুর্গা", "দেবী কালী"], answer: "দেবী সরস্বতী", marks: 1 },
+      { id: "c4hin-m3", chapterId: "c4-hin-ch3", question: "বাঙালি সনাতন ধর্মাবলম্বীদের প্রধান ধর্মীয় উৎসব কোনটি?", options: ["শারদীয় দুর্গাপূজা", "জন্মাষ্টমী", "দোলযাত্রা", "শিবরাত্রি"], answer: "শারদীয় দুর্গাপূজা", marks: 1 },
+      { id: "c4hin-m4", chapterId: "c4-hin-ch4", question: "অহিংসা পরম ধর্ম—এই বাণীর মূল অর্থ কী?", options: ["কোনো জীবকে কষ্ট বা হিংসা না করা", "সবাইকে সমান না ভাবা", "শুধু নিজের চিন্তা করা", "প্রতিশোধ নেওয়া"], answer: "কোনো জীবকে কষ্ট বা হিংসা না করা", marks: 1 },
+      { id: "c4hin-m5", chapterId: "c4-hin-ch5", question: "শ্রীরামচন্দ্রের পরম ভক্ত ও সেবক কে ছিলেন?", options: ["ভক্ত হনুমান", "বিভীষণ", "সুগ্রীব", "ভরত"], answer: "ভক্ত হনুমান", marks: 1 }
+    ],
+    fillInTheBlanks: [
+      { id: "c4hin-f1", chapterId: "c4-hin-ch1", sentence: "যিনি সকল সৃষ্টির আদি ও পালনকর্তা তিনি ____।", answer: "ঈশ্বর", marks: 1 },
+      { id: "c4hin-f2", chapterId: "c4-hin-ch2", sentence: "ধন-সম্পদ ও সৌভাগ্যের দেবী হলেন দেবী ____।", answer: "লক্ষ্মী", marks: 1 },
+      { id: "c4hin-f3", chapterId: "c4-hin-ch3", sentence: "দেব-দেবীর উদ্দেশ্যে ভক্তিভরে নিবেদন করাকে ____ বলে।", answer: "পূজা", marks: 1 },
+      { id: "c4hin-f4", chapterId: "c4-hin-ch4", sentence: "সত্য ও ন্যায়পথে চলা মানুষের জীবনের প্রধান ____।", answer: "ধর্ম", marks: 1 },
+      { id: "c4hin-f5", chapterId: "c4-hin-ch5", sentence: "স্বামী বিবেকানন্দের পরম শ্রদ্ধেয় গুরু ছিলেন শ্রী ____।", answer: "রামকৃষ্ণ পরমহংস", marks: 1 }
+    ],
+    trueFalse: [
+      { id: "c4hin-tf1", chapterId: "c4-hin-ch1", statement: "ঈশ্বর এক এবং তিনি অনন্ত রূপ ও শক্তির অধিকারী।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4hin-tf2", chapterId: "c4-hin-ch2", statement: "সরস্বতী পূজার দিন শিক্ষার্থীরা বই-খাতা দেবীর চরণে দিয়ে অঞ্জলি দেয়।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4hin-tf3", chapterId: "c4-hin-ch3", statement: "পূজা কেবল উৎসব নয়, এটি ঈশ্বরের প্রতি গভীর শ্রদ্ধা নিবেদনের মাধ্যম।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4hin-tf4", chapterId: "c4-hin-ch4", statement: "জীবে দয়া করলে ঈশ্বর অসন্তুষ্ট হন।", isTrue: false, answer: "False (জীবে প্রেম বা দয়া করাই প্রকৃত ঈশ্বর সেবা)", marks: 1 },
+      { id: "c4hin-tf5", chapterId: "c4-hin-ch5", statement: "ভক্ত প্রহ্লাদ চরম বিপদের মুখেও হরিনাম ও সত্য ধর্ম ত্যাগ করেননি।", isTrue: true, answer: "True", marks: 1 }
+    ],
+    matching: {
+      id: "c4hin-mat1",
+      chapterId: "c4-hin-ch2",
+      left: ["দেবী দুর্গা", "দেবী সরস্বতী", "দেবী লক্ষ্মী", "দেবতা গণেশ"],
+      right: ["দশভুজা মহাশক্তির দেবী", "বিদ্যার ও জ্ঞানের দেবী", "সম্পদ ও সৌভাগ্যের দেবী", "সিদ্ধিদাতা ও বিঘ্ননাশক দেবতা"],
+      marks: 4
+    },
+    shortQuestions: [
+      { id: "c4hin-s1", chapterId: "c4-hin-ch1", question: "আমরা কীভাবে চারপাশের প্রকৃতি ও জীবে ঈশ্বরের অস্তিত্ব অনুভব করি?", answer: "সূর্যের আলো, নদীর জল, গাছপালার ফুল-ফল ও প্রতিটি জীবের প্রাণের স্পন্দনে আমরা ঈশ্বরের অনন্ত করুণা অনুভব করি।", marks: 3 },
+      { id: "c4hin-s2", chapterId: "c4-hin-ch2", question: "দেবী সরস্বতীর রূপের বর্ণনা সংক্ষেপে দাও।", answer: "দেবী সরস্বতী শ্বেতবস্ত্র পরিহিতা, তাঁর এক হাতে বীণা এবং অন্য হাতে পুস্তক ও পদ্মফুল থাকে। তাঁর বাহন শ্বেতহংস।", marks: 3 },
+      { id: "c4hin-s3", chapterId: "c4-hin-ch3", question: "পূজা ও প্রার্থনার মধ্যে মূল পার্থক্য কী?", answer: "উপচার নিবেদন করে দেব-দেবীর আরাধনাকে পূজা বলে, আর অন্তরের ভক্তিভরে ঈশ্বরের কাছে কল্যাণ চাওয়াকে প্রার্থনা বলে।", marks: 3 },
+      { id: "c4hin-s4", chapterId: "c4-hin-ch4", question: "স্বামী বিবেকানন্দের জীবে সেবা সম্পর্কিত অমর বাণীটি লেখো।", answer: "'বহুরূপে সম্মুখে তোমার ছাড়ি কোথা খুঁজিছ ঈশ্বর? জীবে প্রেম করে যেই জন, সেই জন সেবিছে ঈশ্বর।'", marks: 3 },
+      { id: "c4hin-s5", chapterId: "c4-hin-ch5", question: "শ্রীচৈতন্য মহাপ্রভুর প্রধান শিক্ষা কী ছিল?", answer: "শ্রীচৈতন্য মহাপ্রভু জাতি-ধর্ম-বর্ণ নির্বিশেষে সকল মানুষকে ভালোবাসা ও হরিনাম সংকীর্তনের মাধ্যমে মুক্তির পথ দেখিয়েছিলেন।", marks: 3 }
+    ],
+    broadQuestions: [
+      { id: "c4hin-b1", chapterId: "c4-hin-ch1", question: "শ্রীমদ্ভগবদ্গীতা অনুসারে জীবের সেবা এবং ঈশ্বর উপাসনার তাৎপর্য আলোচনা করো।", answer: "ভগবদ্গীতায় বলা হয়েছে, ঈশ্বর সকল প্রাণীর হৃদয়ে অবস্থান করেন। তাই কোনো প্রাণীকে কষ্ট না দিয়ে তার সেবা করলেই ঈশ্বরের প্রকৃত আরাধনা করা হয়। নিঃস্বার্থ কর্মের মাধ্যমে মানবের সেবা করাই শ্রেষ্ঠ পূজা। এর ফলে মনের অহংকার দূর হয় এবং আত্মশুদ্ধি লাভ ঘটে।", marks: 6 },
+      { id: "c4hin-b2", chapterId: "c4-hin-ch4", question: "দৈনন্দিন জীবনে অহিংসা, সত্যবাদিতা ও পরোপকারের গুরুত্ব ৫টি বাক্যে লেখো।", answer: "১. সত্যবাদিতা মানুষকে নির্ভীক ও সমাজে সম্মানিত করে। ২. অহিংসার অনুশীলন পারিবারিক ও সামাজিক শান্তি বজায় রাখে। ৩. বিপদে মানুষের পাশে দাঁড়ালে পারস্পরিক ভালোবাসা বৃদ্ধি পায়। ৪. জীবে দয়া প্রদর্শন আমাদের চরিত্রকে উন্নত করে। ৫. ভালো কাজের মাধ্যমে আমরা ঈশ্বরের কৃপা লাভ করতে পারি।", marks: 6 },
+      { id: "c4hin-b3", chapterId: "c4-hin-ch5", question: "মহাপুরুষ শ্রীরামকৃষ্ণ পরমহংসদেবের 'যত মত, তত পথ' বাণীর তাৎপর্য ব্যাখ্যা করো।", answer: "শ্রীরামকৃষ্ণ পরমহংসদেব উপলব্ধি করেছিলেন যে সকল ধর্মের মূল লক্ষ্য এক ও অভিন্ন ঈশ্বরকে লাভ করা। বিভিন্ন নদী যেমন বিভিন্ন দিক থেকে প্রবাহিত হয়ে একই সাগরে মেশে, তেমনি সকল ধর্মের মানুষ ভিন্ন ভিন্ন আচার পালন করলেও এক ঈশ্বরের কাছেই পৌঁছায়। তাঁর এই উদার বাণী সমাজে পারস্পরিক সম্প্রীতি ও ভ্রাতৃত্ববোধ গড়ে তোলার শ্রেষ্ঠ পাথেয়।", marks: 6 }
+    ]
+  },
+
+  "class-4-buddhist": {
+    id: "c4-bud",
+    classId: "class-4",
+    subject: "বৌদ্ধধর্ম ও নৈতিক শিক্ষা",
+    mcq: [
+      { id: "c4bud-m1", chapterId: "c4-bud-ch1", question: "সিদ্ধার্থ গৌতম কোন বৃক্ষের নিচে ধ্যানমগ্ন হয়ে বুদ্ধত্ব বা বোধি লাভ করেন?", options: ["বোধিবৃক্ষ বা অশ্বত্থ বৃক্ষ", "বটবৃক্ষ", "শালবৃক্ষ", "আমবৃক্ষ"], answer: "বোধিবৃক্ষ বা অশ্বত্থ বৃক্ষ", marks: 1 },
+      { id: "c4bud-m2", chapterId: "c4-bud-ch2", question: "বুদ্ধের প্রধান দুই প্রজ্ঞাবান শিষ্যের নাম কী?", options: ["সারিপুত্ত ও মহামোগ্গল্লান", "আনন্দ ও উপালি", "দেবদত্ত ও রাহুল", "সুজাত ও কশ্যপ"], answer: "সারিপুত্ত ও মহামোগ্গল্লান", marks: 1 },
+      { id: "c4bud-m3", chapterId: "c4-bud-ch3", question: "বৌদ্ধ গৃহীদের প্রাত্যহিক পালনীয় শীলকে কী বলে?", options: ["পঞ্চশীল", "অষ্টশীল", "দশশীল", "বিনয়"], answer: "পঞ্চশীল", marks: 1 },
+      { id: "c4bud-m4", chapterId: "c4-bud-ch4", question: "বৌদ্ধ ধর্মাবলম্বীদের সবচেয়ে পবিত্র ও প্রধান উৎসব কোনটি?", options: ["বৈশাখী পূর্ণিমা", "মাঘী পূর্ণিমা", "আষাঢ়ী পূর্ণিমা", "মধু পূর্ণিমা"], answer: "বৈশাখী পূর্ণিমা", marks: 1 },
+      { id: "c4bud-m5", chapterId: "c4-bud-ch5", question: "বুদ্ধের পূর্বজন্মের পুণ্যময় কাহিনিগুলো কোন গ্রন্থে সংকলিত?", options: ["জাতক", "ধম্মপদ", "সুত্তপিটক", "ত্রিপিটক"], answer: "জাতক", marks: 1 }
+    ],
+    fillInTheBlanks: [
+      { id: "c4bud-f1", chapterId: "c4-bud-ch1", sentence: "গৌতম বুদ্ধের বাল্যকালের নাম ছিল কুমার ____।", answer: "সিদ্ধার্থ", marks: 1 },
+      { id: "c4bud-f2", chapterId: "c4-bud-ch2", sentence: "সম্রাট অশোকের কন্যা সংঘমিত্রা সিংহলে (শ্রীলঙ্কায়) ____ ধর্ম প্রচার করেন।", answer: "বৌদ্ধ", marks: 1 },
+      { id: "c4bud-f3", chapterId: "c4-bud-ch3", sentence: "জগতের সকল জীবের প্রতি অহিংস ও কল্যাণকর মনোভাবকে ____ বলে।", answer: "মৈত্রী", marks: 1 },
+      { id: "c4bud-f4", chapterId: "c4-bud-ch4", sentence: "কঠিন চীবর দান বৌদ্ধদের এক মহৎ ও অনন্য ____ অনুষ্ঠান।", answer: "দান", marks: 1 },
+      { id: "c4bud-f5", chapterId: "c4-bud-ch5", sentence: "অহিংসা বৌদ্ধধর্মের মূল ভিত্তি ও পরম ____।", answer: "আদর্শ", marks: 1 }
+    ],
+    trueFalse: [
+      { id: "c4bud-tf1", chapterId: "c4-bud-ch1", statement: "বৈশাখী পূর্ণিমার পুণ্যলগ্নে বুদ্ধের জন্ম, বোধিলাভ ও মহাপরিনির্বাণ ঘটেছিল।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4bud-tf2", chapterId: "c4-bud-ch2", statement: "সারিপুত্ত বুদ্ধের শিষ্যদের মধ্যে ধর্মে সর্বশ্রেষ্ঠ প্রজ্ঞাবান ছিলেন।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4bud-tf3", chapterId: "c4-bud-ch3", statement: "পঞ্চশীলের প্রথম শীল হলো প্রাণী হত্যা থেকে বিরত থাকা।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4bud-tf4", chapterId: "c4-bud-ch4", statement: "ময়নামতি ও শালবন বিহার বাংলাদেশের বিখ্যাত ঐতিহাসিক বৌদ্ধ প্রত্নতত্ত্ব স্থান।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4bud-tf5", chapterId: "c4-bud-ch5", statement: "জাতকের গল্পগুলো হিংসা ও যুদ্ধ করতে উৎসাহিত করে।", isTrue: false, answer: "False (জাতকের গল্প ক্ষমা, ত্যাগ ও করুণা শিক্ষা দেয়)", marks: 1 }
+    ],
+    matching: {
+      id: "c4bud-mat1",
+      chapterId: "c4-bud-ch4",
+      left: ["বৈশাখী পূর্ণিমা", "আষাঢ়ী পূর্ণিমা", "মাঘী পূর্ণিমা", "কঠিন চীবর দান"],
+      right: ["বুদ্ধের ত্রিস্মৃতিবিজড়িত পুণ্যতিথি", "বুদ্ধের গৃহত্যাগ ও প্রথম ধর্মচক্র প্রবর্তন", "বুদ্ধের আয়ুসংস্কার বর্জন ও মহাপ্রয়াণের ঘোষণা", "ভিক্ষুসংঘকে পরিধেয় চীবর বস্ত্র প্রদান"],
+      marks: 4
+    },
+    shortQuestions: [
+      { id: "c4bud-s1", chapterId: "c4-bud-ch1", question: "চতুরার্য সত্যের চারটি সত্য কী কী?", answer: "১. দুঃখ সত্য, ২. দুঃখ সমুদয় (উৎপত্তি) সত্য, ৩. দুঃখ নিরোধ সত্য এবং ৪. দুঃখ নিরোধ মার্গ (উপায়) সত্য।", marks: 3 },
+      { id: "c4bud-s2", chapterId: "c4-bud-ch2", question: "সংঘমিত্রা কীভাবে সিংহলে (শ্রীলঙ্কায়) বৌদ্ধধর্ম ও ভিক্ষুণীসংঘ প্রতিষ্ঠা করেন?", answer: "তিনি পিতা সম্রাট অশোকের আদেশে ভারতের বোধিবৃক্ষের একটি শাখা নিয়ে সিংহলে যান এবং সেখানে নারী ভিক্ষুণী সংঘ গড়ে তোলেন।", marks: 3 },
+      { id: "c4bud-s3", chapterId: "c4-bud-ch3", question: "পঞ্চশীলের যেকোনো দুটি শীলের অর্থ বাংলায় লেখো।", answer: "১. প্রাণী হত্যা থেকে বিরত থাকা এবং ২. অদত্ত বা অপরের জিনিস চুরি করা থেকে বিরত থাকা।", marks: 3 },
+      { id: "c4bud-s4", chapterId: "c4-bud-ch4", question: "বৌদ্ধ বিহার বা ক্যাং কী কাজে ব্যবহৃত হয়?", answer: "বিহার হলো বৌদ্ধ ভিক্ষুদের আবাসস্থল এবং উপাসকদের ধর্মীয় প্রার্থনা, সাধনা ও ধর্মীয় শিক্ষালাভের পবিত্র স্থান।", marks: 3 },
+      { id: "c4bud-s5", chapterId: "c4-bud-ch5", question: "জাতকের নীতিগল্প থেকে শিশুরা কী কী গুণ অর্জন করতে পারে?", answer: "অহিংসা, সত্যবাদিতা, পরোপকার, বড়দের প্রতি ভক্তি এবং সকল প্রাণীর প্রতি দয়াভাবের মতো সদগুণ অর্জন করতে পারে।", marks: 3 }
+    ],
+    broadQuestions: [
+      { id: "c4bud-b1", chapterId: "c4-bud-ch1", question: "রাজকুমার সিদ্ধার্থের বৈরাগ্য ও চার নিমিত্ত দর্শনের সংক্ষিপ্ত বিবরণ দাও।", answer: "রাজকুমার সিদ্ধার্থ রাজপ্রাসাদের অপরিসীম বিলাসের মধ্যেও জীবনের প্রকৃত সত্য অনুসন্ধানে ব্যাকুল ছিলেন। নগর পরিভ্রমণে গিয়ে তিনি যথাক্রমে একজন জরাগ্রস্ত বৃদ্ধ, একজন যন্ত্রণাকাতর ব্যাধিগ্রস্ত রোগী, একজন মৃত ব্যক্তি এবং একজন শান্ত সমাহিত সন্ন্যাসী প্রত্যক্ষ করেন। এই চার নিমিত্ত বা দৃশ্য দেখে তিনি মানবজীবনের দুঃখের গভীরতা উপলব্ধি করেন এবং পরম সত্যের সন্ধানে রাজপ্রাসাদ, স্ত্রী ও পুত্র ত্যাগ করে সন্ন্যাস গ্রহণ করেন।", marks: 6 },
+      { id: "c4bud-b2", chapterId: "c4-bud-ch3", question: "পঞ্চশীল পালনের সুফল এবং সমাজে শান্তি প্রতিষ্ঠায় অহিংসার অবদান ৫টি বাক্যে লেখো।", answer: "১. পঞ্চশীল মানুষকে পাপ ও অনৈতিক আচরণ থেকে মুক্ত রাখে। ২. এটি সমাজে চুরি, মিথ্যাচার ও সহিংসতা দূর করে। ৩. অহিংসার অনুশীলন মানুষের মনকে শান্ত ও সংযমী করে তোলে। ৪. পারস্পরিক শ্রদ্ধা ও সামাজিক শান্তি সুদৃঢ় হয়। ৫. পঞ্চশীল পালনে ব্যক্তি সমাজে সম্মানিত ও সর্বজনপ্রিয় হয়ে ওঠে।", marks: 6 },
+      { id: "c4bud-b3", chapterId: "c4-bud-ch4", question: "ঐতিহাসিক শালবন বিহার ও পাহাড়পুর বৌদ্ধবিহারের প্রত্নতাত্ত্বিক গুরুত্ব বর্ণনা করো।", answer: "কুমিল্লার ময়নামতিতে অবস্থিত শালবন বিহার এবং নওগাঁর পাহাড়পুরে অবস্থিত সোমপুর মহাবিহার প্রাচীন বাংলার গৌরবময় বৌদ্ধ স্থাপত্য ও বিদ্যাপীঠের নিদর্শন। অষ্টম শতাব্দীতে নির্মিত এসব বিহারে ভারত ও বিদেশের পণ্ডিতেরা উচ্চতর বৌদ্ধ দর্শন ও বিজ্ঞান চর্চা করতেন। এগুলো প্রাচীন বাংলার উন্নত সংস্কৃতি, চারুকলা ও স্থাপত্যকলার অনন্য ঐতিহাসিক স্মারক।", marks: 6 }
+    ]
+  },
+
+  "class-4-christian": {
+    id: "c4-chr",
+    classId: "class-4",
+    subject: "খ্রিষ্টধর্ম ও নৈতিক শিক্ষা",
+    mcq: [
+      { id: "c4chr-m1", chapterId: "c4-chr-ch1", question: "সিনাই পর্বতে ঈশ্বর কার মাধ্যমে মানবজাতিকে দশ আজ্ঞা দান করেন?", options: ["মোশী", "আব্রাহাম", "দাউদ", "সোলোমন"], answer: "মোশী", marks: 1 },
+      { id: "c4chr-m2", chapterId: "c4-chr-ch2", question: "প্রভু যীশু খ্রিষ্টের পুণ্য জন্মস্থান কোথায়?", options: ["বৈৎলেহম", "জেরুসালেম", "নাজারেত", "রোম"], answer: "বৈৎলেহম", marks: 1 },
+      { id: "c4chr-m3", chapterId: "c4-chr-ch3", question: "যীশু খ্রিষ্টের প্রদত্ত সবচেয়ে বড় দুটি ভালোবাসার আজ্ঞা কী?", options: ["ঈশ্বরকে ভালোবাসা এবং প্রতিবেশীকে নিজের মতো ভালোবাসা", "ধনসম্পদ বৃদ্ধি করা", "শত্রুকে শাস্তি দেওয়া", "শুধু নিজের উপাসনা করা"], answer: "ঈশ্বরকে ভালোবাসা এবং প্রতিবেশীকে নিজের মতো ভালোবাসা", marks: 1 },
+      { id: "c4chr-m4", chapterId: "c4-chr-ch4", question: "উত্তম শমরীয়ের দৃষ্টান্তমূলক গল্পের মূল বার্তা কী?", options: ["অসহায় ও আর্তমানবতার নিঃস্বার্থ সেবা", "যুদ্ধ ও বিবাদ", "বাণিজ্য ও মুনাফা", "হিংসা ও অহংকার"], answer: "অসহায় ও আর্তমানবতার নিঃস্বার্থ সেবা", marks: 1 },
+      { id: "c4chr-m5", chapterId: "c4-chr-ch5", question: "ঈশ্বরের সৃষ্ট সুন্দর প্রকৃতির যত্ন নেওয়া প্রতিটি খ্রিষ্টভক্তের কেমন দায়িত্ব?", options: ["পবিত্র ও ধর্মীয় দায়িত্ব", "ঐচ্ছিক কাজ", "অর্থহীন বিষয়", "সরকারি দায়িত্ব"], answer: "পবিত্র ও ধর্মীয় দায়িত্ব", marks: 1 }
+    ],
+    fillInTheBlanks: [
+      { id: "c4chr-f1", chapterId: "c4-chr-ch1", sentence: "পিতা-মাতাকে সমাদর করা ঈশ্বরের ____ আজ্ঞা।", answer: "চতুর্থ", marks: 1 },
+      { id: "c4chr-f2", chapterId: "c4-chr-ch2", sentence: "যীশু খ্রিষ্ট ক্রুশের ওপর আত্মবলিদান দিয়ে মানবজাতিকে ____ করেন।", answer: "উদ্ধার বা মুক্তিদান", marks: 1 },
+      { id: "c4chr-f3", chapterId: "c4-chr-ch3", sentence: "অন্যের ভুল ও অপরাধ ক্ষমা করা একটি মহৎ ____ গুণ।", answer: "খ্রীষ্টীয়", marks: 1 },
+      { id: "c4chr-f4", chapterId: "c4-chr-ch4", sentence: "যে ব্যক্তি আমাদের সাহায্যের প্রয়োজন বোধ করে সে-ই আমাদের প্রকৃত ____।", answer: "প্রতিবেশী", marks: 1 },
+      { id: "c4chr-f5", chapterId: "c4-chr-ch5", sentence: "গাছপালা রোপণ ও পরিবেশ সংরক্ষণ হলো ঈশ্বরের সৃষ্টির প্রতি ____ প্রকাশ।", answer: "ভালোবাসা ও যত্ন", marks: 1 }
+    ],
+    trueFalse: [
+      { id: "c4chr-tf1", chapterId: "c4-chr-ch1", statement: "ঈশ্বরের দশ আজ্ঞা মানুষের ব্যক্তিগত ও সামাজিক জীবনে শৃঙ্খলা ও শান্তি প্রতিষ্ঠা করে।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4chr-tf2", chapterId: "c4-chr-ch2", statement: "যীশু খ্রিষ্ট রোগীদের আরোগ্য ও পাপীদের মুক্তির সুসংবাদ দিয়েছিলেন।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4chr-tf3", chapterId: "c4-chr-ch3", statement: "অন্যকে ক্ষমা না করে প্রতিশোধ নেওয়াই যীশুর শিক্ষা।", isTrue: false, answer: "False (যীশু শত্রুকেও ভালোবাসতে এবং অন্তরে ক্ষমা করতে বলেছেন)", marks: 1 },
+      { id: "c4chr-tf4", chapterId: "c4-chr-ch4", statement: "উত্তম শমরীয় জাতপাত বিচার না করে আহত ব্যক্তির সেবা করেছিলেন।", isTrue: true, answer: "True", marks: 1 },
+      { id: "c4chr-tf5", chapterId: "c4-chr-ch5", statement: "প্রকৃতি দূষণ ঈশ্বরের সৃষ্টির প্রতি অবজ্ঞার শামিল।", isTrue: true, answer: "True", marks: 1 }
+    ],
+    matching: {
+      id: "c4chr-mat1",
+      chapterId: "c4-chr-ch1",
+      left: ["১ম আজ্ঞা", "৪র্থ আজ্ঞা", "৫ম আজ্ঞা", "৮ম আজ্ঞা"],
+      right: ["একমাত্র ঈশ্বরকে উপাসনা করা", "পিতা-মাতাকে সমাদর করা", "মানুষ হত্যা না করা", "মিথ্যা সাক্ষ্য না দেওয়া"],
+      marks: 4
+    },
+    shortQuestions: [
+      { id: "c4chr-s1", chapterId: "c4-chr-ch1", question: "ঈশ্বরের দশ আজ্ঞা মানবজাতির জন্য কেন এত গুরুত্বপূর্ণ?", answer: "দশ আজ্ঞা হলো ঈশ্বরের দেওয়া নৈতিক বিধান যা মানুষকে পাপ থেকে দূরে রেখে ন্যায়, সততা ও প্রেমের পথে পরিচালিত করে।", marks: 3 },
+      { id: "c4chr-s2", chapterId: "c4-chr-ch2", question: "যীশু খ্রিষ্টের জীবনের প্রধান মানবীয় গুণগুলো কী কী ছিল?", answer: "নম্রতা, ক্ষমাশীলতা, আর্তমানবতার সেবা, সত্যবাদিতা এবং গভীর ঈশ্বরভক্তি।", marks: 3 },
+      { id: "c4chr-s3", chapterId: "c4-chr-ch3", question: "যীশুর শিক্ষায় 'ক্ষমাশীলতা' কেন সবচেয়ে বড় গুণ হিসেবে বর্ণিত হয়েছে?", answer: "কারণ আমরা যদি অপরের অপরাধ ক্ষমা না করি, তবে ঈশ্বরও আমাদের পাপ ক্ষমা করবেন না। ক্ষমার মাধ্যমে হৃদয়ে শান্তি আসে।", marks: 3 },
+      { id: "c4chr-s4", chapterId: "c4-chr-ch4", question: "উত্তম শমরীয়ের দৃষ্টান্তে কে প্রকৃত প্রতিবেশী হয়েছিল?", answer: "যে শমরীয় জাতিগত বৈষম্য ভুলে গিয়ে ডাকাতদের হাতে আহত মুমূর্ষু ব্যক্তির শুশ্রূষা করেছিল, সে-ই প্রকৃত প্রতিবেশী হয়েছিল।", marks: 3 },
+      { id: "c4chr-s5", chapterId: "c4-chr-ch5", question: "জলবায়ু পরিবর্তন ও পরিবেশ দূষণ রোধে খ্রিষ্টীয় দৃষ্টিভঙ্গি কী?", answer: "ঈশ্বর এই সুন্দর বিশ্ব সৃষ্টি করে মানুষকে তার পরিচারক বা যত্নকারী হিসেবে দায়িত্ব দিয়েছেন; তাই প্রকৃতিকে ভালোবাসা ও সুরক্ষা দেওয়া আমাদের পবিত্র দায়িত্ব।", marks: 3 }
+    ],
+    broadQuestions: [
+      { id: "c4chr-b1", chapterId: "c4-chr-ch1", question: "ঈশ্বরের দশ আজ্ঞার মূল শিক্ষা এবং বর্তমান সমাজ গঠনে এর প্রয়োজনীয়তা ব্যাখ্যা করো।", answer: "ঈশ্বরের দশ আজ্ঞা মানুষের সাথে ঈশ্বরের এবং মানুষের সাথে মানুষের পবিত্র সম্পর্ক নির্ধারণ করে। প্রথম তিনটি আজ্ঞা ঈশ্বরের উপাসনা ও মর্যাদার সাথে সম্পর্কিত এবং পরবর্তী সাতটি আজ্ঞা পিতামাতার প্রতি ভক্তি, জীবনের পবিত্রতা, সততা, পরস্ত্রীর প্রতি লোভ না করা ও সত্যবাদিতা শিক্ষা দেয়। বর্তমান সমাজে এই আজ্ঞাগুলো নিষ্ঠার সাথে পালন করলে সমাজে অন্যায়, লোভ, কলহ ও দুর্নীতি দূর হবে এবং শান্তি প্রতিষ্ঠিত হবে।", marks: 6 },
+      { id: "c4chr-b2", chapterId: "c4-chr-ch4", question: "উত্তম শমরীয়ের দৃষ্টান্তের মাধ্যমে যীশু খ্রিষ্ট মানবতার যে মহান বার্তা দিয়েছেন তা ৫টি বাক্যে লেখো।", answer: "১. জাত, ধর্ম বা বর্ণের পার্থক্য ভুলে প্রতিটি অসহায় মানুষই আমাদের প্রতিবেশী। ২. কেবল ধর্মীয় উপাসনাই যথেষ্ট নয়, বিপদগ্রস্তের সেবা করাই প্রধান ধর্ম। ৩. শত্রুভাবাপন্ন ব্যক্তিকেও বিপদের দিনে সহমর্মিতা ও ভালোবাসা প্রদর্শন করতে হবে। ৪. নিঃস্বার্থ ত্যাগের মাধ্যমেই প্রকৃত মানবতাবোধ প্রকাশ পায়। ৫. যীশু আমাদের নির্দেশ দিয়েছেন আমরাও যেন উত্তম শমরীয়ের মতো আর্তের সেবায় এগিয়ে যাই।", marks: 6 },
+      { id: "c4chr-b3", chapterId: "c4-chr-ch5", question: "ঈশ্বরের সুন্দর এই পৃথিবী ও প্রকৃতিকে দূষণমুক্ত রাখতে আমাদের ব্যক্তিগত ও সামাজিক দায়িত্ব বর্ণনা করো।", answer: "ঈশ্বর প্রকৃতি ও সমস্ত জীব সৃষ্টি করে মানুষকে দায়িত্বশীলভাবে তার যত্ন নিতে বলেছেন। আমাদের দায়িত্ব: ১. বিনা কারণে গাছ না কেটে প্রতি বছর নতুন গাছ লাগানো। ২. নদী, খাল ও পুকুরে প্লাস্টিক ও ক্ষতিকর বর্জ্য ফেলা বন্ধ করা। ৩. পানিসহ সকল প্রাকৃতিক সম্পদের অপচয় রোধ করা। ৪. বিদ্যালয়ে ও বাড়িতে পরিচ্ছন্নতা অভিযান পরিচালনা করা। ৫. ঈশ্বরপ্রদত্ত এই অপরূপ সৃষ্টিকে ভালোবাসা ও ভবিষ্যৎ প্রজন্মের জন্য বাসযোগ্য রাখা।", marks: 6 }
     ]
   },
 
