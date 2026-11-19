@@ -302,10 +302,10 @@ export default function SiteHeader({
             onClick={() => setDrawerOpen(true)}
             aria-label="প্রধান নেভিগেশন মেনু খুলুন"
             aria-expanded={drawerOpen}
-            className="p-2 sm:p-2.5 rounded-xl text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200/80 border border-slate-200/70 transition-all touch-manipulation min-w-[40px] min-h-[40px] flex items-center justify-center active:scale-95"
+            className="p-2 sm:p-2.5 rounded-xl text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200/80 border border-slate-200/70 transition-all touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center active:scale-95 cursor-pointer"
             title="সকল মডিউল ও মেনু দেখুন"
           >
-            <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Menu className="w-5 h-5" />
           </button>
         </div>
       </div>
@@ -345,7 +345,7 @@ export default function SiteHeader({
                 type="button"
                 onClick={() => setDrawerOpen(false)}
                 aria-label="মেনু বন্ধ করুন"
-                className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-white/80 transition-colors"
+                className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-white/80 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer touch-manipulation"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -356,7 +356,7 @@ export default function SiteHeader({
               <Link
                 href="/"
                 onClick={() => setDrawerOpen(false)}
-                className={`flex items-center justify-between p-2.5 rounded-xl transition-all ${
+                className={`flex items-center justify-between p-3 min-h-[48px] rounded-xl transition-all touch-manipulation ${
                   isHomePage
                     ? "bg-emerald-600 text-white font-bold shadow-xs"
                     : "hover:bg-white text-slate-700 font-semibold"
@@ -386,7 +386,7 @@ export default function SiteHeader({
                         key={item.href}
                         href={item.href}
                         onClick={() => setDrawerOpen(false)}
-                        className={`p-3 rounded-2xl flex items-center justify-between transition-all border ${
+                        className={`p-3 min-h-[52px] rounded-2xl flex items-center justify-between transition-all border touch-manipulation cursor-pointer ${
                           isActive
                             ? `${item.accent.pillBg} border-slate-300 font-black shadow-xs`
                             : "bg-slate-50/70 hover:bg-slate-100 border-slate-200/80 font-semibold text-slate-800"
@@ -431,7 +431,7 @@ export default function SiteHeader({
                         key={item.href}
                         href={item.href}
                         onClick={() => setDrawerOpen(false)}
-                        className={`p-3 rounded-2xl flex items-center justify-between transition-all border ${
+                        className={`p-3 min-h-[52px] rounded-2xl flex items-center justify-between transition-all border touch-manipulation cursor-pointer ${
                           isActive
                             ? `${item.accent.pillBg} border-slate-300 font-black shadow-xs`
                             : "bg-slate-50/70 hover:bg-slate-100 border-slate-200/80 font-semibold text-slate-800"
@@ -464,12 +464,12 @@ export default function SiteHeader({
             </div>
 
             {/* Drawer Bottom Footer */}
-            <div className="p-4 border-t border-slate-100 bg-slate-50/80 flex items-center justify-between gap-2">
-              <InstallAppButton variant="hero" />
+            <div className="p-4 border-t border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+              <InstallAppButton variant="hero" className="w-full justify-center min-h-[44px] py-2.5 text-sm" />
               <button
                 type="button"
                 onClick={() => setDrawerOpen(false)}
-                className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors"
+                className="w-full sm:w-auto px-4 py-2.5 min-h-[44px] rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer touch-manipulation flex items-center justify-center"
               >
                 বন্ধ করুন
               </button>

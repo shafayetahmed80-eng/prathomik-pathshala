@@ -3518,7 +3518,7 @@ export default function MultimediaSlideDeck() {
             <button
               type="button"
               onClick={playSlideAudio}
-              className={`px-3 py-1 rounded-xl transition-all font-bold text-xs flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 whitespace-nowrap ${
+              className={`px-3 sm:px-3.5 py-1.5 min-h-[38px] sm:min-h-[34px] rounded-xl transition-all font-bold text-xs flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 whitespace-nowrap cursor-pointer touch-manipulation ${
                 isSpeaking 
                   ? "bg-amber-500 text-white shadow-md shadow-amber-500/25 animate-pulse" 
                   : "bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs"
@@ -3537,7 +3537,7 @@ export default function MultimediaSlideDeck() {
                   setAccentMode("bd");
                   playChime("click");
                 }}
-                className={`px-2 py-0.5 rounded-lg text-[10px] font-black transition-all ${
+                className={`px-2 sm:px-2.5 py-1 min-h-[34px] rounded-lg text-[10px] font-black transition-all cursor-pointer touch-manipulation ${
                   accentMode === "bd"
                     ? "bg-emerald-600 text-white shadow-2xs"
                     : "text-slate-600 hover:text-slate-900"
@@ -3552,7 +3552,7 @@ export default function MultimediaSlideDeck() {
                   setAccentMode("intl");
                   playChime("click");
                 }}
-                className={`px-2 py-0.5 rounded-lg text-[10px] font-black transition-all ${
+                className={`px-2 sm:px-2.5 py-1 min-h-[34px] rounded-lg text-[10px] font-black transition-all cursor-pointer touch-manipulation ${
                   accentMode === "intl"
                     ? "bg-sky-600 text-white shadow-2xs"
                     : "text-slate-600 hover:text-slate-900"
@@ -3573,7 +3573,7 @@ export default function MultimediaSlideDeck() {
                     setSpeechSpeed(spd);
                     playChime("click");
                   }}
-                  className={`px-1.5 py-0.5 rounded-lg text-[10px] font-black transition-all ${
+                  className={`px-2 py-1 min-h-[34px] rounded-lg text-[10px] font-black transition-all cursor-pointer touch-manipulation ${
                     speechSpeed === spd
                       ? "bg-purple-600 text-white shadow-2xs"
                       : "text-slate-600 hover:text-slate-900"
@@ -3589,7 +3589,7 @@ export default function MultimediaSlideDeck() {
             <button
               type="button"
               onClick={() => setSfxEnabled(!sfxEnabled)}
-              className={`p-1.5 rounded-xl transition-all border border-slate-200/80 ${
+              className={`p-1.5 sm:p-2 min-h-[38px] min-w-[38px] sm:min-h-[34px] sm:min-w-[34px] rounded-xl transition-all border border-slate-200/80 flex items-center justify-center cursor-pointer touch-manipulation ${
                 sfxEnabled ? "bg-sky-100 text-sky-800" : "bg-white text-slate-400"
               }`}
               title={sfxEnabled ? "সাউন্ড ইফেক্ট চালু" : "সাউন্ড বন্ধ"}
@@ -3605,7 +3605,7 @@ export default function MultimediaSlideDeck() {
               setIsPenActive(!isPenActive);
               playChime("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
+            className={`px-3 py-1.5 min-h-[38px] sm:min-h-[34px] rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-all cursor-pointer touch-manipulation ${
               isPenActive 
                 ? "bg-rose-600 text-white shadow-xs" 
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
@@ -3620,7 +3620,7 @@ export default function MultimediaSlideDeck() {
           <button
             type="button"
             onClick={() => setShowTimerWidget(!showTimerWidget)}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
+            className={`px-3 py-1.5 min-h-[38px] sm:min-h-[34px] rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-all cursor-pointer touch-manipulation ${
               showTimerWidget 
                 ? "bg-amber-500 text-white shadow-xs" 
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
@@ -3638,7 +3638,7 @@ export default function MultimediaSlideDeck() {
               setIsZenMode((prev) => !prev);
               playChime("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all cursor-pointer ${
+            className={`px-3 py-1.5 min-h-[38px] sm:min-h-[34px] rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-all cursor-pointer touch-manipulation ${
               isZenMode
                 ? "bg-purple-600 text-white shadow-xs font-black"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
@@ -3653,7 +3653,7 @@ export default function MultimediaSlideDeck() {
           <button
             type="button"
             onClick={toggleFullscreen}
-            className={`p-1.5 rounded-xl transition-colors shrink-0 flex items-center gap-1 cursor-pointer ${
+            className={`p-2 min-h-[38px] min-w-[38px] sm:min-h-[34px] sm:min-w-[34px] rounded-xl transition-colors shrink-0 flex items-center justify-center gap-1 cursor-pointer touch-manipulation ${
               isFullscreen
                 ? "bg-purple-100 text-purple-900 border border-purple-300 shadow-2xs"
                 : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200/80"
@@ -3668,9 +3668,10 @@ export default function MultimediaSlideDeck() {
 
       {/* 🌟 Slide Context & Utilities Ribbon (Row 2 - Meta Ribbon) */}
       {!isZenMode && (
-      <div className={`px-3 sm:px-6 bg-purple-50/60 backdrop-blur-md border-b border-purple-100/80 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar print:hidden z-20 shadow-2xs touch-pan-x shrink-0 transition-all ${
-        isFullscreen ? "py-1" : "py-1.5"
-      }`}>
+      <div className="relative w-full overflow-hidden print:hidden">
+        <div className={`px-3 sm:px-6 bg-purple-50/60 backdrop-blur-md border-b border-purple-100/80 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar z-20 shadow-2xs touch-pan-x shrink-0 transition-all ${
+          isFullscreen ? "py-1" : "py-1.5"
+        }`}>
         {/* Left: Slide Number, Phase, Slide Title */}
         <div className="flex items-center gap-2 shrink-0 min-w-0">
           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-black bg-purple-600 text-white shadow-2xs shrink-0">
@@ -3691,7 +3692,7 @@ export default function MultimediaSlideDeck() {
           <button
             type="button"
             onClick={() => { setShowInterlinear(!showInterlinear); playChime("click"); }}
-            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
+            className={`inline-flex items-center justify-center gap-1 px-3 py-1.5 min-h-[36px] sm:min-h-[32px] rounded-xl text-xs font-bold transition-all cursor-pointer touch-manipulation ${
               showInterlinear ? "bg-purple-600 text-white shadow-2xs ring-2 ring-purple-300" : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
             }`}
             title="প্রতিটি ইংরেজি শব্দের নিচে বাংলা শব্দার্থ দেখুন"
@@ -3708,7 +3709,7 @@ export default function MultimediaSlideDeck() {
               if (!isMemoryBlinderActive) setRevealedWords({});
               playChime("click");
             }}
-            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
+            className={`inline-flex items-center justify-center gap-1 px-3 py-1.5 min-h-[36px] sm:min-h-[32px] rounded-xl text-xs font-bold transition-all cursor-pointer touch-manipulation ${
               isMemoryBlinderActive ? "bg-amber-500 text-white shadow-2xs ring-2 ring-amber-300" : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
             }`}
             title="কঠিন শব্দগুলো লুকিয়ে স্মৃতি পরীক্ষা করুন"
@@ -3721,7 +3722,7 @@ export default function MultimediaSlideDeck() {
           <button
             type="button"
             onClick={toggleAmbience}
-            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
+            className={`inline-flex items-center justify-center gap-1 px-3 py-1.5 min-h-[36px] sm:min-h-[32px] rounded-xl text-xs font-bold transition-all cursor-pointer touch-manipulation ${
               isAmbiencePlaying
                 ? "bg-sky-600 text-white shadow-2xs ring-2 ring-sky-300 animate-pulse"
                 : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
@@ -3736,7 +3737,7 @@ export default function MultimediaSlideDeck() {
           <button
             type="button"
             onClick={() => { setShowScoreboard(!showScoreboard); playChime("click"); }}
-            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold transition-all ${
+            className={`inline-flex items-center justify-center gap-1 px-3 py-1.5 min-h-[36px] sm:min-h-[32px] rounded-xl text-xs font-bold transition-all cursor-pointer touch-manipulation ${
               showScoreboard ? "bg-emerald-600 text-white shadow-2xs ring-2 ring-emerald-300" : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
             }`}
             title="শ্রেণিকক্ষে দল শাপলা ও গোলাপ এর স্কোর কাউন্টার"
@@ -3754,7 +3755,7 @@ export default function MultimediaSlideDeck() {
               setIsTeacherNotesExpanded(!isTeacherNotesExpanded);
               playChime("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
+            className={`px-3 py-1.5 min-h-[36px] sm:min-h-[32px] rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-all cursor-pointer touch-manipulation ${
               isTeacherNotesExpanded 
                 ? "bg-purple-600 text-white shadow-xs" 
                 : "bg-white text-purple-900 hover:bg-purple-50 border border-purple-200"
@@ -3770,7 +3771,7 @@ export default function MultimediaSlideDeck() {
           <button
             type="button"
             onClick={() => setShowWorksheetModal(true)}
-            className="px-2 py-1 rounded-xl bg-white hover:bg-purple-50 text-purple-800 border border-purple-200 font-bold text-xs flex items-center gap-1 transition-colors shadow-2xs"
+            className="px-2.5 py-1.5 min-h-[36px] sm:min-h-[32px] rounded-xl bg-white hover:bg-purple-50 text-purple-800 border border-purple-200 font-bold text-xs flex items-center justify-center gap-1 transition-colors shadow-2xs cursor-pointer touch-manipulation"
             title="১ পাতার প্র্যাকটিস শিট প্রিন্ট করুন"
           >
             <FileText className="w-3.5 h-3.5 text-purple-600" />
@@ -3781,7 +3782,7 @@ export default function MultimediaSlideDeck() {
           <button
             type="button"
             onClick={handleDownloadOfflineHtml}
-            className="p-1 sm:px-2 sm:py-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1 transition-colors shadow-xs"
+            className="p-1.5 sm:px-2.5 sm:py-1.5 min-h-[36px] sm:min-h-[32px] rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1 transition-colors shadow-xs cursor-pointer touch-manipulation"
             title="অফলাইন স্লাইড ডাউনলোড (.html)"
           >
             <Download className="w-3.5 h-3.5" />
@@ -3789,7 +3790,9 @@ export default function MultimediaSlideDeck() {
           </button>
         </div>
       </div>
-      )}
+      <span className="scroll-fade-edge-r sm:hidden" aria-hidden="true" />
+    </div>
+    )}
 
       {/* ⏱️ Floating Classroom Activity Countdown Timer Widget */}
       {showTimerWidget && !isZenMode && (
@@ -4150,7 +4153,7 @@ export default function MultimediaSlideDeck() {
                         {/* Color Swatches Grid */}
                         <div className="space-y-1">
                           <span className="text-[10px] font-bold text-slate-500 block">মার্কার রং:</span>
-                          <div className="grid grid-cols-6 gap-1.5" role="group" aria-label="রং নির্বাচন">
+                          <div className="grid grid-cols-6 gap-1 sm:gap-1.5" role="group" aria-label="রং নির্বাচন">
                             {[
                               { color: "#ef4444", name: "লাল" },
                               { color: "#f59e0b", name: "হলুদ" },
@@ -4166,10 +4169,10 @@ export default function MultimediaSlideDeck() {
                                   setPenColor(item.color);
                                   playChime("click");
                                 }}
-                                className={`w-6 h-6 rounded-full border-2 transition-transform ${
+                                className={`w-8 h-8 sm:w-7 sm:h-7 min-w-[36px] min-h-[36px] rounded-full border-2 transition-transform cursor-pointer touch-manipulation flex items-center justify-center ${
                                   penColor === item.color
-                                    ? "border-slate-900 scale-120 ring-2 ring-purple-400"
-                                    : "border-white hover:scale-110 shadow-2xs"
+                                    ? "border-slate-900 scale-110 ring-2 ring-purple-400"
+                                    : "border-white hover:scale-105 shadow-2xs"
                                 }`}
                                 style={{ backgroundColor: item.color }}
                                 title={`${item.name} রং`}
@@ -4185,7 +4188,7 @@ export default function MultimediaSlideDeck() {
                             <button
                               type="button"
                               onClick={() => { setBrushSize("fine"); playChime("click"); }}
-                              className={`py-1 rounded-lg text-[11px] font-bold flex flex-col items-center gap-1 transition-all ${
+                              className={`py-2 min-h-[40px] rounded-lg text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer touch-manipulation ${
                                 brushSize === "fine" ? "bg-white text-purple-900 shadow-2xs" : "text-slate-600 hover:text-slate-900"
                               }`}
                             >
@@ -4195,7 +4198,7 @@ export default function MultimediaSlideDeck() {
                             <button
                               type="button"
                               onClick={() => { setBrushSize("medium"); playChime("click"); }}
-                              className={`py-1 rounded-lg text-[11px] font-bold flex flex-col items-center gap-1 transition-all ${
+                              className={`py-2 min-h-[40px] rounded-lg text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer touch-manipulation ${
                                 brushSize === "medium" ? "bg-white text-purple-900 shadow-2xs" : "text-slate-600 hover:text-slate-900"
                               }`}
                             >
@@ -4205,7 +4208,7 @@ export default function MultimediaSlideDeck() {
                             <button
                               type="button"
                               onClick={() => { setBrushSize("bold"); playChime("click"); }}
-                              className={`py-1 rounded-lg text-[11px] font-bold flex flex-col items-center gap-1 transition-all ${
+                              className={`py-2 min-h-[40px] rounded-lg text-xs font-bold flex flex-col items-center justify-center gap-1 transition-all cursor-pointer touch-manipulation ${
                                 brushSize === "bold" ? "bg-white text-purple-900 shadow-2xs" : "text-slate-600 hover:text-slate-900"
                               }`}
                             >
@@ -5503,7 +5506,7 @@ export default function MultimediaSlideDeck() {
                   setQuizAnswer(null);
                   playChime("click");
                 }}
-                className="p-1 sm:p-0.5 flex items-center justify-center min-w-[28px] min-h-[28px] sm:min-w-0 sm:min-h-0 touch-manipulation group"
+                className="p-1 sm:p-0.5 flex items-center justify-center min-w-[36px] min-h-[36px] sm:min-w-[28px] sm:min-h-[28px] touch-manipulation group cursor-pointer"
                 title={`স্লাইড ${idx + 1}`}
                 aria-label={`স্লাইড ${idx + 1} এ যান`}
                 aria-current={currentSlideIndex === idx ? "step" : undefined}

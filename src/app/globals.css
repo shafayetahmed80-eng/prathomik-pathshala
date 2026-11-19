@@ -98,6 +98,45 @@ canvas.touch-none,
   scrollbar-width: none;
 }
 
+/* 📱 Horizontal Scroll Fade Indicator for Mobile Tabs & Ribbons */
+.scroll-fade-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+}
+
+.scroll-fade-edge-r {
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2.25rem;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.95), transparent);
+  z-index: 10;
+  border-top-right-radius: inherit;
+  border-bottom-right-radius: inherit;
+}
+
+html.glass-dark-mode .scroll-fade-edge-r {
+  background: linear-gradient(to left, rgba(15, 23, 42, 0.95), transparent);
+}
+
+html.paper-mode .scroll-fade-edge-r {
+  background: linear-gradient(to left, rgba(236, 225, 206, 0.95), transparent);
+}
+
+/* 📱 Standard 44px Mobile Touch Target Utility */
+.touch-target-44 {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
 /* 📜 ক্লাসিক পেপার মোড (সুপারিশ ক - হাইব্রিড ওয়ার্ম বেইজ ও আইভরি ডিজাইন) */
 html.paper-mode {
   --background: #f8f6f0;

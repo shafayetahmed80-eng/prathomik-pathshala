@@ -477,7 +477,7 @@ ${currentPlan.homework}
             id="grade-select"
             value={selectedGrade}
             onChange={(e) => setSelectedGrade(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
           >
             <option value="pre-primary">প্রাক-প্রাথমিক</option>
             <option value="class-1">১ম শ্রেণি</option>
@@ -496,7 +496,7 @@ ${currentPlan.homework}
             id="subject-select"
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
           >
             <option value="গণিত">প্রাথমিক গণিত</option>
             <option value="বাংলা">আমার বাংলা বই</option>
@@ -516,7 +516,7 @@ ${currentPlan.homework}
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="যেমন: যোগের ধারণা / পাখিদের কথা"
-            className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
         </div>
 
@@ -524,7 +524,7 @@ ${currentPlan.homework}
           <button
             type="submit"
             disabled={isGenerating}
-            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer"
+            className="w-full py-2.5 px-4 min-h-[44px] rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer touch-manipulation"
           >
             <Sparkles className="w-4 h-4" aria-hidden="true" />
             <span>{isGenerating ? "তৈরি হচ্ছে..." : "পরিকল্পনা তৈরি করুন"}</span>
@@ -581,7 +581,7 @@ ${currentPlan.homework}
                   type="text"
                   value={schoolName}
                   onChange={(e) => setSchoolName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               <div>
@@ -592,7 +592,7 @@ ${currentPlan.homework}
                   type="text"
                   value={teacherName}
                   onChange={(e) => setTeacherName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               <div>
@@ -603,7 +603,7 @@ ${currentPlan.homework}
                   type="text"
                   value={lessonDate}
                   onChange={(e) => setLessonDate(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               <div>
@@ -614,7 +614,7 @@ ${currentPlan.homework}
                   type="text"
                   value={period}
                   onChange={(e) => setPeriod(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
             </div>
