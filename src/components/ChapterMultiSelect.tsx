@@ -205,14 +205,20 @@ export default function ChapterMultiSelect({
 
   // Trigger button summary text
   let triggerText: string;
+  let triggerTitle: string;
   if (isAllSelected) {
-    triggerText = `সকল ${uLabel} ও Lesson (${chapters.length}টি ${uLabel}${hasAnyLessons ? `, ${allLessonIds.length}টি Lesson` : ""})`;
+    triggerText = `সকল ${uLabel}${hasAnyLessons ? " ও Lesson" : ""}`;
+    triggerTitle = `সকল ${uLabel} ও Lesson (${chapters.length}টি ${uLabel}${hasAnyLessons ? `, ${allLessonIds.length}টি Lesson` : ""})`;
   } else if (isNoneSelected) {
-    triggerText = `কোনো ${uLabel} বা Lesson নির্বাচিত নয়`;
+    triggerText = `কোনো ${uLabel} নির্বাচিত নয়`;
+    triggerTitle = `কোনো ${uLabel} বা Lesson নির্বাচিত নয়`;
   } else {
     const activeChCount = effectiveChapterIds.length;
     const activeLCount = effectiveLessonIds.length;
     triggerText = hasAnyLessons
+      ? `${activeChCount}টি ${uLabel} (${activeLCount} পাঠ)`
+      : `${activeChCount}টি ${uLabel} নির্বাচিত`;
+    triggerTitle = hasAnyLessons
       ? `${activeChCount}টি ${uLabel} (${activeLCount}টি Lesson নির্বাচিত)`
       : `${activeChCount}টি ${uLabel} নির্বাচিত`;
   }
@@ -237,6 +243,7 @@ export default function ChapterMultiSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        title={triggerTitle}
         className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-base sm:text-xs font-semibold text-slate-800 flex items-center justify-between gap-2 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors shadow-xs"
       >
         <div className="flex items-center gap-2 min-w-0 truncate">

@@ -3370,7 +3370,7 @@ export default function MultimediaSlideDeck() {
     >
       {/* 🧘 Minimalist Zen / Classroom Focus Bar */}
       {isZenMode ? (
-        <header className="px-3 sm:px-6 py-2.5 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-slate-100 flex items-center justify-between z-30 shrink-0 gap-2">
+        <div className="px-3 sm:px-6 py-2.5 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 text-slate-100 flex items-center justify-between z-30 shrink-0 gap-2">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <span className="text-xl sm:text-2xl" aria-hidden="true">🧘</span>
             <div className="min-w-0">
@@ -3422,10 +3422,10 @@ export default function MultimediaSlideDeck() {
               <span>ফোকাস বন্ধ (Z)</span>
             </button>
           </div>
-        </header>
+        </div>
       ) : (
       /* 🌟 Consolidated Command Header & Classroom Studio Dock (Row 1) */
-      <header className={`px-3 sm:px-6 bg-gradient-to-r from-purple-50/95 via-white to-sky-50/95 backdrop-blur-md flex flex-wrap items-center justify-between border-b border-purple-100/90 shrink-0 gap-2 print:hidden shadow-2xs z-30 transition-all ${
+      <div className={`px-3 sm:px-6 bg-gradient-to-r from-purple-50/95 via-white to-sky-50/95 backdrop-blur-md flex flex-wrap items-center justify-between border-b border-purple-100/90 shrink-0 gap-2 print:hidden shadow-2xs z-30 transition-all ${
         isFullscreen ? "py-1.5" : "py-2 sm:py-2.5"
       }`}>
         {/* Left: Lesson & Grade Branding */}
@@ -3449,9 +3449,9 @@ export default function MultimediaSlideDeck() {
             <span className="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-200 shrink-0">
               {activeDeck.grade}
             </span>
-            <h3 id="slideshow-title" className="font-black text-xs sm:text-sm text-slate-900 truncate max-w-[140px] sm:max-w-[220px] md:max-w-none">
+            <h2 id="slideshow-title" className="font-black text-xs sm:text-sm text-slate-900 truncate max-w-[140px] sm:max-w-[220px] md:max-w-none">
               {activeDeck.lesson}
-            </h3>
+            </h2>
           </div>
         </div>
 
@@ -3663,7 +3663,7 @@ export default function MultimediaSlideDeck() {
             {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
         </div>
-      </header>
+      </div>
       )}
 
       {/* 🌟 Slide Context & Utilities Ribbon (Row 2 - Meta Ribbon) */}
@@ -3681,9 +3681,9 @@ export default function MultimediaSlideDeck() {
             <Clock className="w-3 h-3 text-purple-600" />
             <span>{currentSlide.phase} ({currentSlide.duration})</span>
           </span>
-          <h2 className="text-xs sm:text-sm font-black text-slate-800 truncate max-w-[200px] sm:max-w-md">
+          <h3 className="text-xs sm:text-sm font-black text-slate-800 truncate max-w-[200px] sm:max-w-md">
             {currentSlide.title}
-          </h2>
+          </h3>
         </div>
 
         {/* Right: Learning Modes, Scoreboard, Teacher Notes Drawer Trigger, Worksheet, Download */}
@@ -3853,7 +3853,7 @@ export default function MultimediaSlideDeck() {
       )}
 
       {/* 📽️ Main Slide Display Arena with Dynamic Motion Scenery Engine */}
-      <main className={`flex-1 flex flex-col justify-between relative bg-gradient-to-br from-slate-50/80 via-white to-purple-50/20 min-h-0 overflow-y-auto transition-all ${
+      <div className={`flex-1 flex flex-col justify-between relative bg-gradient-to-br from-slate-50/80 via-white to-purple-50/20 min-h-0 overflow-y-auto transition-all ${
         isFullscreen || isZenMode ? "p-3 sm:p-6 lg:p-8" : "p-3.5 sm:p-8 lg:p-10"
       }`}>
         {/* 🖍️ Teacher Smart Marker / Annotation Suite (Phase 1) */}
@@ -5522,7 +5522,7 @@ export default function MultimediaSlideDeck() {
             ))}
           </div>
         </nav>
-      </main>
+      </div>
 
       {/* 👩‍🏫 NCTB Teacher's Guide Slide-Up Teleprompter Drawer (User Option: Drawer Mode) */}
       {isTeacherNotesExpanded && (

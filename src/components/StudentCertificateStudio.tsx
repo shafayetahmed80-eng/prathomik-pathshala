@@ -565,9 +565,9 @@ export default function StudentCertificateStudio() {
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-black text-slate-900">
+                <h2 className="text-xl sm:text-2xl font-black text-slate-900">
                   প্রত্যয়নপত্র ও সনদপত্র স্টুডিও
-                </h1>
+                </h2>
                 <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                   A4 ল্যান্ডস্কেপ রেডি
                 </span>
@@ -804,6 +804,7 @@ export default function StudentCertificateStudio() {
                     type="text"
                     value={data.schoolCode}
                     onChange={(e) => handleInputChange("schoolCode", e.target.value)}
+                    aria-label="বিদ্যালয় কোড"
                     className="w-1/2 px-2.5 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="কোড: ০৫"
                   />
@@ -815,6 +816,7 @@ export default function StudentCertificateStudio() {
                     type="text"
                     value={data.establishedYear}
                     onChange={(e) => handleInputChange("establishedYear", e.target.value)}
+                    aria-label="স্থাপিত বছর"
                     className="w-1/2 px-2.5 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     placeholder="স্থাপিত: ১৯৬৮"
                   />
@@ -1281,7 +1283,7 @@ export default function StudentCertificateStudio() {
                         <span className="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-amber-100 text-amber-900">
                           নমুনা #{idx + 1}
                         </span>
-                        <h3 className="text-xs font-bold text-slate-900 mt-1 leading-snug">{t.name}</h3>
+                        <span className="text-xs font-bold text-slate-900 mt-1 leading-snug block">{t.name}</span>
                       </div>
                     </div>
 
