@@ -419,46 +419,30 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  {/* Books Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* Minimalist One-Tap Books Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
                     {currentClass.textbooks.map((book) => (
-                      <article
+                      <button
                         key={book.id}
-                        className="p-4 rounded-2xl border border-slate-200 hover:border-emerald-300 bg-slate-50/50 hover:bg-emerald-50/20 transition-all flex flex-col justify-between"
+                        type="button"
+                        onClick={() => setReaderBook({
+                          name: book.name,
+                          classId: currentClass.id,
+                          classNameTitle: currentClass.banglaName,
+                          type: "textbook",
+                          subject: book.subject,
+                          icon: book.icon
+                        })}
+                        aria-label={`${book.name} বইটি পড়ুন`}
+                        className="group p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200/90 hover:border-emerald-500 bg-white hover:bg-emerald-50/20 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[135px] sm:min-h-[145px] cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
                       >
-                        <div className="space-y-2.5">
-                          <div className="flex items-center justify-between">
-                            <span className="text-2xl p-2 bg-white rounded-xl shadow-2xs border border-slate-100">
-                              {book.icon}
-                            </span>
-                            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                              {book.subject}
-                            </span>
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-slate-900 text-base">{book.name}</h4>
-                            <p className="text-xs text-slate-500 mt-0.5">{book.description}</p>
-                          </div>
-                        </div>
-
-                        <div className="pt-3 mt-3 border-t border-slate-200/60 flex justify-end">
-                          <button
-                            type="button"
-                            onClick={() => setReaderBook({
-                              name: book.name,
-                              classId: currentClass.id,
-                              classNameTitle: currentClass.banglaName,
-                              type: "textbook",
-                              subject: book.subject,
-                              icon: book.icon
-                            })}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-700 bg-emerald-100 hover:bg-emerald-200 transition-colors"
-                          >
-                            <span>বইটি পড়ুন</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </article>
+                        <span className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-2xl sm:text-3xl shadow-inner group-hover:scale-108 transition-transform">
+                          {book.icon}
+                        </span>
+                        <span className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug mt-2">
+                          {book.name}
+                        </span>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -510,45 +494,30 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* Minimalist One-Tap Guides Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
                     {currentClass.teachersGuides.map((tg) => (
-                      <article
+                      <button
                         key={tg.id}
-                        className="p-4 rounded-2xl border border-slate-200 hover:border-purple-300 bg-slate-50/50 hover:bg-purple-50/20 transition-all flex flex-col justify-between"
+                        type="button"
+                        onClick={() => setReaderBook({
+                          name: tg.name,
+                          classId: currentClass.id,
+                          classNameTitle: currentClass.banglaName,
+                          type: "teachers_guide",
+                          subject: tg.subject,
+                          icon: tg.icon
+                        })}
+                        aria-label={`${tg.name} শিক্ষক সহায়িকা খুলুন`}
+                        className="group p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200/90 hover:border-purple-500 bg-white hover:bg-purple-50/20 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[135px] sm:min-h-[145px] cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                       >
-                        <div className="space-y-2.5">
-                          <div className="flex items-center justify-between">
-                            <span className="text-2xl p-2 bg-white rounded-xl shadow-2xs border border-slate-100">
-                              {tg.icon}
-                            </span>
-                            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
-                              শিক্ষক গাইড
-                            </span>
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-slate-900 text-base">{tg.name}</h4>
-                            <p className="text-xs text-slate-500 mt-0.5">{tg.description}</p>
-                          </div>
-                        </div>
-
-                        <div className="pt-3 mt-3 border-t border-slate-200/60 flex justify-end">
-                          <button
-                            type="button"
-                            onClick={() => setReaderBook({
-                              name: tg.name,
-                              classId: currentClass.id,
-                              classNameTitle: currentClass.banglaName,
-                              type: "teachers_guide",
-                              subject: tg.subject,
-                              icon: tg.icon
-                            })}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-purple-700 bg-purple-100 hover:bg-purple-200 transition-colors"
-                          >
-                            <span>গাইডটি খুলুন</span>
-                            <ChevronRight className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      </article>
+                        <span className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-2xl sm:text-3xl shadow-inner group-hover:scale-108 transition-transform">
+                          {tg.icon}
+                        </span>
+                        <span className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-purple-700 transition-colors line-clamp-2 leading-snug mt-2">
+                          {tg.name}
+                        </span>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -571,200 +540,120 @@ export default function HomePage() {
             <p className="text-xs sm:text-sm text-slate-500">যেকোনো টুলে সরাসরি প্রবেশ করতে নিচের কার্ডগুলোতে ক্লিক করুন</p>
           </header>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 1: Books */}
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5 sm:gap-3.5">
+            {/* 1: Books */}
             <Link 
               href="/books"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="পাঠ্যবই লাইব্রেরি"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-emerald-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  📚
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-emerald-700 transition-colors">
-                    পাঠ্যবই লাইব্রেরি
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    প্রাক-প্রাথমিক থেকে ৫ম শ্রেণির সকল বোর্ড বই ও শিক্ষক সহায়িকা সরাসরি পড়ুন।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-emerald-600 flex items-center gap-1">
-                <span>লাইব্রেরিতে যান</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                📚
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                পাঠ্যবই
               </span>
             </Link>
 
-            {/* Card 2: Bornomala */}
+            {/* 2: Bornomala */}
             <Link 
               href="/bornomala"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-pink-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="বর্ণমালা ল্যাব"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-pink-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-pink-100 text-pink-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  🎨
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-pink-700 transition-colors">
-                    বর্ণমালা ও ড্রয়িং ল্যাব
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    শিশুদের হাতেখড়ি ও হাত ঘুরিয়ে লেখার জন্য ৬ রঙের রঙিন টাচ ক্যানভাস বোর্ড।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-pink-600 flex items-center gap-1">
-                <span>ল্যাবে যান</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-pink-50 border border-pink-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                🎨
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-pink-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                বর্ণমালা ল্যাব
               </span>
             </Link>
 
-            {/* Card 3: Slides Hub */}
+            {/* 3: Slides Hub */}
             <Link 
               href="/slides"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-purple-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="স্লাইড হাব"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-purple-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  📽️
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-purple-700 transition-colors">
-                    মাল্টিমিডিয়া স্লাইড হাব
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    শ্রেণিকক্ষে প্রজেক্টরে ক্লাস নেওয়ার জন্য এনসিটিবি নির্দেশিকা সিঙ্ক করা রেডি স্লাইড।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-purple-600 flex items-center gap-1">
-                <span>স্লাইড হাব খুলুন</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-purple-50 border border-purple-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                📽️
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-purple-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                স্লাইড হাব
               </span>
             </Link>
 
-            {/* Card 4: Exam Maker */}
+            {/* 4: Exam Maker */}
             <Link 
               href="/exams"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-sky-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="প্রশ্নপত্র মেকার"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-sky-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  📝
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-sky-700 transition-colors">
-                    স্মার্ট প্রশ্নপত্র মেকার
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    বিদ্যালয়ের নাম ও পূর্ণমান দিয়ে A4 সাইজে ১-ক্লিকে প্রিন্ট-রেডি পরীক্ষার প্রশ্ন তৈরি।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-sky-600 flex items-center gap-1">
-                <span>প্রশ্নপত্র তৈরি করুন</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sky-50 border border-sky-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                📝
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-sky-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                প্রশ্নপত্র
               </span>
             </Link>
 
-            {/* Card 5: Quiz */}
+            {/* 5: Quiz */}
             <Link 
               href="/quiz"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="আনন্দ কুইজ"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-amber-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  🎮
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-amber-700 transition-colors">
-                    আনন্দ কুইজ হাব
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    স্টার পয়েন্ট, স্ট্রিক ও কনফেটি উদযাপনের সাথে মজার জ্ঞান চর্চা।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-amber-600 flex items-center gap-1">
-                <span>কুইজ খেলুন</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-50 border border-amber-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                🎮
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-amber-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                আনন্দ কুইজ
               </span>
             </Link>
 
-            {/* Card 6: Rhymes */}
+            {/* 6: Rhymes */}
             <Link 
               href="/rhymes"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-rose-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="ছড়া ও গল্প"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-rose-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  🌙
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-rose-700 transition-colors">
-                    গল্প ও ছড়ার অডিও
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    কারাওকে স্টাইল টেক্সট হাইলাইটের সাথে মিষ্টি ছড়া ও শিক্ষণীয় গল্পের অডিও আবৃত্তি।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-rose-600 flex items-center gap-1">
-                <span>ছড়া শুনুন</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-rose-50 border border-rose-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                🌙
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-rose-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                ছড়া ও গল্প
               </span>
             </Link>
 
-            {/* Card 7: Lesson Planner */}
+            {/* 7: Lesson Planner */}
             <Link 
               href="/lesson-planner"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-indigo-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="লেসন প্ল্যানার"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-indigo-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  👩‍🏫
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-indigo-700 transition-colors">
-                    এআই লেসন প্ল্যানার
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    ৪০ মিনিটের আদর্শ পাঠ পরিকল্পনা, উপকরণ, শিখনফল ও মূল্যায়ন ছক তৈরি।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-indigo-600 flex items-center gap-1">
-                <span>প্ল্যান তৈরি করুন</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-50 border border-indigo-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                👩‍🏫
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                লেসন প্ল্যানার
               </span>
             </Link>
 
-            {/* Card 8: Certificate Studio */}
+            {/* 8: Certificate Studio */}
             <Link 
               href="/certificates"
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg transition-all flex flex-col justify-between"
+              aria-label="প্রত্যয়নপত্র স্টুডিও"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-amber-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  📜
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-amber-700 transition-colors">
-                    প্রত্যয়নপত্র ও সনদপত্র স্টুডিও
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    ৫টি সরকারি ফরম্যাটে প্রত্যয়নপত্র ও সনদপত্র তৈরি, প্রিন্ট ও আসল জিপ ফাইল ডাউনলোড।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-amber-600 flex items-center gap-1">
-                <span>স্টুডিও খুলুন</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-50 border border-amber-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                📜
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-amber-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                প্রত্যয়নপত্র
               </span>
             </Link>
 
-            {/* Card 9: Search */}
+            {/* 9: Search */}
             <button
               type="button"
               onClick={() => {
@@ -773,24 +662,14 @@ export default function HomePage() {
                 const el = document.getElementById("studio-workspace");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="group p-5 rounded-3xl bg-white border border-slate-200 hover:border-teal-400 hover:shadow-lg transition-all flex flex-col justify-between text-left"
+              aria-label="স্মার্ট কারিকুলাম সার্চ"
+              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-teal-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 cursor-pointer"
             >
-              <div className="space-y-3">
-                <span className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  🔍
-                </span>
-                <div>
-                  <h3 className="font-bold text-lg text-slate-900 group-hover:text-teal-700 transition-colors">
-                    স্মার্ট কারিকুলাম সার্চ
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    ৯২টি বইয়ের যেকোনো কবিতা, ব্যাকরণ বা অধ্যায় দ্রুত খুঁজে বের করার সার্চ ইঞ্জিন।
-                  </p>
-                </div>
-              </div>
-              <span className="mt-4 pt-3 border-t border-slate-100 text-xs font-bold text-teal-600 flex items-center gap-1">
-                <span>স্টুডিওতে খুঁজুন</span>
-                <ChevronRight className="w-3.5 h-3.5" />
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+                🔍
+              </span>
+              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-teal-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+                স্মার্ট সার্চ
               </span>
             </button>
           </div>

@@ -352,6 +352,14 @@ export const TEMPLATE_CONFIGS: {
   }
 ];
 
+export const TEMPLATE_ICON_MAP: Record<CertificateTemplateId, string> = {
+  "classic-black": "📜",
+  "official-sonod": "🎖️",
+  "dpe-green": "🌿",
+  "vintage-maroon": "🏛️",
+  "golden-royal": "👑"
+};
+
 function getInitialCertificateData(): CertificateData {
   if (typeof window === "undefined") return INITIAL_CERTIFICATE_DATA;
   try {
@@ -638,41 +646,31 @@ export default function StudentCertificateStudio() {
               নির্বাচিত: {TEMPLATE_CONFIGS.find((t) => t.id === template)?.name}
             </span>
           </label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
             {TEMPLATE_CONFIGS.map((t) => {
               const isSelected = t.id === template;
+              const icon = TEMPLATE_ICON_MAP[t.id] || "📜";
               return (
                 <button
                   key={t.id}
                   type="button"
                   onClick={() => setTemplate(t.id)}
                   aria-pressed={isSelected}
-                  className={`p-3 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-2 touch-manipulation ${
+                  className={`p-3 sm:p-3.5 rounded-2xl border-2 text-center transition-all flex flex-col items-center justify-between min-h-[105px] sm:min-h-[115px] touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer ${
                     isSelected
-                      ? "border-emerald-600 bg-emerald-50/40 ring-2 ring-emerald-500/20 shadow-xs scale-101"
-                      : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50"
+                      ? "border-emerald-600 bg-emerald-50/50 ring-2 ring-emerald-500/20 shadow-xs scale-102"
+                      : "border-slate-200/90 bg-white hover:border-slate-300 hover:bg-slate-50/50 shadow-2xs"
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="w-3.5 h-3.5 rounded-full border border-black/10"
-                      style={{ backgroundColor: t.accentColor }}
-                      aria-hidden="true"
-                    />
-                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-700">
-                      {t.badge}
-                    </span>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-black text-slate-900 leading-tight">{t.name}</h3>
-                    <p className="text-[10px] text-slate-500 mt-0.5 line-clamp-1">{t.englishTitle}</p>
-                  </div>
-                  {isSelected && (
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-emerald-700 pt-1 border-t border-emerald-100">
-                      <Check className="w-3 h-3 stroke-[3]" />
-                      <span>সক্রিয় টেমপ্লেট</span>
-                    </div>
-                  )}
+                  <span 
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-2xl shadow-inner border border-black/5"
+                    style={{ backgroundColor: `${t.accentColor}15` }}
+                  >
+                    {icon}
+                  </span>
+                  <span className="text-xs font-bold text-slate-900 leading-tight mt-1 line-clamp-1">
+                    {t.name.replace(/^\d+\.\s*/, "")}
+                  </span>
                 </button>
               );
             })}
