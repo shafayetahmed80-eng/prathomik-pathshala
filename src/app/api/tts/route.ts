@@ -14,6 +14,29 @@ let circuitOpenUntil = 0;
 const MAX_CONSECUTIVE_FAILURES = 2;
 const CIRCUIT_OPEN_COOLDOWN_MS = 60 * 1000; // 1 minute fast-failover
 
+interface PersonaConfig {
+  edgeVoice: string;
+  defaultPitch: string;
+  defaultRate: string;
+}
+
+const PERSONA_CONFIGS: Record<string, PersonaConfig> = {
+  // 6 Studio Voice Personas
+  didimoni: { edgeVoice: "bn-BD-NabanitaNeural", defaultPitch: "+4Hz", defaultRate: "-4%" },
+  shikkhok: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "-2Hz", defaultRate: "-2%" },
+  khukumoni: { edgeVoice: "bn-BD-NabanitaNeural", defaultPitch: "+9Hz", defaultRate: "+4%" },
+  kishor: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "+6Hz", defaultRate: "+8%" },
+  dadu: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "-7Hz", defaultRate: "-12%" },
+  buddy: { edgeVoice: "en-US-AnaNeural", defaultPitch: "+0Hz", defaultRate: "+0%" },
+  // Legacy voice mappings for backward compatibility
+  nabanita: { edgeVoice: "bn-BD-NabanitaNeural", defaultPitch: "+2Hz", defaultRate: "-4%" },
+  pradeep: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "-2Hz", defaultRate: "-2%" },
+  ana: { edgeVoice: "en-US-AnaNeural", defaultPitch: "+0Hz", defaultRate: "+0%" },
+  guy: { edgeVoice: "en-US-GuyNeural", defaultPitch: "-1Hz", defaultRate: "-2%" },
+  neerja: { edgeVoice: "en-IN-NeerjaNeural", defaultPitch: "+1Hz", defaultRate: "-2%" },
+  prabhat: { edgeVoice: "en-IN-PrabhatNeural", defaultPitch: "-1Hz", defaultRate: "-2%" },
+};
+
 function getOrCreateEdgeClient(voiceName: string): { client: MsEdgeTTS; ready: Promise<void> } {
   let entry = edgeClients.get(voiceName);
   if (!entry) {
@@ -35,6 +58,7 @@ function sanitizeTextForTTS(raw: string): string {
     .replace(/[<>{}[\]\\/]/g, " ")
     .replace(/["'“”‘’]/g, "")
     .replace(/[\u0000-\u001F\u007F-\u009F]/g, "")
+    .replace(/:\s*/g, " — ") // Natural dialogue pause instead of reading "colon"
     .replace(/\s+/g, " ")
     .trim()
     .slice(0, 1500);
@@ -106,15 +130,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid text parameter after sanitization" }, { status: 400 });
   }
 
-  // Determine Edge Neural voice (with South Asian Indian English voices for mobile "দেশীয়" mode)
+  // Determine Edge Neural voice and Persona configurations
   const englishVoiceMap: Record<string, string> = {
     neerja: "en-IN-NeerjaNeural",
     prabhat: "en-IN-PrabhatNeural",
     guy: "en-US-GuyNeural",
     ana: "en-US-AnaNeural",
+    buddy: "en-US-AnaNeural",
   };
   const isIndianEnglish = !isBengali && lang.toLowerCase().includes("in");
-  const edgeVoice = isBengali
+
+  const persona = PERSONA_CONFIGS[voice];
+  const edgeVoice = persona
+    ? persona.edgeVoice
+    : isBengali
     ? voice === "pradeep"
       ? "bn-BD-PradeepNeural"
       : "bn-BD-NabanitaNeural"
@@ -133,8 +162,16 @@ export async function GET(request: NextRequest) {
   };
 
   // Default prosody adjustments for poetic rhythm & sweet child-friendly tone
-  const pitch = sanitizePitch(reqPitch, isBengali ? "+2Hz" : "+0Hz");
-  const rate = sanitizePercent(reqRate, isBengali ? "-4%" : "-2%");
+  const basePitch = persona ? persona.defaultPitch : isBengali ? "+2Hz" : "+0Hz";
+  const baseRate = persona ? persona.defaultRate : isBengali ? "-4%" : "-2%";
+
+  const pitch = reqPitch && reqPitch !== "+0Hz"
+    ? sanitizePitch(reqPitch, basePitch)
+    : sanitizePitch(basePitch, "+0Hz");
+
+  const rate = reqRate && reqRate !== "+0%"
+    ? sanitizePercent(reqRate, baseRate)
+    : sanitizePercent(baseRate, "-4%");
 
   const cacheKey = `${edgeVoice}:${pitch}:${rate}:${cleanText}`;
 
