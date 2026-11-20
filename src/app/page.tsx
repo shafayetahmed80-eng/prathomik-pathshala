@@ -87,7 +87,7 @@ export default function HomePage() {
           <div
             role="radiogroup"
             aria-label="ব্যবহারকারীর ভূমিকা নির্বাচন"
-            className="flex items-center p-0.5 sm:p-1 bg-slate-100 rounded-xl sm:rounded-2xl border border-slate-200/80"
+            className="hidden xs:flex items-center p-0.5 sm:p-1 bg-slate-100 rounded-xl sm:rounded-2xl border border-slate-200/80"
           >
             <button
               type="button"

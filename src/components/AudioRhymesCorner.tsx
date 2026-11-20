@@ -613,7 +613,7 @@ export default function AudioRhymesCorner() {
       className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 w-full"
     >
       {/* 🌟 Top Header */}
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4">
         <div className="flex items-center gap-3">
           <div 
             aria-hidden="true" 
@@ -622,9 +622,9 @@ export default function AudioRhymesCorner() {
             🌙
           </div>
           <div>
-            <h3 id="audio-corner-heading" className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
+            <h2 id="audio-corner-heading" className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
               গল্প ও ছড়ার অডিও কর্নার <span className="hidden sm:inline-block font-semibold text-slate-400 text-sm">(Interactive Poetry Studio)</span>
-            </h3>
+            </h2>
             <p className="text-xs text-slate-500 mt-0.5">
               প্রাক-প্রাথমিক থেকে ৫ম শ্রেণি: বাউন্সিং বল কারাওকে, নিউরাল আবৃত্তি ও ৩টি ছড়ার মুড
             </p>
@@ -683,7 +683,7 @@ export default function AudioRhymesCorner() {
             <span>নাটকীয়</span>
           </button>
         </div>
-      </header>
+      </div>
 
       {/* 🏫 Grade Selection Tabs (প্রাক-প্রাথমিক থেকে ৫ম শ্রেণি) */}
       <div className="space-y-3">
@@ -928,9 +928,9 @@ export default function AudioRhymesCorner() {
               </span>
             )}
           </div>
-          <h4 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
             {selectedItem.title}
-          </h4>
+          </h3>
           <p className="text-xs text-slate-500 font-semibold">
             রচয়িতা: {selectedItem.author}
           </p>
@@ -1012,7 +1012,7 @@ export default function AudioRhymesCorner() {
               </div>
               <div className="text-left space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <h5 className="font-black text-sm">এবার তোমার পালা! লাইনটি বলো...</h5>
+                  <h4 className="font-black text-sm">এবার তোমার পালা! লাইনটি বলো...</h4>
                   {isRecognizing && (
                     <span className="text-[10px] bg-rose-500 text-white font-bold px-2 py-0.5 rounded-full animate-pulse">
                       মাইক শুনছে 🔴
@@ -1062,9 +1062,9 @@ export default function AudioRhymesCorner() {
         {isCompletedPoem && (
           <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow-2xl space-y-3 animate-in zoom-in-95 duration-200 relative z-10 border border-amber-300/40">
             <span className="text-4xl" aria-hidden="true">🏆</span>
-            <h4 className="text-xl sm:text-2xl font-black tracking-tight">
+            <h3 className="text-xl sm:text-2xl font-black tracking-tight">
               অভিনন্দন! তুমি সম্পূর্ণ {itemTypeLabel} সফলভাবে শেষ করেছো!
-            </h4>
+            </h3>
             <p className="text-xs sm:text-sm text-amber-100 font-medium">
               তুমি অর্জন করেছো মোট <strong className="text-white text-base font-black px-1.5 py-0.5 rounded-md bg-white/20">{earnedStars}</strong>টি স্টার! ⭐
             </p>
@@ -1188,9 +1188,9 @@ export default function AudioRhymesCorner() {
         </div>
 
         {/* Moral Theme Note */}
-        <footer className="pt-2 text-xs text-slate-600 border-t border-rose-100 font-medium relative z-10 text-center">
+        <div className="pt-2 text-xs text-slate-600 border-t border-rose-100 font-medium relative z-10 text-center">
           💡 <strong className="text-slate-800">শিখন মূল্যবোধ:</strong> {selectedItem.moralOrTheme}
-        </footer>
+        </div>
       </section>
     </article>
   );

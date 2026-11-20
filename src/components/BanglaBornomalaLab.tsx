@@ -1176,7 +1176,7 @@ export default function BanglaBornomalaLab() {
     >
       <div className={`bornomala-main-ui space-y-6 sm:space-y-8 ${(isWorksheetOpen || isCertificateOpen) ? "print:hidden" : ""}`}>
       {/* 🌟 Top Header: Title + Language Switcher + Stars + Quick Action Modals */}
-      <header className="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-6 border-b border-slate-200 gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-3.5">
           <div className="flex items-center gap-3">
             <div 
@@ -1190,9 +1190,9 @@ export default function BanglaBornomalaLab() {
               {isEnglish ? "🇬🇧" : "🎨"}
             </div>
             <div>
-              <h1 id="bornomala-lab-heading" className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h2 id="bornomala-lab-heading" className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
                 {isEnglish ? "English Alphabet & Phonics Lab" : "ডিজিটাল বর্ণমালা ও হাতেখড়ি ল্যাব"}
-              </h1>
+              </h2>
               <p className="text-xs text-slate-500 mt-0.5">
                 {isEnglish 
                   ? "NCTB English for Today: A-Z Letters, Phonics Sounds, 4-Line Handwriting & Rhymes"
@@ -1327,7 +1327,7 @@ export default function BanglaBornomalaLab() {
             <span>সনদপত্র</span>
           </button>
         </div>
-      </header>
+      </div>
 
       {/* 🎮 Mini Game Viewport (When Active) */}
       {showMiniGame ? (
@@ -1876,9 +1876,9 @@ export default function BanglaBornomalaLab() {
 
               {/* Title & Word Breakdown */}
               <div className="space-y-1.5">
-                <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900">
                   {selectedItem.name} — {selectedItem.word} {isEnglish && englishItem?.wordMeaningBn ? `(${englishItem.wordMeaningBn})` : ""}
-                </h2>
+                </h3>
                 <div className={`p-2.5 rounded-xl border font-bold text-xs sm:text-sm ${
                   isEnglish ? "bg-white/80 text-blue-900 border-blue-100" : "bg-white/70 text-pink-800 border-pink-100"
                 }`}>
@@ -2227,7 +2227,7 @@ export default function BanglaBornomalaLab() {
 
                 {/* Color Swatches */}
                 {brushMode !== "rainbow" && brushMode !== "eraser" && (
-                  <div className="flex items-center gap-1.5" role="group" aria-label="রং নির্বাচন">
+                  <div className="flex items-center gap-1 sm:gap-1.5" role="group" aria-label="রং নির্বাচন">
                     {COLOR_PALETTE.map((c) => (
                       <button
                         key={c.hex}
@@ -2236,13 +2236,17 @@ export default function BanglaBornomalaLab() {
                           playPopSound();
                           setBrushColor(c.hex);
                         }}
-                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full transition-transform ${
-                          brushColor === c.hex ? "scale-115 ring-2 ring-slate-800" : "hover:scale-105 active:scale-95"
-                        }`}
-                        style={{ backgroundColor: c.hex }}
+                        className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center p-1 rounded-full transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-800 touch-manipulation cursor-pointer"
                         title={c.name}
                         aria-label={`${c.name} পেন্সিল`}
-                      />
+                      >
+                        <span
+                          className={`w-7 h-7 sm:w-7 sm:h-7 rounded-full block shadow-2xs transition-transform ${
+                            brushColor === c.hex ? "scale-115 ring-2 ring-slate-800" : "hover:scale-105"
+                          }`}
+                          style={{ backgroundColor: c.hex }}
+                        />
+                      </button>
                     ))}
                   </div>
                 )}

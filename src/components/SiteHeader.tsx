@@ -243,12 +243,12 @@ export default function SiteHeader({
               </Link>
               <div className="h-5 w-px bg-slate-200 hidden sm:block shrink-0" />
               {pageTitle ? (
-                <div className="min-w-0">
-                  <h1 className="text-xs sm:text-base font-black text-slate-900 truncate max-w-[150px] xs:max-w-[200px] sm:max-w-[320px] md:max-w-none">
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-xs sm:text-base font-black text-slate-900 truncate max-w-[200px] xs:max-w-[280px] sm:max-w-[420px] md:max-w-none">
                     {pageTitle}
                   </h1>
                   {pageSubtitle && (
-                    <p className="text-[10px] text-slate-500 hidden sm:block truncate">
+                    <p className="text-[10px] text-slate-500 hidden sm:block truncate max-w-[320px] md:max-w-none">
                       {pageSubtitle}
                     </p>
                   )}

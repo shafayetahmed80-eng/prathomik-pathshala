@@ -63,9 +63,9 @@ export default function BooksPage() {
                 <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-105 transition-transform">
                   {cls.icon}
                 </span>
-                <h3 className="font-bold text-slate-900 text-xs sm:text-sm leading-tight">
+                <span className="font-bold text-slate-900 text-xs sm:text-sm leading-tight block">
                   {cls.banglaName}
-                </h3>
+                </span>
               </button>
             );
           })}
@@ -73,7 +73,7 @@ export default function BooksPage() {
 
         {/* Selected Class Panel */}
         <div className="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 shadow-md">
-          <header className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-100 gap-4">
             <div className="flex items-center gap-3 sm:gap-4">
               <span className="text-3xl sm:text-4xl p-2.5 sm:p-3 bg-slate-100 rounded-2xl shrink-0">
                 {currentClass.icon}
@@ -113,7 +113,7 @@ export default function BooksPage() {
                 <span>শিক্ষক সহায়িকা ({currentClass.teachersGuides.length})</span>
               </button>
             </nav>
-          </header>
+          </div>
 
           {/* Minimalist One-Tap Book Tiles Grid */}
           <div 

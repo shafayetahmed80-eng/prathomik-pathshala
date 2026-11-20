@@ -660,7 +660,7 @@ ${questionsText.trim()}
     <article 
       id="exam-paper-container"
       aria-labelledby="exam-maker-heading"
-      className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 print:p-0 print:border-none print:shadow-none w-full pb-28 md:pb-10"
+      className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 print:p-0 print:border-none print:shadow-none w-full pb-36 md:pb-10"
     >
       {/* Toast Notification */}
       {toastMessage && (
@@ -671,7 +671,7 @@ ${questionsText.trim()}
       )}
 
       {/* Top Header Banner */}
-      <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-200 print:hidden">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-200 print:hidden">
         <div className="flex items-center gap-3">
           <div 
             aria-hidden="true" 
@@ -681,9 +681,9 @@ ${questionsText.trim()}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 id="exam-maker-heading" className="text-xl sm:text-2xl font-black text-slate-900">
+              <h2 id="exam-maker-heading" className="text-xl sm:text-2xl font-black text-slate-900">
                 স্মার্ট প্রশ্নপত্র ও ওয়ার্কশিট স্টুডিও
-              </h3>
+              </h2>
               <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 ডায়নামিক V2
               </span>
@@ -777,7 +777,7 @@ ${questionsText.trim()}
             </button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* 🛠️ Dynamic Studio Toolbar (Mode, Layout, Storage) */}
       <section 

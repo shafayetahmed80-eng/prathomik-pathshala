@@ -269,7 +269,7 @@ export default function InteractiveQuizHub() {
     >
       <div className="bg-white rounded-[22px] p-4 sm:p-8 lg:p-10 space-y-6">
         {/* Header Title & Live Gamified Stats */}
-        <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-100 gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-100 gap-4">
           <div className="flex items-center gap-3">
             <div 
               aria-hidden="true" 
@@ -299,7 +299,7 @@ export default function InteractiveQuizHub() {
               <span>{streak} স্ট্রিক!</span>
             </div>
           </div>
-        </header>
+        </div>
 
         {/* Grade Selector Navigation */}
         <nav aria-label="কুইজের শ্রেণি নির্বাচন" className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">

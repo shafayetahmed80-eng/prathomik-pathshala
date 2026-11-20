@@ -108,7 +108,7 @@ export default function BrandHomeLink({
             🎈
           </div>
           <div className="min-w-0">
-            <span className="text-lg sm:text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 bg-clip-text text-transparent truncate block">
+            <span className="text-base sm:text-2xl font-black bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 bg-clip-text text-transparent whitespace-nowrap block">
               প্রাথমিক পাঠশালা
             </span>
             <span className="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 group-hover:bg-emerald-200/80 transition-colors">

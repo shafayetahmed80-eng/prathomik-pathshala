@@ -419,7 +419,7 @@ ${currentPlan.homework}
       className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 print:p-0 print:border-none print:shadow-none w-full"
     >
       {/* Top Banner Header */}
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 print:hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200 print:hidden">
         <div className="flex items-center gap-3">
           <div 
             aria-hidden="true" 
@@ -458,7 +458,7 @@ ${currentPlan.homework}
             <span>প্রিন্ট / PDF</span>
           </button>
         </div>
-      </header>
+      </div>
 
       {/* Semantic Inputs Form */}
       <form 
@@ -631,16 +631,16 @@ ${currentPlan.homework}
         <div className="lesson-plan-print-header text-center pb-5 border-b-2 border-slate-900 space-y-1.5">
           <div className="flex items-center justify-center gap-2">
             <span className="text-xl" aria-hidden="true">🇧🇩</span>
-            <h3 className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-slate-900">
+            <p className="text-sm sm:text-base font-extrabold uppercase tracking-wide text-slate-900">
               গণপ্রজাতন্ত্রী বাংলাদেশ সরকার • প্রাথমিক ও গণশিক্ষা মন্ত্রণালয়
-            </h3>
+            </p>
           </div>
           <p className="text-xs font-semibold text-slate-600">
             জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) ২০২৬ শিক্ষাক্রম অনুযায়ী দৈনিক পাঠ পরিকল্পনা
           </p>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-950 pt-1">
+          <h3 className="text-xl sm:text-2xl font-black text-slate-950 pt-1">
             {currentPlan.title}
-          </h2>
+          </h3>
 
           {/* Official Metadata Info Box */}
           <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-medium bg-slate-50 print:bg-transparent p-3 rounded-2xl border border-slate-200 print:border-slate-800 text-left">
