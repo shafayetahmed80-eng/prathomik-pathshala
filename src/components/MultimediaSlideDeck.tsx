@@ -6081,8 +6081,8 @@ export default function MultimediaSlideDeck() {
               </div>
             </div>
 
-            {/* Modal Decks List */}
-            <div className="p-3 sm:p-5 overflow-y-auto space-y-3 flex-1 scrollbar-thin scrollbar-thumb-purple-200">
+            {/* Modal Decks Grid (One-Tap Lesson Tiles) */}
+            <div className="p-3 sm:p-5 overflow-y-auto flex-1 scrollbar-thin scrollbar-thumb-purple-200">
               {(() => {
                 const allDecks = Object.values(SLIDE_DECKS);
                 const filtered = allDecks.filter((deck) => {
@@ -6121,77 +6121,47 @@ export default function MultimediaSlideDeck() {
                   );
                 }
 
-                return filtered.map((deck) => {
-                  const isSelected = selectedDeckId === deck.id;
-                  const isClass3 = deck.grade.includes("3") || deck.grade.includes("৩");
-                  const isClass4 = deck.grade.includes("4") || deck.grade.includes("৪");
-                  const badgeColor = isClass3 
-                    ? "bg-purple-100 text-purple-800 border-purple-200" 
-                    : isClass4 
-                    ? "bg-amber-100 text-amber-800 border-amber-200" 
-                    : "bg-emerald-100 text-emerald-800 border-emerald-200";
-
-                  return (
-                    <div
-                      key={deck.id}
-                      onClick={() => {
-                        stopAllSpeech();
-                        setSelectedDeckId(deck.id);
-                        setCurrentSlideIndex(0);
-                        setIsDeckSelectorOpen(false);
-                        setSortedItems({});
-                        setPunctuationAnswers({});
-                        playChime("fanfare");
-                      }}
-                      className={`p-3.5 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer relative ${
-                        isSelected
-                          ? "border-purple-500 bg-purple-50/70 shadow-md ring-2 ring-purple-300"
-                          : "border-slate-200 bg-white hover:border-purple-300 hover:bg-slate-50/80 shadow-2xs"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex items-start gap-3 min-w-0">
-                          <span className="text-2xl sm:text-3xl p-2 rounded-2xl bg-slate-100 border border-slate-200 shrink-0 shadow-2xs">
+                return (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-3">
+                    {filtered.map((deck) => {
+                      const isSelected = selectedDeckId === deck.id;
+                      return (
+                        <button
+                          key={deck.id}
+                          type="button"
+                          onClick={() => {
+                            stopAllSpeech();
+                            setSelectedDeckId(deck.id);
+                            setCurrentSlideIndex(0);
+                            setIsDeckSelectorOpen(false);
+                            setSortedItems({});
+                            setPunctuationAnswers({});
+                            playChime("fanfare");
+                          }}
+                          aria-pressed={isSelected}
+                          aria-label={`${deck.lesson} পাঠটি শুরু করুন`}
+                          className={`group p-3.5 sm:p-4 rounded-2xl border-2 transition-all flex flex-col items-center justify-between text-center min-h-[125px] sm:min-h-[140px] cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 relative ${
+                            isSelected
+                              ? "border-purple-500 bg-purple-50/80 shadow-md ring-2 ring-purple-300"
+                              : "border-slate-200/90 bg-white hover:border-purple-300 hover:bg-purple-50/20 shadow-2xs"
+                          }`}
+                        >
+                          <span className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-2xl sm:text-3xl shadow-inner group-hover:scale-108 transition-transform">
                             {deck.thumbnailEmoji || "📖"}
                           </span>
-                          <div className="space-y-1 min-w-0">
-                            <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-black border ${badgeColor}`}>
-                                {deck.grade}
-                              </span>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 truncate max-w-[200px]">
-                                {deck.unit}
-                              </span>
-                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700">
-                                {deck.slides.length}টি স্লাইড
-                              </span>
-                            </div>
-                            <h4 className="font-black text-sm sm:text-base text-slate-900 truncate">
-                              {deck.lesson}
-                            </h4>
-                            <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium">
-                              {deck.topic} {deck.slides[0]?.subtitle ? `— ${deck.slides[0].subtitle}` : ""}
-                            </p>
-                          </div>
-                        </div>
-
-                        {isSelected ? (
-                          <span className="px-2.5 py-1 rounded-xl text-xs font-black bg-purple-600 text-white shrink-0 shadow-xs flex items-center gap-1">
-                            <Check className="w-3.5 h-3.5" />
-                            <span className="hidden sm:inline">চলমান</span>
+                          <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-purple-700 transition-colors line-clamp-2 leading-snug mt-2">
+                            {deck.lesson}
                           </span>
-                        ) : (
-                          <button 
-                            type="button"
-                            className="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-purple-600 hover:text-white transition-all shrink-0"
-                          >
-                            পাঠ খুলুন ➔
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  );
-                });
+                          {isSelected && (
+                            <span className="absolute top-2 right-2 w-5 h-5 rounded-full bg-purple-600 text-white flex items-center justify-center text-[10px] shadow-xs">
+                              ✓
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
               })()}
             </div>
             

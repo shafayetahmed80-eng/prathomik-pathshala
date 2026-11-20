@@ -311,13 +311,13 @@ export default function InteractiveQuizHub() {
                 type="button"
                 onClick={() => handleClassChange(tab.id)}
                 aria-pressed={isSelected}
-                className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
+                className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 min-h-[44px] cursor-pointer touch-manipulation active:scale-95 ${
                   isSelected
                     ? "bg-amber-500 text-white shadow-md shadow-amber-500/25 scale-102 font-black"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
-                <span aria-hidden="true">{tab.icon}</span>
+                <span aria-hidden="true" className="text-lg">{tab.icon}</span>
                 <span>{tab.label}</span>
               </button>
             );
@@ -334,13 +334,13 @@ export default function InteractiveQuizHub() {
                   key={s.id}
                   type="button"
                   onClick={() => handleSubjectChange(s.id)}
-                  className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 min-h-[40px] cursor-pointer touch-manipulation active:scale-95 ${
                     isSelected
                       ? "bg-emerald-600 text-white shadow-xs"
                       : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/80"
                   }`}
                 >
-                  <span aria-hidden="true">{s.icon}</span>
+                  <span aria-hidden="true" className="text-base">{s.icon}</span>
                   <span>{s.label}</span>
                 </button>
               );
