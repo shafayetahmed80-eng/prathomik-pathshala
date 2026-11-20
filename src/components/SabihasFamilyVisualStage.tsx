@@ -142,9 +142,7 @@ export default function SabihasFamilyVisualStage({
 
         {/* Mode Selector Tabs */}
         <div className="flex items-center gap-1 bg-white/80 p-1 rounded-2xl border border-slate-200 shadow-2xs overflow-x-auto max-w-full">
-          <button
-            type="button"
-            onClick={() => {
+          <button type="button" onClick={() => {
               setActiveMode("family_home");
               playChime?.("click");
             }}

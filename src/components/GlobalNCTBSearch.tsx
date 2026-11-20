@@ -152,7 +152,7 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
             <button
               type="button"
               onClick={() => setSearchTerm("")}
-              className="absolute right-4 p-1 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
+              className="absolute right-3 p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
               title="মুছে ফেলুন"
               aria-label="অনুসন্ধান টেক্সট মুছে ফেলুন"
             >

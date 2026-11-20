@@ -121,8 +121,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-red-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("story"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("story"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "story" 
                 ? "bg-red-600 text-white shadow-xs" 
@@ -131,7 +130,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
           >
             🏫 রাজুর গল্প
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("station"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "station" 
@@ -141,7 +140,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
           >
             🚒 অগ্নিনির্বাপক মহড়া
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("safety"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "safety" 
@@ -217,7 +216,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
                 </span>
               </div>
 
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("click");
                   handleSpeak("A long time ago, when Raju was in Class 5, there was a sudden fire in his school. Now Raju is a full-time firefighter. He helps put out fires and teaches young people fire safety.");
@@ -245,15 +244,12 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
                 </div>
 
                 {!fireExtinguished ? (
-                  <button
-                    onClick={handleExtinguish}
-                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
-                  >
+                  <button type="button" onClick={handleExtinguish} className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse">
                     <Droplets className="w-4 h-4" />
                     <span>পানি ছিটান (Extinguish Fire!)</span>
                   </button>
                 ) : (
-                  <button
+                  <button type="button"
                     onClick={handleResetFire}
                     className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1.5"
                   >
@@ -313,7 +309,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
               {Object.keys(equipmentInfo).map((key) => {
                 const item = equipmentInfo[key];
                 return (
-                  <button
+                  <button type="button"
                     key={key}
                     onClick={() => {
                       setSelectedTool(key);
@@ -351,7 +347,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
                   </p>
                 </div>
               </div>
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("click");
                   handleSpeak(`${equipmentInfo[selectedTool].name}: ${equipmentInfo[selectedTool].desc}`);
@@ -443,7 +439,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Remember Raju's golden rule: When there is a fire, do not panic! Leave the building quietly and safely. Stay low under smoke and call emergency service 999!");

@@ -537,7 +537,8 @@ ${currentPlan.homework}
             <button
               type="button"
               onClick={() => setShowMetadataEditor((prev) => !prev)}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
+              aria-expanded={showMetadataEditor}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3.5 py-2 min-h-[38px] rounded-xl transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
             >
               <User className="w-3.5 h-3.5 text-purple-600" />
               <span>বিদ্যালয় ও শিক্ষকের তথ্য {showMetadataEditor ? "লুকান" : "সম্পাদনা করুন"}</span>
@@ -545,11 +546,12 @@ ${currentPlan.homework}
             </button>
 
             {/* View Mode Toggle: Card vs Table View */}
-            <div className="flex items-center gap-1 bg-slate-200/80 p-1 rounded-xl text-xs font-bold text-slate-700">
+            <div className="flex items-center gap-1 bg-slate-200/80 p-1 rounded-xl text-xs font-bold text-slate-700" role="group" aria-label="ভিউ লেআউট নির্বাচন">
               <button
                 type="button"
                 onClick={() => setIsTableView(false)}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                aria-pressed={!isTableView}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                   !isTableView ? "bg-white text-purple-900 shadow-xs font-black" : "hover:text-slate-900"
                 }`}
                 title="কার্ড আকারে দেখুন"
@@ -560,7 +562,8 @@ ${currentPlan.homework}
               <button
                 type="button"
                 onClick={() => setIsTableView(true)}
-                className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                aria-pressed={isTableView}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                   isTableView ? "bg-white text-purple-900 shadow-xs font-black" : "hover:text-slate-900"
                 }`}
                 title="সরকারি ছক আকারে দেখুন"

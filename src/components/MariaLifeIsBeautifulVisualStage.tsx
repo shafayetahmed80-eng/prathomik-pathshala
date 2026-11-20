@@ -118,8 +118,7 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-amber-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("senses"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("senses"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "senses" 
                 ? "bg-amber-600 text-white shadow-xs" 
@@ -128,7 +127,7 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
           >
             🌸 বসন্তের পঞ্চইন্দ্রিয়
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("braille"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "braille" 
@@ -138,7 +137,7 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
           >
             ✋ ব্রেইল লিপি অনুশীলন
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("dreams"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "dreams" 
@@ -158,9 +157,10 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
             {/* Morning Sensory Simulation Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               {/* Touch Warmth */}
-              <div 
+              <button 
+                type="button"
                 onClick={handleTouchWindow}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between text-left w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                   windowWarmth 
                     ? "bg-amber-600/30 border-amber-400 ring-1 ring-amber-400" 
                     : "bg-slate-900/80 border-slate-800 hover:border-amber-600/60"
@@ -176,15 +176,16 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
                     She puts her hand on the window glass. It is warm!
                   </p>
                 </div>
-                <button className="mt-3 py-1 px-2 rounded bg-amber-700/60 text-[11px] font-bold text-amber-100 hover:bg-amber-600">
+                <span className="mt-3 py-1 px-2 rounded bg-amber-700/60 text-[11px] font-bold text-amber-100 group-hover:bg-amber-600 text-center inline-block">
                   {windowWarmth ? "উষ্ণ কাচ স্পর্শিত ✓" : "জানালায় হাত রাখো"}
-                </button>
-              </div>
+                </span>
+              </button>
 
               {/* Hearing Birds */}
-              <div 
+              <button 
+                type="button"
                 onClick={handleOpenWindow}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between text-left w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                   birdsSinging 
                     ? "bg-sky-600/30 border-sky-400 ring-1 ring-sky-400" 
                     : "bg-slate-900/80 border-slate-800 hover:border-sky-600/60"
@@ -200,15 +201,16 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
                     She opens the window; singing birds fill the room!
                   </p>
                 </div>
-                <button className="mt-3 py-1 px-2 rounded bg-sky-700/60 text-[11px] font-bold text-sky-100 hover:bg-sky-600">
+                <span className="mt-3 py-1 px-2 rounded bg-sky-700/60 text-[11px] font-bold text-sky-100 group-hover:bg-sky-600 text-center inline-block">
                   {birdsSinging ? "পাখির গান শুনছে 🎵" : "জানালা খোলো"}
-                </button>
-              </div>
+                </span>
+              </button>
 
               {/* Smelling Flowers */}
-              <div 
+              <button 
+                type="button"
                 onClick={handleSmellFlowers}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
+                className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between text-left w-full group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400 ${
                   flowersSmelled 
                     ? "bg-rose-600/30 border-rose-400 ring-1 ring-rose-400" 
                     : "bg-slate-900/80 border-slate-800 hover:border-rose-600/60"
@@ -224,10 +226,10 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
                     She smells the sweet, fresh flowers outside her home.
                   </p>
                 </div>
-                <button className="mt-3 py-1 px-2 rounded bg-rose-700/60 text-[11px] font-bold text-rose-100 hover:bg-rose-600">
+                <span className="mt-3 py-1 px-2 rounded bg-rose-700/60 text-[11px] font-bold text-rose-100 group-hover:bg-rose-600 text-center inline-block">
                   {flowersSmelled ? "মিষ্টি ঘ্রাণ পেল 🌸" : "ফুলের সুবাস নাও"}
-                </button>
-              </div>
+                </span>
+              </button>
             </div>
 
             {/* Sensory synthesis quote */}
@@ -237,7 +239,7 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
                 "Maria is happy. She goes to school every day and loves learning!"
               </div>
               {(windowWarmth || birdsSinging || flowersSmelled) && (
-                <button 
+                <button type="button" 
                   onClick={handleResetMorning}
                   className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 shrink-0"
                 >
@@ -306,7 +308,7 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
                 <span className="text-slate-300">
                   আঙুল বুলিয়ে অনুভব করো: <strong>{brailleLetters[activeBrailleIndex].sound}</strong>
                 </span>
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime("fanfare");
                     handleSpeak("Maria learned to read Braille as a young child. She reads with her fingertips!");
@@ -343,7 +345,7 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
 
             <div className="bg-gradient-to-r from-rose-950/40 to-amber-950/40 p-2.5 rounded-xl border border-rose-500/30 flex items-center justify-between text-xs text-rose-200">
               <span className="font-medium">প্রতিবন্ধকতা কোনো বাধা নয়, ইচ্ছাশক্তিই বিজয়ের মূল চাবিকাঠি!</span>
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("fanfare");
                   handleSpeak("Life is truly beautiful! Maria teaches us courage, hope, and kindness!");

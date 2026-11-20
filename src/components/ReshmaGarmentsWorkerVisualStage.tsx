@@ -84,8 +84,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-indigo-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("factory"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("factory"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "factory" 
                 ? "bg-indigo-600 text-white shadow-xs" 
@@ -94,7 +93,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
           >
             🧵 কারখানা ও সেলাই
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("routine"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "routine" 
@@ -104,7 +103,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
           >
             ⏰ কর্মঘণ্টা ও ওভারটাইম
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("family"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "family" 
@@ -137,7 +136,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <button
+                  <button type="button"
                     onClick={handleStitchFabric}
                     disabled={isSewing}
                     className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-rose-600 hover:from-indigo-500 hover:to-rose-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
@@ -146,7 +145,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
                     <span>{isSewing ? "সেলাই হচ্ছে..." : "কাপড় সেলাই করুন (Stitch)"}</span>
                   </button>
                   {stitchedPieces > 0 && (
-                    <button
+                    <button type="button"
                       onClick={handleResetStitch}
                       className="px-2.5 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1"
                     >
@@ -267,7 +266,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
             </div>
 
             {/* Shift Audio Action Button */}
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("Reshma works hard from 8:00 am to 5:00 pm every day. Sometimes she does overtime work to earn extra money for her beloved family.");
@@ -326,7 +325,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Reshma sends money to her parents in the village and supports her younger brother Babul's education in school. Reshma is proud to earn her own living with dignity.");

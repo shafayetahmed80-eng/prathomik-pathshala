@@ -2252,11 +2252,12 @@ export default function BanglaBornomalaLab() {
                 )}
 
                 {/* Brush Size Controls */}
-                <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200">
+                <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200" role="group" aria-label="তুলির আকার নির্বাচন">
                   <button
                     type="button"
                     onClick={() => setBrushSize(6)}
-                    className={`px-2 py-1 rounded-lg text-[11px] font-bold ${brushSize === 6 ? "bg-slate-800 text-white" : "text-slate-600"}`}
+                    aria-pressed={brushSize === 6}
+                    className={`px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${brushSize === 6 ? "bg-slate-800 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"}`}
                     title="চিকন দাগ"
                   >
                     চিকন
@@ -2264,7 +2265,8 @@ export default function BanglaBornomalaLab() {
                   <button
                     type="button"
                     onClick={() => setBrushSize(12)}
-                    className={`px-2 py-1 rounded-lg text-[11px] font-bold ${brushSize === 12 ? "bg-slate-800 text-white" : "text-slate-600"}`}
+                    aria-pressed={brushSize === 12}
+                    className={`px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${brushSize === 12 ? "bg-slate-800 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"}`}
                     title="মাঝারি দাগ"
                   >
                     মাঝারি
@@ -2272,7 +2274,8 @@ export default function BanglaBornomalaLab() {
                   <button
                     type="button"
                     onClick={() => setBrushSize(22)}
-                    className={`px-2 py-1 rounded-lg text-[11px] font-bold ${brushSize === 22 ? "bg-slate-800 text-white" : "text-slate-600"}`}
+                    aria-pressed={brushSize === 22}
+                    className={`px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${brushSize === 22 ? "bg-slate-800 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"}`}
                     title="মোটা দাগ"
                   >
                     মোটা
@@ -2284,7 +2287,8 @@ export default function BanglaBornomalaLab() {
                   <button
                     type="button"
                     onClick={handleUndo}
-                    className="p-1.5 rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200"
+                    aria-label="পেছনে যাও (Undo)"
+                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                     title="পেছনে যাও (Undo)"
                   >
                     <Undo2 className="w-4 h-4" />
@@ -2292,7 +2296,8 @@ export default function BanglaBornomalaLab() {
                   <button
                     type="button"
                     onClick={handleRedo}
-                    className="p-1.5 rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200"
+                    aria-label="সামনে যাও (Redo)"
+                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                     title="সামনে যাও (Redo)"
                   >
                     <Redo2 className="w-4 h-4" />
@@ -2300,7 +2305,8 @@ export default function BanglaBornomalaLab() {
                   <button
                     type="button"
                     onClick={handleDownloadDrawing}
-                    className="p-1.5 rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200"
+                    aria-label="ছবি ডাউনলোড করো (PNG)"
+                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                     title="ছবি ডাউনলোড করো (PNG)"
                   >
                     <Download className="w-4 h-4" />
@@ -2315,7 +2321,8 @@ export default function BanglaBornomalaLab() {
                       setAccuracyScore(null);
                       setupInkCanvas(false);
                     }}
-                    className="px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1"
+                    aria-label="নতুন করে ক্যানভাস পরিষ্কার করো"
+                    className="px-3 py-2 min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1.5 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                     title="নতুন করে পরিষ্কার করো"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />

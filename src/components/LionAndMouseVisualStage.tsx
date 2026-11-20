@@ -88,8 +88,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-amber-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveScene("meeting"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveScene("meeting"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeScene === "meeting" 
                 ? "bg-amber-600 text-white shadow-xs" 
@@ -98,7 +97,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
           >
             🌿 বনে প্রথম দেখা
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveScene("rescue"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeScene === "rescue" 
@@ -108,7 +107,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
           >
             🪤 শিকারির জাল ও উদ্ধার
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveScene("moral"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeScene === "moral" 
@@ -140,7 +139,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
                   </div>
                 </div>
 
-                <button
+                <button type="button"
                   onClick={handleTickleLion}
                   className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
                 >
@@ -183,7 +182,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
 
             {/* Dialogue Action Button */}
             <div className="flex justify-center">
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("click");
                   handleSpeak("The mouse pleaded: O King of the jungle! Please forgive me this time. I will never forget your kindness. Maybe one day I can help you! The lion laughed, but let him go.");
@@ -216,15 +215,12 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
 
                 <div className="flex items-center gap-2">
                   {!lionFreed ? (
-                    <button
-                      onClick={handleChewRope}
-                      className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
-                    >
+                    <button type="button" onClick={handleChewRope} className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse">
                       <Scissors className="w-4 h-4" />
                       <span>দড়ি কাটুন (Chew Rope!)</span>
                     </button>
                   ) : (
-                    <button
+                    <button type="button"
                       onClick={handleResetRescue}
                       className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1.5"
                     >
@@ -275,7 +271,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
             </div>
 
             {/* Audio Button */}
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("Hearing the roar, the little mouse ran quickly to the spot. Using his sharp little teeth, the mouse chewed through the heavy ropes and set the lion free!");
@@ -336,7 +332,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Moral of the story: No act of kindness, no matter how small, is ever wasted. Even a tiny friend can be a mighty helper in danger!");

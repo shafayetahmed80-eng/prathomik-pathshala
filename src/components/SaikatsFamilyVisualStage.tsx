@@ -97,8 +97,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-indigo-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("family"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("family"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "family" 
                 ? "bg-indigo-600 text-white shadow-xs" 
@@ -107,7 +106,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
           >
             👨‍👩‍👦 পরিবার পরিচিতি
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("english"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "english" 
@@ -117,7 +116,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
           >
             📺 ইংরেজি শেখার কর্নার
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("hobbies"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "hobbies" 
@@ -139,7 +138,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
               {(["saikat", "father", "mother"] as const).map((key) => {
                 const member = familyData[key];
                 return (
-                  <button
+                  <button type="button"
                     key={key}
                     onClick={() => {
                       setSelectedMember(key);
@@ -179,7 +178,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
                 </div>
               </div>
 
-              <button
+              <button type="button"
                 onClick={() => { playChime("click"); handleSpeak(current.speech); }}
                 className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shrink-0"
               >
@@ -206,14 +205,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
                   </div>
                 </div>
 
-                <button
-                  onClick={handleToggleTv}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md flex items-center gap-1.5 transition-all ${
-                    tvPlaying 
-                      ? "bg-rose-600 hover:bg-rose-500 text-white" 
-                      : "bg-purple-600 hover:bg-purple-500 text-white animate-pulse"
-                  }`}
-                >
+                <button type="button" onClick={handleToggleTv} className={`px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md flex items-center gap-1.5 transition-all ${ tvPlaying ? "bg-rose-600 hover:bg-rose-500 text-white" : "bg-purple-600 hover:bg-purple-500 text-white animate-pulse" }`}>
                   <Tv className="w-4 h-4" />
                   <span>{tvPlaying ? "টিভি বন্ধ করুন" : "কার্টুন চালান (Turn on TV)"}</span>
                 </button>
@@ -252,7 +244,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Saikat is in Class 5. He wants to improve his English, so he watches cartoons on TV every day. He also reads English books about animals, especially tigers and lions!");
@@ -301,7 +293,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Every member of Saikat's family utilizes their free time constructively with healthy creative hobbies and self-improvement!");

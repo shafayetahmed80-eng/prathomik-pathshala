@@ -603,10 +603,7 @@ export default function StoryVisualStage({
           {hotspots.map((h) => {
             const isActive = activeHotspot?.id === h.id;
             return (
-              <button
-                key={h.id}
-                type="button"
-                onClick={() => handleHotspotClick(h)}
+              <button key={h.id} type="button" onClick={() => handleHotspotClick(h)}
                 style={{ left: `${h.x}%`, top: `${h.y}%` }}
                 className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-black transition-all duration-200 shadow-md ${
                   isActive

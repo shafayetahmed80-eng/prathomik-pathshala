@@ -118,8 +118,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-emerald-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("race"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("race"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "race" 
                 ? "bg-emerald-600 text-white shadow-xs" 
@@ -128,7 +127,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
           >
             🏁 দৌড় প্রতিযোগিতা
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("characters"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "characters" 
@@ -138,7 +137,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
           >
             👥 চরিত্র তুলনা
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("moral"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "moral" 
@@ -218,7 +217,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
 
               {/* Stepper Controls */}
               <div className="flex items-center justify-between pt-2">
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime("click");
                     handleSpeak(raceScenes[raceStep].desc);
@@ -229,7 +228,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
                   শুনুন
                 </button>
 
-                <button
+                <button type="button"
                   onClick={handleNextRaceStep}
                   className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white shadow-md flex items-center gap-1.5"
                 >
@@ -243,12 +242,13 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
         {activeTab === "characters" && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* The Hare */}
-            <div 
+            <button 
+              type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("The hare was the fastest animal in the forest, but he was proud, boastful, and careless.");
               }}
-              className="bg-slate-900/80 p-3.5 rounded-xl border border-amber-500/40 cursor-pointer hover:border-amber-400 transition-all flex flex-col justify-between"
+              className="w-full text-left bg-slate-900/80 p-3.5 rounded-xl border border-amber-500/40 cursor-pointer hover:border-amber-400 transition-all flex flex-col justify-between focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -268,15 +268,16 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
               <div className="mt-3 pt-2 border-t border-slate-800 text-[11px] text-amber-400 italic">
                 "Hurry up! You are so slow! Can't you walk faster?"
               </div>
-            </div>
+            </button>
 
             {/* The Tortoise */}
-            <div 
+            <button 
+              type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("The tortoise was the slowest animal in the forest, but he was patient, humble, and never stopped walking.");
               }}
-              className="bg-slate-900/80 p-3.5 rounded-xl border border-emerald-500/40 cursor-pointer hover:border-emerald-400 transition-all flex flex-col justify-between"
+              className="w-full text-left bg-slate-900/80 p-3.5 rounded-xl border border-emerald-500/40 cursor-pointer hover:border-emerald-400 transition-all flex flex-col justify-between focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -296,7 +297,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
               <div className="mt-3 pt-2 border-t border-slate-800 text-[11px] text-emerald-400 italic">
                 "Slow and steady wins the race!"
               </div>
-            </div>
+            </button>
           </div>
         )}
 
@@ -314,7 +315,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
                 কোনো কাজ যতই কঠিন হোক না কেন, অহংকার না করে যদি প্রতিদিন একটু একটু করে ধৈর্য সহকারে এগিয়ে যাওয়া যায়, তবে জীবনে নিশ্চিত সাফল্য আসবে।
               </p>
 
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("fanfare");
                   handleSpeak("Moral of the story: Slow and steady wins the race! Never give up, keep trying steadily every day!");

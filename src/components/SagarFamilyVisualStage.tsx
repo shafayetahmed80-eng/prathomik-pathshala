@@ -171,8 +171,7 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-emerald-200 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("familyTree"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("familyTree"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "familyTree" 
                 ? "bg-emerald-600 text-white shadow-xs" 
@@ -182,7 +181,7 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
             <Users className="w-3.5 h-3.5" />
             <span>ফ্যামিলি ট্রি</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("garden"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "garden" 
@@ -193,7 +192,7 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
             <Sprout className="w-3.5 h-3.5" />
             <span>সবজি বাগান</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("pithaKitchen"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "pithaKitchen" 
@@ -217,7 +216,7 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
               {FAMILY_MEMBERS.map((m) => {
                 const isSelected = selectedMember.id === m.id;
                 return (
-                  <button
+                  <button type="button"
                     key={m.id}
                     onClick={() => handleSelectMember(m)}
                     className={`p-2.5 rounded-xl text-center border-2 transition-all flex flex-col items-center justify-between ${
@@ -253,7 +252,7 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
                       </div>
                       <h4 className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 flex items-center gap-2">
                         {selectedMember.name} ({selectedMember.banglaRelation})
-                        <button
+                        <button type="button"
                           onClick={() => handleSpeak(selectedMember.descriptionEn)}
                           className="p-1 rounded-full text-emerald-600 hover:bg-emerald-50 transition-colors"
                           title="শুনুন"
@@ -282,7 +281,7 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
                 <span className="font-medium text-emerald-800">
                   ✓ যৌথ পরিবারের পারস্পরিক ভালোবাসা ও সহযোগিতার অনন্য উদাহরণ।
                 </span>
-                <button
+                <button type="button"
                   onClick={() => {
                     const currentIndex = FAMILY_MEMBERS.findIndex(m => m.id === selectedMember.id);
                     const nextIndex = (currentIndex + 1) % FAMILY_MEMBERS.length;
@@ -315,14 +314,14 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <button
+                <button type="button"
                   onClick={handleWaterGarden}
                   className="px-3.5 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all"
                 >
                   <span>💧 পানি দিন ({waterCount}/3)</span>
                 </button>
                 {isHarvestReady && (
-                  <button onClick={resetGarden} className="p-2 hover:bg-slate-100 rounded-lg">
+                  <button type="button" onClick={resetGarden} className="p-2 hover:bg-slate-100 rounded-lg">
                     <RotateCcw className="w-4 h-4 text-slate-500" />
                   </button>
                 )}

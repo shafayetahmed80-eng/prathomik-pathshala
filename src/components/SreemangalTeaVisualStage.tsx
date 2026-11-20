@@ -109,8 +109,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-emerald-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("garden"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("garden"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "garden" 
                 ? "bg-emerald-600 text-white shadow-xs" 
@@ -119,7 +118,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
           >
             🍃 চা বাগান ও চয়ন
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("lawachara"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "lawachara" 
@@ -129,7 +128,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
           >
             🌲 লাউয়াছড়া উদ্যান
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("culture"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "culture" 
@@ -163,7 +162,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
 
                 <div className="flex items-center gap-2">
                   {!basketFull ? (
-                    <button
+                    <button type="button"
                       onClick={handlePluckLeaf}
                       className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
                     >
@@ -171,7 +170,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                       <span>পাতা তুলুন (Pluck Leaf!)</span>
                     </button>
                   ) : (
-                    <button
+                    <button type="button"
                       onClick={handleResetPluck}
                       className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1.5"
                     >
@@ -201,9 +200,9 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                 {/* Center: Interactive Tea Bush */}
                 <div className="flex flex-col items-center relative z-10">
                   <div className="relative">
-                    <div className="text-6xl cursor-pointer hover:scale-105 transition-transform" onClick={handlePluckLeaf}>
+                    <button type="button" aria-label="চা পাতা তুলুন" className="text-6xl cursor-pointer hover:scale-105 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl" onClick={handlePluckLeaf}>
                       🪴
-                    </div>
+                    </button>
                     {/* Plucked leaves counter badges */}
                     <div className="absolute -top-1 -right-2 bg-emerald-500 text-white text-[10px] font-black w-6 h-6 rounded-full flex items-center justify-center border-2 border-emerald-200 shadow-md">
                       {pluckedCount}
@@ -260,7 +259,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                 </div>
               </div>
 
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("click");
                   handleSpeak("Near the tea gardens lies the Lawachara National Park, home to rare monkeys, deer and colorful birds.");
@@ -313,8 +312,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                   <strong className="text-teal-300">{wildlifeData[selectedAnimal].name}:</strong> {wildlifeData[selectedAnimal].desc}
                 </p>
               </div>
-              <button
-                onClick={() => {
+              <button type="button" onClick={() => {
                   playChime("click");
                   handleSpeak(`${wildlifeData[selectedAnimal].name}: ${wildlifeData[selectedAnimal].desc}`);
                 }}
@@ -343,7 +341,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                   </div>
                 </div>
 
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime("fanfare");
                     handleSpeak("Seven-layer tea is a famous wonder of Sreemangal. Seven colorful tea layers stay perfectly separated in a single glass!");

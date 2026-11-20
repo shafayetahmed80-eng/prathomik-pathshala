@@ -170,7 +170,7 @@ export default function InstallAppButton({
                 <button
                   type="button"
                   onClick={() => setGuideOpen(false)}
-                  className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/70 transition-colors"
+                  className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/70 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
                   aria-label="নির্দেশনা বন্ধ করুন"
                 >
                   <X className="w-5 h-5" />

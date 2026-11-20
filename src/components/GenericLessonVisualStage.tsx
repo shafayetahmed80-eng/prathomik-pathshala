@@ -156,10 +156,7 @@ export default function GenericLessonVisualStage({
               {currentSlide.content.vocabulary!.map((v, vIdx) => {
                 const isSelected = selectedVocabWord?.word === v.word;
                 return (
-                  <button
-                    key={vIdx}
-                    type="button"
-                    onClick={() => handleVocabClick(v)}
+                  <button key={vIdx} type="button" onClick={() => handleVocabClick(v)}
                     className={`text-left p-3 rounded-2xl border transition-all duration-150 flex flex-col justify-between ${
                       isSelected
                         ? "bg-emerald-600 text-white border-emerald-600 shadow-md scale-102"
@@ -220,10 +217,7 @@ export default function GenericLessonVisualStage({
                   }
                 }
                 return (
-                  <button
-                    key={optIdx}
-                    type="button"
-                    onClick={() => handleQuizAnswer(opt)}
+                  <button key={optIdx} type="button" onClick={() => handleQuizAnswer(opt)}
                     className={`p-2.5 rounded-xl border text-xs sm:text-sm font-bold text-left transition-all ${btnStyle}`}
                   >
                     {opt}

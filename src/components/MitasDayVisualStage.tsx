@@ -133,8 +133,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-amber-200 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("timeline"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("timeline"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "timeline" 
                 ? "bg-amber-500 text-white shadow-xs" 
@@ -144,7 +143,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
             <Clock className="w-3.5 h-3.5" />
             <span>টাইমলাইন</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("clock"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "clock" 
@@ -155,7 +154,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
             <Sun className="w-3.5 h-3.5" />
             <span>এনালগ ঘড়ি</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("routineGame"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "routineGame" 
@@ -179,7 +178,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
               {MITA_ROUTINE.map((evt) => {
                 const isSelected = selectedEvent.id === evt.id;
                 return (
-                  <button
+                  <button type="button"
                     key={evt.id}
                     onClick={() => handleSelectEvent(evt)}
                     className={`p-2 rounded-xl text-center border-2 transition-all flex flex-col items-center justify-between ${
@@ -215,7 +214,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
                       </div>
                       <h4 className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 flex items-center gap-2">
                         {selectedEvent.label} ({selectedEvent.bangla})
-                        <button
+                        <button type="button"
                           onClick={() => handleSpeak(selectedEvent.actionEn)}
                           className="p-1 rounded-full text-amber-600 hover:bg-amber-50 transition-colors"
                           title="শুনুন"
@@ -245,7 +244,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
                   <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
                   <span>গুরুত্বপূর্ণ অভ্যাস: <strong>{selectedEvent.highlight}</strong></span>
                 </span>
-                <button
+                <button type="button"
                   onClick={() => {
                     const currentIndex = MITA_ROUTINE.findIndex(e => e.id === selectedEvent.id);
                     const nextIndex = (currentIndex + 1) % MITA_ROUTINE.length;
@@ -325,7 +324,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
             {/* Hours Quick Selector */}
             <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
               {[6, 7, 9, 3, 5, 10].map((h) => (
-                <button
+                <button type="button"
                   key={h}
                   onClick={() => handleClockChange(h)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
@@ -366,7 +365,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
                   <p className="text-xs text-slate-600">
                     স্কোর: {gameScore} / {MITA_ROUTINE.length} • তুমি সময় মেনে চলায় দক্ষ!
                   </p>
-                  <button
+                  <button type="button"
                     onClick={resetGame}
                     className="px-4 py-2 rounded-xl text-xs font-black bg-amber-500 text-white hover:bg-amber-600 shadow-md inline-flex items-center gap-1.5"
                   >
@@ -380,7 +379,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
             {!gameCompleted && (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {MITA_ROUTINE.map((evt) => (
-                  <button
+                  <button type="button"
                     key={evt.id}
                     onClick={() => handleGameAnswer(evt.id)}
                     className="p-3 rounded-xl bg-white border-2 border-amber-100 hover:border-amber-500 hover:bg-amber-50/80 transition-all text-center flex flex-col items-center shadow-2xs active:scale-95"

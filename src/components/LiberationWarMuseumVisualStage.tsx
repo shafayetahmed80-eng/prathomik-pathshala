@@ -142,8 +142,7 @@ export const LiberationWarMuseumVisualStage: React.FC<LiberationWarMuseumVisualS
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-emerald-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("galleries"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("galleries"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "galleries" 
                 ? "bg-emerald-600 text-white shadow-xs" 
@@ -152,7 +151,7 @@ export const LiberationWarMuseumVisualStage: React.FC<LiberationWarMuseumVisualS
           >
             🏛️ ৪টি স্থায়ী গ্যালারি
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("artifacts"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "artifacts" 
@@ -162,7 +161,7 @@ export const LiberationWarMuseumVisualStage: React.FC<LiberationWarMuseumVisualS
           >
             👓 শহীদের স্মৃতিচিহ্ন
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("declaration"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "declaration" 
@@ -228,7 +227,7 @@ export const LiberationWarMuseumVisualStage: React.FC<LiberationWarMuseumVisualS
                   <Clock className="w-3.5 h-3.5 text-amber-400" />
                   10:00 AM – 12:30 PM (2.5 Hours Visit)
                 </span>
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime("click");
                     handleSpeak(galleries[selectedGallery].title + ". " + galleries[selectedGallery].desc);
@@ -255,8 +254,7 @@ export const LiberationWarMuseumVisualStage: React.FC<LiberationWarMuseumVisualS
                   We fell silent in deep respect as we saw personal belongings of our martyred heroes.
                 </p>
               </div>
-              <button 
-                onClick={() => {
+              <button type="button" onClick={() => {
                   playChime("click");
                   handleSpeak("As we went inside Gallery 4, we fell silent looking at the personal belongings of our martyred intellectuals.");
                 }}
@@ -295,8 +293,7 @@ export const LiberationWarMuseumVisualStage: React.FC<LiberationWarMuseumVisualS
                 <p className="text-xs text-slate-200 mt-0.5">{artifacts[selectedArtifact].desc}</p>
                 <p className="text-[11px] text-emerald-300 mt-0.5">{artifacts[selectedArtifact].bangla}</p>
               </div>
-              <button
-                onClick={() => {
+              <button type="button" onClick={() => {
                   playChime("fanfare");
                   handleSpeak(artifacts[selectedArtifact].name + ". " + artifacts[selectedArtifact].desc);
                 }}
@@ -333,7 +330,7 @@ export const LiberationWarMuseumVisualStage: React.FC<LiberationWarMuseumVisualS
                 <span className="text-[11px] text-slate-300">
                   🇧🇩 An experience we would never forget.
                 </span>
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime("fanfare");
                     handleSpeak("At Gallery 2, our teacher read out the Declaration of Independence by Bangabandhu Sheikh Mujibur Rahman. It was an experience we would never forget!");
