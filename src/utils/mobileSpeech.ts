@@ -6,12 +6,28 @@
  */
 
 import { bgmEngine } from "./audioBgm";
+import { studioAcoustics } from "./studioAcoustics";
+
+export type VoicePersona =
+  | "didimoni"
+  | "shikkhok"
+  | "khukumoni"
+  | "kishor"
+  | "dadu"
+  | "buddy"
+  | "nabanita"
+  | "pradeep"
+  | "ana"
+  | "guy"
+  | "neerja"
+  | "prabhat"
+  | string;
 
 export interface SafeSpeakOptions {
   lang?: string;
   rate?: number;
   pitch?: number;
-  voice?: "nabanita" | "pradeep" | "ana" | "guy" | "neerja" | "prabhat" | string;
+  voice?: VoicePersona;
   onStart?: () => void;
   onEnd?: () => void;
   onError?: () => void;
@@ -70,6 +86,10 @@ export function unlockMobileAudio(options?: { primeSilent?: boolean }) {
         sharedAudioCtx.resume().catch(() => {});
       }
     }
+  } catch {}
+
+  try {
+    studioAcoustics.resumeContext().catch(() => {});
   } catch {}
 
   const audio = getSharedAudio();
@@ -363,6 +383,11 @@ export function safeSpeak(text: string, options?: SafeSpeakOptions) {
     audio.defaultPlaybackRate = clientPlaybackRate;
     audio.playbackRate = clientPlaybackRate;
     activeAudio = audio;
+
+    // Route through Studio Acoustics Web Audio DSP engine
+    try {
+      studioAcoustics.attachAudio(audio);
+    } catch {}
 
     const triggerFallback = () => {
       if (activeRequestId !== currentReqId) return;

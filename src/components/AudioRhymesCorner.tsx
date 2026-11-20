@@ -24,6 +24,7 @@ import confetti from "canvas-confetti";
 import { RHYMES_STORIES_DATA, AudioRhymeStory } from "@/data/rhymesData";
 import { safeSpeak, stopSpeech, preloadSpeech } from "@/utils/mobileSpeech";
 import { bgmEngine, BgmMood } from "@/utils/audioBgm";
+import { studioAcoustics, AcousticPreset } from "@/utils/studioAcoustics";
 
 // Detect best supported audio mime type for cross-platform MediaRecorder (iOS Safari / Android / PC)
 function getSupportedMimeType(): string {
@@ -115,6 +116,154 @@ function calculateWordMatchScore(target: string, spoken: string): number {
   return Math.min(100, Math.max(0, score));
 }
 
+export interface VoicePersonaOption {
+  id: string;
+  name: string;
+  role: string;
+  avatar: string;
+  sampleText: string;
+  lang: string;
+}
+
+export const VOICE_PERSONAS: VoicePersonaOption[] = [
+  {
+    id: "didimoni",
+    name: "স্নেহময়ী দিদিমণি",
+    role: "মিষ্টি ও মমতাময়ী সুর",
+    avatar: "👩‍🏫",
+    sampleText: "খোকন খোকন ডাক পাড়ি, খোকন মোদের কার?",
+    lang: "bn-BD",
+  },
+  {
+    id: "shikkhok",
+    name: "উদাত্ত শিক্ষক",
+    role: "স্পষ্ট ও গম্ভীর কণ্ঠ",
+    avatar: "👨‍🏫",
+    sampleText: "আমাদের দেশ তারে কত ভালোবাসি!",
+    lang: "bn-BD",
+  },
+  {
+    id: "khukumoni",
+    name: "ছোট্ট খুকুমণি",
+    role: "কচি ও চঞ্চল সুর",
+    avatar: "👧",
+    sampleText: "আতা গাছে তোতা পাখি, ডালিম গাছে মৌ।",
+    lang: "bn-BD",
+  },
+  {
+    id: "kishor",
+    name: "চঞ্চল কিশোর",
+    role: "দ্রুত ও হাসিখুশি তাল",
+    avatar: "👦",
+    sampleText: "হাট্টিমা টিম টিম, তারা মাঠে পাড়ে ডিম!",
+    lang: "bn-BD",
+  },
+  {
+    id: "dadu",
+    name: "গল্পের দাদু",
+    role: "অভিজ্ঞ ও স্নেহভরা সুর",
+    avatar: "👴",
+    sampleText: "এক যে ছিল সোনার হরিণ, রূপকথার দেশে...",
+    lang: "bn-BD",
+  },
+  {
+    id: "buddy",
+    name: "গ্লোবাল বাডি",
+    role: "English Phonics Buddy",
+    avatar: "🇬🇧",
+    sampleText: "Twinkle twinkle little star, how I wonder what you are!",
+    lang: "en-US",
+  },
+];
+
+export interface DuetSpeaker {
+  persona: string;
+  name: string;
+  avatar: string;
+  colorClass: string;
+}
+
+export function detectDuetSpeaker(
+  line: string,
+  lineIndex: number,
+  basePersona: string,
+  title: string
+): DuetSpeaker {
+  const cleanLine = line.trim();
+
+  // 1. Explicit character dialogue prefixes
+  if (/^(মা|আম্মু|জননী)\s*[:—\-]/i.test(cleanLine)) {
+    return { persona: "didimoni", name: "স্নেহময়ী মা", avatar: "👩‍🍼", colorClass: "text-rose-600 bg-rose-50 border-rose-200" };
+  }
+  if (/^(খোকন|খোকা|বাচ্চা|শিশু|মেয়ে|খুকু)\s*[:—\-]/i.test(cleanLine)) {
+    return { persona: "khukumoni", name: "ছোট্ট খোকন", avatar: "👶", colorClass: "text-amber-600 bg-amber-50 border-amber-200" };
+  }
+  if (/^(রাখাল|কিশোর|ছেলে|বালক)\s*[:—\-]/i.test(cleanLine)) {
+    return { persona: "kishor", name: "চঞ্চল রাখাল", avatar: "👦", colorClass: "text-blue-600 bg-blue-50 border-blue-200" };
+  }
+  if (/^(দাদু|নানা|বৃদ্ধ)\s*[:—\-]/i.test(cleanLine)) {
+    return { persona: "dadu", name: "গল্পের দাদু", avatar: "👴", colorClass: "text-emerald-700 bg-emerald-50 border-emerald-200" };
+  }
+  if (/^(শিক্ষক|মাস্টার মশাই|গ্রামবাসী|শিকারি)\s*[:—\-]/i.test(cleanLine)) {
+    return { persona: "shikkhok", name: "শিক্ষক মশাই", avatar: "👨‍🏫", colorClass: "text-indigo-600 bg-indigo-50 border-indigo-200" };
+  }
+  if (/^(বাঘ|সিংহ|শেয়াল|ভাল্লুক)\s*[:—\-]/i.test(cleanLine)) {
+    return { persona: "dadu", name: "বনের রাজা", avatar: "🦁", colorClass: "text-orange-700 bg-orange-50 border-orange-200" };
+  }
+  if (/^(ইঁদুর|বিড়াল|খরগোশ|পাখি|তোতা|দোয়েল)\s*[:—\-]/i.test(cleanLine)) {
+    return { persona: "khukumoni", name: "ছোট্ট জীব", avatar: "🐭", colorClass: "text-teal-600 bg-teal-50 border-teal-200" };
+  }
+
+  // 2. Specific Antiphonal Poems & Fables by title/content
+  if (title.includes("খোকন") || cleanLine.includes("খোকন")) {
+    if (lineIndex % 4 === 0) return { persona: "didimoni", name: "স্নেহময়ী মা", avatar: "👩‍🍼", colorClass: "text-rose-600 bg-rose-50 border-rose-200" };
+    if (lineIndex % 4 === 1) return { persona: "dadu", name: "গল্পের দাদু", avatar: "👴", colorClass: "text-emerald-700 bg-emerald-50 border-emerald-200" };
+    if (lineIndex % 4 === 2) return { persona: "didimoni", name: "স্নেহময়ী মা", avatar: "👩‍🍼", colorClass: "text-rose-600 bg-rose-50 border-rose-200" };
+    return { persona: "khukumoni", name: "ছোট্ট খোকন", avatar: "👶", colorClass: "text-amber-600 bg-amber-50 border-amber-200" };
+  }
+
+  if (title.includes("কাঠবিড়ালী")) {
+    if (lineIndex % 2 === 0) {
+      return { persona: "khukumoni", name: "ছোট্ট খুকু", avatar: "👧", colorClass: "text-amber-600 bg-amber-50 border-amber-200" };
+    } else {
+      return { persona: "didimoni", name: "কাঠবিড়ালী / বউদিদি", avatar: "🐿️", colorClass: "text-orange-600 bg-orange-50 border-orange-200" };
+    }
+  }
+
+  if (title.includes("রাখাল") || title.includes("বাঘ")) {
+    if (cleanLine.includes("বাঘ")) {
+      return { persona: "kishor", name: "রাখাল বালক", avatar: "👦", colorClass: "text-blue-600 bg-blue-50 border-blue-200" };
+    }
+    return { persona: "dadu", name: "গল্পের দাদু", avatar: "👴", colorClass: "text-emerald-700 bg-emerald-50 border-emerald-200" };
+  }
+
+  if (title.includes("সিংহ") || title.includes("ইঁদুর")) {
+    if (lineIndex % 2 === 0) {
+      return { persona: "shikkhok", name: "সিংহ মামা", avatar: "🦁", colorClass: "text-orange-700 bg-orange-50 border-orange-200" };
+    } else {
+      return { persona: "khukumoni", name: "ছোট্ট ইঁদুর", avatar: "🐭", colorClass: "text-teal-600 bg-teal-50 border-teal-200" };
+    }
+  }
+
+  // 3. General antiphonal alternating lines (Couplets)
+  if (lineIndex % 2 === 1) {
+    return {
+      persona: basePersona === "khukumoni" ? "didimoni" : "khukumoni",
+      name: "সহ-আবৃত্তিকার",
+      avatar: "👧",
+      colorClass: "text-pink-600 bg-pink-50 border-pink-200",
+    };
+  }
+
+  // Default to base persona
+  return {
+    persona: basePersona,
+    name: "মূল আবৃত্তিকার",
+    avatar: "🎙️",
+    colorClass: "text-slate-700 bg-slate-50 border-slate-200",
+  };
+}
+
 const GRADE_OPTIONS = [
   { id: "all", label: "সকল শ্রেণি", icon: "🌈" },
   { id: "pre-primary", label: "প্রাক-প্রাথমিক", icon: "🧸" },
@@ -149,9 +298,17 @@ export default function AudioRhymesCorner() {
 
   // Language Detection & Dynamic Voices
   const isEnglishItem = selectedItem.language === "en-US" || selectedItem.category === "English Rhymes";
-  const [selectedBnVoice, setSelectedBnVoice] = useState<"nabanita" | "pradeep">("nabanita");
-  const [selectedEnVoice, setSelectedEnVoice] = useState<"ana" | "guy">("ana");
-  const effectiveVoice = isEnglishItem ? selectedEnVoice : selectedBnVoice;
+  const [selectedPersona, setSelectedPersona] = useState<string>("didimoni");
+  const [echoPreset, setEchoPreset] = useState<AcousticPreset>("off");
+  const [isDuetMode, setIsDuetMode] = useState<boolean>(false);
+  const [currentDuetSpeaker, setCurrentDuetSpeaker] = useState<DuetSpeaker | null>(null);
+  const [previewingPersona, setPreviewingPersona] = useState<string | null>(null);
+
+  const effectiveVoice = isEnglishItem
+    ? selectedPersona === "buddy" || selectedPersona === "ana" || selectedPersona === "guy"
+      ? selectedPersona
+      : "buddy"
+    : selectedPersona;
 
   const [selectedMood, setSelectedMood] = useState<BgmMood>("melody");
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1.0);
@@ -227,6 +384,8 @@ export default function AudioRhymesCorner() {
     setRepeatPhase("idle");
     setUserTranscript("");
     setMatchScore(null);
+    setCurrentDuetSpeaker(null);
+    setPreviewingPersona(null);
   };
 
   const handleSelectItem = (item: AudioRhymeStory) => {
@@ -236,14 +395,23 @@ export default function AudioRhymesCorner() {
     setRecordedAudioUrl(null);
     setSelectedItem(item);
 
+    const isEng = item.language === "en-US" || item.category === "English Rhymes";
+    if (isEng && selectedPersona !== "buddy" && selectedPersona !== "ana" && selectedPersona !== "guy") {
+      setSelectedPersona("buddy");
+    } else if (!isEng && (selectedPersona === "buddy" || selectedPersona === "ana" || selectedPersona === "guy")) {
+      setSelectedPersona("didimoni");
+    }
+
     // ⚡ Pre-buffer first two lines immediately so playback begins with ZERO delay
     if (item.lines.length > 0) {
-      const isEng = item.language === "en-US" || item.category === "English Rhymes";
-      const voice = isEng ? selectedEnVoice : selectedBnVoice;
+      const baseVoice = isEng ? "buddy" : selectedPersona;
+      const firstDuet = isDuetMode ? detectDuetSpeaker(item.lines[0], 0, baseVoice, item.title) : null;
+      const voice = firstDuet ? firstDuet.persona : baseVoice;
       const rate = getEffectiveRate();
       preloadSpeech(item.lines[0], { lang: item.language, rate, voice });
       if (item.lines.length > 1) {
-        preloadSpeech(item.lines[1], { lang: item.language, rate, voice });
+        const secondDuet = isDuetMode ? detectDuetSpeaker(item.lines[1], 1, baseVoice, item.title) : null;
+        preloadSpeech(item.lines[1], { lang: item.language, rate, voice: secondDuet ? secondDuet.persona : voice });
       }
     }
   };
@@ -252,7 +420,7 @@ export default function AudioRhymesCorner() {
     // Pre-buffer initial rhyme lines on client mount
     if (selectedItem.lines.length > 0) {
       const isEng = selectedItem.language === "en-US" || selectedItem.category === "English Rhymes";
-      const voice = isEng ? selectedEnVoice : selectedBnVoice;
+      const voice = isEng ? "buddy" : selectedPersona;
       preloadSpeech(selectedItem.lines[0], { lang: selectedItem.language, rate: 0.85, voice });
     }
     return () => {
@@ -261,6 +429,25 @@ export default function AudioRhymesCorner() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleToggleEcho = () => {
+    const next = studioAcoustics.toggleEcho();
+    setEchoPreset(next);
+  };
+
+  const handlePreviewPersona = (personaId: string) => {
+    const p = VOICE_PERSONAS.find((item) => item.id === personaId);
+    if (!p) return;
+    stopAudio();
+    setPreviewingPersona(personaId);
+    safeSpeak(p.sampleText, {
+      lang: p.lang,
+      voice: p.id,
+      rate: 0.9,
+      onEnd: () => setPreviewingPersona(null),
+      onError: () => setPreviewingPersona(null),
+    });
+  };
 
   // Filtered dataset based on Grade and Category
   const filteredItems = RHYMES_STORIES_DATA.filter((item) => {
@@ -458,12 +645,24 @@ export default function AudioRhymesCorner() {
     const lineText = selectedItem.lines[index];
     const rate = getEffectiveRate();
 
+    // 🎭 Dynamic Duet Speaker determination
+    const activeDuet = isDuetMode
+      ? detectDuetSpeaker(lineText, index, effectiveVoice, selectedItem.title)
+      : null;
+    const currentVoice = activeDuet ? activeDuet.persona : effectiveVoice;
+    setCurrentDuetSpeaker(activeDuet);
+
     // ⚡ Pre-buffer next line immediately in background to eliminate dead silence between stanzas
     if (index + 1 < selectedItem.lines.length) {
-      preloadSpeech(selectedItem.lines[index + 1], {
+      const nextLine = selectedItem.lines[index + 1];
+      const nextDuet = isDuetMode
+        ? detectDuetSpeaker(nextLine, index + 1, effectiveVoice, selectedItem.title)
+        : null;
+      const nextVoice = nextDuet ? nextDuet.persona : effectiveVoice;
+      preloadSpeech(nextLine, {
         lang: selectedItem.language,
         rate,
-        voice: effectiveVoice,
+        voice: nextVoice,
       });
     }
 
@@ -481,7 +680,7 @@ export default function AudioRhymesCorner() {
     safeSpeak(lineText, {
       lang: selectedItem.language,
       rate,
-      voice: effectiveVoice,
+      voice: currentVoice,
       onStart: () => {
         // Start word-by-word bouncing ball animation with syllable-aware pacing exactly when audio starts playing
         startWordPacing(lineText, rate);
@@ -781,72 +980,56 @@ export default function AudioRhymesCorner() {
       )}
 
       {/* 🎛️ Interactive Classroom Studio Control Ribbon */}
-      <div className="bg-slate-50/90 p-3 sm:p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-        {/* Dynamic Voice Selector (Bengali vs English Rhymes) */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold text-slate-600 flex items-center gap-1">
-            🎤 কণ্ঠশিল্পী:
-          </span>
-          {isEnglishItem ? (
-            <>
-              <button
-                type="button"
-                onClick={() => setSelectedEnVoice("ana")}
-                aria-pressed={selectedEnVoice === "ana"}
-                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-                  selectedEnVoice === "ana"
-                    ? "bg-rose-600 text-white shadow-xs"
-                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                }`}
-                title="এজ নিউরাল চাইল্ড ভয়েস (Sweet Kids Voice)"
+      <div className="bg-slate-50/90 p-3 sm:p-4 rounded-2xl border border-slate-200 space-y-3">
+        {/* Row 1: Persona Dropdown & Playback Speed */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <label htmlFor="persona-select" className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <span>🎤</span>
+              <span>কণ্ঠশিল্পী (Voice):</span>
+            </label>
+            <div className="relative inline-flex items-center">
+              <select
+                id="persona-select"
+                value={selectedPersona}
+                onChange={(e) => {
+                  stopAudio();
+                  setSelectedPersona(e.target.value);
+                }}
+                className="appearance-none bg-white text-slate-800 text-xs sm:text-sm font-bold pl-3 pr-8 py-2 rounded-xl border border-slate-300 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500 shadow-2xs cursor-pointer min-h-[38px]"
               >
-                👧 আনা (মিষ্টি শিশু কণ্ঠ)
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedEnVoice("guy")}
-                aria-pressed={selectedEnVoice === "guy"}
-                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-                  selectedEnVoice === "guy"
-                    ? "bg-rose-600 text-white shadow-xs"
-                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                }`}
-                title="আমেরিকান স্পষ্ট উচ্চারণ (Clear Voice)"
-              >
-                👨 গাই (আমেরিকান স্পষ্ট)
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => setSelectedBnVoice("nabanita")}
-                aria-pressed={selectedBnVoice === "nabanita"}
-                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-                  selectedBnVoice === "nabanita"
-                    ? "bg-rose-600 text-white shadow-xs"
-                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                }`}
-              >
-                👩‍🏫 নবনীতা (মিষ্টি কণ্ঠ)
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelectedBnVoice("pradeep")}
-                aria-pressed={selectedBnVoice === "pradeep"}
-                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-                  selectedBnVoice === "pradeep"
-                    ? "bg-rose-600 text-white shadow-xs"
-                    : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
-                }`}
-              >
-                👨‍🏫 প্রদীপ (উদাত্ত কণ্ঠ)
-              </button>
-            </>
-          )}
+                {VOICE_PERSONAS.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.avatar} {p.name} — {p.role}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Persona Preview Button */}
+            <button
+              type="button"
+              onClick={() => handlePreviewPersona(selectedPersona)}
+              disabled={previewingPersona !== null}
+              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all border min-h-[36px] ${
+                previewingPersona
+                  ? "bg-rose-100 border-rose-300 text-rose-800 animate-pulse"
+                  : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
+              }`}
+              title="নির্বাচিত কণ্ঠশিল্পীর একটি নমুনা শুনুন"
+            >
+              <Volume2 className={`w-3.5 h-3.5 ${previewingPersona ? "text-rose-600 animate-bounce" : "text-slate-500"}`} />
+              <span>{previewingPersona ? "নমুনা বাজছে..." : "নমুনা 🔊"}</span>
+            </button>
+          </div>
 
           {/* ⚡ Playback Speed Selector (০.৭৫x, ১x, ১.২৫x) */}
-          <div className="flex items-center gap-1 bg-white p-0.5 rounded-xl border border-slate-200 shadow-2xs ml-1">
+          <div className="flex items-center gap-1 bg-white p-0.5 rounded-xl border border-slate-200 shadow-2xs">
             <span className="text-[11px] font-bold text-slate-500 pl-2 pr-1 flex items-center gap-1">
               <Gauge className="w-3 h-3 text-slate-400" /> গতি:
             </span>
@@ -856,7 +1039,7 @@ export default function AudioRhymesCorner() {
                 type="button"
                 onClick={() => setPlaybackSpeed(opt.value)}
                 aria-pressed={playbackSpeed === opt.value}
-                className={`px-2.5 py-1.5 min-h-[34px] min-w-[34px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
+                className={`px-2.5 py-1.5 min-h-[32px] min-w-[32px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   playbackSpeed === opt.value
                     ? "bg-rose-600 text-white shadow-xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -869,9 +1052,48 @@ export default function AudioRhymesCorner() {
           </div>
         </div>
 
-        {/* Feature Switches: BGM & Repeat Mode */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-          {/* BGM Toggle */}
+        {/* Row 2: Studio Audio Effects & Interactive Modes */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap pt-1 border-t border-slate-200/60">
+          {/* 🎙️ Studio Echo & Reverb Button */}
+          <button
+            type="button"
+            onClick={handleToggleEcho}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
+              echoPreset === "studio"
+                ? "bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-500/20"
+                : echoPreset === "hall"
+                ? "bg-purple-600 border-purple-600 text-white shadow-md shadow-purple-500/20"
+                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
+            }`}
+            title="বাটন চেপে স্টুডিও ইকো এফেক্ট অন বা অফ করুন"
+          >
+            <Radio className={`w-3.5 h-3.5 ${echoPreset !== "off" ? "animate-pulse text-amber-300" : "text-slate-400"}`} />
+            <span>
+              🎙️ স্টুডিও ইকো:{" "}
+              {echoPreset === "off" ? "বন্ধ (ট্যাপে চালু)" : echoPreset === "studio" ? "মিষ্টি স্টুডিও ✨" : "হলরুম 🏛️"}
+            </span>
+          </button>
+
+          {/* 🎭 Duet Dialogue Mode Toggle */}
+          <button
+            type="button"
+            onClick={() => {
+              const next = !isDuetMode;
+              setIsDuetMode(next);
+              if (next) bgmEngine.playCelebrationChime();
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
+              isDuetMode
+                ? "bg-gradient-to-r from-rose-600 to-amber-600 text-white border-transparent shadow-md shadow-rose-500/20"
+                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
+            }`}
+            title="দ্বৈত কণ্ঠ মোড: চরিত্র ও সংলাপ অনুযায়ী স্বয়ংক্রিয় কণ্ঠ বদল"
+          >
+            <Drama className={`w-3.5 h-3.5 ${isDuetMode ? "text-amber-200 animate-pulse" : "text-slate-400"}`} />
+            <span>🎭 দ্বৈত কণ্ঠ: {isDuetMode ? "চালু ✨" : "বন্ধ"}</span>
+          </button>
+
+          {/* 🎵 BGM Toggle */}
           <button
             type="button"
             onClick={() => {
@@ -880,7 +1102,7 @@ export default function AudioRhymesCorner() {
               if (!next) bgmEngine.stopBgm();
               else if (isPlaying) bgmEngine.startBgm();
             }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
               isBgmEnabled
                 ? "bg-amber-100 border-amber-300 text-amber-900"
                 : "bg-white border-slate-200 text-slate-400"
@@ -888,17 +1110,17 @@ export default function AudioRhymesCorner() {
             title="আবহসঙ্গীত চালু বা বন্ধ করুন"
           >
             <Music className="w-3.5 h-3.5" />
-            <span>আবহসঙ্গীত (BGM): {isBgmEnabled ? "চালু" : "বন্ধ"}</span>
+            <span>আবহসঙ্গীত: {isBgmEnabled ? "চালু" : "বন্ধ"}</span>
           </button>
 
-          {/* Listen & Repeat Mode Toggle */}
+          {/* ✨ Listen & Repeat Mode Toggle */}
           <button
             type="button"
             onClick={() => {
               stopAudio();
               setIsRepeatMode(!isRepeatMode);
             }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
               isRepeatMode
                 ? "bg-purple-600 border-purple-600 text-white shadow-xs animate-pulse"
                 : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
@@ -948,6 +1170,22 @@ export default function AudioRhymesCorner() {
           data-paper-inner="true"
           className="p-6 sm:p-8 rounded-3xl bg-white/95 border border-rose-100 shadow-inner space-y-4 min-h-[200px] flex flex-col justify-center relative z-10 transition-colors"
         >
+          {/* 🎭 Live Duet Speaker Indicator */}
+          {isDuetMode && currentDuetSpeaker && isPlaying && (
+            <div className="flex items-center justify-center mb-1">
+              <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold border shadow-xs animate-pulse transition-all ${currentDuetSpeaker.colorClass}`}>
+                <span className="text-base">{currentDuetSpeaker.avatar}</span>
+                <span>{currentDuetSpeaker.name} আবৃত্তি করছেন</span>
+              </div>
+            </div>
+          )}
+          {isDuetMode && !isPlaying && (
+            <div className="flex items-center justify-center mb-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200">
+                <span>🎭 দ্বৈত কণ্ঠ মোড সক্রিয় (চরিত্র অনুযায়ী কণ্ঠ পরিবর্তন হবে)</span>
+              </div>
+            </div>
+          )}
           {selectedItem.lines.map((line, idx) => {
             const isCurrentLine = currentLineIndex === idx;
             const words = line.split(" ").filter(Boolean);
