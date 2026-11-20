@@ -106,8 +106,7 @@ export default function SunilRahatFriendshipVisualStage({
 
         {/* Tab switcher */}
         <div className="flex items-center gap-1 bg-white/90 p-1 rounded-2xl border border-emerald-200 shadow-2xs">
-          <button
-            onClick={() => {
+          <button type="button" onClick={() => {
               setActiveTab("banyan");
               playChime?.("click");
             }}
@@ -120,7 +119,7 @@ export default function SunilRahatFriendshipVisualStage({
             <span>🌳</span>
             <span>Tiffin Tree</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("hobbies");
               playChime?.("click");
@@ -134,7 +133,7 @@ export default function SunilRahatFriendshipVisualStage({
             <Palette className="w-3.5 h-3.5" />
             <span>Hobbies</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("football");
               playChime?.("click");
@@ -206,14 +205,14 @@ export default function SunilRahatFriendshipVisualStage({
             {/* Banyan Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-emerald-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
+                <button type="button"
                   onClick={handleShareTiffin}
                   className="px-4 py-2 rounded-xl bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
                 >
                   <span>🍱</span>
                   <span>Share Tiffin (টিফিন ভাগ করে খাও)</span>
                 </button>
-                <button
+                <button type="button"
                   onClick={() =>
                     handleSpeak(
                       "Sunil and Rahat are classmates and best friends. Both of them read in Class 3. During the tiffin break, they sit under a big banyan tree and share their homemade food."
@@ -258,7 +257,7 @@ export default function SunilRahatFriendshipVisualStage({
                   </div>
                 </div>
 
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime?.("click");
                     setPaintingColor((prev) => (prev === "sky" ? "sunset" : "sky"));
@@ -289,7 +288,7 @@ export default function SunilRahatFriendshipVisualStage({
                   </div>
                 </div>
 
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime?.("click");
                     setPageTurned((prev) => !prev);
@@ -341,7 +340,7 @@ export default function SunilRahatFriendshipVisualStage({
             {/* Match Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-emerald-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
+                <button type="button"
                   onClick={handleKickFootball}
                   disabled={isKicking}
                   className="px-4 py-2 rounded-xl bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"

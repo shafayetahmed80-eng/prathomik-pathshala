@@ -99,7 +99,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-slate-800/80 p-1 rounded-xl border border-slate-700 shadow-2xs">
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("lights"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "lights" 
@@ -109,7 +109,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
           >
             ট্রাফিক লাইট
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("crossing"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "crossing" 
@@ -119,7 +119,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
           >
             জেব্রা ক্রসিং
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("rules"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "rules" 
@@ -140,7 +140,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
             {/* The Traffic Light Pole Housing */}
             <div className="w-24 bg-slate-950 p-3 rounded-3xl border-4 border-slate-700 shadow-2xl flex flex-col items-center gap-3">
               {/* Red Light */}
-              <button
+              <button type="button"
                 onClick={() => handleLightChange("red")}
                 className={`w-16 h-16 rounded-full transition-all duration-300 flex items-center justify-center ${
                   currentLight === "red"
@@ -152,7 +152,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
               </button>
 
               {/* Yellow Light */}
-              <button
+              <button type="button"
                 onClick={() => handleLightChange("yellow")}
                 className={`w-16 h-16 rounded-full transition-all duration-300 flex items-center justify-center ${
                   currentLight === "yellow"
@@ -164,7 +164,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
               </button>
 
               {/* Green Light */}
-              <button
+              <button type="button"
                 onClick={() => handleLightChange("green")}
                 className={`w-16 h-16 rounded-full transition-all duration-300 flex items-center justify-center ${
                   currentLight === "green"
@@ -216,19 +216,19 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
 
               {/* Light Switcher Buttons */}
               <div className="flex gap-2">
-                <button
+                <button type="button"
                   onClick={() => handleLightChange("red")}
                   className="px-3 py-1.5 rounded-xl bg-rose-600/30 border border-rose-500 text-rose-300 text-xs font-bold hover:bg-rose-600 hover:text-white transition-all flex-1"
                 >
                   লাল বাতি
                 </button>
-                <button
+                <button type="button"
                   onClick={() => handleLightChange("yellow")}
                   className="px-3 py-1.5 rounded-xl bg-amber-600/30 border border-amber-500 text-amber-300 text-xs font-bold hover:bg-amber-600 hover:text-white transition-all flex-1"
                 >
                   হলুদ বাতি
                 </button>
-                <button
+                <button type="button"
                   onClick={() => handleLightChange("green")}
                   className="px-3 py-1.5 rounded-xl bg-emerald-600/30 border border-emerald-500 text-emerald-300 text-xs font-bold hover:bg-emerald-600 hover:text-white transition-all flex-1"
                 >
@@ -252,7 +252,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
                 </p>
               </div>
 
-              <button
+              <button type="button"
                 onClick={handleCrossZebra}
                 className="px-4 py-2 rounded-xl text-xs font-black bg-rose-600 text-white hover:bg-rose-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all shrink-0"
               >
@@ -297,10 +297,13 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
             ].map((rule) => {
               const isChecked = rulesChecked[rule.key];
               return (
-                <div
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked={isChecked}
                   key={rule.key}
                   onClick={() => toggleRule(rule.key)}
-                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${
+                  className={`w-full text-left p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                     isChecked ? "bg-slate-800/90 border-emerald-500" : "bg-slate-900 border-slate-700"
                   }`}
                 >
@@ -316,7 +319,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
                   }`}>
                     {isChecked && <CheckCircle2 className="w-4 h-4" />}
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>

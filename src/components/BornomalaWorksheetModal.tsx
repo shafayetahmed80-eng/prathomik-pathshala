@@ -242,7 +242,7 @@ export default function BornomalaWorksheetModal({
 
           <div className="flex items-center gap-2 flex-wrap">
             {isEng && !isNumber && engItem && (
-              <div className="flex items-center bg-slate-200 p-0.5 rounded-xl text-xs font-bold">
+              <div className="flex items-center bg-slate-200 p-0.5 rounded-xl text-xs font-bold" role="group" aria-label="অক্ষরের কেস নির্বাচন">
                 {(
                   [
                     { id: "upper", label: engItem.upperChar },
@@ -260,7 +260,8 @@ export default function BornomalaWorksheetModal({
                         value: c.id,
                       })
                     }
-                    className={`px-2.5 py-1 rounded-lg transition-all ${
+                    aria-pressed={worksheetCase === c.id}
+                    className={`px-3 py-1.5 min-h-[32px] rounded-lg transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
                       worksheetCase === c.id
                         ? "bg-white text-pink-700 shadow-xs"
                         : "text-slate-600 hover:text-slate-900"
@@ -275,7 +276,7 @@ export default function BornomalaWorksheetModal({
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-105 active:scale-95"
+              className="inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-105 active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500"
             >
               <Printer className="w-4 h-4" />
               <span>প্রিন্ট করুন</span>
@@ -283,8 +284,8 @@ export default function BornomalaWorksheetModal({
             <button
               type="button"
               onClick={handleClose}
-              className="p-2 rounded-xl text-slate-500 hover:bg-slate-200 transition-colors"
-              aria-label="বন্ধ করুন"
+              className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-slate-500 hover:bg-slate-200 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+              aria-label="ওয়ার্কশিট উইন্ডো বন্ধ করুন"
             >
               <X className="w-5 h-5" />
             </button>

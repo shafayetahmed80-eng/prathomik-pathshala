@@ -125,8 +125,7 @@ export default function IntroducingJerinVisualStage({
       <div className="absolute top-2.5 left-2.5 right-2.5 z-20 flex flex-wrap items-center justify-between gap-1.5 pointer-events-none">
         {/* View Switcher: Campus vs ID Card */}
         <div className="inline-flex items-center gap-1 p-1 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-2xs pointer-events-auto">
-          <button
-            onClick={() => {
+          <button type="button" onClick={() => {
               setViewMode("campus");
               if (playChime) playChime("click");
             }}
@@ -139,7 +138,7 @@ export default function IntroducingJerinVisualStage({
             <School className="w-3.5 h-3.5" />
             <span>স্কুল ও পরিবার</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setViewMode("id_card");
               if (playChime) playChime("click");
@@ -160,7 +159,7 @@ export default function IntroducingJerinVisualStage({
           {/* Avatar Switcher */}
           <div className="flex items-center gap-1 px-1 border-r border-slate-200">
             {(["jerin", "alif", "riya", "farhan"] as StudentAvatar[]).map((avKey) => (
-              <button
+              <button type="button"
                 key={avKey}
                 onClick={() => {
                   setSelectedAvatar(avKey);
@@ -179,7 +178,7 @@ export default function IntroducingJerinVisualStage({
           </div>
 
           {/* Introduce Button */}
-          <button
+          <button type="button"
             onClick={handleSpeakIntro}
             className={`px-3 py-1 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all ${
               isApplauseActive
@@ -623,7 +622,7 @@ export default function IntroducingJerinVisualStage({
         </div>
 
         <div className="flex items-center gap-2">
-          <button
+          <button type="button"
             onClick={() => {
               setViewMode(viewMode === "campus" ? "id_card" : "campus");
               if (playChime) playChime("click");

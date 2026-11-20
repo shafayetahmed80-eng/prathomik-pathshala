@@ -134,8 +134,7 @@ export default function WaterPollutionVisualStage({
 
         {/* Tab switcher */}
         <div className="flex items-center gap-1 bg-white/90 p-1 rounded-2xl border border-teal-200 shadow-2xs">
-          <button
-            onClick={() => {
+          <button type="button" onClick={() => {
               setActiveTab("pond");
               playChime?.("click");
             }}
@@ -148,7 +147,7 @@ export default function WaterPollutionVisualStage({
             <Fish className="w-3.5 h-3.5" />
             <span>Pond Cleanup</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("rally");
               playChime?.("click");
@@ -162,7 +161,7 @@ export default function WaterPollutionVisualStage({
             <Megaphone className="w-3.5 h-3.5" />
             <span>Student Rally</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("diseases");
               playChime?.("click");
@@ -215,10 +214,13 @@ export default function WaterPollutionVisualStage({
                 {/* Floating trash items to click and remove */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full">
                   {trashList.map((item) => (
-                    <div
+                    <button
+                      type="button"
+                      disabled={item.cleaned}
+                      aria-label={`${item.name} (${item.bangla}) ${item.cleaned ? "পরিষ্কার করা হয়েছে" : "পরিষ্কার করতে চাপুন"}`}
                       key={item.id}
                       onClick={() => !item.cleaned && handleCleanTrash(item.id)}
-                      className={`p-2.5 rounded-xl border-2 transition-all flex flex-col items-center justify-center text-center cursor-pointer ${
+                      className={`p-2.5 rounded-xl border-2 transition-all flex flex-col items-center justify-center text-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                         item.cleaned
                           ? "border-emerald-400 bg-emerald-50/70 opacity-60 line-through scale-95"
                           : "border-rose-300 bg-white/90 hover:border-rose-500 hover:scale-105 shadow-md animate-pulse"
@@ -232,7 +234,7 @@ export default function WaterPollutionVisualStage({
                           Click to Clean 🗑️
                         </span>
                       )}
-                    </div>
+                    </button>
                   ))}
                 </div>
 
@@ -252,14 +254,14 @@ export default function WaterPollutionVisualStage({
             {/* Pond Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-teal-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
+                <button type="button"
                   onClick={handleResetPond}
                   className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>Reset Pond</span>
                 </button>
-                <button
+                <button type="button"
                   onClick={() =>
                     handleSpeak(
                       "One sunny afternoon, Shihab and Kaniz went to visit their village pond. They were saddened to see that the water looked murky and dirty."
@@ -333,11 +335,7 @@ export default function WaterPollutionVisualStage({
             {/* Rally Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-teal-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
-                  onClick={handleStartRally}
-                  disabled={isChanting}
-                  className="px-4 py-2 rounded-xl bg-linear-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
-                >
+                <button type="button" onClick={handleStartRally} disabled={isChanting} className="px-4 py-2 rounded-xl bg-linear-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer">
                   <Megaphone className="w-4 h-4" />
                   <span>Lead Student Rally (সচেতনতা র‍্যালি)</span>
                 </button>
@@ -392,7 +390,7 @@ export default function WaterPollutionVisualStage({
             {/* Audio Button */}
             <div className="p-2.5 bg-white rounded-xl border border-teal-200 text-[11px] text-teal-900 font-medium flex items-center justify-between shadow-2xs">
               <span>💡 Clean water is essential for life! Never throw rubbish into ponds.</span>
-              <button
+              <button type="button"
                 onClick={() =>
                   handleSpeak(
                     "Shihab told Kaniz that polluted water spreads cholera, typhoid and diarrhea. They decided to talk to the village school headteacher and arrange a student rally to stop water pollution."

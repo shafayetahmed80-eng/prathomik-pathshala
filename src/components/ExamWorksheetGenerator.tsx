@@ -1315,7 +1315,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddMcq}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1349,9 +1349,9 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="প্রশ্নটি উপরে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowUp className="w-3 h-3 text-slate-700" />
+                            <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
@@ -1359,18 +1359,18 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.mcq.length - 1}
                             title="নিচে নিন"
                             aria-label="প্রশ্নটি নিচে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowDown className="w-3 h-3 text-slate-700" />
+                            <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
                             onClick={() => handleDeleteMcq(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="প্রশ্নটি মুছে ফেলুন"
-                            className="p-1 rounded hover:bg-rose-100 text-rose-600"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       )}
@@ -1432,7 +1432,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddFill}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1465,9 +1465,9 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="শূন্যস্থান প্রশ্নটি উপরে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowUp className="w-3 h-3 text-slate-700" />
+                            <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
@@ -1475,18 +1475,18 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.fillInTheBlanks.length - 1}
                             title="নিচে নিন"
                             aria-label="শূন্যস্থান প্রশ্নটি নিচে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowDown className="w-3 h-3 text-slate-700" />
+                            <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
                             onClick={() => handleDeleteFill(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="শূন্যস্থান প্রশ্নটি মুছে ফেলুন"
-                            className="p-1 rounded hover:bg-rose-100 text-rose-600"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       )}
@@ -1516,7 +1516,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddTrueFalse}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1561,9 +1561,9 @@ ${questionsText.trim()}
                             onClick={() => handleDeleteTrueFalse(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="সত্য/মিথ্যা প্রশ্নটি মুছে ফেলুন"
-                            className="p-1 rounded hover:bg-rose-100 text-rose-600"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       )}
@@ -1592,7 +1592,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddMatchingRow}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> সারি যোগ
                     </button>
@@ -1646,9 +1646,9 @@ ${questionsText.trim()}
                               onClick={() => handleDeleteMatchingRow(idx)}
                               title="সারিটি মুছুন"
                               aria-label="মিলকরণের এই সারিটি মুছে ফেলুন"
-                              className="p-1 rounded hover:bg-rose-100 text-rose-600"
+                              className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                             >
-                              <Trash2 className="w-3 h-3" />
+                              <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           </td>
                         )}
@@ -1682,7 +1682,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddWord}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> শব্দ যোগ
                     </button>
@@ -1713,9 +1713,9 @@ ${questionsText.trim()}
                           onClick={() => handleDeleteWord(idx)}
                           title="শব্দটি মুছুন"
                           aria-label="শব্দার্থটি মুছে ফেলুন"
-                          className="p-1 rounded hover:bg-rose-100 text-rose-600 print:hidden shrink-0 ml-1"
+                          className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 print:hidden shrink-0 ml-1 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                         >
-                          <Trash2 className="w-3 h-3" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       )}
                     </div>
@@ -1745,7 +1745,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddYukta}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> যুক্তবর্ণ যোগ
                     </button>
@@ -1776,9 +1776,9 @@ ${questionsText.trim()}
                           onClick={() => handleDeleteYukta(idx)}
                           title="যুক্তবর্ণটি মুছুন"
                           aria-label="যুক্তবর্ণটি মুছে ফেলুন"
-                          className="p-1 rounded hover:bg-rose-100 text-rose-600 print:hidden"
+                          className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 print:hidden touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                         >
-                          <Trash2 className="w-3 h-3" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       )}
                     </div>
@@ -1917,7 +1917,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddShort}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1950,9 +1950,9 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="সংক্ষিপ্ত প্রশ্নটি উপরে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowUp className="w-3 h-3 text-slate-700" />
+                            <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
@@ -1960,18 +1960,18 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.shortQuestions.length - 1}
                             title="নিচে নিন"
                             aria-label="সংক্ষিপ্ত প্রশ্নটি নিচে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowDown className="w-3 h-3 text-slate-700" />
+                            <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
                             onClick={() => handleDeleteShort(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="সংক্ষিপ্ত প্রশ্নটি মুছে ফেলুন"
-                            className="p-1 rounded hover:bg-rose-100 text-rose-600"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       )}
@@ -2011,7 +2011,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddBroad}
-                      className="print:hidden text-[10px] bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2 py-0.5 rounded-md border border-sky-200 inline-flex items-center gap-1"
+                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -2044,9 +2044,9 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="বর্ণনামূলক প্রশ্নটি উপরে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowUp className="w-3 h-3 text-slate-700" />
+                            <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
@@ -2054,18 +2054,18 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.broadQuestions.length - 1}
                             title="নিচে নিন"
                             aria-label="বর্ণনামূলক প্রশ্নটি নিচে নিন"
-                            className="p-1 rounded hover:bg-slate-200 disabled:opacity-30"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
                           >
-                            <ArrowDown className="w-3 h-3 text-slate-700" />
+                            <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
                           <button
                             type="button"
                             onClick={() => handleDeleteBroad(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="বর্ণনামূলক প্রশ্নটি মুছে ফেলুন"
-                            className="p-1 rounded hover:bg-rose-100 text-rose-600"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                           >
-                            <Trash2 className="w-3 h-3" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       )}
@@ -2529,32 +2529,32 @@ ${questionsText.trim()}
       {/* 📱 Mobile Floating Sticky Bottom Action Bar (WCAG & Mobile Ergonomics) */}
       <nav 
         aria-label="মোবাইল কুইক অ্যাকশন কন্ট্রোল"
-        className="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 z-40 p-2.5 px-3 flex items-center justify-between shadow-2xl gap-2 print:hidden"
+        className="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 z-40 p-2.5 px-3 pb-[max(0.625rem,env(safe-area-inset-bottom))] flex items-center justify-between shadow-2xl gap-2 print:hidden"
       >
         <button
           type="button"
           onClick={() => handlePrint(false)}
-          className="flex-1 py-2 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-all cursor-pointer"
+          className="flex-1 min-h-[44px] py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
           aria-label="প্রশ্নপত্র প্রিন্ট বা PDF হিসেবে সংরক্ষণ"
         >
-          <Printer className="w-3.5 h-3.5" />
+          <Printer className="w-4 h-4" />
           <span>প্রিন্ট/PDF</span>
         </button>
 
         <button
           type="button"
           onClick={handleExportWord}
-          className="py-2 px-2.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs flex items-center justify-center gap-1 border border-blue-200 active:scale-95 transition-all cursor-pointer"
+          className="min-h-[44px] py-2 px-3 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs flex items-center justify-center gap-1.5 border border-blue-200 active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           aria-label="Microsoft Word (.doc) ফরম্যাটে ডাউনলোড"
         >
-          <FileDown className="w-3.5 h-3.5 text-blue-600" />
+          <FileDown className="w-4 h-4 text-blue-600" />
           <span>Word</span>
         </button>
 
         <button
           type="button"
           onClick={() => setShowAnswerKey(!showAnswerKey)}
-          className={`py-2 px-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1 border active:scale-95 transition-all cursor-pointer ${
+          className={`min-h-[44px] py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 border active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
             showAnswerKey
               ? "bg-emerald-100 text-emerald-900 border-emerald-300"
               : "bg-slate-100 text-slate-700 border-slate-200"
@@ -2562,14 +2562,14 @@ ${questionsText.trim()}
           aria-label={showAnswerKey ? "উত্তরমালা লুকান" : "উত্তরমালা দেখুন"}
           aria-pressed={showAnswerKey}
         >
-          {showAnswerKey ? <EyeOff className="w-3.5 h-3.5 text-emerald-700" /> : <Eye className="w-3.5 h-3.5 text-slate-600" />}
+          {showAnswerKey ? <EyeOff className="w-4 h-4 text-emerald-700" /> : <Eye className="w-4 h-4 text-slate-600" />}
           <span>উত্তরমালা</span>
         </button>
 
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer"
+          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
           title="উপরে স্ক্রোল করুন"
           aria-label="পৃষ্ঠার শুরুতে স্ক্রোল করুন"
         >

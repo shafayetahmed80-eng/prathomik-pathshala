@@ -188,9 +188,7 @@ export default function InclusiveEducationVisualStage({
 
         {/* Mode Selector Tabs */}
         <div className="flex items-center gap-1 bg-white/80 p-1 rounded-2xl border border-slate-200 shadow-2xs overflow-x-auto max-w-full">
-          <button
-            type="button"
-            onClick={() => {
+          <button type="button" onClick={() => {
               setActiveMode("ramp");
               playChime?.("click");
             }}
@@ -439,9 +437,11 @@ export default function InclusiveEducationVisualStage({
               {/* Center Game Field */}
               <div className="w-44 h-44 sm:w-56 sm:h-56 rounded-full border-2 border-dashed border-emerald-400 bg-emerald-100/50 flex items-center justify-center relative">
                 {/* Physical Education Teacher */}
-                <div
+                <button
+                  type="button"
+                  aria-label="বল পাস করুন: Teacher (শিক্ষক)"
                   onClick={() => handlePassBall("teacher")}
-                  className={`absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 ${
+                  className={`absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                     ballHolder === "teacher" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
                   }`}
                 >
@@ -452,12 +452,14 @@ export default function InclusiveEducationVisualStage({
                   {ballHolder === "teacher" && (
                     <span className="absolute -bottom-2 text-xl animate-bounce">⚽</span>
                   )}
-                </div>
+                </button>
 
                 {/* Mita (Left) */}
-                <div
+                <button
+                  type="button"
+                  aria-label="বল পাস করুন: Mita (মিতা)"
                   onClick={() => handlePassBall("mita")}
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 ${
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                     ballHolder === "mita" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
                   }`}
                 >
@@ -468,12 +470,14 @@ export default function InclusiveEducationVisualStage({
                   {ballHolder === "mita" && (
                     <span className="absolute -bottom-2 text-xl animate-bounce">⚽</span>
                   )}
-                </div>
+                </button>
 
                 {/* Porshi (Right) */}
-                <div
+                <button
+                  type="button"
+                  aria-label="বল পাস করুন: Porshi (পড়শী)"
                   onClick={() => handlePassBall("porshi")}
-                  className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 ${
+                  className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
                     ballHolder === "porshi" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
                   }`}
                 >
@@ -484,12 +488,14 @@ export default function InclusiveEducationVisualStage({
                   {ballHolder === "porshi" && (
                     <span className="absolute -bottom-2 text-xl animate-bounce">⚽</span>
                   )}
-                </div>
+                </button>
 
                 {/* Rani in Wheelchair (Center Bottom Focus) */}
-                <div
+                <button
+                  type="button"
+                  aria-label="বল পাস করুন: Rani (রানি)"
                   onClick={() => handlePassBall("rani")}
-                  className={`absolute -bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer transition-transform hover:scale-110 ${
+                  className={`absolute -bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                     ballHolder === "rani" ? "ring-4 ring-emerald-500 rounded-2xl p-1.5 bg-emerald-100 shadow-md" : ""
                   }`}
                 >
@@ -505,7 +511,7 @@ export default function InclusiveEducationVisualStage({
                     <Star className="w-3 h-3 fill-current text-amber-300" />
                     <span>Rani (রানি)</span>
                   </span>
-                </div>
+                </button>
               </div>
             </div>
 
@@ -515,9 +521,7 @@ export default function InclusiveEducationVisualStage({
                 👉 বন্ধুদের নামের ওপর ক্লিক করে রানিকে বল পাস করো:
               </p>
               <div className="flex items-center gap-1.5 flex-wrap">
-                <button
-                  type="button"
-                  onClick={() => handlePassBall("rani")}
+                <button type="button" onClick={() => handlePassBall("rani")}
                   className="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-xs flex items-center gap-1"
                 >
                   <span>⚽ রানিকে বল দাও!</span>
@@ -635,10 +639,7 @@ export default function InclusiveEducationVisualStage({
 
               {/* Hotspot Markers */}
               {HOTSPOTS.map((spot) => (
-                <button
-                  key={spot.id}
-                  type="button"
-                  onClick={() => {
+                <button key={spot.id} type="button" onClick={() => {
                     setActiveHotspot(spot);
                     playChime?.("click");
                     handleSpeak(`${spot.name}. ${spot.bangla}.`);

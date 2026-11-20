@@ -74,8 +74,7 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-rose-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("symptoms"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("symptoms"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "symptoms" 
                 ? "bg-rose-600 text-white shadow-xs" 
@@ -84,7 +83,7 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
           >
             🤒 লক্ষণ ও ফ্লু
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("prescriptions"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "prescriptions" 
@@ -94,7 +93,7 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
           >
             🩺 ডাক্তারের ৫ পরামর্শ
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("hygiene"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "hygiene" 
@@ -161,7 +160,7 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("Sima is at home today. She didn't go to school because she has a cough, a sore throat, and a fever. She has the flu. The doctor told her what to do to get well soon!");
@@ -181,7 +180,7 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
                 <Sparkles className="w-4 h-4" />
                 <span>Doctor's Recovery Checklist ({completedCount}/5 Rules Followed)</span>
               </span>
-              <button
+              <button type="button"
                 onClick={() => {
                   setAdviceChecked({
                     energyFood: true,
@@ -199,10 +198,13 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
             </div>
 
             {/* 5 Prescription Items */}
-            <div className="space-y-2">
-              <div 
+            <div className="space-y-2" role="group" aria-label="ডাক্তারের ৫টি পরামর্শ চেকলিস্ট">
+              <button 
+                type="button"
+                role="checkbox"
+                aria-checked={adviceChecked.energyFood}
                 onClick={() => toggleAdvice("energyFood")}
-                className={`p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                className={`w-full text-left p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                   adviceChecked.energyFood ? "bg-amber-950/40 border-amber-500 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
                 }`}
               >
@@ -214,11 +216,14 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
                   </div>
                 </div>
                 <CheckCircle2 className={`w-4 h-4 shrink-0 ${adviceChecked.energyFood ? "text-amber-400" : "text-slate-600"}`} />
-              </div>
+              </button>
 
-              <div 
+              <button 
+                type="button"
+                role="checkbox"
+                aria-checked={adviceChecked.stayHome}
                 onClick={() => toggleAdvice("stayHome")}
-                className={`p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                className={`w-full text-left p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   adviceChecked.stayHome ? "bg-indigo-950/40 border-indigo-500 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
                 }`}
               >
@@ -230,11 +235,14 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
                   </div>
                 </div>
                 <CheckCircle2 className={`w-4 h-4 shrink-0 ${adviceChecked.stayHome ? "text-indigo-400" : "text-slate-600"}`} />
-              </div>
+              </button>
 
-              <div 
+              <button 
+                type="button"
+                role="checkbox"
+                aria-checked={adviceChecked.waterJuice}
                 onClick={() => toggleAdvice("waterJuice")}
-                className={`p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                className={`w-full text-left p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
                   adviceChecked.waterJuice ? "bg-sky-950/40 border-sky-500 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
                 }`}
               >
@@ -246,11 +254,14 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
                   </div>
                 </div>
                 <CheckCircle2 className={`w-4 h-4 shrink-0 ${adviceChecked.waterJuice ? "text-sky-400" : "text-slate-600"}`} />
-              </div>
+              </button>
 
-              <div 
+              <button 
+                type="button"
+                role="checkbox"
+                aria-checked={adviceChecked.tissueCover}
                 onClick={() => toggleAdvice("tissueCover")}
-                className={`p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                className={`w-full text-left p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   adviceChecked.tissueCover ? "bg-rose-950/40 border-rose-500 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
                 }`}
               >
@@ -262,11 +273,14 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
                   </div>
                 </div>
                 <CheckCircle2 className={`w-4 h-4 shrink-0 ${adviceChecked.tissueCover ? "text-rose-400" : "text-slate-600"}`} />
-              </div>
+              </button>
 
-              <div 
+              <button 
+                type="button"
+                role="checkbox"
+                aria-checked={adviceChecked.separateUtensils}
                 onClick={() => toggleAdvice("separateUtensils")}
-                className={`p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                className={`w-full text-left p-2.5 rounded-xl border cursor-pointer transition-all flex items-center justify-between touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
                   adviceChecked.separateUtensils ? "bg-emerald-950/40 border-emerald-500 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
                 }`}
               >
@@ -278,10 +292,10 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
                   </div>
                 </div>
                 <CheckCircle2 className={`w-4 h-4 shrink-0 ${adviceChecked.separateUtensils ? "text-emerald-400" : "text-slate-600"}`} />
-              </div>
+              </button>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Doctor's Advice: Eat energy food, rest at home, drink plenty of water and juice, cover your sneeze with a tissue, wash your hands, and use separate plates and cups!");

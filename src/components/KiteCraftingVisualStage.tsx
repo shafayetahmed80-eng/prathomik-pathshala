@@ -184,9 +184,7 @@ export default function KiteCraftingVisualStage({
             { step: 5, label: "৫. সুতা ও লেজ", icon: "🎀" },
             { step: 6, label: "🚀 ৬. ওড়াও!", icon: "🪁" },
           ].map((item) => (
-            <button
-              key={item.step}
-              onClick={() => handleStepSelect(item.step)}
+            <button type="button" key={item.step} onClick={() => handleStepSelect(item.step)}
               className={`px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-black transition-all flex items-center gap-1 shrink-0 ${
                 activeStep === item.step
                   ? "bg-sky-600 text-white shadow-xs scale-102"
@@ -205,7 +203,7 @@ export default function KiteCraftingVisualStage({
           <div className="flex items-center gap-1 px-1 border-r border-slate-200">
             <Palette className="w-3.5 h-3.5 text-slate-500" />
             {(Object.keys(colorSchemes) as KiteColor[]).map((cKey) => (
-              <button
+              <button type="button"
                 key={cKey}
                 onClick={() => {
                   setKiteColor(cKey);
@@ -221,7 +219,7 @@ export default function KiteCraftingVisualStage({
 
           {/* Wind Gust button in flying mode */}
           {isFlyingMode ? (
-            <button
+            <button type="button"
               onClick={triggerWindGust}
               className={`px-2 py-0.5 rounded-xl text-[10px] font-black flex items-center gap-1 transition-all ${
                 windGustActive
@@ -233,7 +231,7 @@ export default function KiteCraftingVisualStage({
               <span>দমকা হাওয়া!</span>
             </button>
           ) : (
-            <button
+            <button type="button"
               onClick={() => handleStepSelect(6)}
               className="px-2 py-0.5 rounded-xl text-[10px] font-black bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-1 shadow-2xs"
             >
@@ -781,7 +779,7 @@ export default function KiteCraftingVisualStage({
 
         <div className="flex items-center gap-2">
           {!isFlyingMode && (
-            <button
+            <button type="button"
               onClick={() => handleStepSelect(Math.min(activeStep + 1, 6))}
               className="px-2.5 py-1 rounded-xl text-xs font-black bg-sky-600 text-white hover:bg-sky-700 active:scale-95 transition-all shadow-2xs"
             >

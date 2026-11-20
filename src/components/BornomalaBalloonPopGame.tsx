@@ -672,9 +672,11 @@ export default function BornomalaBalloonPopGame({
           const is3Digit = balloon.item.char.length >= 3;
 
           return (
-            <div
+            <button
               key={balloon.id}
+              type="button"
               onClick={() => handleBalloonClick(balloon)}
+              aria-label={`বেলুন অক্ষর: ${balloon.item.char} - পপ করতে চাপুন`}
               style={{
                 left: `calc(${balloon.x}% + ${swayX}px)`,
                 top: `${balloon.y}%`,
@@ -692,7 +694,7 @@ export default function BornomalaBalloonPopGame({
                   ? "transform 0.15s ease-in-out"
                   : "none",
               }}
-              className="absolute z-10 cursor-pointer touch-none group"
+              className="absolute z-10 cursor-pointer touch-none group bg-transparent border-none p-0 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-400 rounded-full"
             >
               {/* Balloon Egg Body */}
               <div
@@ -732,7 +734,7 @@ export default function BornomalaBalloonPopGame({
                   <path d="M8 0 Q 3 8 9 14 T 8 24" />
                 </svg>
               </div>
-            </div>
+            </button>
           );
         })}
       </div>

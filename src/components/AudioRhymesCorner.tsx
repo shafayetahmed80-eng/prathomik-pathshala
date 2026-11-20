@@ -792,7 +792,8 @@ export default function AudioRhymesCorner() {
               <button
                 type="button"
                 onClick={() => setSelectedEnVoice("ana")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                aria-pressed={selectedEnVoice === "ana"}
+                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   selectedEnVoice === "ana"
                     ? "bg-rose-600 text-white shadow-xs"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
@@ -804,7 +805,8 @@ export default function AudioRhymesCorner() {
               <button
                 type="button"
                 onClick={() => setSelectedEnVoice("guy")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                aria-pressed={selectedEnVoice === "guy"}
+                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   selectedEnVoice === "guy"
                     ? "bg-rose-600 text-white shadow-xs"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
@@ -819,7 +821,8 @@ export default function AudioRhymesCorner() {
               <button
                 type="button"
                 onClick={() => setSelectedBnVoice("nabanita")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                aria-pressed={selectedBnVoice === "nabanita"}
+                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   selectedBnVoice === "nabanita"
                     ? "bg-rose-600 text-white shadow-xs"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
@@ -830,7 +833,8 @@ export default function AudioRhymesCorner() {
               <button
                 type="button"
                 onClick={() => setSelectedBnVoice("pradeep")}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                aria-pressed={selectedBnVoice === "pradeep"}
+                className={`px-3 py-1.5 min-h-[36px] rounded-xl text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   selectedBnVoice === "pradeep"
                     ? "bg-rose-600 text-white shadow-xs"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-100"
@@ -851,7 +855,8 @@ export default function AudioRhymesCorner() {
                 key={opt.value}
                 type="button"
                 onClick={() => setPlaybackSpeed(opt.value)}
-                className={`px-2 py-1 rounded-lg text-xs font-bold transition-all ${
+                aria-pressed={playbackSpeed === opt.value}
+                className={`px-2.5 py-1.5 min-h-[34px] min-w-[34px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
                   playbackSpeed === opt.value
                     ? "bg-rose-600 text-white shadow-xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -948,13 +953,16 @@ export default function AudioRhymesCorner() {
             const words = line.split(" ").filter(Boolean);
 
             return (
-              <div
+              <button
                 key={idx}
+                type="button"
                 onClick={() => {
                   stopAudio();
                   speakLine(idx);
                 }}
-                className={`transition-all duration-200 py-1.5 px-3 rounded-2xl cursor-pointer hover:bg-rose-50/70 select-none ${
+                aria-label={`লাইন ${idx + 1}: ${line} - শুনতে বা অনুশীলন করতে ট্যাপ করুন`}
+                aria-current={isCurrentLine ? "true" : undefined}
+                className={`w-full text-center transition-all duration-200 py-2 px-3 rounded-2xl cursor-pointer hover:bg-rose-50/70 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 min-h-[44px] flex items-center justify-center ${
                   isCurrentLine
                     ? "bg-rose-100/90 border border-rose-300 shadow-xs ring-2 ring-rose-300/40 scale-102"
                     : currentLineIndex > idx
@@ -996,7 +1004,7 @@ export default function AudioRhymesCorner() {
                     {line}
                   </p>
                 )}
-              </div>
+              </button>
             );
           })}
         </div>

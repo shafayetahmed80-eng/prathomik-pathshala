@@ -68,8 +68,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-red-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("journey"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("journey"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "journey" 
                 ? "bg-red-600 text-white shadow-xs" 
@@ -78,7 +77,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
           >
             👨‍🚒 রাজুর কর্মজীবন
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("workshop"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "workshop" 
@@ -88,7 +87,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
           >
             🏫 স্কুল নিরাপত্তা কর্মশালা
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("occupations"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "occupations" 
@@ -160,7 +159,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("Now Raju is a full-time firefighter. Most of the time his work is putting out fires, but he also teaches new firefighters about safety. He likes teaching very much!");
@@ -190,7 +189,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
                 </div>
 
                 {!drillCompleted ? (
-                  <button
+                  <button type="button"
                     onClick={handleStartDrill}
                     className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
                   >
@@ -198,7 +197,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
                     <span>মহড়া চালান (Run Safety Drill)</span>
                   </button>
                 ) : (
-                  <button
+                  <button type="button"
                     onClick={handleResetDrill}
                     className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1.5"
                   >
@@ -273,7 +272,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Every occupation that serves human lives with honesty and dedication is noble. Volunteering without money shows the highest virtue of humanity!");

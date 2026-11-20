@@ -156,8 +156,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-cyan-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("reef"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("reef"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "reef" 
                 ? "bg-cyan-600 text-white shadow-xs" 
@@ -166,7 +165,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
           >
             🪸 প্রবাল ও সৈকত
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("turtle"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "turtle" 
@@ -176,7 +175,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
           >
             🐢 কচ্ছপের জীবনচক্র
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("voyage"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "voyage" 
@@ -204,7 +203,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
                   The water in the Bay of Bengal is clean and blue. You can see corals of different shapes and colours!
                 </p>
               </div>
-              <button 
+              <button type="button" 
                 onClick={() => {
                   playChime("click");
                   handleSpeak("Saint Martin's Island is the only coral island in Bangladesh. The water in the Bay of Bengal is clean and blue!");
@@ -312,8 +311,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
 
               {/* Action buttons */}
               <div className="flex items-center justify-between">
-                <button
-                  onClick={() => {
+                <button type="button" onClick={() => {
                     playChime("click");
                     handleSpeak(turtleStages[turtleStep].title + ". " + turtleStages[turtleStep].desc);
                   }}
@@ -323,7 +321,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
                   উচ্চারণ শুনুন
                 </button>
 
-                <button
+                <button type="button"
                   onClick={handleNextTurtleStep}
                   className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-xs font-bold text-white shadow-xs flex items-center gap-1.5"
                 >
@@ -384,7 +382,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
               {/* Start / Reset voyage controls */}
               <div className="flex items-center justify-between pt-1">
                 {voyageProgress === 0 ? (
-                  <button
+                  <button type="button"
                     onClick={handleStartVoyage}
                     className="w-full py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2"
                   >
@@ -400,7 +398,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
                     <span className="text-xs text-emerald-300 font-bold">
                       🎉 সেন্ট মার্টিন্স দ্বীপে স্বাগতম! প্রবাল ও নীল জলরাশি উপভোগ করো!
                     </span>
-                    <button
+                    <button type="button"
                       onClick={handleResetVoyage}
                       className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700"
                     >

@@ -92,8 +92,7 @@ export const SagarsWeekVisualStage: React.FC<SagarsWeekVisualStageProps> = ({
 
         {/* Filter Toggle Buttons */}
         <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-indigo-200 shadow-2xs">
-          <button
-            onClick={() => { setActiveMode("all"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveMode("all"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeMode === "all" 
                 ? "bg-indigo-600 text-white shadow-xs" 
@@ -102,7 +101,7 @@ export const SagarsWeekVisualStage: React.FC<SagarsWeekVisualStageProps> = ({
           >
             সব দিন
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveMode("weekday"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeMode === "weekday" 
@@ -112,7 +111,7 @@ export const SagarsWeekVisualStage: React.FC<SagarsWeekVisualStageProps> = ({
           >
             কাজের দিন (Weekdays)
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveMode("weekend"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeMode === "weekend" 
@@ -132,7 +131,7 @@ export const SagarsWeekVisualStage: React.FC<SagarsWeekVisualStageProps> = ({
           {filteredActivities.map((a) => {
             const isSelected = selectedAct.id === a.id;
             return (
-              <button
+              <button type="button"
                 key={a.id}
                 onClick={() => handleSelectActivity(a)}
                 className={`p-2 rounded-xl text-center border-2 transition-all flex flex-col items-center justify-between ${
@@ -168,7 +167,7 @@ export const SagarsWeekVisualStage: React.FC<SagarsWeekVisualStageProps> = ({
                   </div>
                   <h4 className="text-lg sm:text-xl font-black text-slate-900 mt-0.5 flex items-center gap-2">
                     {selectedAct.title} ({selectedAct.bangla})
-                    <button
+                    <button type="button"
                       onClick={() => handleSpeak(selectedAct.detailsEn)}
                       className="p-1 rounded-full text-indigo-600 hover:bg-indigo-50 transition-colors"
                       title="শুনুন"
@@ -197,7 +196,7 @@ export const SagarsWeekVisualStage: React.FC<SagarsWeekVisualStageProps> = ({
             <span className="font-medium text-indigo-800">
               ✓ সাগরের প্রিয় বিষয়: <strong>বাংলা (Bangla is his favourite subject)</strong>।
             </span>
-            <button
+            <button type="button"
               onClick={() => {
                 const currentIndex = filteredActivities.findIndex(a => a.id === selectedAct.id);
                 const nextIndex = (currentIndex + 1) % filteredActivities.length;

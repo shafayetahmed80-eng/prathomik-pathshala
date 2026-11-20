@@ -179,8 +179,18 @@ export default function ExamBlueprintPanel({
     <div className="bg-white rounded-2xl border border-slate-200 shadow-xs print:hidden overflow-hidden transition-all duration-300 mb-5">
       {/* Header Bar */}
       <div 
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+        aria-label="ডাইনামিক প্রশ্ন কাঠামো ও নম্বর বিন্যাস কন্ট্রোলার টগল করুন"
         onClick={() => setIsOpen(!isOpen)}
-        className="px-4 sm:px-6 py-3.5 bg-gradient-to-r from-slate-50 via-emerald-50/40 to-teal-50/30 border-b border-slate-200/80 flex items-center justify-between cursor-pointer select-none"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
+        className="px-4 sm:px-6 py-3.5 bg-gradient-to-r from-slate-50 via-emerald-50/40 to-teal-50/30 border-b border-slate-200/80 flex items-center justify-between cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
       >
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
@@ -201,7 +211,7 @@ export default function ExamBlueprintPanel({
           </div>
         </div>
 
-        {/* Live Badges and Toggle Button */}
+        {/* Live Badges and Toggle Indicator */}
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <div className="px-2.5 py-1 rounded-lg bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold flex items-center gap-1.5">
@@ -214,13 +224,12 @@ export default function ExamBlueprintPanel({
             </div>
           </div>
           
-          <button 
-            type="button"
-            className="p-1.5 rounded-lg hover:bg-slate-200/60 text-slate-500 transition-colors"
-            aria-label={isOpen ? "কন্ট্রোলার সংকুচিত করুন" : "কন্ট্রোলার প্রসারিত করুন"}
+          <span 
+            className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-slate-500 transition-colors flex items-center justify-center"
+            aria-hidden="true"
           >
             {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
-          </button>
+          </span>
         </div>
       </div>
 
@@ -278,8 +287,11 @@ export default function ExamBlueprintPanel({
                 <div className="flex items-center gap-3">
                   <button
                     type="button"
+                    role="checkbox"
+                    aria-checked={seenConfig.enabled}
+                    aria-label="Seen Comprehension পাঠ্যাংশ অন্তর্ভুক্ত করুন"
                     onClick={handleToggleSeen}
-                    className="p-1 rounded text-amber-700 hover:text-amber-800 focus:outline-none cursor-pointer"
+                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-amber-700 hover:text-amber-800 touch-manipulation flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
                   >
                     {seenConfig.enabled ? (
                       <CheckSquare className="w-5 h-5 text-amber-600" />
@@ -634,21 +646,21 @@ export default function ExamBlueprintPanel({
                     }`}
                   >
                     {/* Left: Checkbox + Label */}
-                    <div 
+                    <button 
+                      type="button"
+                      role="checkbox"
+                      aria-checked={cat.enabled}
+                      aria-label={`${cat.label} ${cat.enabled ? "বাদ দিন" : "যুক্ত করুন"}`}
                       onClick={() => handleToggleCategory(cat.key)}
-                      className="flex items-center gap-2.5 cursor-pointer select-none flex-1 min-w-0"
+                      className="flex items-center gap-2.5 cursor-pointer select-none flex-1 min-w-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-lg p-1"
                     >
-                      <button
-                        type="button"
-                        aria-label={cat.enabled ? `${cat.label} বন্ধ করুন` : `${cat.label} চালু করুন`}
-                        className="text-emerald-600 focus:outline-hidden"
-                      >
+                      <span className="text-emerald-600 shrink-0">
                         {cat.enabled ? (
-                          <CheckSquare className="w-5 h-5 text-emerald-600 fill-emerald-50 shrink-0" />
+                          <CheckSquare className="w-5 h-5 text-emerald-600 fill-emerald-50" />
                         ) : (
-                          <Square className="w-5 h-5 text-slate-400 shrink-0" />
+                          <Square className="w-5 h-5 text-slate-400" />
                         )}
-                      </button>
+                      </span>
                       <div className="flex-1 min-w-0">
                         <span className={`text-xs font-bold block ${
                           cat.enabled ? "text-slate-800" : "text-slate-500 line-through"
@@ -661,7 +673,7 @@ export default function ExamBlueprintPanel({
                           </span>
                         )}
                       </div>
-                    </div>
+                    </button>
 
                     {/* Right: Steppers + Marks Input + Subtotal */}
                     {cat.enabled && (

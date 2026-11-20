@@ -1327,11 +1327,11 @@ export default function StudentCertificateStudio() {
         </div>
 
         {/* Zoom Controls with Auto-Fit */}
-        <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs self-start sm:self-auto">
+        <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs self-start sm:self-auto" role="group" aria-label="সনদপত্র প্রিভিউ জুম কন্ট্রোল">
           <button
             type="button"
             onClick={handleAutoFit}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 transition-colors"
+            className="inline-flex items-center gap-1 px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             title="স্ক্রিনের সাথে অটো-ফিট করুন"
           >
             <Maximize2 className="w-3.5 h-3.5" />
@@ -1341,7 +1341,7 @@ export default function StudentCertificateStudio() {
           <button
             type="button"
             onClick={() => setZoomScale((prev) => Math.max(30, prev - 10))}
-            className="p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            className="p-2 min-w-[38px] min-h-[38px] rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
             title="জুম আউট"
             aria-label="জুম আউট"
           >
@@ -1353,7 +1353,7 @@ export default function StudentCertificateStudio() {
           <button
             type="button"
             onClick={() => setZoomScale((prev) => Math.min(130, prev + 10))}
-            className="p-1 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+            className="p-2 min-w-[38px] min-h-[38px] rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
             title="জুম ইন"
             aria-label="জুম ইন"
           >
@@ -1362,7 +1362,7 @@ export default function StudentCertificateStudio() {
           <button
             type="button"
             onClick={() => setZoomScale(100)}
-            className="px-2 py-0.5 rounded-lg text-[11px] font-bold text-slate-600 hover:bg-slate-100 transition-colors"
+            className="px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
           >
             ১০০%
           </button>

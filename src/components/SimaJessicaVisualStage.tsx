@@ -130,8 +130,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-blue-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("dialogue"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("dialogue"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "dialogue" 
                 ? "bg-blue-600 text-white shadow-xs" 
@@ -140,7 +139,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
           >
             💬 কথোপকথন (Dialogue)
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("platform"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "platform" 
@@ -150,7 +149,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
           >
             🚉 প্ল্যাটফর্ম ও ঘড়ি
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("phrases"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "phrases" 
@@ -182,7 +181,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
                   </div>
                 </div>
 
-                <button
+                <button type="button"
                   onClick={handleNextDialogue}
                   className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
                 >
@@ -204,7 +203,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
                 <div className="bg-slate-900/95 px-4 py-3 rounded-2xl border-2 border-blue-400 max-w-[260px] text-center shadow-xl">
                   <div className="flex items-center justify-center gap-1.5 mb-1">
                     <span className="text-xs font-black text-amber-300">{currentLine.speaker}:</span>
-                    <button
+                    <button type="button"
                       onClick={() => { playChime("pop"); handleSpeak(currentLine.text); }}
                       className="p-1 rounded bg-blue-500/20 hover:bg-blue-500 text-blue-200 hover:text-white"
                     >
@@ -229,8 +228,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
             </div>
 
             {/* Quick Play Audio Button */}
-            <button
-              onClick={() => {
+            <button type="button" onClick={() => {
                 playChime("click");
                 handleSpeak("Sima and Jessica are at the railway station. They are talking. Sima is going to Sylhet with her family. Jessica is from the United Kingdom on holiday.");
               }}
@@ -259,7 +257,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
                 </div>
 
                 {!trainBoarded ? (
-                  <button
+                  <button type="button"
                     onClick={handleBoardTrain}
                     className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-bounce"
                   >
@@ -267,7 +265,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
                     <span>ট্রেনে উঠুন (Board Train!)</span>
                   </button>
                 ) : (
-                  <button
+                  <button type="button"
                     onClick={handleResetBoarding}
                     className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1.5"
                   >
@@ -348,7 +346,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Remember these polite expressions whenever you travel: May I introduce myself? Have a good journey! Nice meeting you! Goodbye!");

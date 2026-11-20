@@ -120,8 +120,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-emerald-200 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("card"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("card"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "card" 
                 ? "bg-emerald-600 text-white shadow-xs" 
@@ -131,7 +130,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
             <CreditCard className="w-3.5 h-3.5" />
             <span>লাইব্রেরি কার্ড</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("borrow"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "borrow" 
@@ -142,7 +141,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
             <BookMarked className="w-3.5 h-3.5" />
             <span>বই ধার (৭ দিন)</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("rules"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "rules" 
@@ -153,7 +152,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
             <VolumeX className="w-3.5 h-3.5" />
             <span>নীরবতা ও নিয়ম</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("care"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "care" 
@@ -240,7 +239,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-slate-700">ছবি পরিবর্তন:</span>
                 {["👧", "👦", "🧒", "👧🏽", "🧑"].map((av) => (
-                  <button
+                  <button type="button"
                     key={av}
                     onClick={() => { setSelectedAvatar(av); playChime("pop"); }}
                     className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm border transition-all ${
@@ -252,7 +251,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
                 ))}
               </div>
 
-              <button
+              <button type="button"
                 onClick={() => handleSpeak(`This is ${studentName}'s library card. She reads in Class 3, roll number ${studentRoll}.`)}
                 className="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 flex items-center gap-1 shrink-0"
               >
@@ -285,10 +284,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
 
               <div className="flex items-center gap-2 shrink-0">
                 {!isReturned ? (
-                  <button
-                    onClick={handleReturnBook}
-                    className="px-3.5 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all"
-                  >
+                  <button type="button" onClick={handleReturnBook} className="px-3.5 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all">
                     <CheckCircle2 className="w-4 h-4" />
                     <span>বই ফেরত দিন (Return Book)</span>
                   </button>
@@ -389,7 +385,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
 
               {/* Sound Test Buttons */}
               <div className="flex items-center gap-2 pt-1">
-                <button
+                <button type="button"
                   onClick={() => {
                     setSoundLevel(15);
                     setSoundFeedback("গভীর নীরবতা! সবাই মনোযোগ দিয়ে বই পড়ছে।");
@@ -399,7 +395,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
                 >
                   🤫 পিন-ড্রপ সাইলেন্স
                 </button>
-                <button
+                <button type="button"
                   onClick={() => {
                     setSoundLevel(45);
                     setSoundFeedback("সাবধান! লাইব্রেরিতে কথা বলা বা শব্দ করা নিষেধ!");
@@ -454,7 +450,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
                 </p>
               </div>
 
-              <button
+              <button type="button"
                 onClick={() => handleSpeak("We should turn the pages gently and keep the books clean. Reading books opens our minds.")}
                 className="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 flex items-center gap-1 shrink-0"
               >

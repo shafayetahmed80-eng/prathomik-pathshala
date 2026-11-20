@@ -182,7 +182,8 @@ export default function BornomalaFlashcardModal({
           <button
             type="button"
             onClick={handleClose}
-            className="p-2 rounded-xl text-slate-500 hover:bg-slate-200 transition-colors"
+            aria-label="ফ্ল্যাশ কার্ড বন্ধ করুন"
+            className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-slate-500 hover:bg-slate-200 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500"
           >
             <X className="w-5 h-5" />
           </button>
@@ -253,7 +254,7 @@ export default function BornomalaFlashcardModal({
           <button
             type="button"
             onClick={handlePrev}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 active:scale-95"
             title="আগের বর্ণ (কিবোর্ড: ⬅️)"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -268,7 +269,8 @@ export default function BornomalaFlashcardModal({
                 unlockMobileAudio({ primeSilent: true });
                 setIsPlaying(!isPlaying);
               }}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all ${
+              aria-pressed={isPlaying}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 active:scale-95 ${
                 isPlaying
                   ? "bg-amber-500 text-white animate-pulse"
                   : "bg-slate-800 hover:bg-slate-900 text-white"
@@ -294,7 +296,7 @@ export default function BornomalaFlashcardModal({
           <button
             type="button"
             onClick={handleNext}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all"
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 active:scale-95"
             title="পরের বর্ণ (কিবোর্ড: ➡️)"
           >
             <span>পরের বর্ণ</span>

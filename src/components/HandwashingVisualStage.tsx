@@ -133,9 +133,7 @@ export default function HandwashingVisualStage({
             { step: 5, label: "৫. বুড়ো আঙুল", icon: "👍" },
             { step: 6, label: "✨ ৬. নখ ও কবজি", icon: "🧼" },
           ].map((item) => (
-            <button
-              key={item.step}
-              onClick={() => handleStepSelect(item.step)}
+            <button type="button" key={item.step} onClick={() => handleStepSelect(item.step)}
               className={`px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-black transition-all flex items-center gap-1 shrink-0 ${
                 activeStep === item.step
                   ? "bg-teal-600 text-white shadow-xs scale-102"
@@ -151,7 +149,7 @@ export default function HandwashingVisualStage({
         {/* Action Controls */}
         <div className="inline-flex items-center gap-1.5 p-1 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/80 shadow-2xs pointer-events-auto">
           {/* Water tap toggle */}
-          <button
+          <button type="button"
             onClick={() => {
               setIsWaterRunning(!isWaterRunning);
               if (playChime) playChime("click");
@@ -168,7 +166,7 @@ export default function HandwashingVisualStage({
           </button>
 
           {/* Sound cue */}
-          <button
+          <button type="button"
             onClick={() => {
               if (playChime) playChime("fanfare");
               handleSpeak(stepDescriptions[activeStep].speech);
@@ -495,7 +493,7 @@ export default function HandwashingVisualStage({
 
         <div className="flex items-center gap-2">
           {activeStep < 6 && (
-            <button
+            <button type="button"
               onClick={() => handleStepSelect(activeStep + 1)}
               className="px-2.5 py-1 rounded-xl text-xs font-black bg-teal-600 text-white hover:bg-teal-700 active:scale-95 transition-all shadow-2xs"
             >

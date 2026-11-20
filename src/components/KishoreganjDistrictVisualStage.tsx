@@ -176,8 +176,7 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-teal-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("stats"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("stats"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "stats" 
                 ? "bg-teal-600 text-white shadow-xs" 
@@ -186,7 +185,7 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
           >
             📊 জেলার তথ্য
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("landmarks"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "landmarks" 
@@ -196,7 +195,7 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
           >
             🕌 দর্শনীয় স্থান
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("personalities"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "personalities" 
@@ -223,7 +222,7 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
                   The name Kishoreganj comes from an old landlord known as <strong>Brojosundor Roy</strong> or <strong>Brojokishore Roy</strong>.
                 </p>
               </div>
-              <button 
+              <button type="button" 
                 onClick={() => {
                   playChime("click");
                   handleSpeak("The name Kishoreganj comes from the name of an old landlord known as Brojosundor Roy or Brojokishore Roy.");
@@ -264,13 +263,12 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
                 <span className="font-bold">কুইজ:</span> কিশোরগঞ্জ শহরের বুক চিরে কোন নদী বয়ে গেছে?
               </div>
               <div className="flex gap-2">
-                <button
-                  onClick={() => handleQuiz(false)}
+                <button type="button" onClick={() => handleQuiz(false)}
                   className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 border border-slate-700"
                 >
                   পদ্মা
                 </button>
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime("fanfare");
                     handleSpeak("Correct! The river Narasunda flows through Kishoreganj town!");
@@ -334,7 +332,7 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
                 <span className="text-[11px] text-slate-300 italic">
                   💡 {landmarks[selectedLandmark].fact}
                 </span>
-                <button
+                <button type="button"
                   onClick={() => {
                     playChime("click");
                     handleSpeak(landmarks[selectedLandmark].name + ". " + landmarks[selectedLandmark].desc);
@@ -381,8 +379,7 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
                   </div>
                   <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-teal-200/80">
                     <span className="truncate">{person.banglaText}</span>
-                    <button
-                      onClick={(e) => {
+                    <button type="button" onClick={(e) => {
                         e.stopPropagation();
                         playChime("click");
                         handleSpeak(person.name + ". " + person.role + ". " + person.achievement);
@@ -403,7 +400,7 @@ export const KishoreganjDistrictVisualStage: React.FC<KishoreganjDistrictVisualS
                 <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
                 <span>কিশোরগঞ্জ বাংলাদেশের শিল্প, সাহিত্য ও স্বাধীনতার এক অনন্য গৌরবগাথা!</span>
               </div>
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("fanfare");
                   handleSpeak("Kishoreganj is proud of its great legends: Chandrabati, Sukumar Ray, Zainul Abedin, and Syed Nazrul Islam!");

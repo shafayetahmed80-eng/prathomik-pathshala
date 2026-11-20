@@ -164,8 +164,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
 
         {/* View Mode Tabs */}
         <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-indigo-200 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("calendar"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("calendar"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "calendar" 
                 ? "bg-indigo-600 text-white shadow-xs" 
@@ -175,7 +174,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
             <CalendarDays className="w-3.5 h-3.5" />
             <span>মাস চক্র</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("ordinalGame"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "ordinalGame" 
@@ -186,7 +185,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
             <Sparkles className="w-3.5 h-3.5" />
             <span>অর্ডিনাল গেম</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("daysSorter"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "daysSorter" 
@@ -197,7 +196,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
             <BookmarkCheck className="w-3.5 h-3.5" />
             <span>দিন সংখ্যা বাছাই</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("facts"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
               activeTab === "facts" 
@@ -221,7 +220,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
               {MONTHS.map((m) => {
                 const isSelected = selectedMonth.id === m.id;
                 return (
-                  <button
+                  <button type="button"
                     key={m.id}
                     onClick={() => handleSelectMonth(m)}
                     className={`p-2 rounded-xl text-center border-2 transition-all relative group flex flex-col items-center ${
@@ -250,7 +249,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
                       <h4 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2">
                         {selectedMonth.name}
                         <span className="text-base font-bold text-slate-600">({selectedMonth.bangla})</span>
-                        <button
+                        <button type="button"
                           onClick={() => handleSpeak(`${selectedMonth.name}. ${selectedMonth.ordinalWord} month.`)}
                           className="p-1 rounded-full text-indigo-600 hover:bg-indigo-50 transition-colors"
                           title="উচ্চারণ শুনুন"
@@ -284,8 +283,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
                   <span className="font-semibold">বিশেষ দিন ও বৈশিষ্ট্য:</span>
                   <span className="text-slate-900 font-bold">{selectedMonth.highlight}</span>
                 </div>
-                <button
-                  onClick={() => {
+                <button type="button" onClick={() => {
                     const nextIndex = (selectedMonth.id % 12);
                     handleSelectMonth(MONTHS[nextIndex]);
                   }}
@@ -323,7 +321,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
             {/* Month Options Grid */}
             <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
               {MONTHS.map((m) => (
-                <button
+                <button type="button"
                   key={m.id}
                   onClick={() => handleOrdinalPick(m.id)}
                   className="p-2.5 rounded-xl bg-white border-2 border-indigo-100 hover:border-indigo-500 hover:bg-indigo-50/80 transition-all text-center group shadow-2xs active:scale-95 flex flex-col items-center"
@@ -374,7 +372,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
                 <div className="flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-300 text-emerald-800 font-bold text-xs">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>অভিনন্দন! সব ১২টি মাস সঠিকভাবে সাজানো সম্পন্ন!</span>
-                  <button onClick={resetSorter} className="p-1 hover:bg-emerald-100 rounded-lg">
+                  <button type="button" onClick={resetSorter} className="p-1 hover:bg-emerald-100 rounded-lg">
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -384,9 +382,10 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
             {/* 3 Buckets */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {/* 31 Days Bucket */}
-              <div 
+              <button 
+                type="button"
                 onClick={() => handleDropToBucket("31")}
-                className="bg-emerald-50/80 rounded-2xl p-3.5 border-2 border-emerald-300 text-center cursor-pointer hover:bg-emerald-100 transition-all group flex flex-col justify-between min-h-[140px]"
+                className="bg-emerald-50/80 rounded-2xl p-3.5 border-2 border-emerald-300 text-center cursor-pointer hover:bg-emerald-100 transition-all group flex flex-col justify-between min-h-[140px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               >
                 <div>
                   <div className="flex items-center justify-center gap-1.5 mb-1">
@@ -408,12 +407,13 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
                 <span className="text-[10px] font-bold text-emerald-700 group-hover:underline mt-2">
                   এখানে রাখতে ক্লিক করুন ➔
                 </span>
-              </div>
+              </button>
 
               {/* 30 Days Bucket */}
-              <div 
+              <button 
+                type="button"
                 onClick={() => handleDropToBucket("30")}
-                className="bg-blue-50/80 rounded-2xl p-3.5 border-2 border-blue-300 text-center cursor-pointer hover:bg-blue-100 transition-all group flex flex-col justify-between min-h-[140px]"
+                className="bg-blue-50/80 rounded-2xl p-3.5 border-2 border-blue-300 text-center cursor-pointer hover:bg-blue-100 transition-all group flex flex-col justify-between min-h-[140px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 <div>
                   <div className="flex items-center justify-center gap-1.5 mb-1">
@@ -435,12 +435,13 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
                 <span className="text-[10px] font-bold text-blue-700 group-hover:underline mt-2">
                   এখানে রাখতে ক্লিক করুন ➔
                 </span>
-              </div>
+              </button>
 
               {/* 28/29 Days Bucket */}
-              <div 
+              <button 
+                type="button"
                 onClick={() => handleDropToBucket("28")}
-                className="bg-purple-50/80 rounded-2xl p-3.5 border-2 border-purple-300 text-center cursor-pointer hover:bg-purple-100 transition-all group flex flex-col justify-between min-h-[140px]"
+                className="bg-purple-50/80 rounded-2xl p-3.5 border-2 border-purple-300 text-center cursor-pointer hover:bg-purple-100 transition-all group flex flex-col justify-between min-h-[140px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
               >
                 <div>
                   <div className="flex items-center justify-center gap-1.5 mb-1">
@@ -462,7 +463,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
                 <span className="text-[10px] font-bold text-purple-700 group-hover:underline mt-2">
                   এখানে রাখতে ক্লিক করুন ➔
                 </span>
-              </div>
+              </button>
             </div>
           </div>
         )}
@@ -518,7 +519,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
           <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
           "Thirty days has September, April, June and November; all the rest have thirty-one..."
         </span>
-        <button
+        <button type="button"
           onClick={() => handleSpeak("There are twelve months in an English year. January is the first month, and December is the twelfth and last month.")}
           className="text-xs font-black text-indigo-700 hover:text-indigo-900 flex items-center gap-1 shrink-0"
         >

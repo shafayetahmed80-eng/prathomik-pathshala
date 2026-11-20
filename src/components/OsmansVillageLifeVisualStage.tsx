@@ -118,8 +118,7 @@ export default function OsmansVillageLifeVisualStage({
 
         {/* Tab switcher */}
         <div className="flex items-center gap-1 bg-white/90 p-1 rounded-2xl border border-emerald-200 shadow-2xs">
-          <button
-            onClick={() => {
+          <button type="button" onClick={() => {
               setActiveTab("farm");
               playChime?.("click");
             }}
@@ -132,7 +131,7 @@ export default function OsmansVillageLifeVisualStage({
             <Sun className="w-3.5 h-3.5" />
             <span>Farm & Chores</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("games");
               playChime?.("click");
@@ -146,7 +145,7 @@ export default function OsmansVillageLifeVisualStage({
             <Trophy className="w-3.5 h-3.5" />
             <span>Ha-du-du</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("evening");
               playChime?.("click");
@@ -208,14 +207,14 @@ export default function OsmansVillageLifeVisualStage({
             {/* Farm Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-emerald-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
+                <button type="button"
                   onClick={handleFeedAnimals}
                   className="px-4 py-2 rounded-xl bg-linear-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
                 >
                   <span>🌱</span>
                   <span>Feed Green Grass (ঘাস খাওয়াও)</span>
                 </button>
-                <button
+                <button type="button"
                   onClick={() =>
                     handleSpeak(
                       "Osman lives in a quiet green village surrounded by paddy fields and trees. First, he helps his elder brother feed green grass to their cows and goats. Then he eats hot rice and lentils for breakfast and walks to school."
@@ -269,7 +268,7 @@ export default function OsmansVillageLifeVisualStage({
             {/* Game Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-emerald-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
+                <button type="button"
                   onClick={handlePlayHadudu}
                   disabled={isChanting}
                   className="px-4 py-2 rounded-xl bg-linear-to-r from-amber-600 to-emerald-600 hover:from-amber-700 hover:to-emerald-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
@@ -324,14 +323,14 @@ export default function OsmansVillageLifeVisualStage({
             {/* Homework Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-emerald-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
+                <button type="button"
                   onClick={handleCompleteHomework}
                   className="px-4 py-2 rounded-xl bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
                 >
                   <Check className="w-4 h-4 text-amber-300" />
                   <span>Finish Homework (বাড়ির কাজ করো)</span>
                 </button>
-                <button
+                <button type="button"
                   onClick={() => setLampOn((prev) => !prev)}
                   className="p-2 rounded-xl bg-amber-100 text-amber-800 hover:bg-amber-200 transition-all cursor-pointer"
                   title="Toggle Lamp"

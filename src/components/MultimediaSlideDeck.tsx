@@ -2477,10 +2477,10 @@ export default function MultimediaSlideDeck() {
         </div>
       </div>
       <div class="flex items-center gap-2 self-end sm:self-auto shrink-0">
-        <button id="notes-btn" onclick="toggleNotes()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white hover:bg-purple-700 shadow-xs whitespace-nowrap">
+        <button id="notes-btn" type="button" onclick="toggleNotes()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white hover:bg-purple-700 shadow-xs whitespace-nowrap">
           👩‍🏫 শিক্ষক সহায়িকা
         </button>
-        <button onclick="window.print()" class="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" title="প্রিন্ট করো">
+        <button type="button" onclick="window.print()" class="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200" title="প্রিন্ট করো">
           🖨️
         </button>
       </div>
@@ -2489,19 +2489,19 @@ export default function MultimediaSlideDeck() {
     <!-- Tier 2: Dedicated Audio & Phonics Teaching Ribbon -->
     <nav aria-label="উচ্চারণ ও ফোনেটিক্স কন্ট্রোল বার" class="px-6 py-2.5 bg-white border-b border-purple-100 flex items-center justify-between gap-3 flex-wrap no-print shadow-2xs">
       <div class="flex items-center gap-2 flex-wrap">
-        <button id="audio-play-btn" onclick="speakSlide()" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 font-bold text-xs flex items-center gap-1.5 shadow-xs whitespace-nowrap" title="শব্দ ধরে ধরে পাঠ শোনো">
+        <button id="audio-play-btn" type="button" onclick="speakSlide()" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 font-bold text-xs flex items-center gap-1.5 shadow-xs whitespace-nowrap" title="শব্দ ধরে ধরে পাঠ শোনো">
           🔊 <span id="audio-btn-text">পাঠ শোনো</span>
         </button>
-        <button id="accent-btn" onclick="toggleAccent()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs whitespace-nowrap">
+        <button id="accent-btn" type="button" onclick="toggleAccent()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs whitespace-nowrap">
           🇧🇩 দেশীয় উচ্চারণ
         </button>
         <!-- Offline Speed Controls: 0.25x, 0.5x, 0.7x, 0.85x -->
         <div class="flex items-center p-0.5 bg-slate-100 rounded-xl border border-slate-200">
           <span class="text-[10px] font-bold text-slate-500 px-1.5">গতি:</span>
-          <button id="spd-btn-025" onclick="setSpeed(0.25)" class="px-2 py-0.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900" title="খুব ধীর গতি (সিলেবল ড্রিল)">🐢 ০.২৫x</button>
-          <button id="spd-btn-05" onclick="setSpeed(0.5)" class="px-2 py-0.5 rounded-lg text-xs font-bold bg-purple-600 text-white shadow-2xs" title="ধীর ও স্পষ্ট গতি">০.৫x</button>
-          <button id="spd-btn-07" onclick="setSpeed(0.7)" class="px-2 py-0.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900" title="মাঝারি গতি">০.৭x</button>
-          <button id="spd-btn-085" onclick="setSpeed(0.85)" class="px-2 py-0.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900" title="স্বাভাবিক গতি">স্বাভাবিক</button>
+          <button id="spd-btn-025" type="button" onclick="setSpeed(0.25)" class="px-2 py-0.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900" title="খুব ধীর গতি (সিলেবল ড্রিল)">🐢 ০.২৫x</button>
+          <button id="spd-btn-05" type="button" onclick="setSpeed(0.5)" class="px-2 py-0.5 rounded-lg text-xs font-bold bg-purple-600 text-white shadow-2xs" title="ধীর ও স্পষ্ট গতি">০.৫x</button>
+          <button id="spd-btn-07" type="button" onclick="setSpeed(0.7)" class="px-2 py-0.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900" title="মাঝারি গতি">০.৭x</button>
+          <button id="spd-btn-085" type="button" onclick="setSpeed(0.85)" class="px-2 py-0.5 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900" title="স্বাভাবিক গতি">স্বাভাবিক</button>
         </div>
       </div>
       <div class="text-xs font-bold text-slate-500">
@@ -2542,11 +2542,11 @@ export default function MultimediaSlideDeck() {
 
       <!-- Controls -->
       <footer class="max-w-4xl mx-auto w-full pt-6 mt-4 border-t border-slate-200 flex items-center justify-between gap-4 no-print shrink-0">
-        <button onclick="prevSlide()" class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-bold text-sm hover:bg-slate-100 shadow-xs">
+        <button type="button" onclick="prevSlide()" class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 font-bold text-sm hover:bg-slate-100 shadow-xs">
           ◀ পূর্ববর্তী স্লাইড
         </button>
         <div id="dots-container" class="flex items-center gap-1.5"></div>
-        <button onclick="nextSlide()" class="px-5 py-2.5 rounded-xl bg-purple-600 text-white font-bold text-sm hover:bg-purple-700 shadow-md shadow-purple-600/20">
+        <button type="button" onclick="nextSlide()" class="px-5 py-2.5 rounded-xl bg-purple-600 text-white font-bold text-sm hover:bg-purple-700 shadow-md shadow-purple-600/20">
           পরবর্তী স্লাইড ▶
         </button>
       </footer>
@@ -2599,7 +2599,7 @@ export default function MultimediaSlideDeck() {
 
         return \`
           <div class="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors">
-            <button onclick="speakSentence(\${sIdx})" class="mt-0.5 p-1 rounded-lg text-slate-400 hover:text-purple-600 hover:bg-purple-50 shrink-0" title="এই বাক্যটি শোনো">
+            <button type="button" onclick="speakSentence(\${sIdx})" class="mt-0.5 p-1 rounded-lg text-slate-400 hover:text-purple-600 hover:bg-purple-50 shrink-0" title="এই বাক্যটি শোনো">
               🔊
             </button>
             <p class="flex-1 flex flex-wrap gap-x-1.5 gap-y-1 text-slate-800">\${words}</p>
@@ -2647,7 +2647,7 @@ export default function MultimediaSlideDeck() {
       // Dots
       const dotsContainer = document.getElementById('dots-container');
       dotsContainer.innerHTML = deck.slides.map((_, i) => \`
-        <button onclick="gotoSlide(\${i})" class="h-2.5 rounded-full transition-all \${i === currentIdx ? 'w-6 bg-purple-600' : 'w-2.5 bg-slate-300 hover:bg-slate-400'}"></button>
+        <button type="button" aria-label="স্লাইড \${i + 1}" onclick="gotoSlide(\${i})" class="h-3.5 p-1 rounded-full transition-all flex items-center justify-center \${i === currentIdx ? 'w-7 bg-purple-600' : 'w-3.5 bg-slate-300 hover:bg-slate-400'}"></button>
       \`).join('');
     }
 
@@ -3027,8 +3027,17 @@ export default function MultimediaSlideDeck() {
               return (
                 <span
                   key={sIdx}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`বাক্য ${sIdx + 1}: ${sentence} - সম্পূর্ণ বাক্যটি শুনতে চাপুন`}
                   onClick={() => playSentence(sentence, sIdx)}
-                  className={`inline-flex flex-wrap items-baseline gap-x-1.5 py-1 px-2 rounded-2xl transition-all cursor-pointer select-none touch-manipulation group ${
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      playSentence(sentence, sIdx);
+                    }
+                  }}
+                  className={`inline-flex flex-wrap items-baseline gap-x-1.5 py-1 px-2 rounded-2xl transition-all cursor-pointer select-none touch-manipulation group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     isCurrentSentence
                       ? "bg-purple-100/90 ring-2 ring-purple-300 text-purple-950 shadow-xs"
                       : "hover:bg-purple-50/80"
@@ -3061,11 +3070,19 @@ export default function MultimediaSlideDeck() {
                           <span
                             role="button"
                             tabIndex={0}
+                            aria-label={`শব্দ: ${w} - উচ্চারণ শুনতে চাপুন`}
                             onClick={(e) => {
                               e.stopPropagation();
                               handleSpeak(w);
                             }}
-                            className={`cursor-pointer select-none active:scale-95 touch-manipulation transition-all duration-150 inline-block px-1 rounded-lg ${
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleSpeak(w);
+                              }
+                            }}
+                            className={`cursor-pointer select-none active:scale-95 touch-manipulation transition-all duration-150 inline-block px-1 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                               isHighlighted
                                 ? "bg-gradient-to-r from-amber-300 to-yellow-300 text-amber-950 font-black scale-110 shadow-xs ring-2 ring-amber-400 border border-amber-400 animate-pulse"
                                 : "text-slate-900 hover:bg-purple-200/70 hover:text-purple-950"
@@ -3153,8 +3170,17 @@ export default function MultimediaSlideDeck() {
             return (
               <div 
                 key={sIdx} 
+                role="button"
+                tabIndex={0}
+                aria-label={`বাক্য ${sIdx + 1}: ${sentence} - পুরো বাক্যটি শুনতে চাপুন`}
                 onClick={() => playSentence(sentence, sIdx)}
-                className={`p-2.5 sm:p-3 rounded-2xl transition-all cursor-pointer select-none touch-manipulation relative group border ${
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    playSentence(sentence, sIdx);
+                  }
+                }}
+                className={`p-2.5 sm:p-3 rounded-2xl transition-all cursor-pointer select-none touch-manipulation relative group border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                   isCurrentSentence 
                     ? "bg-purple-50/90 border-purple-300 shadow-sm ring-2 ring-purple-300/40" 
                     : "bg-white hover:bg-purple-50/40 border-slate-200/80 hover:border-purple-200 shadow-2xs"
@@ -3195,11 +3221,19 @@ export default function MultimediaSlideDeck() {
                             <span
                               role="button"
                               tabIndex={0}
+                              aria-label={`শব্দ: ${w} - উচ্চারণ শুনতে চাপুন`}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleSpeak(w);
                               }}
-                              className={`cursor-pointer select-none active:scale-95 touch-manipulation transition-all duration-150 inline-block px-1.5 py-0.5 rounded-xl ${
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  handleSpeak(w);
+                                }
+                              }}
+                              className={`cursor-pointer select-none active:scale-95 touch-manipulation transition-all duration-150 inline-block px-1.5 py-0.5 rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                                 isHighlighted
                                   ? "bg-gradient-to-r from-amber-300 to-yellow-300 text-amber-950 font-black scale-110 shadow-xs ring-2 ring-amber-400 border border-amber-400 animate-pulse"
                                   : "text-slate-900 hover:bg-purple-100 hover:text-purple-950"
@@ -3299,6 +3333,7 @@ export default function MultimediaSlideDeck() {
                   key={dIdx}
                   role="button"
                   tabIndex={0}
+                  aria-label={`সংলাপ বক্তা ${d.speaker}: ${d.text}`}
                   onClick={() => {
                     playSentence(d.text, 100 + dIdx, d.speaker);
                     if (isMyTeam) {
@@ -3306,7 +3341,17 @@ export default function MultimediaSlideDeck() {
                       confetti({ particleCount: 25, spread: 50, origin: { y: 0.6 } });
                     }
                   }}
-                  className={`p-4 rounded-2xl border text-sm font-semibold flex items-start gap-3.5 cursor-pointer hover:shadow-md transition-all touch-manipulation select-none active:scale-98 relative ${
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      playSentence(d.text, 100 + dIdx, d.speaker);
+                      if (isMyTeam) {
+                        playChime("fanfare");
+                        confetti({ particleCount: 25, spread: 50, origin: { y: 0.6 } });
+                      }
+                    }
+                  }}
+                  className={`p-4 rounded-2xl border text-sm font-semibold flex items-start gap-3.5 cursor-pointer hover:shadow-md transition-all touch-manipulation select-none active:scale-98 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                     isAntOrGuide 
                       ? "bg-amber-50/80 border-amber-200 text-amber-950 hover:border-amber-300 active:bg-amber-100" 
                       : "bg-sky-50/80 border-sky-200 text-sky-950 hover:border-sky-300 active:bg-sky-100"
@@ -3843,11 +3888,32 @@ export default function MultimediaSlideDeck() {
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-1 pt-1 border-t border-slate-100 text-[11px] text-slate-500">
+          <div className="flex items-center justify-center gap-1.5 pt-1.5 border-t border-slate-100 text-xs text-slate-500">
             <span>দ্রুত সেট:</span>
-            <button onClick={() => { setTimerSeconds(60); setIsTimerRunning(false); }} className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-slate-200 font-bold">১মি</button>
-            <button onClick={() => { setTimerSeconds(180); setIsTimerRunning(false); }} className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-slate-200 font-bold">৩মি</button>
-            <button onClick={() => { setTimerSeconds(300); setIsTimerRunning(false); }} className="px-1.5 py-0.5 rounded bg-slate-100 hover:bg-slate-200 font-bold">৫মি</button>
+            <button
+              type="button"
+              onClick={() => { setTimerSeconds(60); setIsTimerRunning(false); }}
+              aria-label="টাইমার ১ মিনিট নির্ধারণ করুন"
+              className="px-2.5 py-1 min-h-[30px] rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+            >
+              ১মি
+            </button>
+            <button
+              type="button"
+              onClick={() => { setTimerSeconds(180); setIsTimerRunning(false); }}
+              aria-label="টাইমার ৩ মিনিট নির্ধারণ করুন"
+              className="px-2.5 py-1 min-h-[30px] rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+            >
+              ৩মি
+            </button>
+            <button
+              type="button"
+              onClick={() => { setTimerSeconds(300); setIsTimerRunning(false); }}
+              aria-label="টাইমার ৫ মিনিট নির্ধারণ করুন"
+              className="px-2.5 py-1 min-h-[30px] rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+            >
+              ৫মি
+            </button>
           </div>
         </aside>
       )}
@@ -4225,69 +4291,75 @@ export default function MultimediaSlideDeck() {
                 <div className="h-4 w-[1px] bg-slate-200 shrink-0 mx-0.5" />
 
                 {/* Action Buttons: Undo, Redo, Camera, Clear, Minimize, Close */}
-                <div className="flex items-center gap-0.5 shrink-0">
+                <div className="flex items-center gap-1 shrink-0" role="group" aria-label="মার্কার অ্যাকশন টুলস">
                   <button
                     type="button"
                     onClick={handleUndo}
                     disabled={!canUndo}
-                    className={`p-1.5 rounded-lg border transition-all ${
+                    aria-label="পূর্বের অবস্থায় ফিরুন (Undo)"
+                    className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl border transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                       canUndo
                         ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 active:scale-95"
                         : "bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed"
                     }`}
                     title="পূর্বের অবস্থায় ফিরুন (Undo)"
                   >
-                    <Undo2 className="w-3.5 h-3.5" />
+                    <Undo2 className="w-4 h-4" />
                   </button>
 
                   <button
                     type="button"
                     onClick={handleRedo}
                     disabled={!canRedo}
-                    className={`p-1.5 rounded-lg border transition-all ${
+                    aria-label="পরবর্তী অবস্থায় যান (Redo)"
+                    className={`p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl border transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
                       canRedo
                         ? "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200 active:scale-95"
                         : "bg-slate-50 text-slate-300 border-slate-100 cursor-not-allowed"
                     }`}
                     title="পরবর্তী অবস্থায় যান (Redo)"
                   >
-                    <Redo2 className="w-3.5 h-3.5" />
+                    <Redo2 className="w-4 h-4" />
                   </button>
 
                   <button
                     type="button"
                     onClick={exportAnnotatedSlide}
-                    className="p-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition-colors active:scale-95"
+                    aria-label="নোটসহ স্লাইড ছবি হিসেবে সেভ করুন (Save PNG)"
+                    className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition-colors active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                     title="নোটসহ স্লাইড ছবি হিসেবে সেভ করুন (Save PNG)"
                   >
-                    <Camera className="w-3.5 h-3.5" />
+                    <Camera className="w-4 h-4" />
                   </button>
 
                   <button
                     type="button"
                     onClick={clearPenCanvas}
-                    className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-colors active:scale-95"
+                    aria-label="স্লাইডের সব আঁকা মুছে ফেলুন (Clear All)"
+                    className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 transition-colors active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
                     title="স্লাইডের সব আঁকা মুছে ফেলুন (Clear All)"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4" />
                   </button>
 
                   <button
                     type="button"
                     onClick={() => { setIsToolbarMinimized(true); playChime("click"); }}
-                    className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 transition-colors active:scale-95"
+                    aria-label="টুলবার ছোট করে রাখুন (Minimize)"
+                    className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 transition-colors active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                     title="টুলবার ছোট করে রাখুন (Minimize)"
                   >
-                    <ChevronUp className="w-3.5 h-3.5" />
+                    <ChevronUp className="w-4 h-4" />
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setIsPenActive(false)}
-                    className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 transition-colors active:scale-95"
+                    aria-label="মার্কার টুলবার বন্ধ করুন (Close)"
+                    className="p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200 transition-colors active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
                     title="মার্কার টুলবার বন্ধ করুন (Close)"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </aside>
@@ -5238,15 +5310,17 @@ export default function MultimediaSlideDeck() {
                               <div key={item.id} className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
                                 <span className="text-xs font-bold px-2 py-0.5 text-slate-800">{item.icon} {item.label}</span>
                                 <button
+                                  type="button"
                                   onClick={() => handleSortItem(item.id, categories.cat1.id)}
-                                  className="px-2.5 py-1 rounded-lg bg-amber-500 text-white font-bold text-[11px] hover:bg-amber-600 active:scale-95 touch-manipulation select-none"
+                                  className="px-2.5 py-1 min-h-[32px] rounded-lg bg-amber-500 text-white font-bold text-xs hover:bg-amber-600 active:scale-95 touch-manipulation select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
                                   title={`${categories.cat1.label} এ দাও`}
                                 >
                                   {categories.cat1.label.split("(")[0]}
                                 </button>
                                 <button
+                                  type="button"
                                   onClick={() => handleSortItem(item.id, categories.cat2.id)}
-                                  className="px-2.5 py-1 rounded-lg bg-sky-500 text-white font-bold text-[11px] hover:bg-sky-600 active:scale-95 touch-manipulation select-none"
+                                  className="px-2.5 py-1 min-h-[32px] rounded-lg bg-sky-500 text-white font-bold text-xs hover:bg-sky-600 active:scale-95 touch-manipulation select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
                                   title={`${categories.cat2.label} এ দাও`}
                                 >
                                   {categories.cat2.label.split("(")[0]}
@@ -5301,8 +5375,9 @@ export default function MultimediaSlideDeck() {
                               {c.options.map((opt) => (
                                 <button
                                   key={opt}
+                                  type="button"
                                   onClick={() => handlePunctuationAnswer(c.id, opt)}
-                                  className={`px-3 py-1 rounded-lg text-xs font-bold border transition-all ${
+                                  className={`px-3 py-1.5 min-h-[32px] rounded-lg text-xs font-bold border transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                                     userChoice === opt
                                       ? isCorrect
                                         ? "bg-emerald-600 text-white border-emerald-700"
@@ -5753,8 +5828,10 @@ export default function MultimediaSlideDeck() {
                 {inspectedWord.icon}
               </span>
               <button
+                type="button"
                 onClick={() => setInspectedWord(null)}
-                className="p-2 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-600"
+                aria-label="শব্দ বিবরণ উইন্ডো বন্ধ করুন"
+                className="p-2 min-w-[40px] min-h-[40px] rounded-xl hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -5868,15 +5945,18 @@ export default function MultimediaSlideDeck() {
               </div>
               <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
                 <button
+                  type="button"
                   onClick={() => window.print()}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 min-h-[40px] rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-xs touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>প্রিন্ট করুন</span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => setShowWorksheetModal(false)}
-                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700"
+                  aria-label="ওয়ার্কশিট উইন্ডো বন্ধ করুন"
+                  className="p-2 min-w-[40px] min-h-[40px] rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                 >
                   <X className="w-4 h-4" />
                 </button>

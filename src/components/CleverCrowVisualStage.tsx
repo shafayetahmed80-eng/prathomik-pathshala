@@ -90,8 +90,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-amber-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("story"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("story"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "story" 
                 ? "bg-amber-600 text-white shadow-xs" 
@@ -100,7 +99,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
           >
             ☀️ তৃষ্ণার্ত কাক
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("experiment"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "experiment" 
@@ -110,7 +109,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
           >
             🪨 নুড়িপাথর পরীক্ষা
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("moral"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "moral" 
@@ -147,7 +146,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
             </div>
 
             {/* Narration audio button */}
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("On a scorching summer afternoon, a thirsty crow was flying all over the village in search of water. At last, he saw a tall clay pitcher under a shady tree. But his beak could not reach the bottom!");
@@ -179,14 +178,11 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
 
                 <div className="flex items-center gap-2">
                   {!waterAtBrim ? (
-                    <button
-                      onClick={handleDropPebble}
-                      className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-sky-600 hover:from-amber-500 hover:to-sky-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
-                    >
+                    <button type="button" onClick={handleDropPebble} className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-sky-600 hover:from-amber-500 hover:to-sky-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse">
                       <span>🪨 নুড়ি ফেলুন (Drop Pebble)</span>
                     </button>
                   ) : !crowDrank ? (
-                    <button
+                    <button type="button"
                       onClick={handleDrinkWater}
                       className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-bounce"
                     >
@@ -194,7 +190,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
                       <span>পানি পান করুন (Drink Water!)</span>
                     </button>
                   ) : (
-                    <button
+                    <button type="button"
                       onClick={handleReset}
                       className="px-3 py-1.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-bold flex items-center gap-1.5"
                     >
@@ -259,7 +255,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
             </div>
 
             {/* Audio Step Button */}
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("click");
                 handleSpeak("The clever crow took pebbles one by one in his beak and dropped them into the pitcher. Slowly, the water level rose to the brim!");
@@ -314,7 +310,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("Remember the clever crow's wisdom: Where there is a will, there is a way! Never give up in the face of difficulty. Think cleverly and patiently solve your challenges!");

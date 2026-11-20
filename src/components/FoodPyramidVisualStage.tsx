@@ -110,8 +110,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
 
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-emerald-900/60 shadow-2xs">
-          <button
-            onClick={() => { setActiveTab("pyramid"); playChime("pop"); }}
+          <button type="button" onClick={() => { setActiveTab("pyramid"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "pyramid" 
                 ? "bg-emerald-600 text-white shadow-xs" 
@@ -120,7 +119,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
           >
             🔺 খাদ্য পিরামিড
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("plate"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "plate" 
@@ -130,7 +129,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
           >
             🍽️ সুষম থালা সাজান
           </button>
-          <button
+          <button type="button"
             onClick={() => { setActiveTab("guide"); playChime("pop"); }}
             className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
               activeTab === "guide" 
@@ -150,7 +149,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
             {/* Interactive Pyramid Display */}
             <div className="flex flex-col items-center gap-1.5 max-w-md mx-auto w-full">
               {/* Tier 1 (Top) */}
-              <button
+              <button type="button"
                 onClick={() => {
                   setSelectedTier(1);
                   playChime("click");
@@ -167,7 +166,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
               </button>
 
               {/* Tier 2 */}
-              <button
+              <button type="button"
                 onClick={() => {
                   setSelectedTier(2);
                   playChime("click");
@@ -184,7 +183,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
               </button>
 
               {/* Tier 3 */}
-              <button
+              <button type="button"
                 onClick={() => {
                   setSelectedTier(3);
                   playChime("click");
@@ -201,7 +200,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
               </button>
 
               {/* Tier 4 (Bottom Base) */}
-              <button
+              <button type="button"
                 onClick={() => {
                   setSelectedTier(4);
                   playChime("click");
@@ -239,7 +238,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                 </p>
               </div>
 
-              <button
+              <button type="button"
                 onClick={() => {
                   playChime("click");
                   handleSpeak(`${tiers[selectedTier].name}. ${tiers[selectedTier].foods}. ${tiers[selectedTier].benefit}`);
@@ -275,7 +274,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
 
               {/* 4 Interactive Food Checkers */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                <button
+                <button type="button"
                   onClick={() => togglePlateItem("rice")}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     plateItems.rice ? "bg-amber-600/30 border-amber-400 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
@@ -286,7 +285,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                   <span className="text-[10px] text-amber-200">Energy (শক্তি)</span>
                 </button>
 
-                <button
+                <button type="button"
                   onClick={() => togglePlateItem("vegetables")}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     plateItems.vegetables ? "bg-emerald-600/30 border-emerald-400 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
@@ -297,7 +296,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                   <span className="text-[10px] text-emerald-200">Vitamins (ভিটামিন)</span>
                 </button>
 
-                <button
+                <button type="button"
                   onClick={() => togglePlateItem("fish")}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     plateItems.fish ? "bg-indigo-600/30 border-indigo-400 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
@@ -308,7 +307,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                   <span className="text-[10px] text-indigo-200">Body Building</span>
                 </button>
 
-                <button
+                <button type="button"
                   onClick={() => togglePlateItem("fruit")}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     plateItems.fruit ? "bg-rose-600/30 border-rose-400 text-white" : "bg-slate-800/60 border-slate-700 text-slate-400"
@@ -321,7 +320,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
               </div>
             </div>
 
-            <button
+            <button type="button"
               onClick={() => {
                 playChime("fanfare");
                 handleSpeak("A healthy balanced diet contains grains for energy, vegetables and fruits for vitamins, and fish or meat for protein. Eat healthy to grow strong!");

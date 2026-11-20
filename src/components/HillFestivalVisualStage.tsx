@@ -371,10 +371,13 @@ export default function HillFestivalVisualStage({
                 ].map((item) => {
                   const isAdded = pachanIngredients[item.key];
                   return (
-                    <div
+                    <button
+                      type="button"
+                      role="checkbox"
+                      aria-checked={isAdded}
                       key={item.key}
                       onClick={() => handleAddIngredient(item.key, item.name)}
-                      className={`p-2 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between text-xs font-bold ${
+                      className={`p-2 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between text-xs font-bold w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
                         isAdded
                           ? "bg-emerald-100 border-emerald-500 text-emerald-950"
                           : "bg-white border-amber-300 hover:bg-amber-50 hover:border-amber-400 text-slate-800"
@@ -389,7 +392,7 @@ export default function HillFestivalVisualStage({
                       ) : (
                         <span className="text-[10px] text-amber-700 font-black">+ দিন</span>
                       )}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -490,9 +493,10 @@ export default function HillFestivalVisualStage({
 
             {/* 4 Cultural Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-2 flex-1">
-              <div
+              <button
+                type="button"
                 onClick={() => handleSpeak("Phool Biju is the first day of Biju. Children float wild flowers in the river.")}
-                className="p-3 rounded-2xl bg-white border-2 border-rose-200 hover:border-rose-400 cursor-pointer shadow-2xs"
+                className="w-full text-left p-3 rounded-2xl bg-white border-2 border-rose-200 hover:border-rose-400 cursor-pointer shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🌸</span>
@@ -501,11 +505,12 @@ export default function HillFestivalVisualStage({
                 <p className="text-[11px] text-slate-600 mt-1">
                   বাংলা বছরের শেষ দুই দিন আগে ভোরে ফুল সংগ্রহ করে নদীর জলে ভাসিয়ে বিগত বছরের গ্লানি মুছে ফেলার রীতি।
                 </p>
-              </div>
+              </button>
 
-              <div
+              <button
+                type="button"
                 onClick={() => handleSpeak("Mul Biju is the second day. Families cook Pachan with thirty herbs.")}
-                className="p-3 rounded-2xl bg-white border-2 border-amber-200 hover:border-amber-400 cursor-pointer shadow-2xs"
+                className="w-full text-left p-3 rounded-2xl bg-white border-2 border-amber-200 hover:border-amber-400 cursor-pointer shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🍲</span>
@@ -514,11 +519,12 @@ export default function HillFestivalVisualStage({
                 <p className="text-[11px] text-slate-600 mt-1">
                   উৎসবের প্রধান দিন। ঘরে ঘরে নানা পদের পাহাড়ি শাকসবজি দিয়ে রান্না পাঁচন সবার সাথে ভাগ করে খাওয়া হয়।
                 </p>
-              </div>
+              </button>
 
-              <div
+              <button
+                type="button"
                 onClick={() => handleSpeak("Gajjya Pajjya is the third day of rest and seeking blessings from elders.")}
-                className="p-3 rounded-2xl bg-white border-2 border-indigo-200 hover:border-indigo-400 cursor-pointer shadow-2xs"
+                className="w-full text-left p-3 rounded-2xl bg-white border-2 border-indigo-200 hover:border-indigo-400 cursor-pointer shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🕊️</span>
@@ -527,11 +533,12 @@ export default function HillFestivalVisualStage({
                 <p className="text-[11px] text-slate-600 mt-1">
                   নতুন বছরের প্রথম দিন। দিনটি কাটানো হয় শান্তিতে, ঘরে বিশ্রাম নিয়ে এবং বয়োজ্যেষ্ঠদের সম্মান জানিয়ে।
                 </p>
-              </div>
+              </button>
 
-              <div
+              <button
+                type="button"
                 onClick={() => handleSpeak("Bandarban is a scenic hilly district with rich cultural harmony and unity.")}
-                className="p-3 rounded-2xl bg-white border-2 border-teal-200 hover:border-teal-400 cursor-pointer shadow-2xs"
+                className="w-full text-left p-3 rounded-2xl bg-white border-2 border-teal-200 hover:border-teal-400 cursor-pointer shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
               >
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🏔️</span>
@@ -540,7 +547,7 @@ export default function HillFestivalVisualStage({
                 <p className="text-[11px] text-slate-600 mt-1">
                   পাহাড়, নদী ও নানা জাতিগোষ্ঠীর বর্ণাঢ্য মিলনমেলা যা আমাদের দেশের সাংস্কৃতিক বৈচিত্র্য ও ভালোবাসার প্রতীক।
                 </p>
-              </div>
+              </button>
             </div>
 
             {/* Bottom Motto */}

@@ -167,8 +167,7 @@ export default function NusairCleanlinessVisualStage({
 
         {/* Tab switcher */}
         <div className="flex items-center gap-1 bg-white/90 p-1 rounded-2xl border border-teal-200 shadow-2xs">
-          <button
-            onClick={() => {
+          <button type="button" onClick={() => {
               setActiveTab("checklist");
               playChime?.("click");
             }}
@@ -181,7 +180,7 @@ export default function NusairCleanlinessVisualStage({
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>Habits</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("brushing");
               playChime?.("click");
@@ -195,7 +194,7 @@ export default function NusairCleanlinessVisualStage({
             <span>🪥</span>
             <span>Brushing</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("uniform");
               playChime?.("click");
@@ -234,7 +233,7 @@ export default function NusairCleanlinessVisualStage({
                   </p>
                 </div>
               </div>
-              <button
+              <button type="button"
                 onClick={handleReset}
                 className="px-2.5 py-1 rounded-xl bg-white/20 hover:bg-white/30 text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
               >
@@ -290,7 +289,7 @@ export default function NusairCleanlinessVisualStage({
             {/* Voice Prompt Box */}
             <div className="p-2.5 bg-white rounded-xl border border-teal-200 text-[11px] text-teal-900 font-medium flex items-center justify-between shadow-2xs">
               <span>💡 Tap each habit to mark it completed for Nusair's daily routine!</span>
-              <button
+              <button type="button"
                 onClick={() =>
                   handleSpeak(
                     "Nusair is a neat and healthy boy who studies in Class 3. He strictly follows good cleanliness habits every single day. Because of his clean habits, Nusair rarely falls ill."
@@ -352,15 +351,11 @@ export default function NusairCleanlinessVisualStage({
             {/* Brushing Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-teal-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
-                  onClick={handleStartBrushing}
-                  disabled={isBrushingActive}
-                  className="px-4 py-2 rounded-xl bg-linear-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
-                >
+                <button type="button" onClick={handleStartBrushing} disabled={isBrushingActive} className="px-4 py-2 rounded-xl bg-linear-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer">
                   <span>🪥</span>
                   <span>Start Brushing Simulator (দাঁত মাজা)</span>
                 </button>
-                <button
+                <button type="button"
                   onClick={() =>
                     handleSpeak(
                       "He brushes his teeth twice a day—once after waking up in the morning and once before going to bed at night."
@@ -436,8 +431,7 @@ export default function NusairCleanlinessVisualStage({
               <span className="text-xs font-bold text-slate-700">
                 "He always wears clean and ironed school uniform. Because of his clean habits, Nusair rarely falls ill."
               </span>
-              <button
-                onClick={() =>
+              <button type="button" onClick={() =>
                   handleSpeak(
                     "He always wears clean and ironed school uniform. Every Friday, he trims his fingernails and toenails so that dirt cannot enter his mouth. Because of his clean habits, Nusair rarely falls ill."
                   )

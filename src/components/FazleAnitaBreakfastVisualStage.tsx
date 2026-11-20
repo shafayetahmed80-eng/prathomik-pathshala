@@ -137,8 +137,7 @@ export default function FazleAnitaBreakfastVisualStage({
 
         {/* Tab switcher */}
         <div className="flex items-center gap-1 bg-white/90 p-1 rounded-2xl border border-amber-200 shadow-2xs">
-          <button
-            onClick={() => {
+          <button type="button" onClick={() => {
               setActiveTab("table");
               playChime?.("click");
             }}
@@ -151,7 +150,7 @@ export default function FazleAnitaBreakfastVisualStage({
             <Utensils className="w-3.5 h-3.5" />
             <span>Table</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("manners");
               playChime?.("click");
@@ -165,7 +164,7 @@ export default function FazleAnitaBreakfastVisualStage({
             <Sparkles className="w-3.5 h-3.5" />
             <span>Manners</span>
           </button>
-          <button
+          <button type="button"
             onClick={() => {
               setActiveTab("hygiene");
               playChime?.("click");
@@ -215,7 +214,7 @@ export default function FazleAnitaBreakfastVisualStage({
                     {foods
                       .filter((f) => f.forPerson === "anita")
                       .map((f) => (
-                        <button
+                        <button type="button"
                           key={f.id}
                           onClick={() => handleServeFood(f.id)}
                           className={`p-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer text-left ${
@@ -246,7 +245,7 @@ export default function FazleAnitaBreakfastVisualStage({
                     {foods
                       .filter((f) => f.forPerson === "fazle")
                       .map((f) => (
-                        <button
+                        <button type="button"
                           key={f.id}
                           onClick={() => handleServeFood(f.id)}
                           className={`p-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer text-left ${
@@ -270,14 +269,14 @@ export default function FazleAnitaBreakfastVisualStage({
             {/* Table Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-amber-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button
+                <button type="button"
                   onClick={handleReset}
                   className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
                   <span>Clear Table</span>
                 </button>
-                <button
+                <button type="button"
                   onClick={() =>
                     handleSpeak(
                       "It is seven o'clock in the morning. Fazle and Anita are sitting at the table to have breakfast. Anita likes boiled eggs, sweet bananas and fresh mangoes. Fazle likes hot ruti, mixed vegetables and a cup of tea."
@@ -372,7 +371,7 @@ export default function FazleAnitaBreakfastVisualStage({
               </p>
 
               <div className="mt-4">
-                <button
+                <button type="button"
                   onClick={handleWashHands}
                   className={`px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm shadow-md transition-all cursor-pointer ${
                     handsWashed

@@ -147,12 +147,13 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
 
           <div className="flex items-center gap-2">
             {/* Cert Language Toggle */}
-            <div className="flex items-center bg-slate-200 p-0.5 rounded-xl text-xs font-bold">
+            <div className="flex items-center bg-slate-200 p-0.5 rounded-xl text-xs font-bold" role="group" aria-label="সনদপত্রের ভাষা">
               <button
                 type="button"
                 onClick={() => setLangOverride({ base: languageMode, value: "bangla" })}
-                className={`px-2 py-1 rounded-lg transition-all ${
-                  certLang === "bangla" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
+                aria-pressed={certLang === "bangla"}
+                className={`px-2.5 py-1.5 min-h-[32px] rounded-lg transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
+                  certLang === "bangla" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 বাংলা
@@ -160,8 +161,9 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
               <button
                 type="button"
                 onClick={() => setLangOverride({ base: languageMode, value: "english" })}
-                className={`px-2 py-1 rounded-lg transition-all ${
-                  certLang === "english" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600"
+                aria-pressed={certLang === "english"}
+                className={`px-2.5 py-1.5 min-h-[32px] rounded-lg transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
+                  certLang === "english" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 English
@@ -171,7 +173,7 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-105 active:scale-95"
+              className="inline-flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-105 active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             >
               <Printer className="w-4 h-4" />
               <span>{isEn ? "Print / Save" : "প্রিন্ট / সেভ করুন"}</span>
@@ -179,8 +181,8 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-500 hover:bg-slate-200 transition-colors"
-              aria-label="বন্ধ করুন"
+              className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-slate-500 hover:bg-slate-200 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+              aria-label="সনদপত্র উইন্ডো বন্ধ করুন"
             >
               <X className="w-5 h-5" />
             </button>
