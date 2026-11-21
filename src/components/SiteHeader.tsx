@@ -16,9 +16,7 @@ import {
   Lightbulb,
   HelpCircle,
   Music,
-  Home,
   ChevronRight,
-  ExternalLink,
 } from "lucide-react";
 import BrandHomeLink from "@/components/BrandHomeLink";
 import InstallAppButton from "@/components/InstallAppButton";
@@ -195,7 +193,9 @@ export default function SiteHeader({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    queueMicrotask(() => {
+      setMounted(true);
+    });
   }, []);
 
   const isHomePage = pathname === "/";
@@ -226,10 +226,10 @@ export default function SiteHeader({
 
   return (
     <>
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-white/95 border-b border-sky-100/90 shadow-2xs print:hidden transition-colors">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-2">
+      <header className="sticky top-0 z-40 backdrop-blur-md bg-white/95 border-b border-sky-100/90 shadow-2xs print:hidden transition-colors w-full max-w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-2 w-full max-w-full">
         {/* Left Section: Brand & Optional Subpage Title / Back Button */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
           {shouldShowBack ? (
             <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
               <Link
@@ -244,7 +244,7 @@ export default function SiteHeader({
               <div className="h-5 w-px bg-slate-200 hidden sm:block shrink-0" />
               {pageTitle ? (
                 <div className="min-w-0 flex-1">
-                  <h1 className="text-xs sm:text-base font-black text-slate-900 truncate max-w-[200px] xs:max-w-[280px] sm:max-w-[420px] md:max-w-none">
+                  <h1 className="text-xs sm:text-base font-black text-slate-900 truncate max-w-[130px] xs:max-w-[200px] sm:max-w-[420px] md:max-w-none">
                     {pageTitle}
                   </h1>
                   {pageSubtitle && (
