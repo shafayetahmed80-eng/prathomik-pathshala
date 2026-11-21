@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import BrandHomeLink from "@/components/BrandHomeLink";
 import InstallAppButton from "@/components/InstallAppButton";
+import { Button, IconButton, getButtonClasses } from "@/components/ui";
 
 export interface NavItem {
   href: string;
@@ -234,11 +235,15 @@ export default function SiteHeader({
             <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
               <Link
                 href="/"
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors shrink-0 active:scale-95 touch-manipulation"
+                className={getButtonClasses({
+                  variant: "secondary",
+                  size: "sm",
+                  className: "shrink-0 px-2.5 sm:px-3.5",
+                })}
                 title="হোম পেজে ফিরে যান"
                 aria-label="হোম পেজে ফিরে যান"
               >
-                <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
                 <span className="hidden xs:inline">হোমে ফিরুন</span>
               </Link>
               <div className="h-5 w-px bg-slate-200 hidden sm:block shrink-0" />
@@ -265,24 +270,28 @@ export default function SiteHeader({
         {/* Center / Desktop Navigation Links (Visible on >= 1180px) */}
         <nav
           aria-label="প্রধান লিঙ্কসমূহ"
-          className="hidden xl:flex items-center gap-1 text-xs font-bold text-slate-700 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/60"
+          className="hidden xl:flex items-center gap-1 text-xs font-semibold text-slate-700 bg-slate-100/90 p-1 rounded-full border border-slate-200/80"
         >
           {MAIN_NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;
+            const activeClass =
+              item.category === "teacher"
+                ? "bg-[#0F172A] text-white shadow-xs"
+                : "bg-[#006A4E] text-white shadow-xs";
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1.5 touch-manipulation ${
+                className={`relative px-3 py-1.5 rounded-full transition-colors duration-150 flex items-center gap-1.5 touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                   isActive
-                    ? item.accent.activeBg
-                    : `hover:bg-white ${item.accent.hoverText} text-slate-700`
+                    ? activeClass
+                    : "hover:bg-white text-slate-700 hover:text-slate-950"
                 }`}
               >
                 <span>{item.icon}</span>
-                <span>{item.label}</span>
+                <span className="pt-[1px]">{item.label}</span>
                 {item.badge && !isActive && (
-                  <span className="text-[9px] px-1 py-0.2 rounded-full font-black bg-rose-500 text-white leading-none">
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full font-semibold bg-[#EEF8F3] text-[#00563F] border border-[#CBEADB] leading-none">
                     {item.badge}
                   </span>
                 )}
@@ -297,16 +306,16 @@ export default function SiteHeader({
           <InstallAppButton variant="compact" />
 
           {/* Mobile & Tablet Hamburger Button */}
-          <button
-            type="button"
+          <IconButton
+            icon={<Menu className="w-5 h-5" />}
+            ariaLabel="প্রধান নেভিগেশন মেনু খুলুন"
+            showTooltip={false}
+            variant="secondary"
+            size="md"
             onClick={() => setDrawerOpen(true)}
-            aria-label="প্রধান নেভিগেশন মেনু খুলুন"
             aria-expanded={drawerOpen}
-            className="p-2 sm:p-2.5 rounded-xl text-slate-700 hover:text-slate-950 bg-slate-100 hover:bg-slate-200/80 border border-slate-200/70 transition-all touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center active:scale-95 cursor-pointer"
             title="সকল মডিউল ও মেনু দেখুন"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
+          />
         </div>
       </div>
     </header>
@@ -341,14 +350,14 @@ export default function SiteHeader({
                 </div>
               </div>
 
-              <button
-                type="button"
+              <IconButton
+                icon={<X className="w-5 h-5" />}
+                ariaLabel="মেনু বন্ধ করুন"
+                showTooltip={false}
+                variant="ghost"
+                size="md"
                 onClick={() => setDrawerOpen(false)}
-                aria-label="মেনু বন্ধ করুন"
-                className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-white/80 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer touch-manipulation"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              />
             </div>
 
             {/* Quick Home Jump */}
@@ -356,9 +365,9 @@ export default function SiteHeader({
               <Link
                 href="/"
                 onClick={() => setDrawerOpen(false)}
-                className={`flex items-center justify-between p-3 min-h-[48px] rounded-xl transition-all touch-manipulation ${
+                className={`flex items-center justify-between p-3 min-h-[48px] rounded-[12px] transition-colors touch-manipulation ${
                   isHomePage
-                    ? "bg-emerald-600 text-white font-bold shadow-xs"
+                    ? "bg-[#006A4E] text-white font-semibold shadow-xs"
                     : "hover:bg-white text-slate-700 font-semibold"
                 }`}
               >
@@ -465,14 +474,15 @@ export default function SiteHeader({
 
             {/* Drawer Bottom Footer */}
             <div className="p-4 border-t border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-              <InstallAppButton variant="hero" className="w-full justify-center min-h-[44px] py-2.5 text-sm" />
-              <button
-                type="button"
+              <InstallAppButton variant="footer" className="w-full justify-center h-11 text-sm" />
+              <Button
+                variant="ghost"
+                size="md"
                 onClick={() => setDrawerOpen(false)}
-                className="w-full sm:w-auto px-4 py-2.5 min-h-[44px] rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors cursor-pointer touch-manipulation flex items-center justify-center"
+                className="w-full sm:w-auto"
               >
-                বন্ধ করুন
-              </button>
+                <span>বন্ধ করুন</span>
+              </Button>
             </div>
           </div>
         </div>,

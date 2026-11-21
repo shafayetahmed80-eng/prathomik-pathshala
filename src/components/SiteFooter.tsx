@@ -12,6 +12,7 @@ import {
 import { playSuccessChime, playPopSound } from "@/utils/bornomalaAudio";
 import BrandHomeLink from "@/components/BrandHomeLink";
 import InstallAppButton from "@/components/InstallAppButton";
+import { Button, IconButton, SegmentedControl } from "@/components/ui";
 
 export interface FontOption {
   id: string;
@@ -336,18 +337,22 @@ export default function SiteFooter() {
 
           {/* Center: Sleek Font & Paper Mode Switch Controls */}
           <div className="flex flex-wrap items-center justify-center gap-2 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200 transition-all">
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={handleOpenModal}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white hover:bg-blue-50 text-slate-800 hover:text-blue-700 font-bold text-xs shadow-xs border border-slate-200/80 transition-all hover:scale-102"
+              leftIcon={
+                <span className="w-5 h-5 rounded-md bg-[#EEF8F3] text-[#00563F] flex items-center justify-center text-[11px] font-bold">
+                  Aa
+                </span>
+              }
+              rightIcon={<ChevronDown className="w-3.5 h-3.5 text-slate-400" />}
               title="ফন্ট বা সাইজ পরিবর্তন করতে ক্লিক করুন"
             >
-              <span className="w-5 h-5 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-[11px] font-black">
-                Aa
+              <span>
+                ফন্ট: <strong className="text-[#006A4E] font-semibold">{activeFont.name}</strong>
               </span>
-              <span>ফন্ট: <strong className="text-blue-600 font-black">{activeFont.name}</strong></span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            </button>
+            </Button>
 
             {/* 🎨 4-Theme Background Switcher (শুভ্র • কাগজ • হালকা গ্লাস • ডার্ক গ্লাস) */}
             <div
@@ -356,7 +361,7 @@ export default function SiteFooter() {
               data-theme-switcher="true"
               className="inline-flex flex-wrap items-center justify-center gap-1 p-1 rounded-xl bg-white/85 border border-slate-200/80 shadow-xs"
             >
-              <span className="hidden lg:inline-flex items-center px-1.5 text-[11px] font-bold text-slate-500">
+              <span className="hidden lg:inline-flex items-center px-1.5 text-[11px] font-semibold text-slate-500">
                 থিম:
               </span>
               {AVAILABLE_THEMES.map((theme) => {
@@ -368,7 +373,7 @@ export default function SiteFooter() {
                     ? "bg-[#D5E1E4] text-[#0F172A] border-[#53A2C9]/60 shadow-xs"
                     : theme.id === "glass-dark"
                     ? "bg-[#24363C] text-[#D0B679] border-[#63B3ED]/60 shadow-xs"
-                    : "bg-emerald-600 text-white border-emerald-600 shadow-xs";
+                    : "bg-[#006A4E] text-white border-[#006A4E] shadow-xs";
 
                 return (
                   <button
@@ -379,7 +384,7 @@ export default function SiteFooter() {
                     data-theme-option={theme.id}
                     onClick={() => selectTheme(theme.id)}
                     title={theme.title}
-                    className={`inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all active:scale-95 ${
+                    className={`inline-flex items-center gap-1 px-2.5 py-1.5 min-h-[30px] rounded-[10px] text-[11px] font-semibold border transition-colors active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                       isActive
                         ? `${activeClass} ring-1 ring-black/5`
                         : "bg-transparent border-transparent text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
@@ -388,8 +393,8 @@ export default function SiteFooter() {
                     <span aria-hidden="true" className="text-xs leading-none">
                       {theme.icon}
                     </span>
-                    <span className="hidden sm:inline">{theme.name}</span>
-                    <span className="sm:hidden">{theme.shortName}</span>
+                    <span className="hidden sm:inline pt-[1px]">{theme.name}</span>
+                    <span className="sm:hidden pt-[1px]">{theme.shortName}</span>
                   </button>
                 );
               })}
@@ -432,13 +437,13 @@ export default function SiteFooter() {
           <div className="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col my-auto animate-in zoom-in-95 duration-200">
             
             {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-blue-50 to-indigo-50/60">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-[#EEF8F3]/60">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-base font-bold shadow-xs">
+                <div className="w-9 h-9 rounded-[12px] bg-[#006A4E] text-white flex items-center justify-center text-base font-bold shadow-xs">
                   Aa
                 </div>
                 <div>
-                  <h3 id="font-modal-title" className="text-base font-black text-slate-900">
+                  <h3 id="font-modal-title" className="text-base font-bold text-slate-900">
                     বাংলা ফন্ট ও হরফের আকার নির্বাচন
                   </h3>
                   <p className="text-xs text-slate-500">
@@ -447,14 +452,14 @@ export default function SiteFooter() {
                 </div>
               </div>
 
-              <button
-                type="button"
+              <IconButton
+                icon={<X className="w-5 h-5" />}
+                ariaLabel="বন্ধ করুন"
+                showTooltip={false}
+                variant="ghost"
+                size="md"
                 onClick={handleCloseModal}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/80 transition-colors"
-                aria-label="বন্ধ করুন"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              />
             </div>
 
             {/* Modal Content */}
@@ -476,18 +481,18 @@ export default function SiteFooter() {
                           playPopSound();
                           setModalFontId(font.id);
                         }}
-                        className={`p-2.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-1 ${
+                        className={`p-2.5 rounded-2xl border-2 text-left transition-all flex flex-col justify-between gap-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                           isSelected
-                            ? "border-blue-600 bg-blue-50/50 shadow-xs ring-2 ring-blue-500/20"
+                            ? "border-[#006A4E] bg-[#EEF8F3]/70 shadow-xs"
                             : "border-slate-200 bg-white hover:border-slate-300"
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1">
-                          <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600">
                             {font.badge}
                           </span>
                           {isSelected && (
-                            <Check className="w-3.5 h-3.5 text-blue-600 stroke-[3]" />
+                            <Check className="w-3.5 h-3.5 text-[#006A4E] stroke-[2.5]" />
                           )}
                         </div>
 
@@ -510,44 +515,38 @@ export default function SiteFooter() {
 
               {/* 2. Font Size Selection */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-700 block">
+                <label className="text-xs font-semibold text-slate-700 block">
                   ২. হরফের আকার নির্ধারণ করুন:
                 </label>
-                <div className="flex items-center gap-2">
-                  {AVAILABLE_FONT_SIZES.map((size) => {
-                    const isSelected = size.id === modalSizeId;
-                    return (
-                      <button
-                        key={size.id}
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setModalSizeId(size.id);
-                        }}
-                        className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold border-2 transition-all text-center ${
-                          isSelected
-                            ? "border-blue-600 bg-blue-600 text-white shadow-xs"
-                            : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-                        }`}
-                      >
-                        {size.label} ({size.name})
-                      </button>
-                    );
-                  })}
-                </div>
+                <SegmentedControl
+                  ariaLabel="হরফের আকার নির্বাচন"
+                  roleMode="radiogroup"
+                  size="md"
+                  fullWidth
+                  value={modalSizeId}
+                  onChange={(nextId) => {
+                    playPopSound();
+                    setModalSizeId(nextId);
+                  }}
+                  options={AVAILABLE_FONT_SIZES.map((size) => ({
+                    value: size.id,
+                    label: `${size.label} (${size.name})`,
+                    shortLabel: size.label,
+                  }))}
+                />
               </div>
 
               {/* 3. Live Preview Card */}
               <div className="space-y-1.5">
-                <span className="text-xs font-bold text-slate-600 flex items-center justify-between">
+                <span className="text-xs font-semibold text-slate-600 flex items-center justify-between">
                   <span>লাইভ প্রিভিউ (Live Preview):</span>
-                  <span className="text-[11px] text-blue-600 font-semibold">
+                  <span className="text-[11px] text-[#00563F] font-semibold">
                     {modalFont.name} • {modalSize.name}
                   </span>
                 </span>
                 
                 <div 
-                  className="p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-blue-50/40 border-2 border-dashed border-blue-200 text-slate-900 space-y-2 transition-all"
+                  className="p-4 rounded-2xl bg-[#EEF8F3]/40 border border-[#CBEADB] text-slate-900 space-y-2 transition-all"
                   style={{ 
                     fontFamily: modalFont.cssFamily,
                     fontSize: modalSize.scale
@@ -566,22 +565,18 @@ export default function SiteFooter() {
 
             {/* Modal Actions Footer */}
             <div className="flex items-center justify-end gap-2.5 px-6 py-4 border-t border-slate-200 bg-slate-50">
-              <button
-                type="button"
-                onClick={handleCloseModal}
-                className="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs transition-colors"
-              >
-                বাতিল
-              </button>
+              <Button variant="ghost" size="md" onClick={handleCloseModal}>
+                <span>বাতিল</span>
+              </Button>
 
-              <button
-                type="button"
+              <Button
+                variant="primary"
+                size="md"
+                leftIcon={<Check className="w-4 h-4" />}
                 onClick={handleConfirmChanges}
-                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-600/20 transition-all hover:scale-105 active:scale-95"
               >
-                <Check className="w-4 h-4 stroke-[3]" />
                 <span>নিশ্চিত করুন ও সেভ করুন</span>
-              </button>
+              </Button>
             </div>
 
           </div>

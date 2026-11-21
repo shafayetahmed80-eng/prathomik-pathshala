@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { CheckCircle2, Download, PlusSquare, Share, Smartphone, X } from "lucide-react";
 import { playPopSound, playSuccessChime } from "@/utils/bornomalaAudio";
 import { promptNativePwaInstall, usePwaInstall } from "@/utils/pwaInstall";
+import { Button, IconButton } from "@/components/ui";
 
 interface InstallAppButtonProps {
   /** Visual placement style for header, hero pill, footer link, or subpage header. */
@@ -64,58 +65,62 @@ export default function InstallAppButton({
   const buttonNode = (() => {
     if (variant === "footer") {
       return (
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="sm"
           onClick={handleInstallClick}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-all hover:scale-102 active:scale-95 cursor-pointer ${className}`.trim()}
+          leftIcon={<Download className="w-3.5 h-3.5" />}
+          className={className}
           title="মোবাইল বা ডেস্কটপে অ্যাপ হিসেবে ইনস্টল করুন"
         >
-          <Download className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
           <span>অ্যাপ ইনস্টল করুন</span>
-        </button>
+        </Button>
       );
     }
 
     if (variant === "hero") {
       return (
-        <button
-          type="button"
+        <Button
+          variant="tonal"
+          size="sm"
           onClick={handleInstallClick}
-          className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xs transition-all hover:scale-105 active:scale-95 cursor-pointer ${className}`.trim()}
+          leftIcon={<Download className="w-3.5 h-3.5" />}
+          className={`rounded-full ${className}`.trim()}
           title="মোবাইল বা কম্পিউটারে অ্যাপ হিসেবে ইনস্টল করুন"
         >
-          <Download className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
           <span>অ্যাপ হিসেবে ইনস্টল করুন</span>
-        </button>
+        </Button>
       );
     }
 
     if (variant === "compact") {
       return (
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="sm"
           onClick={handleInstallClick}
+          leftIcon={<Download className="w-3.5 h-3.5" />}
           aria-label="অ্যাপ ইনস্টল করুন"
           title="অ্যাপ হিসেবে ইনস্টল করুন"
-          className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs transition-all active:scale-95 cursor-pointer shrink-0 ${className}`.trim()}
+          className={`px-2.5 sm:px-3.5 shrink-0 ${className}`.trim()}
         >
-          <Download className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
           <span className="hidden sm:inline">অ্যাপ ইনস্টল</span>
-        </button>
+        </Button>
       );
     }
 
     return (
-      <button
-        type="button"
+      <Button
+        variant="primary"
+        size="sm"
         onClick={handleInstallClick}
+        leftIcon={<Download className="w-4 h-4 sm:w-3.5 sm:h-3.5" />}
         aria-label="অ্যাপ ইনস্টল করুন"
         title="অ্যাপ হিসেবে ইনস্টল করুন"
-        className={`inline-flex items-center justify-center gap-1.5 h-9 sm:h-auto w-9 sm:w-auto sm:px-3 sm:py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-xs shadow-emerald-600/20 transition-all hover:scale-[1.03] active:scale-95 touch-manipulation cursor-pointer shrink-0 ${className}`.trim()}
+        className={`w-9 sm:w-auto px-0 sm:px-3.5 shrink-0 ${className}`.trim()}
       >
-        <Download className="w-4 h-4 sm:w-3.5 sm:h-3.5 shrink-0" aria-hidden="true" />
         <span className="hidden sm:inline">অ্যাপ ইনস্টল</span>
-      </button>
+      </Button>
     );
   })();
 
@@ -167,14 +172,14 @@ export default function InstallAppButton({
                     </p>
                   </div>
                 </div>
-                <button
-                  type="button"
+                <IconButton
+                  icon={<X className="w-5 h-5" />}
+                  ariaLabel="নির্দেশনা বন্ধ করুন"
+                  showTooltip={false}
+                  variant="ghost"
+                  size="md"
                   onClick={() => setGuideOpen(false)}
-                  className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/70 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-                  aria-label="নির্দেশনা বন্ধ করুন"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                />
               </div>
 
               {/* Modal Body */}
@@ -276,13 +281,13 @@ export default function InstallAppButton({
 
               {/* Modal Footer */}
               <div className="px-5 py-3.5 border-t border-slate-200 bg-slate-50 flex justify-end">
-                <button
-                  type="button"
+                <Button
+                  variant="primary"
+                  size="sm"
                   onClick={() => setGuideOpen(false)}
-                  className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
                 >
-                  বুঝেছি
-                </button>
+                  <span>বুঝেছি</span>
+                </Button>
               </div>
             </div>
           </div>,
