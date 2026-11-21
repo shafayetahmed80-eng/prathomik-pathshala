@@ -4,6 +4,7 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { Printer, X } from "lucide-react";
 import { BornomalaItem } from "@/data/bornomalaData";
 import { EnglishAlphabetItem, EnglishCaseType } from "@/data/englishAlphabetData";
+import { Button, IconButton, SegmentedControl } from "@/components/ui";
 
 interface Props {
   item: BornomalaItem | EnglishAlphabetItem;
@@ -242,53 +243,41 @@ export default function BornomalaWorksheetModal({
 
           <div className="flex items-center gap-2 flex-wrap">
             {isEng && !isNumber && engItem && (
-              <div className="flex items-center bg-slate-200 p-0.5 rounded-xl text-xs font-bold" role="group" aria-label="অক্ষরের কেস নির্বাচন">
-                {(
-                  [
-                    { id: "upper", label: engItem.upperChar },
-                    { id: "lower", label: engItem.lowerChar },
-                    { id: "pair", label: engItem.displayPair },
-                  ] as const
-                ).map((c) => (
-                  <button
-                    key={c.id}
-                    type="button"
-                    onClick={() =>
-                      setOverrideCase({
-                        baseCase: englishCase,
-                        itemId: item.id,
-                        value: c.id,
-                      })
-                    }
-                    aria-pressed={worksheetCase === c.id}
-                    className={`px-3 py-1.5 min-h-[32px] rounded-lg transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
-                      worksheetCase === c.id
-                        ? "bg-white text-pink-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    {c.label}
-                  </button>
-                ))}
-              </div>
+              <SegmentedControl
+                value={worksheetCase}
+                onChange={(val) =>
+                  setOverrideCase({
+                    baseCase: englishCase,
+                    itemId: item.id,
+                    value: val,
+                  })
+                }
+                ariaLabel="অক্ষরের কেস নির্বাচন"
+                roleMode="radiogroup"
+                size="sm"
+                options={[
+                  { value: "upper", label: engItem.upperChar },
+                  { value: "lower", label: engItem.lowerChar },
+                  { value: "pair", label: engItem.displayPair },
+                ]}
+              />
             )}
 
-            <button
-              type="button"
+            <Button
+              variant="ink"
+              size="sm"
+              leftIcon={<Printer className="w-4 h-4" />}
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 px-4 py-2 min-h-[40px] rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-105 active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500"
             >
-              <Printer className="w-4 h-4" />
-              <span>প্রিন্ট করুন</span>
-            </button>
-            <button
-              type="button"
+              প্রিন্ট করুন
+            </Button>
+            <IconButton
+              icon={<X className="w-5 h-5" />}
+              ariaLabel="ওয়ার্কশিট উইন্ডো বন্ধ করুন"
+              variant="ghost"
+              size="sm"
               onClick={handleClose}
-              className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-slate-500 hover:bg-slate-200 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
-              aria-label="ওয়ার্কশিট উইন্ডো বন্ধ করুন"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            />
           </div>
         </div>
 

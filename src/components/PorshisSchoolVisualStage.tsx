@@ -161,11 +161,11 @@ export default function PorshisSchoolVisualStage({
               setActiveTab("assembly");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "assembly"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "assembly"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
+ }`}
           >
             <Flag className="w-3.5 h-3.5" />
             <span>Assembly</span>
@@ -175,11 +175,11 @@ export default function PorshisSchoolVisualStage({
               setActiveTab("classroom");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "classroom"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "classroom"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
+ }`}
           >
             <Users className="w-3.5 h-3.5" />
             <span>Puzzles</span>
@@ -189,11 +189,11 @@ export default function PorshisSchoolVisualStage({
               setActiveTab("garden");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "garden"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "garden"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
+ }`}
           >
             <Flower2 className="w-3.5 h-3.5" />
             <span>Garden</span>
@@ -286,7 +286,7 @@ export default function PorshisSchoolVisualStage({
                 <button type="button"
                   onClick={handleStartAssembly}
                   disabled={isAssembling}
-                  className="px-4 py-2 rounded-xl bg-linear-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Flag className="w-4 h-4 text-amber-300" />
                   <span>Start Morning Assembly (সমাবেশ)</span>
@@ -372,7 +372,7 @@ export default function PorshisSchoolVisualStage({
                       <span>Matched</span>
                     </span>
                   ) : (
-                    <button type="button" className="px-2.5 py-1 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-black transition-all">
+                    <button type="button" className="px-2.5 py-1 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]">
                       Match ➔
                     </button>
                   )}
@@ -457,7 +457,7 @@ export default function PorshisSchoolVisualStage({
                 <button type="button"
                   onClick={handleWaterGarden}
                   disabled={isWatering}
-                  className="px-4 py-2 rounded-xl bg-linear-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Droplets className="w-4 h-4 text-sky-300" />
                   <span>Water Garden (গাছে পানি দাও)</span>
@@ -465,7 +465,7 @@ export default function PorshisSchoolVisualStage({
                 <button type="button"
                   onClick={handleRingBell}
                   disabled={bellRinging}
-                  className="px-3 py-2 rounded-xl bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="px-3 py-2 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Bell className={`w-4 h-4 ${bellRinging ? "animate-spin" : ""}`} />
                   <span>Ring Bell 🔔</span>

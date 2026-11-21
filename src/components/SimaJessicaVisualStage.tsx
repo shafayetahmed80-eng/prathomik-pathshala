@@ -183,7 +183,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
 
                 <button type="button"
                   onClick={handleNextDialogue}
-                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
+                  className="px-3.5 py-1.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>পরবর্তী সংলাপ ➔</span>
@@ -259,7 +259,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
                 {!trainBoarded ? (
                   <button type="button"
                     onClick={handleBoardTrain}
-                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-bounce"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                   >
                     <Train className="w-4 h-4" />
                     <span>ট্রেনে উঠুন (Board Train!)</span>
@@ -351,7 +351,7 @@ export const SimaJessicaVisualStage: React.FC<SimaJessicaVisualStageProps> = ({
                 playChime("fanfare");
                 handleSpeak("Remember these polite expressions whenever you travel: May I introduce myself? Have a good journey! Nice meeting you! Goodbye!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Smile className="w-4 h-4" />
               <span>ভদ্র সম্ভাষণগুলো একসাথে অনুশীলন করুন (Practice Expressions)</span>

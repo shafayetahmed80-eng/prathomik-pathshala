@@ -141,11 +141,11 @@ export default function FazleAnitaBreakfastVisualStage({
               setActiveTab("table");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "table"
-                ? "bg-amber-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "table"
+ ? "bg-amber-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
+ }`}
           >
             <Utensils className="w-3.5 h-3.5" />
             <span>Table</span>
@@ -155,11 +155,11 @@ export default function FazleAnitaBreakfastVisualStage({
               setActiveTab("manners");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "manners"
-                ? "bg-amber-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "manners"
+ ? "bg-amber-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
+ }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Manners</span>
@@ -169,11 +169,11 @@ export default function FazleAnitaBreakfastVisualStage({
               setActiveTab("hygiene");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "hygiene"
-                ? "bg-amber-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "hygiene"
+ ? "bg-amber-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-amber-700 hover:bg-amber-50"
+ }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>Clean Hands</span>
@@ -373,11 +373,11 @@ export default function FazleAnitaBreakfastVisualStage({
               <div className="mt-4">
                 <button type="button"
                   onClick={handleWashHands}
-                  className={`px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm shadow-md transition-all cursor-pointer ${
-                    handsWashed
-                      ? "bg-teal-600 text-white shadow-teal-300 ring-2 ring-teal-400"
-                      : "bg-linear-to-r from-teal-500 to-cyan-600 text-white hover:from-teal-600 hover:to-cyan-700 active:scale-95"
-                  }`}
+                  className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm shadow-md transition-all cursor-pointer ${
+ handsWashed
+ ? "bg-teal-600 text-white shadow-teal-300 ring-2 ring-teal-400"
+ : "bg-[#006A4E] hover:bg-[#005C44] text-white active:scale-95"
+ }`}
                 >
                   {handsWashed ? "✅ Hands Clean & Germ-Free!" : "Wash Hands Now (হাত ধুয়ে নাও)"}
                 </button>

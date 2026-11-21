@@ -315,13 +315,13 @@ export default function BornomalaMemoryGame({
               type="button"
               onClick={() => handleCardClick(index)}
               disabled={isRevealed || isLocked}
-              className={`relative h-32 sm:h-36 rounded-2xl p-1 transition-all duration-300 transform perspective-1000 ${
-                card.isMatched
-                  ? "opacity-90 scale-98 ring-4 ring-emerald-400"
-                  : isRevealed
-                  ? "scale-102 ring-2 ring-indigo-400"
-                  : "hover:scale-103 active:scale-95"
-              }`}
+              className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] relative h-32 sm:h-36 rounded-2xl p-1 transition-all duration-300 transform perspective-1000 ${
+ card.isMatched
+ ? "opacity-90 scale-98 ring-4 ring-emerald-400"
+ : isRevealed
+ ? " ring-2 ring-indigo-400"
+ : "hover:scale-103 active:scale-95"
+ }`}
             >
               {/* Card Face Down (Back) */}
               {!isRevealed ? (
@@ -390,7 +390,7 @@ export default function BornomalaMemoryGame({
           <button
             type="button"
             onClick={() => restartWithCategory(category)}
-            className="px-4 py-2 bg-white text-amber-900 rounded-xl font-black text-xs sm:text-sm hover:bg-amber-50 active:scale-95 transition-all shadow-md shrink-0"
+            className="px-4 py-2 bg-white text-amber-900 rounded-xl font-semibold text-xs sm:text-sm hover:bg-amber-50 active:scale-95 transition-all shadow-md shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
           >
             {isEng ? "Play Again" : "আবার খেলুন"}
           </button>

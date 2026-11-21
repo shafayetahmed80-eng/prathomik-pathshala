@@ -4,15 +4,11 @@ import { useState, useMemo } from "react";
 import { 
   Search, 
   X, 
-  BookOpen, 
-  GraduationCap, 
   ChevronRight, 
-  Filter, 
-  Sparkles, 
-  Tag, 
-  Layers 
+  Tag
 } from "lucide-react";
-import { NCTB_SEARCH_INDEX, SearchIndexItem } from "@/data/searchIndex";
+import { NCTB_SEARCH_INDEX } from "@/data/searchIndex";
+import { Button, IconButton, SegmentedControl } from "@/components/ui";
 
 interface GlobalNCTBSearchProps {
   onOpenBook: (bookInfo: {
@@ -108,12 +104,12 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
         <div className="flex items-center gap-3">
           <div 
             aria-hidden="true" 
-            className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-500 to-emerald-600 flex items-center justify-center text-white text-2xl shadow-md shadow-emerald-500/20 shrink-0"
+            className="w-12 h-12 rounded-2xl bg-[#006A4E] flex items-center justify-center text-white text-2xl shadow-xs shrink-0"
           >
             🔍
           </div>
           <div>
-            <h3 id="global-search-heading" className="text-xl sm:text-2xl font-black text-slate-900">
+            <h3 id="global-search-heading" className="text-xl sm:text-2xl font-bold text-slate-900">
               স্মার্ট এনসিটিবি পাঠ্যক্রম সার্চ ও ইনডেক্সিং
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -124,7 +120,7 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
 
         {/* Found Results Count Pill */}
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="px-3.5 py-1.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-800 text-xs sm:text-sm font-bold shadow-xs">
+          <span className="px-3.5 py-1.5 rounded-xl bg-[#EEF8F3] border border-[#CBE5D8] text-[#00563F] text-xs sm:text-sm font-semibold">
             {filteredResults.length}টি ফলাফল পাওয়া গেছে
           </span>
         </div>
@@ -145,27 +141,27 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="যেকোনো বিষয় লিখুন (যেমন: লসাগু, পাখির নাম, Grasshopper)..."
-            className="w-full pl-12 pr-12 py-3.5 sm:py-4 rounded-2xl border-2 border-slate-200 bg-slate-50 hover:bg-white focus:bg-white text-slate-900 text-sm sm:text-base font-medium placeholder:text-slate-400 shadow-xs focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all"
+            className="w-full pl-12 pr-12 py-3.5 sm:py-4 rounded-2xl border-2 border-[#D5DCE4] bg-[#F8FAFC] hover:bg-white focus:bg-white text-slate-900 text-sm sm:text-base font-medium placeholder:text-slate-400 focus:outline-none focus:border-[#006A4E] focus:ring-4 focus:ring-[#006A4E]/10 transition-all"
             aria-label="এনসিটিবি পাঠ্যক্রম অনুসন্ধান ইনপুট"
           />
           {searchTerm && (
-            <button
-              type="button"
+            <IconButton
+              icon={<X className="w-4 h-4" />}
+              ariaLabel="অনুসন্ধান টেক্সট মুছে ফেলুন"
+              variant="ghost"
+              size="sm"
+              showTooltip={false}
               onClick={() => setSearchTerm("")}
-              className="absolute right-3 p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
-              title="মুছে ফেলুন"
-              aria-label="অনুসন্ধান টেক্সট মুছে ফেলুন"
-            >
-              <X className="w-4 h-4" aria-hidden="true" />
-            </button>
+              className="absolute right-2 rounded-full"
+            />
           )}
         </div>
       </form>
 
       {/* 🏷️ Suggested Keywords & Trending Tags */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar" role="region" aria-label="জনপ্রিয় অনুসন্ধান ট্যাগ">
-        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1">
-          <Tag className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+        <span className="text-slate-500 font-semibold shrink-0 flex items-center gap-1">
+          <Tag className="w-3.5 h-3.5 text-[#006A4E]" aria-hidden="true" />
           <span>পরামর্শ:</span>
         </span>
         {SUGGESTED_TAGS.map((tag) => (
@@ -173,58 +169,38 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
             key={tag}
             type="button"
             onClick={() => handleTagClick(tag)}
-            className="px-3 py-1 rounded-full bg-slate-100 hover:bg-teal-100 hover:text-teal-900 text-slate-700 font-medium shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+            className="px-3 py-1.5 rounded-full bg-[#F8FAFC] border border-[#D5DCE4] hover:bg-[#EEF8F3] hover:text-[#00563F] hover:border-[#CBE5D8] text-slate-700 font-medium shrink-0 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
           >
             {tag}
           </button>
         ))}
       </div>
 
-      {/* 🎛️ Dual Filter Bar: Grade & Subject */}
+      {/* 🎛️ Dual Filter Bar: Grade & Subject (Soft-Solid 2.0 Segmented Controls) */}
       <div className="space-y-3 pt-2">
-        {/* Grade Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar" role="group" aria-label="শ্রেণি ফিল্টার">
-          {GRADE_FILTERS.map((gf) => {
-            const isSelected = selectedGrade === gf.id;
-            return (
-              <button
-                key={gf.id}
-                type="button"
-                onClick={() => setSelectedGrade(gf.id)}
-                aria-pressed={isSelected}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 ${
-                  isSelected
-                    ? "bg-teal-600 text-white shadow-xs font-bold"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                }`}
-              >
-                {gf.label}
-              </button>
-            );
-          })}
-        </div>
+        <SegmentedControl
+          value={selectedGrade}
+          onChange={setSelectedGrade}
+          ariaLabel="শ্রেণি ফিল্টার"
+          roleMode="radiogroup"
+          size="sm"
+          options={GRADE_FILTERS.map((gf) => ({
+            value: gf.id,
+            label: gf.label,
+          }))}
+        />
 
-        {/* Subject Filters */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar" role="group" aria-label="বিষয় ফিল্টার">
-          {SUBJECT_FILTERS.map((subj) => {
-            const isSelected = selectedSubject === subj;
-            return (
-              <button
-                key={subj}
-                type="button"
-                onClick={() => setSelectedSubject(subj)}
-                aria-pressed={isSelected}
-                className={`px-3 py-1 rounded-lg text-xs font-semibold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 ${
-                  isSelected
-                    ? "bg-teal-600 text-white"
-                    : "bg-teal-50/80 text-teal-800 hover:bg-teal-100"
-                }`}
-              >
-                {subj}
-              </button>
-            );
-          })}
-        </div>
+        <SegmentedControl
+          value={selectedSubject}
+          onChange={setSelectedSubject}
+          ariaLabel="বিষয় ফিল্টার"
+          roleMode="radiogroup"
+          size="sm"
+          options={SUBJECT_FILTERS.map((subj) => ({
+            value: subj,
+            label: subj,
+          }))}
+        />
       </div>
 
       {/* 📋 Search Results Cards Grid */}
@@ -234,7 +210,7 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
             {filteredResults.map((item) => (
               <article
                 key={item.id}
-                className="group p-5 rounded-2xl border border-slate-200 hover:border-teal-300 bg-slate-50/50 hover:bg-teal-50/20 transition-all flex flex-col justify-between"
+                className="group p-5 rounded-2xl border border-slate-200 hover:border-[#006A4E]/50 bg-[#F8FAFC]/60 hover:bg-[#EEF8F3]/30 transition-all flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <header className="flex items-center justify-between">
@@ -242,20 +218,20 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
                       {item.icon}
                     </span>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-800">
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-800">
                         {item.gradeName}
                       </span>
-                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">
+                      <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8]">
                         {item.subject}
                       </span>
                     </div>
                   </header>
 
                   <div>
-                    <h4 className="font-bold text-slate-900 text-base group-hover:text-teal-700 transition-colors leading-snug">
+                    <h4 className="font-bold text-slate-900 text-base group-hover:text-[#00563F] transition-colors leading-snug">
                       {item.title}
                     </h4>
-                    <p className="text-xs text-teal-900/80 font-semibold mt-1">
+                    <p className="text-xs text-[#006A4E] font-semibold mt-1">
                       অধ্যায়: {item.chapterName}
                     </p>
                     <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
@@ -269,8 +245,10 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
                     {item.bookName}
                   </span>
 
-                  <button
-                    type="button"
+                  <Button
+                    variant="tonal"
+                    size="sm"
+                    rightIcon={<ChevronRight className="w-3.5 h-3.5 pp-arrow" />}
                     onClick={() => {
                       onOpenBook({
                         name: item.bookName,
@@ -281,11 +259,9 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
                         icon: item.icon
                       });
                     }}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold text-teal-700 bg-teal-100 hover:bg-teal-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
                   >
-                    <span>বইটি পড়ুন</span>
-                    <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
-                  </button>
+                    বইটি পড়ুন
+                  </Button>
                 </footer>
               </article>
             ))}
@@ -300,13 +276,13 @@ export default function GlobalNCTBSearch({ onOpenBook }: GlobalNCTBSearchProps) 
                 &quot;{searchTerm}&quot; দিয়ে কোনো বিষয় পাওয়া যায়নি। বানান পরীক্ষা করুন অথবা ফিল্টার পরিবর্তন করে পুনরায় চেষ্টা করুন।
               </p>
             </div>
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="sm"
               onClick={clearSearch}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold transition-colors shadow-xs"
             >
-              <span>ফিল্টার রিসেট করুন</span>
-            </button>
+              ফিল্টার রিসেট করুন
+            </Button>
           </div>
         )}
       </section>

@@ -254,7 +254,7 @@ export const TrafficSafetyVisualStage: React.FC<TrafficSafetyVisualStageProps> =
 
               <button type="button"
                 onClick={handleCrossZebra}
-                className="px-4 py-2 rounded-xl text-xs font-black bg-rose-600 text-white hover:bg-rose-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all shrink-0"
+                className="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 text-white hover:bg-rose-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               >
                 <Footprints className="w-4 h-4" />
                 <span>রাস্তা পার হোন (Cross Road)</span>

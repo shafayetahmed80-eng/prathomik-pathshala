@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 import {
-  Volume2,
   RotateCcw,
   Star,
   ArrowRight,
@@ -27,6 +26,7 @@ import BornomalaNumberCountingGame from "./BornomalaNumberCountingGame";
 import BornomalaWordBuilderGame from "./BornomalaWordBuilderGame";
 import BornomalaJuktobornoGame from "./BornomalaJuktobornoGame";
 import BornomalaSequenceRunnerGame from "./BornomalaSequenceRunnerGame";
+import { Button, SegmentedControl, AudioButton } from "@/components/ui";
 
 interface Props {
   onBackToCanvas: () => void;
@@ -347,19 +347,19 @@ export default function BornomalaMiniGame({
   return (
     <div className="space-y-6 animate-in fade-in duration-300">
       {/* 🎮 Bornomala Game Arcade Master Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl shadow-xl border border-indigo-700/60">
+      <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#0F172A] text-white rounded-3xl shadow-md border border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-white/10 rounded-2xl border border-white/20">
-            <Gamepad2 className="w-6 h-6 text-amber-400 animate-pulse" />
+          <div className="p-2.5 bg-white/10 rounded-2xl border border-white/15">
+            <Gamepad2 className="w-6 h-6 text-[#FFB020]" />
           </div>
           <div>
-            <h3 className="font-extrabold text-sm sm:text-base tracking-wide flex items-center gap-2">
+            <h3 className="font-bold text-sm sm:text-base tracking-wide flex items-center gap-2">
               <span>{isEng ? "Bornomala Game Arcade" : "বর্ণমালা গেম আর্কেড"}</span>
-              <span className="text-[10px] bg-amber-400 text-slate-900 font-black px-2 py-0.5 rounded-full uppercase">
+              <span className="text-[10px] bg-[#FFB020] text-[#3A2300] font-bold px-2 py-0.5 rounded-full uppercase">
                 {isEng ? "Play & Learn" : "খেলাচ্ছলে শিক্ষা"}
               </span>
             </h3>
-            <p className="text-[11px] text-indigo-200 hidden sm:block">
+            <p className="text-[11px] text-slate-300 hidden sm:block">
               {isEng
                 ? "Fun educational games for literacy & foundational numeracy"
                 : "প্রাক-প্রাথমিক ও প্রাথমিক শিশুদের জন্য আনন্দময় শিক্ষামূলক গেম"}
@@ -367,126 +367,42 @@ export default function BornomalaMiniGame({
           </div>
         </div>
 
-        {/* Master Arcade Game Switcher Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 bg-black/40 p-1 rounded-2xl border border-white/10">
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("balloon-pop");
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "balloon-pop"
-                ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-md scale-102"
-                : "text-indigo-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <span>🎈</span>
-            <span>{isEng ? "Balloon Pop" : "বেলুন পপ"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("counting");
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "counting"
-                ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-md scale-102"
-                : "text-indigo-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <span>🍎</span>
-            <span>{isEng ? "Number Safari" : "ফল গণনা ট্রেন"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("word-builder");
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "word-builder"
-                ? "bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md scale-102"
-                : "text-indigo-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <span>🚂</span>
-            <span>{isEng ? "Word Train" : "শব্দ ট্রেন"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("juktoborno");
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "juktoborno"
-                ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md scale-102"
-                : "text-indigo-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <span>✨</span>
-            <span>{isEng ? "Magic Blends" : "যুক্তবর্ণ ম্যাজিক"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("sequence");
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "sequence"
-                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md scale-102"
-                : "text-indigo-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <span>🧩</span>
-            <span>{isEng ? "Sequence Gap" : "ক্রমধারা রানার"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("memory");
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "memory"
-                ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md scale-102"
-                : "text-indigo-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <span>🎴</span>
-            <span>{isEng ? "Memory Flip" : "মেমোরি কার্ড"}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              playPopSound();
-              unlockMobileAudio({ primeSilent: true });
-              setArcadeTab("quiz");
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${
-              arcadeTab === "quiz"
-                ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md scale-102"
-                : "text-indigo-200 hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <span>🎯</span>
-            <span>{isEng ? "Letter Quiz" : "বর্ণ কুইজ"}</span>
-          </button>
+        {/* Master Arcade Game Switcher Tabs (Clean Soft-Solid pills, zero rainbow gradients) */}
+        <div className="flex flex-wrap items-center gap-1.5 bg-white/10 p-1 rounded-2xl border border-white/10" role="tablist" aria-label="বর্ণমালা গেম নির্বাচন">
+          {(
+            [
+              { id: "balloon-pop", icon: "🎈", label: isEng ? "Balloon Pop" : "বেলুন পপ" },
+              { id: "counting", icon: "🍎", label: isEng ? "Number Safari" : "ফল গণনা ট্রেন" },
+              { id: "word-builder", icon: "🚂", label: isEng ? "Word Train" : "শব্দ ট্রেন" },
+              { id: "juktoborno", icon: "✨", label: isEng ? "Magic Blends" : "যুক্তবর্ণ ম্যাজিক" },
+              { id: "sequence", icon: "🧩", label: isEng ? "Sequence Gap" : "ক্রমধারা রানার" },
+              { id: "memory", icon: "🎴", label: isEng ? "Memory Flip" : "মেমোরি কার্ড" },
+              { id: "quiz", icon: "🎯", label: isEng ? "Letter Quiz" : "বর্ণ কুইজ" },
+            ] as const
+          ).map((tab) => {
+            const isSelected = arcadeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => {
+                  playPopSound();
+                  unlockMobileAudio({ primeSilent: true });
+                  setArcadeTab(tab.id);
+                }}
+                className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB020] ${
+                  isSelected
+                    ? "bg-[#FFB020] text-[#3A2300] shadow-xs"
+                    : "text-slate-200 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                <span>{tab.icon}</span>
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -554,52 +470,29 @@ export default function BornomalaMiniGame({
       {arcadeTab === "quiz" && (
         <div className="space-y-6 animate-in fade-in duration-300">
           {/* Game Mode Switcher & Stats Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl border border-pink-200">
-            <div className="flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={() => handleModeSwitch("picture-to-letter")}
-                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                  gameMode === "picture-to-letter"
-                    ? "bg-pink-600 text-white shadow-md scale-102"
-                    : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-                }`}
-              >
-                {isEng ? "🖼️ Picture to Letter" : "🖼️ ছবি দেখে বর্ণ মেলাও"}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleModeSwitch("listen-to-letter")}
-                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                  gameMode === "listen-to-letter"
-                    ? "bg-purple-600 text-white shadow-md scale-102"
-                    : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-                }`}
-              >
-                {isEng ? "🎧 Listen & Pick" : "🎧 শুনে বর্ণ বাছাই করো"}
-              </button>
-              {isEng && selectedCategory !== "numbers" && (
-                <button
-                  type="button"
-                  onClick={() => handleModeSwitch("case-match")}
-                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                    gameMode === "case-match"
-                      ? "bg-blue-600 text-white shadow-md scale-102"
-                      : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-                  }`}
-                >
-                  🔤 Capital ➔ Small Match
-                </button>
-              )}
-            </div>
+          <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-[#F8FAFC] rounded-2xl border border-slate-200">
+            <SegmentedControl
+              value={gameMode}
+              onChange={handleModeSwitch}
+              ariaLabel="গেম মোড নির্বাচন"
+              roleMode="radiogroup"
+              size="sm"
+              options={[
+                { value: "picture-to-letter", label: isEng ? "🖼️ Picture to Letter" : "🖼️ ছবি দেখে বর্ণ মেলাও" },
+                { value: "listen-to-letter", label: isEng ? "🎧 Listen & Pick" : "🎧 শুনে বর্ণ বাছাই করো" },
+                ...(isEng && selectedCategory !== "numbers"
+                  ? [{ value: "case-match" as const, label: "🔤 Capital ➔ Small" }]
+                  : []),
+              ]}
+            />
 
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 text-xs sm:text-sm font-bold">
-                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FFFBEB] border border-[#FFB020]/50 text-[#3A2300] text-xs sm:text-sm font-semibold">
+                <Star className="w-4 h-4 text-[#FFB020] fill-[#FFB020]" />
                 <span>{isEng ? `Score: ${score}` : `স্কোর: ${score}`}</span>
               </div>
               {streak > 1 && (
-                <div className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-900 text-xs font-bold animate-pulse">
+                <div className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#EEF8F3] border border-[#CBE5D8] text-[#00563F] text-xs font-semibold">
                   🔥 {streak} {isEng ? "Streak!" : "একটানা সঠিক!"}
                 </div>
               )}
@@ -607,30 +500,19 @@ export default function BornomalaMiniGame({
           </div>
 
           {/* Category Filter Pills (Vowels, Consonants, Numbers) */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-            <span className="font-bold text-slate-500 shrink-0">{isEng ? "Topic:" : "বিষয়:"}</span>
-            {(
-              [
-                { id: "all", label: isEng ? "All" : "সকল" },
-                { id: "vowels", label: isEng ? "Vowels" : "স্বরবর্ণ" },
-                { id: "consonants", label: isEng ? "Consonants" : "ব্যঞ্জনবর্ণ" },
-                { id: "numbers", label: isEng ? "Numbers (০-১০০)" : "সংখ্যা (০-১০০)" },
-              ] as { id: QuizCategory; label: string }[]
-            ).map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleCategorySwitch(cat.id)}
-                className={`px-3 py-1.5 rounded-xl font-bold transition-all ${
-                  selectedCategory === cat.id
-                    ? "bg-slate-800 text-white shadow-sm"
-                    : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          <SegmentedControl
+            value={selectedCategory}
+            onChange={handleCategorySwitch}
+            ariaLabel={isEng ? "Topic" : "বিষয় নির্বাচন"}
+            roleMode="radiogroup"
+            size="sm"
+            options={[
+              { value: "all", label: isEng ? "All" : "সকল" },
+              { value: "vowels", label: isEng ? "Vowels" : "স্বরবর্ণ" },
+              { value: "consonants", label: isEng ? "Consonants" : "ব্যঞ্জনবর্ণ" },
+              { value: "numbers", label: isEng ? "Numbers (০-১০০)" : "সংখ্যা (০-১০০)" },
+            ]}
+          />
 
           {/* Question Stage Card */}
           <div className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm text-center space-y-6">
@@ -641,21 +523,19 @@ export default function BornomalaMiniGame({
                   {isEng ? "Which letter starts this word?" : "এই ছবিটি কোন বর্ণের সাথে সম্পর্কিত?"}
                 </p>
                 <div className="flex flex-col items-center justify-center gap-2">
-                  <span className="text-6xl sm:text-7xl filter drop-shadow-md select-none transform hover:scale-110 transition-transform">
+                  <span className="text-6xl sm:text-7xl select-none">
                     {"imageEmoji" in targetItem && targetItem.imageEmoji ? targetItem.imageEmoji : "⭐"}
                   </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-xl sm:text-2xl font-black text-slate-800">
+                    <span className="text-xl sm:text-2xl font-bold text-slate-900">
                       {targetItem.word}
                     </span>
-                    <button
-                      type="button"
+                    <AudioButton
+                      isPlaying={false}
                       onClick={handleReplayAudio}
-                      className="p-1.5 rounded-full hover:bg-slate-100 text-pink-600 transition-colors"
-                      title={isEng ? "Listen audio" : "উচ্চারণ শুনুন"}
-                    >
-                      <Volume2 className="w-5 h-5" />
-                    </button>
+                      size="sm"
+                      ariaLabel={isEng ? "Listen audio" : "উচ্চারণ শুনুন"}
+                    />
                   </div>
                   {"wordMeaningBn" in targetItem && targetItem.wordMeaningBn && (
                     <span className="text-xs font-semibold text-slate-500">
@@ -673,20 +553,17 @@ export default function BornomalaMiniGame({
                   {isEng ? "Listen carefully and choose the matching letter:" : "মনোযোগ দিয়ে শুনে সঠিক বর্ণটি নির্বাচন করো:"}
                 </p>
                 <div className="flex flex-col items-center justify-center gap-3">
-                  <button
-                    type="button"
+                  <Button
+                    variant="play-marigold"
                     onClick={handleReplayAudio}
-                    className="relative group p-6 rounded-3xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-xl hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-4 focus:ring-purple-300"
                     title={isEng ? "Click to replay audio" : "পুনরায় শুনতে ক্লিক করুন"}
+                    className="h-auto py-4 px-8 rounded-[20px] flex-col gap-1.5"
                   >
-                    <span className="absolute -inset-1 rounded-3xl bg-purple-400 opacity-40 group-hover:opacity-75 blur-sm animate-pulse" />
-                    <span className="relative text-5xl sm:text-6xl filter drop-shadow select-none">
-                      🎧
+                    <span className="text-4xl sm:text-5xl select-none" aria-hidden="true">🎧</span>
+                    <span className="text-xs sm:text-sm font-bold">
+                      {isEng ? "Tap to Listen Again" : "শব্দ শুনতে ট্যাপ করো"}
                     </span>
-                  </button>
-                  <span className="text-xs font-bold text-purple-700 animate-pulse">
-                    {isEng ? "Tap headphone to listen again" : "শব্দ শুনতে হেডফোনে ট্যাপ করো"}
-                  </span>
+                  </Button>
                 </div>
               </div>
             )}
@@ -698,8 +575,8 @@ export default function BornomalaMiniGame({
                   Match the Small Letter for:
                 </p>
                 <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="w-24 h-24 rounded-3xl bg-blue-50 border-2 border-blue-300 flex items-center justify-center shadow-inner">
-                    <span className="text-6xl font-black text-blue-700">
+                  <div className="w-24 h-24 rounded-3xl bg-[#EEF8F3] border-2 border-[#006A4E]/40 flex items-center justify-center shadow-inner">
+                    <span className="text-6xl font-bold text-[#00563F]">
                       {targetItem.char}
                     </span>
                   </div>
@@ -710,7 +587,7 @@ export default function BornomalaMiniGame({
               </div>
             )}
 
-            {/* 4 Interactive Option Cards */}
+            {/* 4 Interactive Option Cards (Soft-Solid 2.0 Quiz Tiles) */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto pt-2">
               {options.map((item) => {
                 const isSelectedAndCorrect = isCorrect === true && item.id === targetItem.id;
@@ -727,12 +604,12 @@ export default function BornomalaMiniGame({
                     type="button"
                     disabled={isCorrect === true || isWrong}
                     onClick={() => handleSelectOption(item)}
-                    className={`relative p-5 sm:p-6 rounded-2xl border-2 font-black transition-all transform active:scale-95 flex flex-col items-center justify-center gap-2 shadow-sm ${
+                    className={`relative p-5 sm:p-6 rounded-[16px] border-2 font-bold transition-all flex flex-col items-center justify-center gap-2 cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                       isSelectedAndCorrect
-                        ? "border-emerald-500 bg-emerald-50 text-emerald-700 scale-105 shadow-md ring-4 ring-emerald-200"
+                        ? "border-[#10956A] bg-[#EEF8F3] text-[#00563F] pp-pop shadow-sm"
                         : isWrong
-                        ? "border-rose-300 bg-rose-50 text-rose-400 opacity-50 cursor-not-allowed scale-95"
-                        : "border-slate-200 bg-white hover:border-pink-400 hover:bg-pink-50/50 text-slate-800 hover:scale-102 shadow-xs"
+                        ? "border-[#E5484D] bg-[#FFF5F5] text-[#A1271F] opacity-60 cursor-not-allowed pp-shake"
+                        : "border-[#D5DCE4] bg-white hover:border-[#006A4E] hover:bg-[#EEF8F3]/40 text-slate-900"
                     }`}
                   >
                     <span className="text-3xl sm:text-4xl">
@@ -750,8 +627,8 @@ export default function BornomalaMiniGame({
             {(isCorrect === true || (isCorrect === false && lastWrongItem)) && (
               <div className="pt-2 animate-in zoom-in-95 duration-200">
                 {isCorrect === true ? (
-                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-100 text-emerald-800 font-bold text-sm border border-emerald-200 shadow-sm">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#EEF8F3] text-[#00563F] font-semibold text-sm border border-[#10956A] shadow-xs">
+                    <CheckCircle2 className="w-5 h-5 text-[#10956A]" />
                     <span>
                       {isEng
                         ? targetItem.type === "number"
@@ -763,8 +640,8 @@ export default function BornomalaMiniGame({
                     </span>
                   </div>
                 ) : lastWrongItem ? (
-                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-amber-100 text-amber-900 font-bold text-sm border border-amber-200 shadow-sm">
-                    <XCircle className="w-5 h-5 text-rose-600" />
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#FFF5F5] text-[#A1271F] font-semibold text-sm border border-[#E5484D]/50 shadow-xs">
+                    <XCircle className="w-5 h-5 text-[#E5484D]" />
                     <span>
                       {(() => {
                         const wrongGlyph =
@@ -783,14 +660,13 @@ export default function BornomalaMiniGame({
 
             {/* Actions Footer */}
             <div className="pt-4 flex items-center justify-center gap-3">
-              <button
-                type="button"
+              <Button
+                variant="play-green"
+                leftIcon={<RotateCcw className="w-4 h-4" />}
                 onClick={generateQuestion}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-colors"
               >
-                <RotateCcw className="w-4 h-4" />
-                <span>{isEng ? "Next Question" : "পরের প্রশ্ন"}</span>
-              </button>
+                {isEng ? "Next Question" : "পরের প্রশ্ন"}
+              </Button>
             </div>
           </div>
         </div>
@@ -798,14 +674,14 @@ export default function BornomalaMiniGame({
 
       {/* Global Arcade Bottom Action: Return to Handwriting Canvas */}
       <div className="pt-2 flex items-center justify-center">
-        <button
-          type="button"
+        <Button
+          variant="ink"
+          size="md"
+          rightIcon={<ArrowRight className="w-4 h-4 pp-arrow" />}
           onClick={onBackToCanvas}
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-slate-900 hover:bg-black text-white font-black text-xs sm:text-sm shadow-md transition-all active:scale-95"
         >
-          <span>{isEng ? "Back to Tracing Canvas" : "হাতেখড়ি ক্যানভাসে ফিরুন"}</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
+          {isEng ? "Back to Tracing Canvas" : "হাতেখড়ি ক্যানভাসে ফিরুন"}
+        </Button>
       </div>
     </div>
   );

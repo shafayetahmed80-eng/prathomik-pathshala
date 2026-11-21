@@ -9,18 +9,15 @@ import {
   Lightbulb, 
   Zap, 
   Award, 
-  GraduationCap, 
   Key, 
-  Loader2, 
   Plus, 
   Minus, 
-  Check, 
-  Sliders,
   AlertCircle
 } from "lucide-react";
 import { NCTB_CURRICULUM_TOPICS } from "@/data/curriculumTopics";
 import { CLASS_SUBJECTS_MAP, ExamQuestionItem } from "@/data/examQuestions";
 import ChapterMultiSelect from "@/components/ChapterMultiSelect";
+import { Button, IconButton, SegmentedControl } from "@/components/ui";
 
 interface AiExamGeneratorModalProps {
   isOpen: boolean;
@@ -331,46 +328,46 @@ export default function AiExamGeneratorModal({
         className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden text-slate-800"
       >
         {/* Modal Header */}
-        <header className="p-4 sm:p-5 bg-gradient-to-r from-sky-600 via-indigo-600 to-emerald-600 text-white flex items-center justify-between shrink-0">
+        <header className="p-4 sm:p-5 bg-[#0F172A] text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl shadow-inner shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-xl shrink-0">
               ✨
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 id="ai-modal-title" className="text-base sm:text-lg font-black leading-tight">
+                <h3 id="ai-modal-title" className="text-base sm:text-lg font-bold leading-tight">
                   এআই প্রশ্নপত্র ও ওয়ার্কশিট জেনারেটর
                 </h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-400 text-slate-950">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#FFB020] text-[#3A2300]">
                   Gemini AI
                 </span>
               </div>
-              <p className="text-xs text-sky-100 mt-0.5">
+              <p className="text-xs text-slate-300 mt-0.5">
                 এনসিটিবি সিলেবাসের আলোকে যেকোনা বিষয়ের পূর্ণাঙ্গ প্রশ্ন তৈরি করুন
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-1.5">
-            <button
-              type="button"
+            <IconButton
+              icon={<Key className="w-4 h-4" />}
+              ariaLabel="Gemini API Key সেটিংস"
+              tooltipPosition="bottom"
+              variant="ghost"
+              size="sm"
               onClick={() => setShowKeyInput(!showKeyInput)}
-              title="Gemini API Key সেটিংস"
-              aria-label="Gemini API Key সেটিংস"
-              className={`p-2 rounded-xl transition-colors ${showKeyInput ? "bg-white text-slate-900" : "bg-white/10 hover:bg-white/20 text-white"}`}
-            >
-              <Key className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
+              className={showKeyInput ? "bg-white text-[#0F172A] hover:bg-slate-100" : "bg-white/10 text-white hover:bg-white/20"}
+            />
+            <IconButton
+              icon={<X className="w-4 h-4" />}
+              ariaLabel="বন্ধ করুন"
+              tooltipPosition="bottom"
+              variant="ghost"
+              size="sm"
               onClick={onClose}
               disabled={isLoading}
-              title="বন্ধ করুন"
-              aria-label="বন্ধ করুন"
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
+              className="bg-white/10 text-white hover:bg-white/20"
+            />
           </div>
         </header>
 
@@ -449,40 +446,34 @@ export default function AiExamGeneratorModal({
           {/* Input Source Modes (3 Tabs) */}
           <div className="space-y-2.5">
             <label className="block font-bold text-slate-700">প্রশ্ন তৈরির উৎস নির্বাচন করুন:</label>
-            <div className="grid grid-cols-3 gap-2 p-1 rounded-2xl bg-slate-100 border border-slate-200">
-              <button
-                type="button"
-                onClick={() => setInputMode("chapter")}
-                className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all ${
-                  inputMode === "chapter" ? "bg-white text-sky-700 shadow-sm" : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span className="truncate">পাঠ্যবইয়ের অধ্যায়</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setInputMode("passage")}
-                className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all ${
-                  inputMode === "passage" ? "bg-white text-sky-700 shadow-sm" : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span className="truncate">অনুচ্ছেদ পেস্ট</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setInputMode("custom_topic")}
-                className={`py-2 px-2.5 rounded-xl font-bold flex items-center justify-center gap-1.5 transition-all ${
-                  inputMode === "custom_topic" ? "bg-white text-sky-700 shadow-sm" : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <Lightbulb className="w-3.5 h-3.5" />
-                <span className="truncate">শিখনফল / টপিক</span>
-              </button>
-            </div>
+            <SegmentedControl
+              value={inputMode}
+              onChange={setInputMode}
+              ariaLabel="প্রশ্ন তৈরির উৎস"
+              roleMode="tablist"
+              size="sm"
+              fullWidth
+              options={[
+                {
+                  value: "chapter",
+                  label: "পাঠ্যবইয়ের অধ্যায়",
+                  shortLabel: "অধ্যায়",
+                  icon: <BookOpen className="w-3.5 h-3.5" />,
+                },
+                {
+                  value: "passage",
+                  label: "অনুচ্ছেদ পেস্ট",
+                  shortLabel: "অনুচ্ছেদ",
+                  icon: <FileText className="w-3.5 h-3.5" />,
+                },
+                {
+                  value: "custom_topic",
+                  label: "শিখনফল / টপিক",
+                  shortLabel: "টপিক",
+                  icon: <Lightbulb className="w-3.5 h-3.5" />,
+                },
+              ]}
+            />
 
             {/* Mode 1: Chapter Select (Multi-Chapter Selection) */}
             {inputMode === "chapter" && (
@@ -793,36 +784,20 @@ export default function AiExamGeneratorModal({
 
           {/* Difficulty Selection */}
           <div className="space-y-1.5">
-            <span className="font-bold text-slate-700">কাঠিন্যের মাত্রা (Difficulty Level):</span>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => setDifficulty("easy")}
-                className={`py-2 px-3 rounded-xl border text-center font-bold transition-all ${
-                  difficulty === "easy" ? "border-emerald-500 bg-emerald-50 text-emerald-800" : "border-slate-200 bg-white text-slate-600"
-                }`}
-              >
-                সহজ ও স্মরণমূলক
-              </button>
-              <button
-                type="button"
-                onClick={() => setDifficulty("medium")}
-                className={`py-2 px-3 rounded-xl border text-center font-bold transition-all ${
-                  difficulty === "medium" ? "border-sky-500 bg-sky-50 text-sky-800" : "border-slate-200 bg-white text-slate-600"
-                }`}
-              >
-                মানসম্মত ও সুষম
-              </button>
-              <button
-                type="button"
-                onClick={() => setDifficulty("hard")}
-                className={`py-2 px-3 rounded-xl border text-center font-bold transition-all ${
-                  difficulty === "hard" ? "border-purple-500 bg-purple-50 text-purple-800" : "border-slate-200 bg-white text-slate-600"
-                }`}
-              >
-                চিন্তনদক্ষতামূলক
-              </button>
-            </div>
+            <span className="font-bold text-slate-700 block">কাঠিন্যের মাত্রা (Difficulty Level):</span>
+            <SegmentedControl
+              value={difficulty}
+              onChange={setDifficulty}
+              ariaLabel="কাঠিন্যের মাত্রা"
+              roleMode="radiogroup"
+              size="sm"
+              fullWidth
+              options={[
+                { value: "easy", label: "সহজ ও স্মরণমূলক", shortLabel: "সহজ" },
+                { value: "medium", label: "মানসম্মত ও সুষম", shortLabel: "মানসম্মত" },
+                { value: "hard", label: "চিন্তনদক্ষতামূলক", shortLabel: "উচ্চতর" },
+              ]}
+            />
           </div>
         </div>
 
@@ -833,33 +808,27 @@ export default function AiExamGeneratorModal({
           </div>
 
           <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="md"
               onClick={onClose}
               disabled={isLoading}
-              className="px-4 py-2.5 rounded-xl border border-slate-300 font-bold text-slate-700 hover:bg-slate-100 transition-colors"
             >
               বাতিল
-            </button>
+            </Button>
 
-            <button
-              type="button"
+            <Button
+              variant="ink"
+              size="md"
+              state={isLoading ? "loading" : "idle"}
+              loadingLabel="প্রশ্ন প্রস্তুত করা হচ্ছে..."
+              disabled={estimatedMarks === 0}
+              leftIcon={<Sparkles className="w-4 h-4 text-[#FFB020]" />}
               onClick={handleGenerate}
-              disabled={isLoading || estimatedMarks === 0}
-              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-emerald-600 hover:from-sky-700 hover:to-emerald-700 text-white font-bold shadow-lg shadow-sky-600/20 transition-all disabled:opacity-50"
+              className="flex-1 sm:flex-initial"
             >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>প্রশ্ন প্রস্তুত করা হচ্ছে...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span>সম্পূর্ণ প্রশ্নপত্র তৈরি করুন</span>
-                </>
-              )}
-            </button>
+              সম্পূর্ণ প্রশ্নপত্র তৈরি করুন
+            </Button>
           </div>
         </footer>
       </div>

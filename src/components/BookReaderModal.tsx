@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { PDFDocumentProxy, RenderTask } from "pdfjs-dist";
 import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
+import { Button, IconButton, getButtonClasses } from "@/components/ui";
 
 interface BookReaderModalProps {
   isOpen: boolean;
@@ -414,23 +415,22 @@ export default function BookReaderModal({
             </div>
           </div>
 
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-            <button
-              type="button"
+          <div className="flex items-center gap-1.5 shrink-0">
+            <IconButton
+              icon={<Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />}
+              ariaLabel="বইয়ের বিবরণ পড়ে শোনাও"
+              tooltipPosition="bottom"
+              variant="tonal"
+              size="sm"
               onClick={handleSpeak}
-              className="p-2 rounded-xl text-slate-700 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 border border-slate-200/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-              title="বইয়ের বিবরণ পড়ে শোনাও"
-              aria-label="বইয়ের বিবরণ পড়ে শোনাও"
-            >
-              <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-            </button>
+            />
 
             <a
               href={downloadUrl}
               download={`${bookName}.pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-xl text-slate-700 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 border border-slate-200/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className={getButtonClasses({ variant: "secondary", size: "sm", iconOnly: true })}
               title="পিডিএফ ডাউনলোড করুন"
               aria-label="পিডিএফ ফাইল ডাউনলোড করুন"
             >
@@ -441,38 +441,41 @@ export default function BookReaderModal({
               href={pdfUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-xl text-slate-700 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 border border-slate-200/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className={getButtonClasses({ variant: "secondary", size: "sm", iconOnly: true })}
               title="নতুন ট্যাবে মূল পিডিএফ খুলুন"
               aria-label="নতুন ব্রাউজার ট্যাবে পিডিএফ খুলুন"
             >
               <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             </a>
 
-            <button
-              type="button"
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              className="p-2 rounded-xl text-slate-700 hover:text-emerald-700 bg-slate-100 hover:bg-emerald-50 border border-slate-200/80 transition-colors hidden sm:inline-block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-              title={isFullscreen ? "ছোট করুন" : "ফুলস্ক্রিন করুন"}
-              aria-label={
+            <IconButton
+              icon={
+                isFullscreen ? (
+                  <Minimize2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                ) : (
+                  <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                )
+              }
+              ariaLabel={
                 isFullscreen ? "উইন্ডো স্বাভাবিক আকারে ফিরিয়ে আনুন" : "ফুলস্ক্রিন মোডে দেখুন"
               }
-            >
-              {isFullscreen ? (
-                <Minimize2 className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-              ) : (
-                <Maximize2 className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-              )}
-            </button>
+              tooltip={isFullscreen ? "ছোট করুন" : "ফুলস্ক্রিন করুন"}
+              tooltipPosition="bottom"
+              variant="secondary"
+              size="sm"
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              className="hidden sm:inline-flex"
+            />
 
-            <button
-              type="button"
+            <IconButton
+              icon={<X className="w-4 h-4 sm:w-5 sm:h-5" />}
+              ariaLabel="রিডার বন্ধ করুন"
+              tooltipPosition="bottom"
+              variant="danger-tonal"
+              size="sm"
               onClick={onClose}
-              className="p-2 sm:p-2.5 rounded-xl bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 transition-colors ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 touch-manipulation min-w-[40px] min-h-[40px] flex items-center justify-center shrink-0"
-              title="রিডার বন্ধ করুন"
-              aria-label="রিডার বন্ধ করুন"
-            >
-              <X className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
-            </button>
+              className="ml-0.5 shrink-0"
+            />
           </div>
         </header>
 
@@ -523,22 +526,22 @@ export default function BookReaderModal({
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
-                <button
-                  type="button"
+                <Button
+                  variant="primary"
+                  size="sm"
                   onClick={() => {
                     setRenderedPageKey("");
                     setRetryToken((t) => t + 1);
                   }}
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-colors cursor-pointer"
                 >
                   আবার চেষ্টা করুন
-                </button>
+                </Button>
                 {isStorageMissing ? (
                   <a
                     href="https://nctb.portal.gov.bd/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs transition-colors"
+                    className={getButtonClasses({ variant: "secondary", size: "sm" })}
                   >
                     <span>এনসিটিবি ওয়েবসাইট</span>
                     <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
@@ -548,7 +551,7 @@ export default function BookReaderModal({
                     href={pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs transition-colors"
+                    className={getButtonClasses({ variant: "secondary", size: "sm" })}
                   >
                     নতুন ট্যাবে খুলুন
                   </a>
@@ -600,23 +603,23 @@ export default function BookReaderModal({
           >
             {/* Prev / Page Input / Next */}
             <div className="flex items-center gap-1.5 sm:gap-2 mx-auto sm:mx-0">
-              <button
-                type="button"
+              <Button
+                variant="secondary"
+                size="sm"
+                leftIcon={<ChevronLeft className="w-4 h-4" />}
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={!isDocReady || currentPage <= 1}
-                className="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 disabled:opacity-40 disabled:pointer-events-none text-slate-800 font-bold border border-slate-200/80 transition-colors min-h-[40px]"
                 aria-label="আগের পাতা"
               >
-                <ChevronLeft className="w-4 h-4" />
-                <span>আগের পাতা</span>
-              </button>
+                আগের পাতা
+              </Button>
 
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   commitPageInput();
                 }}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 font-bold min-h-[40px]"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-[10px] bg-slate-50 border border-slate-200 text-slate-700 font-semibold min-h-[36px]"
               >
                 <span className="hidden xs:inline">পৃষ্ঠা</span>
                 <input
@@ -634,57 +637,55 @@ export default function BookReaderModal({
                   }
                   onBlur={commitPageInput}
                   aria-label="পৃষ্ঠা নম্বর"
-                  className="w-12 text-center py-1 rounded-lg border border-slate-300 bg-white text-slate-900 font-black focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-12 text-center py-0.5 rounded-lg border border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-[#006A4E]"
                 />
                 <span className="text-slate-500">/ {numPages || "…"}</span>
               </form>
 
-              <button
-                type="button"
+              <Button
+                variant="primary"
+                size="sm"
+                rightIcon={<ChevronRight className="w-4 h-4 pp-arrow" />}
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={!isDocReady || currentPage >= numPages}
-                className="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 disabled:text-slate-400 disabled:pointer-events-none text-white font-bold shadow-xs transition-colors min-h-[40px]"
                 aria-label="পরের পাতা"
               >
-                <span>পরের পাতা</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
+                পরের পাতা
+              </Button>
             </div>
 
             {/* Zoom Controls */}
             <div className="flex items-center gap-1.5 mx-auto sm:mx-0" role="group" aria-label="বই জুম কন্ট্রোল">
-              <button
-                type="button"
+              <IconButton
+                icon={<ZoomOut className="w-4 h-4" />}
+                ariaLabel="জুম কমান"
+                tooltip="ছোট করুন (Zoom Out)"
+                variant="secondary"
+                size="sm"
                 onClick={() => setZoom((z) => Math.max(MIN_ZOOM, Number((z - ZOOM_STEP).toFixed(2))))}
                 disabled={!isDocReady || zoom <= MIN_ZOOM}
-                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:pointer-events-none text-slate-700 border border-slate-200/80 min-w-[40px] min-h-[40px] flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-                title="ছোট করুন (Zoom Out)"
-                aria-label="জুম কমান"
-              >
-                <ZoomOut className="w-4 h-4" />
-              </button>
+              />
 
-              <button
-                type="button"
+              <Button
+                variant="secondary"
+                size="sm"
+                leftIcon={<RotateCcw className="w-3.5 h-3.5 text-slate-500" />}
                 onClick={() => setZoom(1)}
                 disabled={!isDocReady || zoom === 1}
-                className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-60 text-slate-800 font-bold border border-slate-200/80 min-h-[40px] inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
                 title="স্বাভাবিক আকার (১০০%)"
               >
-                <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
-                <span>{Math.round(zoom * 100)}%</span>
-              </button>
+                {Math.round(zoom * 100)}%
+              </Button>
 
-              <button
-                type="button"
+              <IconButton
+                icon={<ZoomIn className="w-4 h-4" />}
+                ariaLabel="জুম বাড়ান"
+                tooltip="বড় করুন (Zoom In)"
+                variant="secondary"
+                size="sm"
                 onClick={() => setZoom((z) => Math.min(MAX_ZOOM, Number((z + ZOOM_STEP).toFixed(2))))}
                 disabled={!isDocReady || zoom >= MAX_ZOOM}
-                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 disabled:opacity-40 disabled:pointer-events-none text-slate-700 border border-slate-200/80 min-w-[40px] min-h-[40px] flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-                title="বড় করুন (Zoom In)"
-                aria-label="জুম বাড়ান"
-              >
-                <ZoomIn className="w-4 h-4" />
-              </button>
+              />
             </div>
           </footer>
         )}

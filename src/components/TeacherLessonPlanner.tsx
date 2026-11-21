@@ -5,21 +5,18 @@ import {
   Sparkles,
   Printer,
   Copy,
-  Check,
-  BookOpen,
   Clock,
   Target,
   HelpCircle,
   Layers,
   Award,
   User,
-  School,
-  Calendar,
   ChevronDown,
   ChevronUp,
   Table as TableIcon,
   LayoutList,
 } from "lucide-react";
+import { Button, SegmentedControl } from "@/components/ui";
 
 interface LessonPlanData {
   title: string;
@@ -423,40 +420,42 @@ ${currentPlan.homework}
         <div className="flex items-center gap-3">
           <div 
             aria-hidden="true" 
-            className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white text-2xl shadow-md shadow-purple-500/20 shrink-0"
+            className="w-12 h-12 rounded-2xl bg-[#0F172A] flex items-center justify-center text-white text-2xl shadow-xs shrink-0"
           >
             👩‍🏫
           </div>
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-purple-100 text-purple-900 text-xs font-bold">
-              <Sparkles className="w-3.5 h-3.5 text-purple-600" aria-hidden="true" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8] text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5 text-[#006A4E]" aria-hidden="true" />
               <span>এনসিটিবি ২০২৬ স্মার্ট লেসন প্ল্যানার</span>
             </div>
-            <h2 id="lesson-planner-heading" className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
+            <h2 id="lesson-planner-heading" className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
               শিক্ষক পাঠ পরিকল্পনা ও ডায়েরি
             </h2>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <button
-            type="button"
+        <div className="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+          <Button
+            variant={copied ? "tonal" : "secondary"}
+            size="sm"
+            state={copied ? "success" : "idle"}
+            successLabel="কপি হয়েছে!"
+            leftIcon={<Copy className="w-4 h-4" />}
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
             aria-label="পাঠ পরিকল্পনা কপি করুন"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-600" aria-hidden="true" /> : <Copy className="w-4 h-4" aria-hidden="true" />}
-            <span>{copied ? "কপি হয়েছে!" : "কপি করুন"}</span>
-          </button>
-          <button
-            type="button"
+            কপি করুন
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<Printer className="w-4 h-4" />}
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-700 text-white shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
             aria-label="পাঠ পরিকল্পনা প্রিন্ট করুন অথবা পিডিএফ ডাউনলোড করুন"
           >
-            <Printer className="w-4 h-4" aria-hidden="true" />
-            <span>প্রিন্ট / PDF</span>
-          </button>
+            প্রিন্ট / PDF
+          </Button>
         </div>
       </div>
 
@@ -477,7 +476,7 @@ ${currentPlan.homework}
             id="grade-select"
             value={selectedGrade}
             onChange={(e) => setSelectedGrade(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
+            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E] cursor-pointer"
           >
             <option value="pre-primary">প্রাক-প্রাথমিক</option>
             <option value="class-1">১ম শ্রেণি</option>
@@ -496,7 +495,7 @@ ${currentPlan.homework}
             id="subject-select"
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
+            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E] cursor-pointer"
           >
             <option value="গণিত">প্রাথমিক গণিত</option>
             <option value="বাংলা">আমার বাংলা বই</option>
@@ -516,62 +515,59 @@ ${currentPlan.homework}
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             placeholder="যেমন: যোগের ধারণা / পাখিদের কথা"
-            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-base sm:text-sm font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E]"
           />
         </div>
 
         <div className="flex items-end">
-          <button
+          <Button
             type="submit"
-            disabled={isGenerating}
-            className="w-full py-2.5 px-4 min-h-[44px] rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer touch-manipulation"
+            variant="ink"
+            size="md"
+            state={isGenerating ? "loading" : "idle"}
+            loadingLabel="তৈরি হচ্ছে..."
+            leftIcon={<Sparkles className="w-4 h-4" />}
+            className="w-full"
           >
-            <Sparkles className="w-4 h-4" aria-hidden="true" />
-            <span>{isGenerating ? "তৈরি হচ্ছে..." : "পরিকল্পনা তৈরি করুন"}</span>
-          </button>
+            পরিকল্পনা তৈরি করুন
+          </Button>
         </div>
 
         {/* Toggleable Teacher & School Info Editor + View Switcher */}
         <div className="sm:col-span-2 lg:col-span-4 pt-3 border-t border-slate-200">
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <button
-              type="button"
+            <Button
+              variant="tonal"
+              size="sm"
               onClick={() => setShowMetadataEditor((prev) => !prev)}
               aria-expanded={showMetadataEditor}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-purple-700 hover:text-purple-900 bg-purple-50 hover:bg-purple-100 border border-purple-200 px-3.5 py-2 min-h-[38px] rounded-xl transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+              leftIcon={<User className="w-3.5 h-3.5" />}
+              rightIcon={showMetadataEditor ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             >
-              <User className="w-3.5 h-3.5 text-purple-600" />
-              <span>বিদ্যালয় ও শিক্ষকের তথ্য {showMetadataEditor ? "লুকান" : "সম্পাদনা করুন"}</span>
-              {showMetadataEditor ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-            </button>
+              বিদ্যালয় ও শিক্ষকের তথ্য {showMetadataEditor ? "লুকান" : "সম্পাদনা করুন"}
+            </Button>
 
             {/* View Mode Toggle: Card vs Table View */}
-            <div className="flex items-center gap-1 bg-slate-200/80 p-1 rounded-xl text-xs font-bold text-slate-700" role="group" aria-label="ভিউ লেআউট নির্বাচন">
-              <button
-                type="button"
-                onClick={() => setIsTableView(false)}
-                aria-pressed={!isTableView}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
-                  !isTableView ? "bg-white text-purple-900 shadow-xs font-black" : "hover:text-slate-900"
-                }`}
-                title="কার্ড আকারে দেখুন"
-              >
-                <LayoutList className="w-3.5 h-3.5" />
-                <span className="hidden xs:inline">কার্ড ভিউ</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsTableView(true)}
-                aria-pressed={isTableView}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-lg transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${
-                  isTableView ? "bg-white text-purple-900 shadow-xs font-black" : "hover:text-slate-900"
-                }`}
-                title="সরকারি ছক আকারে দেখুন"
-              >
-                <TableIcon className="w-3.5 h-3.5" />
-                <span className="hidden xs:inline">ছক ভিউ (Table)</span>
-              </button>
-            </div>
+            <SegmentedControl
+              value={isTableView ? "table" : "card"}
+              onChange={(val) => setIsTableView(val === "table")}
+              ariaLabel="ভিউ লেআউট নির্বাচন"
+              roleMode="radiogroup"
+              size="sm"
+              options={[
+                {
+                  value: "card",
+                  label: "কার্ড ভিউ",
+                  icon: <LayoutList className="w-3.5 h-3.5" />,
+                },
+                {
+                  value: "table",
+                  label: "ছক ভিউ (Table)",
+                  shortLabel: "ছক ভিউ",
+                  icon: <TableIcon className="w-3.5 h-3.5" />,
+                },
+              ]}
+            />
           </div>
 
           {showMetadataEditor && (
@@ -584,7 +580,7 @@ ${currentPlan.homework}
                   type="text"
                   value={schoolName}
                   onChange={(e) => setSchoolName(e.target.value)}
-                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E]"
                 />
               </div>
               <div>
@@ -595,7 +591,7 @@ ${currentPlan.homework}
                   type="text"
                   value={teacherName}
                   onChange={(e) => setTeacherName(e.target.value)}
-                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E]"
                 />
               </div>
               <div>
@@ -606,7 +602,7 @@ ${currentPlan.homework}
                   type="text"
                   value={lessonDate}
                   onChange={(e) => setLessonDate(e.target.value)}
-                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E]"
                 />
               </div>
               <div>
@@ -617,7 +613,7 @@ ${currentPlan.homework}
                   type="text"
                   value={period}
                   onChange={(e) => setPeriod(e.target.value)}
-                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2.5 min-h-[44px] rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E]"
                 />
               </div>
             </div>
@@ -792,9 +788,9 @@ ${currentPlan.homework}
         </div>
 
         {/* Section 5: Homework */}
-        <div className="space-y-2 p-4 rounded-2xl bg-purple-50 border border-purple-200 text-purple-950 print:bg-transparent print:border-slate-400 break-inside-avoid">
-          <div className="flex items-center gap-2 font-black text-xs sm:text-sm text-purple-900 print:text-slate-900">
-            <HelpCircle className="w-4 h-4 text-purple-600 print:text-slate-900" aria-hidden="true" />
+        <div className="space-y-2 p-4 rounded-2xl bg-[#EEF8F3] border border-[#CBE5D8] text-[#0F172A] print:bg-transparent print:border-slate-400 break-inside-avoid">
+          <div className="flex items-center gap-2 font-bold text-xs sm:text-sm text-[#00563F] print:text-slate-900">
+            <HelpCircle className="w-4 h-4 text-[#006A4E] print:text-slate-900" aria-hidden="true" />
             <span>৫. অর্থবহ বাড়ির কাজ (Meaningful Homework):</span>
           </div>
           <p className="text-xs sm:text-sm font-medium leading-relaxed pl-6 text-slate-800">

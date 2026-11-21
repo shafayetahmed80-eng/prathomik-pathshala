@@ -151,7 +151,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
                 playChime("click");
                 handleSpeak("On a scorching summer afternoon, a thirsty crow was flying all over the village in search of water. At last, he saw a tall clay pitcher under a shady tree. But his beak could not reach the bottom!");
               }}
-              className="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md"
+              className="w-full py-2.5 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Volume2 className="w-4 h-4" />
               <span>গল্পের সূচনা শুনুন (Listen to Story Introduction)</span>
@@ -178,13 +178,13 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
 
                 <div className="flex items-center gap-2">
                   {!waterAtBrim ? (
-                    <button type="button" onClick={handleDropPebble} className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-sky-600 hover:from-amber-500 hover:to-sky-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse">
+                    <button type="button" onClick={handleDropPebble} className="px-3.5 py-1.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]">
                       <span>🪨 নুড়ি ফেলুন (Drop Pebble)</span>
                     </button>
                   ) : !crowDrank ? (
                     <button type="button"
                       onClick={handleDrinkWater}
-                      className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-bounce"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Droplets className="w-4 h-4" />
                       <span>পানি পান করুন (Drink Water!)</span>
@@ -315,7 +315,7 @@ export const CleverCrowVisualStage: React.FC<CleverCrowVisualStageProps> = ({
                 playChime("fanfare");
                 handleSpeak("Remember the clever crow's wisdom: Where there is a will, there is a way! Never give up in the face of difficulty. Think cleverly and patiently solve your challenges!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-sky-600 to-emerald-600 hover:from-sky-500 hover:to-emerald-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Sparkles className="w-4 h-4 text-amber-200" />
               <span>প্রবাদের অনুপ্রেরণামূলক বাণী শুনুন (Listen to Proverb Wisdom)</span>

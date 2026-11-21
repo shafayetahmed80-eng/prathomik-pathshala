@@ -138,11 +138,11 @@ export default function WaterPollutionVisualStage({
               setActiveTab("pond");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "pond"
-                ? "bg-teal-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-teal-700 hover:bg-teal-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "pond"
+ ? "bg-teal-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-teal-700 hover:bg-teal-50"
+ }`}
           >
             <Fish className="w-3.5 h-3.5" />
             <span>Pond Cleanup</span>
@@ -152,11 +152,11 @@ export default function WaterPollutionVisualStage({
               setActiveTab("rally");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "rally"
-                ? "bg-teal-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-teal-700 hover:bg-teal-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "rally"
+ ? "bg-teal-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-teal-700 hover:bg-teal-50"
+ }`}
           >
             <Megaphone className="w-3.5 h-3.5" />
             <span>Student Rally</span>
@@ -166,11 +166,11 @@ export default function WaterPollutionVisualStage({
               setActiveTab("diseases");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "diseases"
-                ? "bg-teal-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-teal-700 hover:bg-teal-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "diseases"
+ ? "bg-teal-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-teal-700 hover:bg-teal-50"
+ }`}
           >
             <AlertTriangle className="w-3.5 h-3.5" />
             <span>Health</span>
@@ -221,10 +221,10 @@ export default function WaterPollutionVisualStage({
                       key={item.id}
                       onClick={() => !item.cleaned && handleCleanTrash(item.id)}
                       className={`p-2.5 rounded-xl border-2 transition-all flex flex-col items-center justify-center text-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-                        item.cleaned
-                          ? "border-emerald-400 bg-emerald-50/70 opacity-60 line-through scale-95"
-                          : "border-rose-300 bg-white/90 hover:border-rose-500 hover:scale-105 shadow-md animate-pulse"
-                      }`}
+ item.cleaned
+ ? "border-emerald-400 bg-emerald-50/70 opacity-60 line-through scale-95"
+ : "border-rose-300 bg-white/90 hover:border-rose-500 shadow-md"
+ }`}
                     >
                       <span className="text-3xl mb-1">{item.cleaned ? "✅" : item.icon}</span>
                       <span className="font-bold text-xs text-slate-800">{item.name}</span>
@@ -335,7 +335,7 @@ export default function WaterPollutionVisualStage({
             {/* Rally Controls */}
             <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-2xl border border-teal-200 shadow-xs flex-wrap">
               <div className="flex items-center gap-2">
-                <button type="button" onClick={handleStartRally} disabled={isChanting} className="px-4 py-2 rounded-xl bg-linear-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer">
+                <button type="button" onClick={handleStartRally} disabled={isChanting} className="px-4 py-2 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]">
                   <Megaphone className="w-4 h-4" />
                   <span>Lead Student Rally (সচেতনতা র‍্যালি)</span>
                 </button>

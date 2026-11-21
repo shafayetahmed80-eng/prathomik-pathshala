@@ -141,7 +141,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
 
                 <button type="button"
                   onClick={handleTickleLion}
-                  className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
+                  className="px-3.5 py-1.5 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <span>🐭 ইঁদুরকে দৌড়ান (Play)</span>
                 </button>
@@ -187,7 +187,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
                   playChime("click");
                   handleSpeak("The mouse pleaded: O King of the jungle! Please forgive me this time. I will never forget your kindness. Maybe one day I can help you! The lion laughed, but let him go.");
                 }}
-                className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center gap-2 shadow-md"
+                className="px-4 py-2 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white text-xs font-bold flex items-center gap-2 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               >
                 <Volume2 className="w-4 h-4" />
                 <span>সিংহের মহানুভবতার সংলাপ শুনুন (Listen to Dialogue)</span>
@@ -215,7 +215,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
 
                 <div className="flex items-center gap-2">
                   {!lionFreed ? (
-                    <button type="button" onClick={handleChewRope} className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse">
+                    <button type="button" onClick={handleChewRope} className="px-3.5 py-1.5 rounded-xl bg-[#C0362C] hover:bg-[#A1271F] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]">
                       <Scissors className="w-4 h-4" />
                       <span>দড়ি কাটুন (Chew Rope!)</span>
                     </button>
@@ -337,7 +337,7 @@ export const LionAndMouseVisualStage: React.FC<LionAndMouseVisualStageProps> = (
                 playChime("fanfare");
                 handleSpeak("Moral of the story: No act of kindness, no matter how small, is ever wasted. Even a tiny friend can be a mighty helper in danger!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-emerald-600 hover:from-amber-500 hover:to-emerald-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Heart className="w-4 h-4 text-rose-300" />
               <span>উপকথার মূল নীতিকথা শুনুন (Listen to Moral)</span>

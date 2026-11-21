@@ -521,7 +521,7 @@ export const CalendarMonthsVisualStage: React.FC<CalendarMonthsVisualStageProps>
         </span>
         <button type="button"
           onClick={() => handleSpeak("There are twelve months in an English year. January is the first month, and December is the twelfth and last month.")}
-          className="text-xs font-black text-indigo-700 hover:text-indigo-900 flex items-center gap-1 shrink-0"
+          className="text-xs font-semibold text-indigo-700 hover:text-indigo-900 flex items-center gap-1 shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
         >
           <Volume2 className="w-3.5 h-3.5" />
           <span>পুরো পাঠ শুনুন</span>

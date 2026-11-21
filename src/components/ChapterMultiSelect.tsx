@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown, Check, Minus, BookOpen, ListChecks, Layers, RotateCcw } from "lucide-react";
 import { ChapterTopic } from "@/data/curriculumTopics";
+import { Button } from "@/components/ui";
 
 export interface ChapterMultiSelectProps {
   chapters: ChapterTopic[];
@@ -243,11 +244,12 @@ export default function ChapterMultiSelect({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
         title={triggerTitle}
-        className="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-base sm:text-xs font-semibold text-slate-800 flex items-center justify-between gap-2 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-colors shadow-xs"
+        className="w-full min-h-[40px] px-3 py-2 rounded-[12px] border border-[#D5DCE4] bg-white text-base sm:text-xs font-semibold text-[#0F172A] flex items-center justify-between gap-2 hover:border-[#94A3B8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] transition-colors cursor-pointer touch-manipulation"
       >
         <div className="flex items-center gap-2 min-w-0 truncate">
-          <BookOpen className="w-4 h-4 text-sky-600 shrink-0" />
+          <BookOpen className="w-4 h-4 text-[#006A4E] shrink-0" />
           <span className="truncate">{chapters.length === 0 ? displayPlaceholder : triggerText}</span>
         </div>
         <ChevronDown className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
@@ -270,30 +272,23 @@ export default function ChapterMultiSelect({
               )}
             </div>
             <div className="flex items-center gap-1.5">
-              <button
-                type="button"
+              <Button
+                variant={isAllSelected ? "primary" : "tonal"}
+                size="sm"
                 onClick={handleSelectAll}
-                className={`text-xs font-bold px-3 py-1.5 min-h-[34px] rounded-lg transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
-                  isAllSelected 
-                    ? "bg-sky-600 text-white shadow-xs" 
-                    : "bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200"
-                }`}
               >
                 সকল {uLabel} ও Lesson
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant={isNoneSelected ? "danger-tonal" : "ghost"}
+                size="sm"
                 onClick={handleClearAll}
-                className={`text-xs font-bold px-3 py-1.5 min-h-[34px] rounded-lg transition-colors flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-                  isNoneSelected
-                    ? "bg-rose-100 text-rose-800 border border-rose-300"
-                    : "bg-slate-100 text-slate-600 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 border border-slate-200"
-                }`}
+                leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
                 title="সব নির্বাচন বাতিল করুন"
+                className={!isNoneSelected ? "hover:bg-[#FEF2F1] hover:text-[#A1271F]" : undefined}
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>সব বাতিল</span>
-              </button>
+                সব বাতিল
+              </Button>
             </div>
           </div>
 
@@ -327,7 +322,7 @@ export default function ChapterMultiSelect({
                     key={ch.id}
                     className={`rounded-xl border transition-all ${
                       isUnitChecked || isUnitPartial
-                        ? "bg-sky-50/60 border-sky-300 shadow-xs"
+                        ? "bg-[#EEF8F3]/70 border-[#006A4E]/40"
                         : "bg-slate-50/60 border-slate-200 hover:border-slate-300"
                     }`}
                   >
@@ -340,12 +335,12 @@ export default function ChapterMultiSelect({
                         aria-checked={isUnitChecked ? "true" : isUnitPartial ? "mixed" : "false"}
                         aria-label={`${ch.name} নির্বাচন`}
                         onClick={() => handleToggleChapter(ch)}
-                        className={`w-6 h-6 min-w-[24px] min-h-[24px] rounded-lg border mt-0.5 flex items-center justify-center shrink-0 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+                        className={`w-6 h-6 min-w-[24px] min-h-[24px] rounded-lg border mt-0.5 flex items-center justify-center shrink-0 transition-colors cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                           isUnitChecked
-                            ? "bg-sky-600 border-sky-600 text-white shadow-xs"
+                            ? "bg-[#006A4E] border-[#006A4E] text-white"
                             : isUnitPartial
-                            ? "bg-sky-100 border-sky-500 text-sky-800"
-                            : "border-slate-300 bg-white hover:border-slate-400"
+                            ? "bg-[#EEF8F3] border-[#006A4E] text-[#00563F]"
+                            : "border-[#D5DCE4] bg-white hover:border-[#94A3B8]"
                         }`}
                         title={isUnitChecked ? "সব বাতিল করুন" : "এই ইউনিটের সকল লেসন নির্বাচন করুন"}
                       >
@@ -356,12 +351,12 @@ export default function ChapterMultiSelect({
                       {/* Unit Title & Description */}
                       <button
                         type="button"
-                        className="min-w-0 flex-1 text-left cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 rounded-lg p-0.5"
+                        className="min-w-0 flex-1 text-left cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] rounded-lg p-0.5"
                         onClick={() => handleToggleChapter(ch)}
                       >
                         <div className="flex items-center justify-between gap-1 flex-wrap mb-0.5">
-                          <p className={`font-bold leading-tight text-xs ${
-                            isUnitChecked || isUnitPartial ? "text-sky-950" : "text-slate-800"
+                          <p className={`font-semibold leading-tight text-xs ${
+                            isUnitChecked || isUnitPartial ? "text-[#00563F]" : "text-slate-800"
                           }`}>
                             {ch.name}
                           </p>
@@ -383,16 +378,16 @@ export default function ChapterMultiSelect({
                           onClick={() => toggleUnitExpansion(ch.id)}
                           aria-expanded={isExpanded}
                           aria-label={isExpanded ? `${ch.name} লেসন তালিকা বন্ধ করুন` : `${ch.name} লেসন তালিকা খুলুন`}
-                          className={`flex items-center gap-1 text-[10px] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-lg border transition-colors shrink-0 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
+                          className={`flex items-center gap-1 text-[10px] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-lg border transition-colors shrink-0 cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                             isExpanded
-                              ? "bg-sky-100 border-sky-300 text-sky-800"
+                              ? "bg-[#EEF8F3] border-[#006A4E]/40 text-[#00563F]"
                               : selectedLessonsCount > 0
-                              ? "bg-white border-sky-200 text-sky-700 hover:bg-sky-50"
-                              : "bg-white border-slate-200 text-slate-600 hover:bg-slate-100"
+                              ? "bg-white border-[#CBE5D8] text-[#006A4E] hover:bg-[#EEF8F3]"
+                              : "bg-white border-[#D5DCE4] text-slate-600 hover:bg-slate-100"
                           }`}
                           title={isExpanded ? "লেসন তালিকা বন্ধ করুন" : "লেসন তালিকা খুলুন"}
                         >
-                          <ListChecks className="w-3.5 h-3.5 text-sky-600" />
+                          <ListChecks className="w-3.5 h-3.5 text-[#006A4E]" />
                           <span>
                             {selectedLessonsCount > 0 ? `${selectedLessonsCount}/${chLessons.length}` : `${chLessons.length}টি`}
                           </span>
@@ -403,27 +398,29 @@ export default function ChapterMultiSelect({
 
                     {/* Accordion Drawer: Individual Lessons */}
                     {hasLessons && isExpanded && (
-                      <div className="px-2.5 pb-2.5 pt-1 border-t border-sky-100 bg-white/90 rounded-b-xl space-y-1.5 animate-in fade-in duration-150">
+                      <div className="px-2.5 pb-2.5 pt-1 border-t border-[#CBE5D8] bg-white/95 rounded-b-xl space-y-1.5 animate-in fade-in duration-150">
                         {/* Unit-Level Action Bar */}
                         <div className="flex items-center justify-between gap-1.5 pb-1 border-b border-slate-100 text-[10px]">
                           <span className="font-semibold text-slate-500">
                             লেসন নির্বাচন ({selectedLessonsCount}/{chLessons.length}):
                           </span>
                           <div className="flex items-center gap-1">
-                            <button
-                              type="button"
+                            <Button
+                              variant="tonal"
+                              size="sm"
                               onClick={() => handleSelectAllInUnit(ch)}
-                              className="text-[10px] font-bold px-2 py-1 min-h-[28px] rounded bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 transition-colors touch-manipulation"
+                              className="h-7 min-h-[28px] px-2 text-[10px] rounded-lg"
                             >
                               সব লেসন
-                            </button>
-                            <button
-                              type="button"
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               onClick={() => handleClearUnit(ch)}
-                              className="text-[10px] font-bold px-2 py-1 min-h-[28px] rounded bg-slate-50 text-slate-600 hover:bg-rose-50 hover:text-rose-700 border border-slate-200 transition-colors touch-manipulation"
+                              className="h-7 min-h-[28px] px-2 text-[10px] rounded-lg hover:bg-[#FEF2F1] hover:text-[#A1271F]"
                             >
                               বাদ দিন
-                            </button>
+                            </Button>
                           </div>
                         </div>
 
@@ -438,16 +435,16 @@ export default function ChapterMultiSelect({
                                 role="checkbox"
                                 aria-checked={isLessonChecked}
                                 onClick={() => handleToggleLesson(ch, lesson.id)}
-                                className={`w-full text-left flex items-start gap-2.5 p-2 rounded-lg cursor-pointer transition-colors text-[11px] touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 min-h-[38px] ${
+                                className={`w-full text-left flex items-start gap-2.5 p-2 rounded-lg cursor-pointer transition-colors text-[11px] touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] min-h-[38px] ${
                                   isLessonChecked
-                                    ? "bg-sky-50 text-sky-950 border border-sky-200"
+                                    ? "bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8]"
                                     : "hover:bg-slate-50 text-slate-700 border border-transparent"
                                 }`}
                               >
                                 <div
                                   className={`w-4 h-4 rounded border mt-0.5 flex items-center justify-center shrink-0 transition-colors ${
                                     isLessonChecked
-                                      ? "bg-sky-600 border-sky-600 text-white"
+                                      ? "bg-[#006A4E] border-[#006A4E] text-white"
                                       : "border-slate-300 bg-white"
                                   }`}
                                 >
@@ -455,7 +452,7 @@ export default function ChapterMultiSelect({
                                 </div>
                                 <div className="min-w-0 flex-1 leading-snug">
                                   <div className="flex items-center justify-between gap-1">
-                                    <span className="font-bold">{lesson.name}</span>
+                                    <span className="font-semibold">{lesson.name}</span>
                                     {lesson.page && (
                                       <span className="text-[9px] text-slate-500 font-normal shrink-0">
                                         {lesson.page}
@@ -481,7 +478,7 @@ export default function ChapterMultiSelect({
           </div>
 
           {/* Popover Footer Done Button */}
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
             <span className="text-[10px] text-slate-600 font-medium truncate max-w-[260px]">
               {isAllSelected 
                 ? `সবগুলো ${uLabel} ও Lesson থেকে প্রশ্ন তৈরি হবে` 
@@ -489,13 +486,13 @@ export default function ChapterMultiSelect({
                 ? `কোনোটি নির্বাচিত নয়`
                 : `${effectiveChapterIds.length}টি ${uLabel}-এর ${effectiveLessonIds.length}টি Lesson নির্বাচিত`}
             </span>
-            <button
-              type="button"
+            <Button
+              variant="ink"
+              size="sm"
               onClick={() => setIsOpen(false)}
-              className="px-3.5 py-1 rounded-xl bg-slate-900 text-white font-bold text-[11px] hover:bg-slate-800 transition-colors shadow-xs"
             >
               সম্পন্ন
-            </button>
+            </Button>
           </div>
         </div>
       )}

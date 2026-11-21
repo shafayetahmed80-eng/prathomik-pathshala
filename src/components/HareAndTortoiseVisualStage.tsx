@@ -320,7 +320,7 @@ export const HareAndTortoiseVisualStage: React.FC<HareAndTortoiseVisualStageProp
                   playChime("fanfare");
                   handleSpeak("Moral of the story: Slow and steady wins the race! Never give up, keep trying steadily every day!");
                 }}
-                className="mt-3 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs shadow-md inline-flex items-center gap-1.5"
+                className="mt-3 px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs shadow-md inline-flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 বাণীটি মনে রাখো!

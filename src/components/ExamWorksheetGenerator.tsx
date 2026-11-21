@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { 
   Printer, 
   Copy, 
-  Check, 
   Eye, 
   EyeOff, 
   Plus,
@@ -17,13 +16,13 @@ import {
   FileText,
   Pencil,
   Save,
-  Sliders,
   CheckCircle2,
   Sparkles
 } from "lucide-react";
 import AiExamGeneratorModal from "@/components/AiExamGeneratorModal";
 import ChapterMultiSelect from "@/components/ChapterMultiSelect";
 import ExamBlueprintPanel from "@/components/ExamBlueprintPanel";
+import { Button, IconButton, SegmentedControl } from "@/components/ui";
 import { NCTB_CURRICULUM_TOPICS } from "@/data/curriculumTopics";
 import { buildRichExamFromPool, buildNctb2026ExamFromPool, buildDynamicExamFromPool } from "@/data/questionPool";
 import { getNctb2026Blueprint } from "@/data/nctb2026Blueprints";
@@ -675,16 +674,16 @@ ${questionsText.trim()}
         <div className="flex items-center gap-3">
           <div 
             aria-hidden="true" 
-            className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-emerald-600 flex items-center justify-center text-white text-2xl shadow-md shadow-sky-500/20 shrink-0"
+            className="w-12 h-12 rounded-2xl bg-[#0F172A] flex items-center justify-center text-white text-2xl shadow-xs shrink-0"
           >
             📝
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 id="exam-maker-heading" className="text-xl sm:text-2xl font-black text-slate-900">
+              <h2 id="exam-maker-heading" className="text-xl sm:text-2xl font-bold text-slate-900">
                 স্মার্ট প্রশ্নপত্র ও ওয়ার্কশিট স্টুডিও
               </h2>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8]">
                 ডায়নামিক V2
               </span>
             </div>
@@ -694,208 +693,169 @@ ${questionsText.trim()}
           </div>
         </div>
 
-        {/* Primary Action Controls */}
+        {/* Primary Action Controls (Soft-Solid 2.0: Max 1 Primary Ink CTA) */}
         <div className="flex items-center gap-2 self-start lg:self-auto flex-wrap">
-          {/* ✨ AI Magic Generator Button */}
-          <button
-            type="button"
+          <Button
+            variant="tonal"
+            size="sm"
+            leftIcon={<Sparkles className="w-3.5 h-3.5 text-[#006A4E]" />}
             onClick={() => setIsAiModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white shadow-md shadow-indigo-500/25 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-            <span>✨ এআই জেনারেটর</span>
-          </button>
+            এআই জেনারেটর
+          </Button>
 
-          {/* Edit Mode Toggle */}
-          <button
-            type="button"
+          <Button
+            variant={isEditMode ? "primary" : "secondary"}
+            size="sm"
+            leftIcon={<Pencil className="w-3.5 h-3.5" />}
             onClick={() => setIsEditMode(!isEditMode)}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
-              isEditMode
-                ? "bg-amber-500 text-white shadow-md shadow-amber-500/20 hover:bg-amber-600"
-                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-            }`}
+            aria-pressed={isEditMode}
           >
-            <Pencil className="w-3.5 h-3.5" />
-            <span>{isEditMode ? "✓ সম্পাদনা সম্পন্ন" : "প্রশ্ন সম্পাদনা মোড"}</span>
-          </button>
+            {isEditMode ? "✓ সম্পাদনা সম্পন্ন" : "সম্পাদনা মোড"}
+          </Button>
 
-          {/* Answer Key Toggle */}
-          <button
-            type="button"
+          <Button
+            variant={showAnswerKey ? "tonal" : "secondary"}
+            size="sm"
+            leftIcon={showAnswerKey ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
             onClick={() => setShowAnswerKey(!showAnswerKey)}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
-              showAnswerKey
-                ? "bg-emerald-100 text-emerald-900 hover:bg-emerald-200"
-                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-            }`}
             aria-pressed={showAnswerKey}
           >
-            {showAnswerKey ? <EyeOff className="w-3.5 h-3.5 text-emerald-700" /> : <Eye className="w-3.5 h-3.5 text-slate-600" />}
-            <span>{showAnswerKey ? "উত্তরমালা লুকান" : "উত্তরমালা দেখুন"}</span>
-          </button>
+            {showAnswerKey ? "উত্তরমালা লুকান" : "উত্তরমালা"}
+          </Button>
 
-          {/* Word Download */}
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<FileDown className="w-3.5 h-3.5 text-[#006A4E]" />}
             onClick={handleExportWord}
             title="মাইক্রোসফট ওয়ার্ড (.doc) ফাইল ডাউনলোড করুন"
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 border border-blue-200"
           >
-            <FileDown className="w-3.5 h-3.5 text-blue-600" />
-            <span>Word (.doc)</span>
-          </button>
+            Word (.doc)
+          </Button>
 
-          {/* Copy Plain Text */}
-          <button
-            type="button"
+          <Button
+            variant={copied ? "tonal" : "secondary"}
+            size="sm"
+            state={copied ? "success" : "idle"}
+            successLabel="কপি হয়েছে!"
+            leftIcon={<Copy className="w-3.5 h-3.5" />}
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? "কপি হয়েছে!" : "কপি"}</span>
-          </button>
+            কপি
+          </Button>
 
-          {/* Print / PDF Button Group */}
-          <div className="inline-flex items-center rounded-xl shadow-md shadow-emerald-600/20">
-            <button
-              type="button"
-              onClick={() => handlePrint(false)}
-              title="শিক্ষার্থীদের জন্য পরিষ্কার প্রশ্নপত্র প্রিন্ট বা PDF করুন"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-l-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>প্রিন্ট / PDF</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => handlePrint(true)}
-              title="উত্তরমালাসহ শিক্ষকের সমাধান কপি প্রিন্ট করুন"
-              className="inline-flex items-center gap-1 px-2.5 py-2 rounded-r-xl text-xs font-semibold bg-emerald-700 hover:bg-emerald-800 text-emerald-100 border-l border-emerald-500 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
-            >
-              <span>+উত্তরমালা</span>
-            </button>
-          </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => handlePrint(true)}
+            title="উত্তরমালাসহ শিক্ষকের সমাধান কপি প্রিন্ট করুন"
+          >
+            + উত্তরমালাসহ প্রিন্ট
+          </Button>
+
+          <Button
+            variant="ink"
+            size="sm"
+            leftIcon={<Printer className="w-3.5 h-3.5" />}
+            onClick={() => handlePrint(false)}
+            title="শিক্ষার্থীদের জন্য পরিষ্কার প্রশ্নপত্র প্রিন্ট বা PDF করুন"
+          >
+            প্রিন্ট / PDF
+          </Button>
         </div>
       </div>
 
       {/* 🛠️ Dynamic Studio Toolbar (Mode, Layout, Storage) */}
       <section 
         aria-label="লেআউট ও স্টুডিও কন্ট্রোল" 
-        className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-sky-50/60 to-emerald-50/60 border border-sky-100 print:hidden text-xs"
+        className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-[#F8FAFC] border border-slate-200 print:hidden text-xs"
       >
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2.5 flex-wrap">
           {/* Mode Switch: Exam vs Worksheet */}
-          <div className="flex items-center rounded-xl bg-white p-1 border border-slate-200 shadow-xs">
-            <button
-              type="button"
-              onClick={() => setPaperMode("exam")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
-                paperMode === "exam"
-                  ? "bg-sky-600 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>পরীক্ষার প্রশ্নপত্র</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setPaperMode("worksheet")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition-all ${
-                paperMode === "worksheet"
-                  ? "bg-emerald-600 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Pencil className="w-3.5 h-3.5" />
-              <span>ওয়ার্কশিট (রুলটানা)</span>
-            </button>
-          </div>
+          <SegmentedControl
+            value={paperMode}
+            onChange={setPaperMode}
+            ariaLabel="কাগজের ধরন নির্বাচন"
+            roleMode="radiogroup"
+            size="sm"
+            options={[
+              {
+                value: "exam",
+                label: "পরীক্ষার প্রশ্নপত্র",
+                shortLabel: "প্রশ্নপত্র",
+                icon: <FileText className="w-3.5 h-3.5" />,
+              },
+              {
+                value: "worksheet",
+                label: "ওয়ার্কশিট (রুলটানা)",
+                shortLabel: "ওয়ার্কশিট",
+                icon: <Pencil className="w-3.5 h-3.5" />,
+              },
+            ]}
+          />
 
           {/* Column Switch */}
-          <div className="flex items-center rounded-xl bg-white p-1 border border-slate-200 shadow-xs">
-            <button
-              type="button"
-              onClick={() => setColumnLayout(1)}
-              className={`px-2.5 py-1.5 rounded-lg font-semibold transition-all ${
-                columnLayout === 1
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              ১ কলাম
-            </button>
-            <button
-              type="button"
-              onClick={() => setColumnLayout(2)}
-              title="কাগজ সাশ্রয়ী ২-কলাম প্রিন্ট ফরম্যাট"
-              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg font-semibold transition-all ${
-                columnLayout === 2
-                  ? "bg-slate-800 text-white"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Columns2 className="w-3.5 h-3.5" />
-              <span>২ কলাম (সাশ্রয়ী)</span>
-            </button>
-          </div>
+          <SegmentedControl
+            value={String(columnLayout) as "1" | "2"}
+            onChange={(val) => setColumnLayout(val === "2" ? 2 : 1)}
+            ariaLabel="কলাম লেআউট"
+            roleMode="radiogroup"
+            size="sm"
+            options={[
+              { value: "1", label: "১ কলাম" },
+              {
+                value: "2",
+                label: "২ কলাম (সাশ্রয়ী)",
+                shortLabel: "২ কলাম",
+                icon: <Columns2 className="w-3.5 h-3.5" />,
+              },
+            ]}
+          />
 
           {/* Font Size Adjuster */}
-          <div className="flex items-center gap-1 rounded-xl bg-white px-2.5 py-1 border border-slate-200 shadow-xs">
-            <span className="text-[11px] text-slate-500 font-semibold">ফন্ট:</span>
-            <button
-              type="button"
-              onClick={() => setFontSize("compact")}
-              className={`px-2 py-0.5 rounded text-[11px] font-bold ${fontSize === "compact" ? "bg-slate-200 text-slate-900" : "text-slate-500 hover:text-slate-900"}`}
-            >
-              ছোট
-            </button>
-            <button
-              type="button"
-              onClick={() => setFontSize("normal")}
-              className={`px-2 py-0.5 rounded text-[11px] font-bold ${fontSize === "normal" ? "bg-slate-200 text-slate-900" : "text-slate-500 hover:text-slate-900"}`}
-            >
-              মাঝারি
-            </button>
-            <button
-              type="button"
-              onClick={() => setFontSize("large")}
-              className={`px-2 py-0.5 rounded text-[11px] font-bold ${fontSize === "large" ? "bg-slate-200 text-slate-900" : "text-slate-500 hover:text-slate-900"}`}
-            >
-              বড়
-            </button>
-          </div>
+          <SegmentedControl
+            value={fontSize}
+            onChange={setFontSize}
+            ariaLabel="ফন্টের আকার"
+            roleMode="radiogroup"
+            size="sm"
+            options={[
+              { value: "compact", label: "ফন্ট: ছোট", shortLabel: "ছোট" },
+              { value: "normal", label: "মাঝারি" },
+              { value: "large", label: "বড়" },
+            ]}
+          />
         </div>
 
         {/* Draft Storage & Reset Controls */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<Save className="w-3.5 h-3.5" />}
             onClick={handleSaveDraft}
             title="প্রশ্নপত্রটি ব্রাউজারের লোকাল স্টোরেজে সংরক্ষণ করুন"
-            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200 shadow-xs transition-colors"
           >
-            <Save className="w-3.5 h-3.5 text-slate-600" />
-            <span>ড্রাফট সেভ</span>
-          </button>
-          <button
-            type="button"
+            ড্রাফট সেভ
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleLoadDraft}
             title="পূর্বে সংরক্ষিত ড্রাফট ফিরিয়ে আনুন"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 font-semibold border border-slate-200 shadow-xs transition-colors"
           >
             লোড
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="danger-tonal"
+            size="sm"
+            leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
             onClick={handleResetToDefault}
             title="এনসিটিবি মূল ডিফল্ট প্রশ্নে ফিরিয়ে নিন"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold border border-rose-200 transition-colors"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>রিসেট</span>
-          </button>
+            রিসেট
+          </Button>
         </div>
       </section>
 
@@ -1315,7 +1275,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddMcq}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1349,7 +1309,7 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="প্রশ্নটি উপরে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -1359,7 +1319,7 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.mcq.length - 1}
                             title="নিচে নিন"
                             aria-label="প্রশ্নটি নিচে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -1368,7 +1328,7 @@ ${questionsText.trim()}
                             onClick={() => handleDeleteMcq(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="প্রশ্নটি মুছে ফেলুন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1432,7 +1392,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddFill}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1465,7 +1425,7 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="শূন্যস্থান প্রশ্নটি উপরে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -1475,7 +1435,7 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.fillInTheBlanks.length - 1}
                             title="নিচে নিন"
                             aria-label="শূন্যস্থান প্রশ্নটি নিচে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -1484,7 +1444,7 @@ ${questionsText.trim()}
                             onClick={() => handleDeleteFill(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="শূন্যস্থান প্রশ্নটি মুছে ফেলুন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1516,7 +1476,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddTrueFalse}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1561,7 +1521,7 @@ ${questionsText.trim()}
                             onClick={() => handleDeleteTrueFalse(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="সত্য/মিথ্যা প্রশ্নটি মুছে ফেলুন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1592,7 +1552,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddMatchingRow}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> সারি যোগ
                     </button>
@@ -1646,7 +1606,7 @@ ${questionsText.trim()}
                               onClick={() => handleDeleteMatchingRow(idx)}
                               title="সারিটি মুছুন"
                               aria-label="মিলকরণের এই সারিটি মুছে ফেলুন"
-                              className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                              className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -1682,7 +1642,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddWord}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> শব্দ যোগ
                     </button>
@@ -1713,7 +1673,7 @@ ${questionsText.trim()}
                           onClick={() => handleDeleteWord(idx)}
                           title="শব্দটি মুছুন"
                           aria-label="শব্দার্থটি মুছে ফেলুন"
-                          className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 print:hidden shrink-0 ml-1 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                          className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] print:hidden shrink-0 ml-1 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -1745,7 +1705,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddYukta}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> যুক্তবর্ণ যোগ
                     </button>
@@ -1776,7 +1736,7 @@ ${questionsText.trim()}
                           onClick={() => handleDeleteYukta(idx)}
                           title="যুক্তবর্ণটি মুছুন"
                           aria-label="যুক্তবর্ণটি মুছে ফেলুন"
-                          className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 print:hidden touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                          className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] print:hidden cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -1917,7 +1877,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddShort}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -1950,7 +1910,7 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="সংক্ষিপ্ত প্রশ্নটি উপরে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -1960,7 +1920,7 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.shortQuestions.length - 1}
                             title="নিচে নিন"
                             aria-label="সংক্ষিপ্ত প্রশ্নটি নিচে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -1969,7 +1929,7 @@ ${questionsText.trim()}
                             onClick={() => handleDeleteShort(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="সংক্ষিপ্ত প্রশ্নটি মুছে ফেলুন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2011,7 +1971,7 @@ ${questionsText.trim()}
                     <button
                       type="button"
                       onClick={handleAddBroad}
-                      className="print:hidden text-xs bg-sky-50 text-sky-700 hover:bg-sky-100 font-bold px-2.5 py-1.5 min-h-[32px] rounded-lg border border-sky-200 inline-flex items-center gap-1 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                      className="print:hidden text-xs bg-[#EEF8F3] text-[#00563F] hover:bg-[#DCF2E7] font-semibold px-2.5 py-1.5 min-h-[32px] rounded-[10px] border border-[#CBE5D8] inline-flex items-center gap-1 cursor-pointer transition-colors touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Plus className="w-3 h-3" /> প্রশ্ন যোগ
                     </button>
@@ -2044,7 +2004,7 @@ ${questionsText.trim()}
                             disabled={idx === 0}
                             title="উপরে নিন"
                             aria-label="বর্ণনামূলক প্রশ্নটি উপরে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowUp className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -2054,7 +2014,7 @@ ${questionsText.trim()}
                             disabled={idx === activeExam.broadQuestions.length - 1}
                             title="নিচে নিন"
                             aria-label="বর্ণনামূলক প্রশ্নটি নিচে নিন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-slate-200 disabled:opacity-30 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] border border-transparent hover:bg-[#F1F5F9] hover:border-[#D5DCE4] disabled:opacity-30 cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                           >
                             <ArrowDown className="w-3.5 h-3.5 text-slate-700" />
                           </button>
@@ -2063,7 +2023,7 @@ ${questionsText.trim()}
                             onClick={() => handleDeleteBroad(idx)}
                             title="প্রশ্নটি মুছুন"
                             aria-label="বর্ণনামূলক প্রশ্নটি মুছে ফেলুন"
-                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-lg hover:bg-rose-100 text-rose-600 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+                            className="p-1.5 min-w-[34px] min-h-[34px] rounded-[10px] bg-[#FEF2F1] hover:bg-[#FEE2E2] text-[#A1271F] cursor-pointer transition-colors touch-manipulation flex items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C0362C]"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -2531,50 +2491,46 @@ ${questionsText.trim()}
         aria-label="মোবাইল কুইক অ্যাকশন কন্ট্রোল"
         className="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200/90 z-40 p-2.5 px-3 pb-[max(0.625rem,env(safe-area-inset-bottom))] flex items-center justify-between shadow-2xl gap-2 print:hidden"
       >
-        <button
-          type="button"
+        <Button
+          variant="ink"
+          size="md"
+          leftIcon={<Printer className="w-4 h-4" />}
           onClick={() => handlePrint(false)}
-          className="flex-1 min-h-[44px] py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+          className="flex-1"
           aria-label="প্রশ্নপত্র প্রিন্ট বা PDF হিসেবে সংরক্ষণ"
         >
-          <Printer className="w-4 h-4" />
-          <span>প্রিন্ট/PDF</span>
-        </button>
+          প্রিন্ট/PDF
+        </Button>
 
-        <button
-          type="button"
+        <Button
+          variant="secondary"
+          size="md"
+          leftIcon={<FileDown className="w-4 h-4 text-[#006A4E]" />}
           onClick={handleExportWord}
-          className="min-h-[44px] py-2 px-3 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs flex items-center justify-center gap-1.5 border border-blue-200 active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           aria-label="Microsoft Word (.doc) ফরম্যাটে ডাউনলোড"
         >
-          <FileDown className="w-4 h-4 text-blue-600" />
-          <span>Word</span>
-        </button>
+          Word
+        </Button>
 
-        <button
-          type="button"
+        <Button
+          variant={showAnswerKey ? "tonal" : "secondary"}
+          size="md"
+          leftIcon={showAnswerKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           onClick={() => setShowAnswerKey(!showAnswerKey)}
-          className={`min-h-[44px] py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 border active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
-            showAnswerKey
-              ? "bg-emerald-100 text-emerald-900 border-emerald-300"
-              : "bg-slate-100 text-slate-700 border-slate-200"
-          }`}
           aria-label={showAnswerKey ? "উত্তরমালা লুকান" : "উত্তরমালা দেখুন"}
           aria-pressed={showAnswerKey}
         >
-          {showAnswerKey ? <EyeOff className="w-4 h-4 text-emerald-700" /> : <Eye className="w-4 h-4 text-slate-600" />}
-          <span>উত্তরমালা</span>
-        </button>
+          উত্তরমালা
+        </Button>
 
-        <button
-          type="button"
+        <IconButton
+          icon={<ArrowUp className="w-4 h-4" />}
+          ariaLabel="পৃষ্ঠার শুরুতে স্ক্রোল করুন"
+          variant="secondary"
+          size="md"
+          showTooltip={false}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-slate-800 hover:bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
-          title="উপরে স্ক্রোল করুন"
-          aria-label="পৃষ্ঠার শুরুতে স্ক্রোল করুন"
-        >
-          <ArrowUp className="w-4 h-4" />
-        </button>
+        />
       </nav>
     </article>
   );

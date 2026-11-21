@@ -129,11 +129,11 @@ export default function IntroducingJerinVisualStage({
               setViewMode("campus");
               if (playChime) playChime("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
-              viewMode === "campus"
-                ? "bg-purple-600 text-white shadow-xs"
-                : "text-slate-700 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
+ viewMode === "campus"
+ ? "bg-purple-600 text-white shadow-xs"
+ : "text-slate-700 hover:bg-slate-100"
+ }`}
           >
             <School className="w-3.5 h-3.5" />
             <span>স্কুল ও পরিবার</span>
@@ -143,11 +143,11 @@ export default function IntroducingJerinVisualStage({
               setViewMode("id_card");
               if (playChime) playChime("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
-              viewMode === "id_card"
-                ? "bg-purple-600 text-white shadow-xs"
-                : "text-slate-700 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
+ viewMode === "id_card"
+ ? "bg-purple-600 text-white shadow-xs"
+ : "text-slate-700 hover:bg-slate-100"
+ }`}
           >
             <UserCheck className="w-3.5 h-3.5" />
             <span>আইডি কার্ড স্টুডিও 🆔</span>
@@ -165,11 +165,11 @@ export default function IntroducingJerinVisualStage({
                   setSelectedAvatar(avKey);
                   if (playChime) playChime("click");
                 }}
-                className={`px-2 py-0.5 rounded-lg text-xs font-black transition-all ${
-                  selectedAvatar === avKey
-                    ? "bg-amber-500 text-white shadow-xs scale-105"
-                    : "text-slate-600 hover:bg-slate-100"
-                }`}
+                className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2 py-0.5 rounded-lg text-xs font-semibold transition-all ${
+ selectedAvatar === avKey
+ ? "bg-[#B45309] text-white hover:bg-[#92400E] shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
                 title={avatarProfiles[avKey].name}
               >
                 {avKey === "jerin" ? "👧 জেরিন" : avKey === "alif" ? "👦 আলিফ" : avKey === "riya" ? "👧 রিয়া" : "👦 ফারহান"}
@@ -180,11 +180,11 @@ export default function IntroducingJerinVisualStage({
           {/* Introduce Button */}
           <button type="button"
             onClick={handleSpeakIntro}
-            className={`px-3 py-1 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all ${
-              isApplauseActive
-                ? "bg-emerald-600 text-white scale-105"
-                : "bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 shadow-2xs active:scale-95"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+ isApplauseActive
+ ? "bg-emerald-600 text-white"
+ : "bg-[#006A4E] hover:bg-[#005C44] text-white shadow-2xs active:scale-95"
+ }`}
             title="জেরিনের আত্মপরিচয় শুনতে ক্লিক করুন"
           >
             <Volume2 className="w-3.5 h-3.5" />
@@ -627,7 +627,7 @@ export default function IntroducingJerinVisualStage({
               setViewMode(viewMode === "campus" ? "id_card" : "campus");
               if (playChime) playChime("click");
             }}
-            className="px-2.5 py-1 rounded-xl text-xs font-black bg-purple-100 text-purple-800 hover:bg-purple-200 transition-all flex items-center gap-1"
+            className="px-2.5 py-1 rounded-xl text-xs font-semibold bg-purple-100 text-purple-800 hover:bg-purple-200 transition-all flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
           >
             <RefreshCw className="w-3 h-3" />
             <span>{viewMode === "campus" ? "আইডি কার্ড দেখুন" : "স্কুল ক্যাম্পাস দেখুন"}</span>

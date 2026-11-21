@@ -143,11 +143,11 @@ export default function OyshisCityLifeVisualStage({
               setActiveMode("rooftop");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "rooftop"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "rooftop"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>🍅</span>
             <span>ছাদবাগান (Garden)</span>
@@ -159,11 +159,11 @@ export default function OyshisCityLifeVisualStage({
               setActiveMode("library");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "library"
-                ? "bg-amber-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "library"
+ ? "bg-amber-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>🚌</span>
             <span>ভ্রাম্যমাণ লাইব্রেরি (Library)</span>
@@ -175,11 +175,11 @@ export default function OyshisCityLifeVisualStage({
               setActiveMode("explore");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "explore"
-                ? "bg-purple-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "explore"
+ ? "bg-purple-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>🔍</span>
             <span>নগরজীবন ল্যাব</span>
@@ -229,7 +229,7 @@ export default function OyshisCityLifeVisualStage({
                 type="button"
                 onClick={handleWaterPlants}
                 disabled={isWatering}
-                className="px-3.5 py-2 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-black text-xs shadow-md active:scale-95 transition-all flex items-center gap-1.5"
+                className="px-3.5 py-2 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-semibold text-xs shadow-md active:scale-95 transition-all flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               >
                 <Droplets className={`w-4 h-4 fill-current ${isWatering ? "animate-bounce text-amber-300" : ""}`} />
                 <span>{isWatering ? "গাছে পানি দেওয়া হচ্ছে..." : "গাছে পানি দাও ➔"}</span>

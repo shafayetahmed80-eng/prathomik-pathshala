@@ -316,7 +316,7 @@ export const SagarFamilyVisualStage: React.FC<SagarFamilyVisualStageProps> = ({
               <div className="flex items-center gap-2 shrink-0">
                 <button type="button"
                   onClick={handleWaterGarden}
-                  className="px-3.5 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all"
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <span>💧 পানি দিন ({waterCount}/3)</span>
                 </button>

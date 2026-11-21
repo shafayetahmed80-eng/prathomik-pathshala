@@ -1,14 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { BookOpen, GraduationCap } from "lucide-react";
 import { CLASSES_DATA, ClassGrade } from "@/data/curriculum";
 import BookReaderModal from "@/components/BookReaderModal";
-import BrandHomeLink from "@/components/BrandHomeLink";
-import InstallAppButton from "@/components/InstallAppButton";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { SegmentedControl } from "@/components/ui";
 
 export default function BooksPage() {
   const [selectedClassId, setSelectedClassId] = useState<string>("class-1");
@@ -54,16 +52,16 @@ export default function BooksPage() {
                 type="button"
                 onClick={() => setSelectedClassId(cls.id)}
                 aria-pressed={isSelected}
-                className={`p-3 sm:p-4 rounded-2xl text-center border-2 transition-all flex flex-col items-center justify-center gap-2 touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer ${
+                className={`p-3 sm:p-4 rounded-[16px] text-center border-2 transition-all flex flex-col items-center justify-center gap-2 touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] cursor-pointer ${
                   isSelected
-                    ? "border-emerald-500 bg-white shadow-md shadow-emerald-500/15 scale-102 ring-2 ring-emerald-500/20"
-                    : "border-slate-200/90 bg-white/80 hover:border-emerald-300 hover:bg-white shadow-2xs"
+                    ? "border-[#006A4E] bg-[#EEF8F3]/70 shadow-sm"
+                    : "border-[#D5DCE4] bg-white hover:border-[#006A4E]/50 hover:bg-[#F8FAFC]"
                 }`}
               >
-                <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-105 transition-transform">
+                <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#EEF8F3] border border-[#CBE5D8] flex items-center justify-center text-2xl sm:text-3xl shrink-0">
                   {cls.icon}
                 </span>
-                <span className="font-bold text-slate-900 text-xs sm:text-sm leading-tight block">
+                <span className={`font-semibold text-xs sm:text-sm leading-tight block ${isSelected ? "text-[#00563F]" : "text-slate-900"}`}>
                   {cls.banglaName}
                 </span>
               </button>
@@ -84,35 +82,28 @@ export default function BooksPage() {
               </div>
             </div>
 
-            {/* Toggle Tabs */}
-            <nav aria-label="বই ও সহায়িকা প্রকারভেদ" className="flex bg-slate-100 p-1.5 rounded-2xl self-start md:self-auto">
-              <button
-                type="button"
-                onClick={() => setActiveTab("textbooks")}
-                aria-pressed={activeTab === "textbooks"}
-                className={`flex items-center gap-2 px-3.5 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                  activeTab === "textbooks"
-                    ? "bg-white text-emerald-700 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <BookOpen className="w-4 h-4 text-emerald-600" />
-                <span>পাঠ্যবই ({currentClass.textbooks.length})</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("teachersGuides")}
-                aria-pressed={activeTab === "teachersGuides"}
-                className={`flex items-center gap-2 px-3.5 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                  activeTab === "teachersGuides"
-                    ? "bg-white text-purple-700 shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <GraduationCap className="w-4 h-4 text-purple-600" />
-                <span>শিক্ষক সহায়িকা ({currentClass.teachersGuides.length})</span>
-              </button>
-            </nav>
+            {/* Toggle Tabs (Soft-Solid 2.0 Sliding SegmentedControl) */}
+            <div className="self-start md:self-auto">
+              <SegmentedControl
+                value={activeTab}
+                onChange={setActiveTab}
+                ariaLabel="বই ও সহায়িকা প্রকারভেদ"
+                roleMode="tablist"
+                size="md"
+                options={[
+                  {
+                    value: "textbooks",
+                    label: `পাঠ্যবই (${currentClass.textbooks.length})`,
+                    icon: <BookOpen className="w-4 h-4" />,
+                  },
+                  {
+                    value: "teachersGuides",
+                    label: `শিক্ষক সহায়িকা (${currentClass.teachersGuides.length})`,
+                    icon: <GraduationCap className="w-4 h-4" />,
+                  },
+                ]}
+              />
+            </div>
           </div>
 
           {/* Minimalist One-Tap Book Tiles Grid */}
@@ -135,12 +126,12 @@ export default function BooksPage() {
                     icon: book.icon
                   })}
                   aria-label={`${book.name} বইটি পড়ুন`}
-                  className="group p-4 sm:p-5 rounded-2xl border-2 border-slate-200/90 hover:border-emerald-500 bg-white hover:bg-emerald-50/20 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[140px] sm:min-h-[155px] cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  className="group p-4 sm:p-5 rounded-[16px] border-2 border-[#D5DCE4] hover:border-[#006A4E] bg-white hover:bg-[#EEF8F3]/40 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[140px] sm:min-h-[155px] cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
-                  <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-3xl sm:text-4xl shadow-inner group-hover:scale-108 transition-transform">
+                  <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#EEF8F3] border border-[#CBE5D8] flex items-center justify-center text-3xl sm:text-4xl">
                     {book.icon}
                   </span>
-                  <span className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug mt-2">
+                  <span className="font-semibold text-slate-900 text-xs sm:text-sm group-hover:text-[#00563F] transition-colors line-clamp-2 leading-snug mt-2">
                     {book.name}
                   </span>
                 </button>
@@ -159,12 +150,12 @@ export default function BooksPage() {
                     icon: tg.icon
                   })}
                   aria-label={`${tg.name} শিক্ষক সহায়িকা খুলুন`}
-                  className="group p-4 sm:p-5 rounded-2xl border-2 border-slate-200/90 hover:border-purple-500 bg-white hover:bg-purple-50/20 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[140px] sm:min-h-[155px] cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                  className="group p-4 sm:p-5 rounded-[16px] border-2 border-[#D5DCE4] hover:border-[#0F172A] bg-white hover:bg-slate-50 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[140px] sm:min-h-[155px] cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
-                  <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-3xl sm:text-4xl shadow-inner group-hover:scale-108 transition-transform">
+                  <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-3xl sm:text-4xl">
                     {tg.icon}
                   </span>
-                  <span className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-purple-700 transition-colors line-clamp-2 leading-snug mt-2">
+                  <span className="font-semibold text-slate-900 text-xs sm:text-sm group-hover:text-[#0F172A] transition-colors line-clamp-2 leading-snug mt-2">
                     {tg.name}
                   </span>
                 </button>

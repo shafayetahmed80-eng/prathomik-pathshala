@@ -244,7 +244,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
                 </div>
 
                 {!fireExtinguished ? (
-                  <button type="button" onClick={handleExtinguish} className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse">
+                  <button type="button" onClick={handleExtinguish} className="px-3.5 py-1.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]">
                     <Droplets className="w-4 h-4" />
                     <span>পানি ছিটান (Extinguish Fire!)</span>
                   </button>
@@ -444,7 +444,7 @@ export const RajuFirefighterVisualStage: React.FC<RajuFirefighterVisualStageProp
                 playChime("fanfare");
                 handleSpeak("Remember Raju's golden rule: When there is a fire, do not panic! Leave the building quietly and safely. Stay low under smoke and call emergency service 999!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Award className="w-4 h-4" />
               <span>নিরাপত্তা নিয়মগুলো একসাথে উচ্চারণ করুন (Practice Safety Pledge)</span>

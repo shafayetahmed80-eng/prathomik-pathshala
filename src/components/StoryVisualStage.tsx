@@ -605,11 +605,11 @@ export default function StoryVisualStage({
             return (
               <button key={h.id} type="button" onClick={() => handleHotspotClick(h)}
                 style={{ left: `${h.x}%`, top: `${h.y}%` }}
-                className={`absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-black transition-all duration-200 shadow-md ${
-                  isActive
-                    ? "bg-purple-600 text-white scale-110 ring-4 ring-purple-300"
-                    : "bg-white/95 text-slate-800 hover:bg-purple-50 hover:text-purple-900 hover:scale-105 border border-slate-200"
-                }`}
+                className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all duration-200 shadow-md ${
+ isActive
+ ? "bg-purple-600 text-white ring-4 ring-purple-300"
+ : "bg-white/95 text-slate-800 hover:bg-purple-50 hover:text-purple-900 border border-slate-200"
+ }`}
                 title={`ক্লিক করে "${h.name}" উচ্চারণ ও অর্থ শুনুন`}
               >
                 <span>{h.icon}</span>

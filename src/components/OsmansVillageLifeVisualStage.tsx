@@ -122,11 +122,11 @@ export default function OsmansVillageLifeVisualStage({
               setActiveTab("farm");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "farm"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "farm"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
+ }`}
           >
             <Sun className="w-3.5 h-3.5" />
             <span>Farm & Chores</span>
@@ -136,11 +136,11 @@ export default function OsmansVillageLifeVisualStage({
               setActiveTab("games");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "games"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "games"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
+ }`}
           >
             <Trophy className="w-3.5 h-3.5" />
             <span>Ha-du-du</span>
@@ -150,11 +150,11 @@ export default function OsmansVillageLifeVisualStage({
               setActiveTab("evening");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all flex items-center gap-1 ${
-              activeTab === "evening"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold transition-all flex items-center gap-1 ${
+ activeTab === "evening"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:text-emerald-700 hover:bg-emerald-50"
+ }`}
           >
             <Flame className="w-3.5 h-3.5" />
             <span>Lamp Study</span>
@@ -209,7 +209,7 @@ export default function OsmansVillageLifeVisualStage({
               <div className="flex items-center gap-2">
                 <button type="button"
                   onClick={handleFeedAnimals}
-                  className="px-4 py-2 rounded-xl bg-linear-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <span>🌱</span>
                   <span>Feed Green Grass (ঘাস খাওয়াও)</span>
@@ -271,7 +271,7 @@ export default function OsmansVillageLifeVisualStage({
                 <button type="button"
                   onClick={handlePlayHadudu}
                   disabled={isChanting}
-                  className="px-4 py-2 rounded-xl bg-linear-to-r from-amber-600 to-emerald-600 hover:from-amber-700 hover:to-emerald-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Trophy className="w-4 h-4 text-amber-300" />
                   <span>Raid in Ha-du-du! (হা-ডু-ডু রেড)</span>
@@ -325,7 +325,7 @@ export default function OsmansVillageLifeVisualStage({
               <div className="flex items-center gap-2">
                 <button type="button"
                   onClick={handleCompleteHomework}
-                  className="px-4 py-2 rounded-xl bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Check className="w-4 h-4 text-amber-300" />
                   <span>Finish Homework (বাড়ির কাজ করো)</span>

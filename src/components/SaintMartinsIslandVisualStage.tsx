@@ -384,7 +384,7 @@ export const SaintMartinsIslandVisualStage: React.FC<SaintMartinsIslandVisualSta
                 {voyageProgress === 0 ? (
                   <button type="button"
                     onClick={handleStartVoyage}
-                    className="w-full py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold text-xs shadow-md flex items-center justify-center gap-2"
+                    className="w-full py-2 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white font-bold text-xs shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                   >
                     <Ship className="w-4 h-4" />
                     জাহাজে চড়ে সমুদ্রযাত্রা শুরু করো! (Start Voyage)

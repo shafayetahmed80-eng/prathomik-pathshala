@@ -489,7 +489,7 @@ export default function BornomalaBalloonPopGame({
           <button
             type="button"
             onClick={() => target && speakTarget(target)}
-            className="group relative flex items-center gap-2 px-3.5 py-1.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-2xl shadow-md transition-all active:scale-95"
+            className="group relative flex items-center gap-2 px-3.5 py-1.5 bg-[#0A8257] hover:bg-[#08704A] text-white rounded-2xl shadow-md transition-all active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             title="পুনরায় প্রম্পট শুনুন"
           >
             <Volume2 className="w-5 h-5 animate-pulse" />
@@ -615,11 +615,11 @@ export default function BornomalaBalloonPopGame({
                 setSpeedMode(spd);
                 restartGameWith(category, numberRange, spd);
               }}
-              className={`px-2 py-0.5 rounded-lg text-[11px] font-bold transition-colors ${
-                speedMode === spd
-                  ? "bg-amber-500 text-white"
-                  : "text-gray-600 hover:bg-amber-50"
-              }`}
+              className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2 py-0.5 rounded-lg text-[11px] font-bold transition-colors ${
+ speedMode === spd
+ ? "bg-[#B45309] text-white hover:bg-[#92400E]"
+ : "text-gray-600 hover:bg-amber-50"
+ }`}
             >
               {spd === "slow"
                 ? "🐢 ধীর"
@@ -646,7 +646,7 @@ export default function BornomalaBalloonPopGame({
             <button
               type="button"
               onClick={() => setIsPaused(false)}
-              className="mt-4 px-6 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-all"
+              className="mt-4 px-6 py-2 bg-[#0A8257] hover:bg-[#08704A] text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               আবার খেলুন
             </button>

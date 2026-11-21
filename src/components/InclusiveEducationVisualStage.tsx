@@ -192,11 +192,11 @@ export default function InclusiveEducationVisualStage({
               setActiveMode("ramp");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "ramp"
-                ? "bg-amber-500 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "ramp"
+ ? "bg-[#B45309] text-white hover:bg-[#92400E] shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>🏫</span>
             <span>স্কুল র‍্যাম্প</span>
@@ -208,11 +208,11 @@ export default function InclusiveEducationVisualStage({
               setActiveMode("ball_game");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "ball_game"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "ball_game"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>⚽</span>
             <span>বল পাস খেলা</span>
@@ -224,11 +224,11 @@ export default function InclusiveEducationVisualStage({
               setActiveMode("recitation");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "recitation"
-                ? "bg-indigo-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "recitation"
+ ? "bg-indigo-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>🎙️</span>
             <span>আবৃত্তি মঞ্চ</span>
@@ -240,11 +240,11 @@ export default function InclusiveEducationVisualStage({
               setActiveMode("explore");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "explore"
-                ? "bg-purple-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "explore"
+ ? "bg-purple-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>🔍</span>
             <span>ইনক্লুশন ল্যাব</span>
@@ -384,11 +384,11 @@ export default function InclusiveEducationVisualStage({
                   type="button"
                   onClick={handleClimbRamp}
                   disabled={isMovingUpRamp}
-                  className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 shadow-sm ${
-                    isMovingUpRamp
-                      ? "bg-slate-300 text-slate-600 cursor-not-allowed"
-                      : "bg-linear-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600 active:scale-95"
-                  }`}
+                  className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 shadow-sm ${
+ isMovingUpRamp
+ ? "bg-slate-300 text-slate-600 cursor-not-allowed"
+ : "bg-[#B45309] hover:bg-[#92400E] text-white active:scale-95"
+ }`}
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
                   <span>{isMovingUpRamp ? "র‍্যাম্প বেয়ে উঠছে..." : "র‍্যাম্প দিয়ে চলো ➔"}</span>
@@ -441,9 +441,9 @@ export default function InclusiveEducationVisualStage({
                   type="button"
                   aria-label="বল পাস করুন: Teacher (শিক্ষক)"
                   onClick={() => handlePassBall("teacher")}
-                  className={`absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
-                    ballHolder === "teacher" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
-                  }`}
+                  className={`absolute -top-3 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
+ ballHolder === "teacher" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
+ }`}
                 >
                   <span className="text-2xl sm:text-3xl">👨‍🏫</span>
                   <span className="text-[10px] font-black px-1.5 py-0.2 rounded-md bg-blue-600 text-white shadow-2xs">
@@ -459,9 +459,9 @@ export default function InclusiveEducationVisualStage({
                   type="button"
                   aria-label="বল পাস করুন: Mita (মিতা)"
                   onClick={() => handlePassBall("mita")}
-                  className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
-                    ballHolder === "mita" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
-                  }`}
+                  className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 flex flex-col items-center cursor-pointer transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
+ ballHolder === "mita" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
+ }`}
                 >
                   <span className="text-2xl sm:text-3xl">👧</span>
                   <span className="text-[10px] font-black px-1.5 py-0.2 rounded-md bg-purple-600 text-white shadow-2xs">
@@ -477,9 +477,9 @@ export default function InclusiveEducationVisualStage({
                   type="button"
                   aria-label="বল পাস করুন: Porshi (পড়শী)"
                   onClick={() => handlePassBall("porshi")}
-                  className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 flex flex-col items-center cursor-pointer transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
-                    ballHolder === "porshi" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
-                  }`}
+                  className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 flex flex-col items-center cursor-pointer transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 ${
+ ballHolder === "porshi" ? "ring-4 ring-amber-400 rounded-2xl p-1 bg-amber-50" : ""
+ }`}
                 >
                   <span className="text-2xl sm:text-3xl">👦</span>
                   <span className="text-[10px] font-black px-1.5 py-0.2 rounded-md bg-teal-600 text-white shadow-2xs">
@@ -522,7 +522,7 @@ export default function InclusiveEducationVisualStage({
               </p>
               <div className="flex items-center gap-1.5 flex-wrap">
                 <button type="button" onClick={() => handlePassBall("rani")}
-                  className="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-xs flex items-center gap-1"
+                  className="px-3 py-1 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 transition-all shadow-xs flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <span>⚽ রানিকে বল দাও!</span>
                 </button>
@@ -602,7 +602,7 @@ export default function InclusiveEducationVisualStage({
               <button
                 type="button"
                 onClick={handleStartRecitation}
-                className="px-4 py-2 rounded-xl text-xs font-black bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 transition-all shadow-xs flex items-center gap-1.5"
+                className="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95 transition-all shadow-xs flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               >
                 <Volume2 className="w-3.5 h-3.5" />
                 <span>{isReciting ? "আবৃত্তি চলছে..." : "কবিতা আবৃত্তি শোনো"}</span>
@@ -645,11 +645,11 @@ export default function InclusiveEducationVisualStage({
                     handleSpeak(`${spot.name}. ${spot.bangla}.`);
                   }}
                   style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 p-2 rounded-2xl border-2 transition-all flex items-center gap-1.5 shadow-md ${
-                    activeHotspot?.id === spot.id
-                      ? "bg-purple-600 text-white border-amber-300 scale-110 ring-4 ring-purple-300 z-20"
-                      : "bg-white text-slate-800 border-purple-300 hover:scale-105 z-10"
-                  }`}
+                  className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] absolute -translate-x-1/2 -translate-y-1/2 p-2 rounded-2xl border-2 transition-all flex items-center gap-1.5 shadow-md ${
+ activeHotspot?.id === spot.id
+ ? "bg-purple-600 text-white border-amber-300 ring-4 ring-purple-300 z-20"
+ : "bg-white text-slate-800 border-purple-300 z-10"
+ }`}
                 >
                   <span className="text-base">{spot.icon}</span>
                   <span className="text-[10px] font-black whitespace-nowrap">{spot.name}</span>
