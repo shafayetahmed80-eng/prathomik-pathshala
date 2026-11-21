@@ -5,6 +5,7 @@
   "/api/tts/route": "app/api/tts/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js",
+  "/api/pdf/route": "app/api/pdf/route.js",
   "/books/page": "app/books/page.js",
   "/bornomala/page": "app/bornomala/page.js",
   "/exams/page": "app/exams/page.js",
@@ -13,6 +14,5 @@
   "/quiz/page": "app/quiz/page.js",
   "/rhymes/page": "app/rhymes/page.js",
   "/slides/page": "app/slides/page.js",
-  "/certificates/page": "app/certificates/page.js",
-  "/api/pdf/route": "app/api/pdf/route.js"
+  "/certificates/page": "app/certificates/page.js"
 }

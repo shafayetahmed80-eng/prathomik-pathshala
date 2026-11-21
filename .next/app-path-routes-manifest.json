@@ -5,6 +5,7 @@
   "/api/tts/route": "/api/tts",
   "/favicon.ico/route": "/favicon.ico",
   "/manifest.webmanifest/route": "/manifest.webmanifest",
+  "/api/pdf/route": "/api/pdf",
   "/books/page": "/books",
   "/bornomala/page": "/bornomala",
   "/exams/page": "/exams",
@@ -13,6 +14,5 @@
   "/quiz/page": "/quiz",
   "/rhymes/page": "/rhymes",
   "/slides/page": "/slides",
-  "/certificates/page": "/certificates",
-  "/api/pdf/route": "/api/pdf"
+  "/certificates/page": "/certificates"
 }

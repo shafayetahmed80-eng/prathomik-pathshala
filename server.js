@@ -3,6 +3,8 @@
 if (!process.env.UV_THREADPOOL_SIZE) {
   process.env.UV_THREADPOOL_SIZE = '1';
 }
+// Ensure pure-JS WebSocket masking in ws library to prevent bufferutil load errors
+process.env.WS_NO_BUFFER_UTIL = '1';
 
 const fs = require('fs');
 const path = require('path');
