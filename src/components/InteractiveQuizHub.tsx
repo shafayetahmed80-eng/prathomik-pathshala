@@ -8,19 +8,17 @@ import {
   Award, 
   CheckCircle2, 
   XCircle, 
-  Volume2, 
-  RotateCcw, 
   ChevronRight, 
   HelpCircle, 
   Flame, 
   Star,
-  BookOpen,
   Sparkles,
   Shuffle
 } from "lucide-react";
 import { QUIZ_BANK, QuizQuestion } from "@/data/quizData";
 import { DEEP_QUESTION_BANKS } from "@/data/questionPool";
 import { safeSpeak, stopSpeech } from "@/utils/mobileSpeech";
+import { Button, SegmentedControl, AudioButton, getButtonClasses } from "@/components/ui";
 
 const GRADE_TABS = [
   { id: "pre-primary", label: "প্রাক-প্রাথমিক", icon: "🧸" },
@@ -265,301 +263,300 @@ export default function InteractiveQuizHub() {
   return (
     <article 
       aria-labelledby="quiz-hub-heading"
-      className="bg-gradient-to-tr from-amber-400 via-orange-400 to-rose-400 p-1 sm:p-1.5 rounded-3xl shadow-2xl overflow-hidden w-full"
+      className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-lg space-y-6 w-full"
     >
-      <div className="bg-white rounded-[22px] p-4 sm:p-8 lg:p-10 space-y-6">
-        {/* Header Title & Live Gamified Stats */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-100 gap-4">
-          <div className="flex items-center gap-3">
-            <div 
-              aria-hidden="true" 
-              className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl shadow-inner shrink-0"
-            >
-              🎮
-            </div>
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-100 text-amber-900 text-xs font-bold">
-                <Smile className="w-3.5 h-3.5 text-amber-600" aria-hidden="true" />
-                <span>আনন্দ কুইজ হাব ও ব্রেন বুস্টার</span>
-              </div>
-              <h2 id="quiz-hub-heading" className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
-                খেলার ছলে জ্ঞান অর্জন
-              </h2>
-            </div>
+      {/* Header Title & Live Gamified Stats */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-slate-100 gap-4">
+        <div className="flex items-center gap-3">
+          <div 
+            aria-hidden="true" 
+            className="w-12 h-12 rounded-2xl bg-[#EEF8F3] border border-[#CBE5D8] flex items-center justify-center text-2xl shrink-0"
+          >
+            🎮
           </div>
-
-          {/* Gamified Stats Badges */}
-          <div className="flex items-center gap-2 self-end sm:self-auto" role="status" aria-label="গেম স্কোর ও স্ট্রিক">
-            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs sm:text-sm font-bold shadow-xs">
-              <Star className="w-4 h-4 text-amber-500 fill-amber-500" aria-hidden="true" />
-              <span>{score} স্টার</span>
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#FFFBEB] border border-[#FFB020]/50 text-[#3A2300] text-xs font-semibold">
+              <Smile className="w-3.5 h-3.5 text-[#D98A00]" aria-hidden="true" />
+              <span>আনন্দ কুইজ হাব ও ব্রেন বুস্টার</span>
             </div>
-            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-orange-50 border border-orange-200 text-orange-800 text-xs sm:text-sm font-bold shadow-xs">
-              <Flame className="w-4 h-4 text-orange-500 fill-orange-500" aria-hidden="true" />
-              <span>{streak} স্ট্রিক!</span>
-            </div>
+            <h2 id="quiz-hub-heading" className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
+              খেলার ছলে জ্ঞান অর্জন
+            </h2>
           </div>
         </div>
 
-        {/* Grade Selector Navigation */}
-        <nav aria-label="কুইজের শ্রেণি নির্বাচন" className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-          {GRADE_TABS.map((tab) => {
-            const isSelected = selectedClassId === tab.id;
+        {/* Gamified Stats Badges */}
+        <div className="flex items-center gap-2 self-end sm:self-auto" role="status" aria-label="গেম স্কোর ও স্ট্রিক">
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-[#3A2300] text-xs sm:text-sm font-semibold">
+            <Star className="w-4 h-4 text-[#FFB020] fill-[#FFB020]" aria-hidden="true" />
+            <span>{score} স্টার</span>
+          </div>
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#EEF8F3] border border-[#CBE5D8] text-[#00563F] text-xs sm:text-sm font-semibold">
+            <Flame className="w-4 h-4 text-[#006A4E] fill-[#006A4E]/20" aria-hidden="true" />
+            <span>{streak} স্ট্রিক!</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Grade Selector Navigation (Soft-Solid 2.0 SegmentedControl) */}
+      <SegmentedControl
+        value={selectedClassId}
+        onChange={handleClassChange}
+        ariaLabel="কুইজের শ্রেণি নির্বাচন"
+        roleMode="tablist"
+        size="md"
+        options={GRADE_TABS.map((tab) => ({
+          value: tab.id,
+          label: `${tab.icon} ${tab.label}`,
+        }))}
+      />
+
+      {/* Subject Filter Pills */}
+      <div className="flex items-center justify-between gap-2 flex-wrap pt-1 border-t border-slate-100">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
+          {SUBJECT_FILTERS.map((s) => {
+            const isSelected = selectedSubject === s.id;
             return (
               <button
-                key={tab.id}
+                key={s.id}
                 type="button"
-                onClick={() => handleClassChange(tab.id)}
+                onClick={() => handleSubjectChange(s.id)}
                 aria-pressed={isSelected}
-                className={`flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 min-h-[44px] cursor-pointer touch-manipulation active:scale-95 ${
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full font-semibold shrink-0 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] min-h-[38px] cursor-pointer touch-manipulation ${
                   isSelected
-                    ? "bg-amber-500 text-white shadow-md shadow-amber-500/25 scale-102 font-black"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    ? "bg-[#006A4E] text-white"
+                    : "bg-[#F8FAFC] text-slate-700 hover:bg-[#EEF8F3] hover:text-[#00563F] border border-[#D5DCE4]"
                 }`}
               >
-                <span aria-hidden="true" className="text-lg">{tab.icon}</span>
-                <span>{tab.label}</span>
+                <span aria-hidden="true" className="text-sm">{s.icon}</span>
+                <span>{s.label}</span>
               </button>
             );
           })}
-        </nav>
+        </div>
 
-        {/* Subject Filter Pills */}
-        <div className="flex items-center justify-between gap-2 flex-wrap pt-1 border-t border-slate-100">
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
-            {SUBJECT_FILTERS.map((s) => {
-              const isSelected = selectedSubject === s.id;
+        <div className="text-[11px] text-slate-500 font-semibold flex items-center gap-1">
+          <Sparkles className="w-3.5 h-3.5 text-[#006A4E]" />
+          <span>উপলব্ধ: <strong>{fullPool.length}</strong>টি প্রশ্ন</span>
+        </div>
+      </div>
+
+      {/* Quiz Body */}
+      {isCompleted ? (
+        /* Completion Screen */
+        <section 
+          aria-label="কুইজ সমাপ্তি ফলাফল" 
+          className="text-center py-8 sm:py-10 space-y-6 animate-fade-in max-w-md mx-auto"
+        >
+          <div 
+            aria-hidden="true"
+            className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-3xl bg-[#FFFBEB] border-2 border-[#FFB020] flex items-center justify-center text-4xl sm:text-5xl shadow-md pp-pop"
+          >
+            🏆
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900">
+              দারুণ করেছ! অভিনন্দন! 🎉
+            </h3>
+            <p className="text-slate-600 text-xs sm:text-sm">
+              তুমি এই রাউন্ডের ১০টি প্রশ্নের উত্তর সাফল্যের সাথে শেষ করেছ।
+            </p>
+          </div>
+
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#FFFBEB] border border-[#FFB020]/50 flex items-center justify-around">
+            <div>
+              <p className="text-xs text-[#3A2300] font-semibold">মোট স্কোর</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#3A2300] mt-1">⭐ {score}</p>
+            </div>
+            <div className="w-px h-10 bg-[#FFB020]/40" aria-hidden="true" />
+            <div>
+              <p className="text-xs text-[#3A2300] font-semibold">সর্বোচ্চ স্ট্রিক</p>
+              <p className="text-xl sm:text-2xl font-bold text-[#3A2300] mt-1">🔥 {streak}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              variant="play-marigold"
+              leftIcon={<Shuffle className="w-4 h-4" />}
+              onClick={handleRestart}
+              className="w-full sm:w-auto"
+            >
+              নতুন ১০টি প্রশ্ন দিয়ে খেলো
+            </Button>
+            <Link
+              href="/"
+              className={getButtonClasses({
+                variant: "secondary",
+                size: "lg",
+                className: "w-full sm:w-auto",
+              })}
+            >
+              🏠 হোমে ফিরুন
+            </Link>
+          </div>
+        </section>
+      ) : currentQuestion ? (
+        /* Active Question */
+        <section aria-label={`প্রশ্ন ${currentIndex + 1}`} className="space-y-6">
+          {/* Progress Bar & Question Meta */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
+              <span className="px-2.5 py-1 rounded-full bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8]">
+                বিষয়: {currentQuestion.subject}
+              </span>
+              <span aria-live="polite">
+                প্রশ্ন {currentIndex + 1} / {classQuestions.length}
+              </span>
+            </div>
+            <div 
+              className="w-full h-2 sm:h-2.5 bg-slate-100 rounded-full overflow-hidden" 
+              role="progressbar" 
+              aria-valuenow={currentIndex + 1} 
+              aria-valuemin={1} 
+              aria-valuemax={classQuestions.length}
+            >
+              <div
+                className="h-full bg-[#006A4E] rounded-full transition-all duration-300"
+                style={{
+                  width: `${((currentIndex + 1) / classQuestions.length) * 100}%`
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Question Text & Sound Recitation */}
+          <div className="p-5 sm:p-8 rounded-3xl bg-[#F8FAFC] border border-slate-200 text-center space-y-4">
+            <div className="text-5xl sm:text-6xl" aria-hidden="true">
+              {currentQuestion.imageEmoji}
+            </div>
+            <h3 className="text-lg sm:text-2xl font-bold text-slate-900 leading-snug">
+              {currentQuestion.question}
+            </h3>
+
+            <div className="flex items-center justify-center gap-2.5 pt-1 flex-wrap">
+              <AudioButton
+                isPlaying={isSpeaking}
+                onClick={() => handleSpeak(currentQuestion.question)}
+                size="md"
+                ariaLabel="প্রশ্নটি পড়ে শোনাও"
+                playingAriaLabel="প্রশ্ন পড়া হচ্ছে"
+              />
+
+              {currentQuestion.hint && (
+                <Button
+                  variant="tonal"
+                  size="sm"
+                  leftIcon={<HelpCircle className="w-4 h-4" />}
+                  onClick={() => setShowHint(!showHint)}
+                  aria-expanded={showHint}
+                  aria-label="প্রশ্নের ইঙ্গিত দেখুন"
+                >
+                  ইঙ্গিত
+                </Button>
+              )}
+            </div>
+
+            {/* Hint Card */}
+            {showHint && currentQuestion.hint && (
+              <aside 
+                aria-label="ইঙ্গিত"
+                className="p-3 bg-[#FFFBEB] border border-[#FFB020]/50 rounded-2xl text-xs text-[#3A2300] font-medium animate-fade-in max-w-md mx-auto text-left"
+              >
+                💡 <strong>ইঙ্গিত:</strong> {currentQuestion.hint}
+              </aside>
+            )}
+          </div>
+
+          {/* Soft-Solid 2.0 Quiz MCQ Option Cards Grid */}
+          <div 
+            role="group" 
+            aria-label="উত্তরের বিকল্পসমূহ"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+          >
+            {currentQuestion.options.map((option, idx) => {
+              const isSelected = selectedOption === idx;
+              const isCorrect = option.isCorrect;
+              const optionLetter = ["ক", "খ", "গ", "ঘ"][idx] || String(idx + 1);
+
+              let btnStyles =
+                "border-[#D5DCE4] bg-white hover:border-[#006A4E] hover:bg-[#EEF8F3]/40 text-[#0F172A]";
+              let badgeStyles = "bg-[#F1F5F9] text-[#334155]";
+
+              if (isAnswered) {
+                if (isSelected && isCorrect) {
+                  btnStyles = "border-[#10956A] bg-[#EEF8F3] text-[#00563F] pp-pop shadow-sm";
+                  badgeStyles = "bg-[#10956A] text-white";
+                } else if (isSelected && !isCorrect) {
+                  btnStyles = "border-[#E5484D] bg-[#FFF5F5] text-[#A1271F] pp-shake shadow-sm";
+                  badgeStyles = "bg-[#E5484D] text-white";
+                } else if (!isSelected && isCorrect) {
+                  btnStyles = "border-[#10956A] bg-[#EEF8F3]/70 text-[#00563F]";
+                  badgeStyles = "bg-[#10956A] text-white";
+                } else {
+                  btnStyles = "border-slate-200 bg-[#F8FAFC] text-slate-400";
+                  badgeStyles = "bg-slate-200 text-slate-400";
+                }
+              }
+
               return (
                 <button
-                  key={s.id}
+                  key={idx}
                   type="button"
-                  onClick={() => handleSubjectChange(s.id)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 min-h-[40px] cursor-pointer touch-manipulation active:scale-95 ${
-                    isSelected
-                      ? "bg-emerald-600 text-white shadow-xs"
-                      : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/80"
-                  }`}
+                  disabled={isAnswered}
+                  onClick={() => handleOptionClick(idx)}
+                  aria-pressed={isSelected}
+                  className={`min-h-[56px] p-3.5 sm:p-4 rounded-[16px] text-left border-2 font-semibold text-sm sm:text-base lg:text-lg transition-all flex items-center justify-between gap-3 cursor-pointer disabled:cursor-default touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${btnStyles}`}
                 >
-                  <span aria-hidden="true" className="text-base">{s.icon}</span>
-                  <span>{s.label}</span>
+                  <span
+                    aria-hidden="true"
+                    className={`w-8 h-8 rounded-[10px] flex items-center justify-center text-sm font-bold shrink-0 transition-colors ${badgeStyles}`}
+                  >
+                    {optionLetter}
+                  </span>
+                  <span className="flex-1 break-words leading-relaxed">{option.label}</span>
+                  {isAnswered && isCorrect && (
+                    <CheckCircle2 className="w-5 h-5 text-[#10956A] shrink-0" aria-label="সঠিক উত্তর" />
+                  )}
+                  {isAnswered && isSelected && !isCorrect && (
+                    <XCircle className="w-5 h-5 text-[#E5484D] shrink-0" aria-label="ভুল উত্তর" />
+                  )}
                 </button>
               );
             })}
           </div>
 
-          <div className="text-[11px] text-slate-500 font-semibold flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>উপলব্ধ: <strong>{fullPool.length}</strong>টি প্রশ্ন</span>
-          </div>
-        </div>
-
-        {/* Quiz Body */}
-        {isCompleted ? (
-          /* Completion Screen */
-          <section 
-            aria-label="কুইজ সমাপ্তি ফলাফল" 
-            className="text-center py-8 sm:py-10 space-y-6 animate-fade-in max-w-md mx-auto"
-          >
-            <div 
-              aria-hidden="true"
-              className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-3xl bg-amber-100 text-amber-600 flex items-center justify-center text-4xl sm:text-5xl shadow-lg shadow-amber-500/20 animate-bounce"
+          {/* Answer Explanation & Student Play-Green Next CTA */}
+          {isAnswered && (
+            <aside 
+              aria-label="ফলাফল ও শিখন বার্তা"
+              className="p-4 sm:p-5 rounded-2xl bg-[#EEF8F3] border border-[#CBE5D8] text-[#00563F] space-y-3 animate-fade-in"
             >
-              🏆
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-black text-slate-900">
-                দারুণ করেছ! অভিনন্দন! 🎉
-              </h3>
-              <p className="text-slate-600 text-xs sm:text-sm">
-                তুমি এই রাউন্ডের ১০টি প্রশ্নের উত্তর সাফল্যের সাথে শেষ করেছ।
+              <div className="flex items-center gap-2 font-bold text-xs sm:text-sm">
+                <Award className="w-4 h-4 text-[#006A4E] shrink-0" aria-hidden="true" />
+                <span>শিখন তথ্য ও ব্যাখ্যা:</span>
+              </div>
+              <p className="text-xs sm:text-sm leading-relaxed text-[#0F172A] font-medium">
+                {currentQuestion.explanation}
               </p>
-            </div>
 
-            <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-around">
-              <div>
-                <p className="text-xs text-amber-800 font-semibold">মোট স্কোর</p>
-                <p className="text-xl sm:text-2xl font-black text-amber-900 mt-1">⭐ {score}</p>
-              </div>
-              <div className="w-px h-10 bg-amber-200" aria-hidden="true" />
-              <div>
-                <p className="text-xs text-amber-800 font-semibold">সর্বোচ্চ স্ট্রিক</p>
-                <p className="text-xl sm:text-2xl font-black text-amber-900 mt-1">🔥 {streak}</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={handleRestart}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all hover:scale-102 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
-              >
-                <Shuffle className="w-4 h-4" aria-hidden="true" />
-                <span>নতুন ১০টি প্রশ্ন দিয়ে খেলো</span>
-              </button>
-              <Link
-                href="/"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
-              >
-                <span>🏠 হোমে ফিরুন</span>
-              </Link>
-            </div>
-          </section>
-        ) : currentQuestion ? (
-          /* Active Question */
-          <section aria-label={`প্রশ্ন ${currentIndex + 1}`} className="space-y-6">
-            {/* Progress Bar & Question Meta */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-500">
-                <span className="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
-                  বিষয়: {currentQuestion.subject}
-                </span>
-                <span aria-live="polite">
-                  প্রশ্ন {currentIndex + 1} / {classQuestions.length}
-                </span>
-              </div>
-              <div 
-                className="w-full h-2 sm:h-2.5 bg-slate-100 rounded-full overflow-hidden" 
-                role="progressbar" 
-                aria-valuenow={currentIndex + 1} 
-                aria-valuemin={1} 
-                aria-valuemax={classQuestions.length}
-              >
-                <div
-                  className="h-full bg-gradient-to-r from-amber-500 to-emerald-500 rounded-full transition-all duration-300"
-                  style={{
-                    width: `${((currentIndex + 1) / classQuestions.length) * 100}%`
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Question Text & Sound Recitation */}
-            <div className="p-5 sm:p-8 rounded-3xl bg-slate-50 border border-slate-200/80 text-center space-y-4">
-              <div className="text-5xl sm:text-6xl animate-pulse" aria-hidden="true">
-                {currentQuestion.imageEmoji}
-              </div>
-              <h3 className="text-lg sm:text-2xl font-extrabold text-slate-900 leading-snug">
-                {currentQuestion.question}
-              </h3>
-
-              <div className="flex items-center justify-center gap-2 pt-1 flex-wrap">
-                <button
-                  type="button"
-                  onClick={() => handleSpeak(currentQuestion.question)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${
-                    isSpeaking
-                      ? "bg-emerald-600 text-white animate-pulse"
-                      : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-                  }`}
-                  aria-label="প্রশ্নটি বাংলায় পড়ে শোনাও"
+              <div className="pt-1 flex justify-end">
+                <Button
+                  variant="play-green"
+                  rightIcon={<ChevronRight className="w-5 h-5 pp-arrow" />}
+                  onClick={handleNext}
                 >
-                  <Volume2 className="w-3.5 h-3.5 text-emerald-600" aria-hidden="true" />
-                  <span>পড়ে শোনাও</span>
-                </button>
-
-                {currentQuestion.hint && (
-                  <button
-                    type="button"
-                    onClick={() => setShowHint(!showHint)}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-200 text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
-                    aria-expanded={showHint}
-                    aria-label="প্রশ্নের ইঙ্গিত দেখুন"
-                  >
-                    <HelpCircle className="w-3.5 h-3.5 text-amber-600" aria-hidden="true" />
-                    <span>ইঙ্গিত</span>
-                  </button>
-                )}
+                  {currentIndex + 1 < classQuestions.length ? "পরের প্রশ্ন" : "ফলাফল দেখো"}
+                </Button>
               </div>
-
-              {/* Hint Card */}
-              {showHint && currentQuestion.hint && (
-                <aside 
-                  aria-label="ইঙ্গিত"
-                  className="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 font-medium animate-fade-in max-w-md mx-auto text-left"
-                >
-                  💡 <strong>ইঙ্গিত:</strong> {currentQuestion.hint}
-                </aside>
-              )}
-            </div>
-
-            {/* Options Grid */}
-            <div 
-              role="group" 
-              aria-label="উত্তরের বিকল্পসমূহ"
-              className="grid grid-cols-1 sm:grid-cols-2 gap-3"
-            >
-              {currentQuestion.options.map((option, idx) => {
-                const isSelected = selectedOption === idx;
-                const isCorrect = option.isCorrect;
-
-                let btnStyles = "border-slate-200 bg-white hover:border-amber-400 hover:bg-amber-50/40 text-slate-800 shadow-xs";
-
-                if (isAnswered) {
-                  if (isSelected && isCorrect) {
-                    btnStyles = "bg-emerald-500 border-emerald-600 text-white shadow-lg shadow-emerald-500/20 scale-102";
-                  } else if (isSelected && !isCorrect) {
-                    btnStyles = "bg-rose-500 border-rose-600 text-white shadow-lg shadow-rose-500/20";
-                  } else if (!isSelected && isCorrect) {
-                    btnStyles = "bg-emerald-100 border-emerald-300 text-emerald-900 font-bold";
-                  } else {
-                    btnStyles = "bg-slate-50 border-slate-200 text-slate-400 opacity-60";
-                  }
-                }
-
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    disabled={isAnswered}
-                    onClick={() => handleOptionClick(idx)}
-                    aria-pressed={isSelected}
-                    className={`min-h-[52px] p-3.5 sm:p-4 rounded-2xl text-left border-2 font-bold text-sm sm:text-base lg:text-lg transition-all flex items-center justify-between gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${btnStyles}`}
-                  >
-                    <span className="flex-1 break-words leading-relaxed">{option.label}</span>
-                    {isAnswered && isCorrect && (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-100 shrink-0" aria-label="সঠিক উত্তর" />
-                    )}
-                    {isAnswered && isSelected && !isCorrect && (
-                      <XCircle className="w-5 h-5 text-rose-100 shrink-0" aria-label="ভুল উত্তর" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Answer Explanation & Feedback */}
-            {isAnswered && (
-              <aside 
-                aria-label="ফলাফল ও শিখন বার্তা"
-                className="p-4 sm:p-5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 space-y-2 animate-fade-in"
-              >
-                <div className="flex items-center gap-2 font-black text-xs sm:text-sm">
-                  <Award className="w-4 h-4 text-emerald-600 shrink-0" aria-hidden="true" />
-                  <span>শিখন তথ্য ও ব্যাখ্যা:</span>
-                </div>
-                <p className="text-xs sm:text-sm leading-relaxed text-emerald-900 font-medium">
-                  {currentQuestion.explanation}
-                </p>
-
-                <div className="pt-2 flex justify-end">
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-600/25 transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-                  >
-                    <span>{currentIndex + 1 < classQuestions.length ? "পরের প্রশ্ন" : "ফলাফল দেখো"}</span>
-                    <ChevronRight className="w-4 h-4" aria-hidden="true" />
-                  </button>
-                </div>
-              </aside>
-            )}
-          </section>
-        ) : (
-          <div className="text-center py-12 text-slate-500 font-bold">
-            এই ক্যাটাগরিতে কোনো প্রশ্ন পাওয়া যায়নি। অন্য বিষয় নির্বাচন করুন।
-          </div>
-        )}
-      </div>
+            </aside>
+          )}
+        </section>
+      ) : (
+        <div className="text-center py-12 text-slate-500 font-semibold">
+          এই ক্যাটাগরিতে কোনো প্রশ্ন পাওয়া যায়নি। অন্য বিষয় নির্বাচন করুন।
+        </div>
+      )}
     </article>
   );
 }

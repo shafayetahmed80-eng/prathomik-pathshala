@@ -30,6 +30,7 @@ import {
   FileCheck2,
   Layers
 } from "lucide-react";
+import { Button, SegmentedControl, type SegmentedOption } from "@/components/ui";
 
 interface ExamBlueprintPanelProps {
   blueprint: ExamBlueprintConfig;
@@ -175,6 +176,50 @@ export default function ExamBlueprintPanel({
     science: allCategories.filter(c => c.group === "science").length
   };
 
+  const groupTabOptions: SegmentedOption<"all" | CategoryGroup>[] = [
+    {
+      value: "all",
+      label: `সকল ক্যাটাগরি (${groupCounts.all})`,
+      icon: <Layers className="w-3.5 h-3.5" />,
+    },
+    ...(groupCounts.core > 0
+      ? [
+          {
+            value: "core" as const,
+            label: `মৌলিক ক্যাটাগরি (${groupCounts.core})`,
+            icon: <FileCheck2 className="w-3.5 h-3.5" />,
+          },
+        ]
+      : []),
+    ...(groupCounts.language > 0
+      ? [
+          {
+            value: "language" as const,
+            label: `ভাষা ও ব্যাকরণ (${groupCounts.language})`,
+            icon: <BookOpen className="w-3.5 h-3.5" />,
+          },
+        ]
+      : []),
+    ...(groupCounts.math > 0
+      ? [
+          {
+            value: "math" as const,
+            label: `গণিত বিশেষ (${groupCounts.math})`,
+            icon: <Calculator className="w-3.5 h-3.5" />,
+          },
+        ]
+      : []),
+    ...(groupCounts.science > 0
+      ? [
+          {
+            value: "science" as const,
+            label: `বিজ্ঞান ও অনুসন্ধান (${groupCounts.science})`,
+            icon: <Compass className="w-3.5 h-3.5" />,
+          },
+        ]
+      : []),
+  ];
+
   return (
     <div className="bg-white rounded-2xl border border-slate-200 shadow-xs print:hidden overflow-hidden transition-all duration-300 mb-5">
       {/* Header Bar */}
@@ -190,18 +235,18 @@ export default function ExamBlueprintPanel({
             setIsOpen(!isOpen);
           }
         }}
-        className="px-4 sm:px-6 py-3.5 bg-gradient-to-r from-slate-50 via-emerald-50/40 to-teal-50/30 border-b border-slate-200/80 flex items-center justify-between cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        className="px-4 sm:px-6 py-3.5 bg-[#F8FAFC] hover:bg-[#F1F5F9]/70 border-b border-slate-200/80 flex items-center justify-between cursor-pointer select-none transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
       >
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+          <div className="w-9 h-9 rounded-xl bg-[#006A4E] text-white flex items-center justify-center shadow-xs">
             <Sliders className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-extrabold text-sm sm:text-base text-slate-800">
+              <h3 className="font-bold text-sm sm:text-base text-slate-800">
                 ডাইনামিক প্রশ্ন কাঠামো ও নম্বর বিন্যাস
               </h3>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8]">
                 {allCategories.length}টি ক্যাটাগরি উপলব্ধ
               </span>
             </div>
@@ -214,13 +259,13 @@ export default function ExamBlueprintPanel({
         {/* Live Badges and Toggle Indicator */}
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="px-2.5 py-1 rounded-lg bg-sky-50 border border-sky-200 text-sky-800 text-xs font-bold flex items-center gap-1.5">
-              <span className="text-[11px] text-sky-600 font-medium hidden xs:inline">মোট প্রশ্ন:</span>
-              <span className="font-black text-sky-900">{totalQuestions}টি</span>
+            <div className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-800 text-xs font-semibold flex items-center gap-1.5">
+              <span className="text-[11px] text-slate-500 font-medium hidden xs:inline">মোট প্রশ্ন:</span>
+              <span className="font-bold text-[#0F172A]">{totalQuestions}টি</span>
             </div>
-            <div className="px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-1.5">
-              <span className="text-[11px] text-emerald-600 font-medium hidden xs:inline">পূর্ণমান:</span>
-              <span className="font-black text-emerald-900">{totalMarks} নম্বর</span>
+            <div className="px-2.5 py-1 rounded-lg bg-[#EEF8F3] border border-[#CBE5D8] text-[#00563F] text-xs font-semibold flex items-center gap-1.5">
+              <span className="text-[11px] text-[#006A4E] font-medium hidden xs:inline">পূর্ণমান:</span>
+              <span className="font-bold text-[#00563F]">{totalMarks} নম্বর</span>
             </div>
           </div>
           
@@ -248,17 +293,18 @@ export default function ExamBlueprintPanel({
                   <button
                     key={opt.id}
                     type="button"
+                    aria-pressed={isSelected}
                     onClick={() => onSelectPreset(opt.id)}
-                    className={`min-w-[155px] sm:min-w-0 snap-start shrink-0 sm:shrink px-3 py-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                    className={`min-w-[155px] sm:min-w-0 snap-start shrink-0 sm:shrink px-3 py-2.5 rounded-[12px] border text-left transition-all cursor-pointer flex flex-col justify-between touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                       isSelected
-                        ? "bg-emerald-600 border-emerald-700 text-white shadow-xs ring-2 ring-emerald-500/30"
-                        : "bg-slate-50/80 hover:bg-slate-100/80 border-slate-200 text-slate-800"
+                        ? "bg-[#0F172A] border-[#0F172A] text-white shadow-xs"
+                        : "bg-white hover:bg-[#F8FAFC] border-[#D5DCE4] hover:border-[#94A3B8] text-[#0F172A]"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="font-bold text-xs">{opt.label}</span>
-                      <span className={`text-[10px] font-black px-1.5 py-0.5 rounded ${
-                        isSelected ? "bg-emerald-700 text-white" : "bg-emerald-100 text-emerald-900"
+                      <span className="font-semibold text-xs">{opt.label}</span>
+                      <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-md ${
+                        isSelected ? "bg-[#006A4E] text-white" : "bg-[#EEF8F3] text-[#00563F]"
                       }`}>
                         {opt.id === "nctb_summative" 
                           ? (classId === "pre-primary" || classId === "class-1" || classId === "class-2" ? "৫০ নম্বর" : "৭০ নম্বর")
@@ -266,7 +312,7 @@ export default function ExamBlueprintPanel({
                       </span>
                     </div>
                     <span className={`text-[10px] line-clamp-1 ${
-                      isSelected ? "text-emerald-100" : "text-slate-500"
+                      isSelected ? "text-slate-300" : "text-slate-500"
                     }`}>
                       {opt.subLabel}
                     </span>
@@ -280,7 +326,7 @@ export default function ExamBlueprintPanel({
           {isSeenApplicable && seenConfig && (
             <div className={`rounded-2xl border-2 transition-all p-4 sm:p-5 ${
               seenConfig.enabled 
-                ? "bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 border-amber-400 shadow-xs ring-1 ring-amber-400/30" 
+                ? "bg-[#FFFBEB] border-[#F59E0B]/60 shadow-xs" 
                 : "bg-slate-50 border-slate-200 opacity-80"
             }`}>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-amber-200/60">
@@ -291,10 +337,10 @@ export default function ExamBlueprintPanel({
                     aria-checked={seenConfig.enabled}
                     aria-label="Seen Comprehension পাঠ্যাংশ অন্তর্ভুক্ত করুন"
                     onClick={handleToggleSeen}
-                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-amber-700 hover:text-amber-800 touch-manipulation flex items-center justify-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-amber-700 hover:text-amber-800 touch-manipulation flex items-center justify-center cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                   >
                     {seenConfig.enabled ? (
-                      <CheckSquare className="w-5 h-5 text-amber-600" />
+                      <CheckSquare className="w-5 h-5 text-[#006A4E]" />
                     ) : (
                       <Square className="w-5 h-5 text-slate-400" />
                     )}
@@ -302,10 +348,10 @@ export default function ExamBlueprintPanel({
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-base">📖</span>
-                      <h4 className="font-extrabold text-sm sm:text-base text-slate-900">
+                      <h4 className="font-bold text-sm sm:text-base text-slate-900">
                         SEEN COMPREHENSION (পাঠ্যবইয়ের পাঠ্যাংশ)
                       </h4>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
                         PART - A • {seenMarksData.totalMarks} নম্বর
                       </span>
                     </div>
@@ -316,24 +362,20 @@ export default function ExamBlueprintPanel({
                 </div>
 
                 <div className="flex items-center gap-2 self-start sm:self-auto">
-                  <button
-                    type="button"
+                  <Button
+                    variant={seenConfig.enabled ? "primary" : "secondary"}
+                    size="sm"
                     onClick={handleToggleSeen}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      seenConfig.enabled
-                        ? "bg-amber-600 text-white shadow-xs hover:bg-amber-700"
-                        : "bg-slate-200 text-slate-700 hover:bg-slate-300"
-                    }`}
                   >
                     {seenConfig.enabled ? "✓ চালু আছে" : "চালু করুন"}
-                  </button>
+                  </Button>
                 </div>
               </div>
 
               {seenConfig.enabled && (
                 <div className="pt-4 space-y-4">
                   {/* Passage Selector */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white/90 p-3 rounded-xl border border-amber-200">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white p-3 rounded-xl border border-amber-200">
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
                       <label htmlFor="seen-passage-select" className="text-xs font-bold text-slate-800">
@@ -344,7 +386,7 @@ export default function ExamBlueprintPanel({
                       id="seen-passage-select"
                       value={seenConfig.passageId}
                       onChange={(e) => handlePassageSelect(e.target.value)}
-                      className="text-xs sm:text-sm font-semibold p-2 border border-amber-300 rounded-lg bg-amber-50/50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 max-w-full sm:max-w-md"
+                      className="text-xs sm:text-sm font-semibold p-2 border border-amber-300 rounded-lg bg-amber-50/50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#006A4E] max-w-full sm:max-w-md"
                     >
                       <option value="auto">✨ স্বয়ংক্রিয় নির্বাচন (Auto - নির্বাচিত ইউনিট/লেসন অনুযায়ী)</option>
                       {availablePassages.map((p) => (
@@ -361,7 +403,7 @@ export default function ExamBlueprintPanel({
                     <div className="p-2.5 bg-white rounded-xl border border-amber-200 text-xs space-y-1.5">
                       <div className="flex items-center justify-between font-bold text-slate-800">
                         <span>১. MCQ (টিক চিহ্ন)</span>
-                        <span className="text-amber-700 font-black">
+                        <span className="text-amber-800 font-bold">
                           {seenConfig.subQuestions.mcqCount * seenConfig.subQuestions.mcqMarks} নম্বর
                         </span>
                       </div>
@@ -370,7 +412,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("mcqCount", -1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="MCQ ১টি কমান"
                             aria-label="পাঠ্যাংশ MCQ ১টি কমান"
                           >
@@ -380,7 +422,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("mcqCount", 1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="MCQ ১টি বাড়ান"
                             aria-label="পাঠ্যাংশ MCQ ১টি বাড়ান"
                           >
@@ -407,7 +449,7 @@ export default function ExamBlueprintPanel({
                     <div className="p-2.5 bg-white rounded-xl border border-amber-200 text-xs space-y-1.5">
                       <div className="flex items-center justify-between font-bold text-slate-800">
                         <span>২. ক্লু সহ শূন্যস্থান</span>
-                        <span className="text-amber-700 font-black">
+                        <span className="text-amber-800 font-bold">
                           {seenConfig.subQuestions.fillCount * seenConfig.subQuestions.fillMarks} নম্বর
                         </span>
                       </div>
@@ -416,7 +458,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("fillCount", -1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="শূন্যস্থান ১টি কমান"
                             aria-label="পাঠ্যাংশ শূন্যস্থান ১টি কমান"
                           >
@@ -426,7 +468,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("fillCount", 1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="শূন্যস্থান ১টি বাড়ান"
                             aria-label="পাঠ্যাংশ শূন্যস্থান ১টি বাড়ান"
                           >
@@ -453,7 +495,7 @@ export default function ExamBlueprintPanel({
                     <div className="p-2.5 bg-white rounded-xl border border-amber-200 text-xs space-y-1.5">
                       <div className="flex items-center justify-between font-bold text-slate-800">
                         <span>৩. সত্য বা মিথ্যা</span>
-                        <span className="text-amber-700 font-black">
+                        <span className="text-amber-800 font-bold">
                           {seenConfig.subQuestions.trueFalseCount * seenConfig.subQuestions.trueFalseMarks} নম্বর
                         </span>
                       </div>
@@ -462,7 +504,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("trueFalseCount", -1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="সত্য/মিথ্যা ১টি কমান"
                             aria-label="পাঠ্যাংশ সত্য/মিথ্যা ১টি কমান"
                           >
@@ -472,7 +514,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("trueFalseCount", 1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="সত্য/মিথ্যা ১টি বাড়ান"
                             aria-label="পাঠ্যাংশ সত্য/মিথ্যা ১টি বাড়ান"
                           >
@@ -499,7 +541,7 @@ export default function ExamBlueprintPanel({
                     <div className="p-2.5 bg-white rounded-xl border border-amber-200 text-xs space-y-1.5">
                       <div className="flex items-center justify-between font-bold text-slate-800">
                         <span>৪. সংক্ষিপ্ত প্রশ্নোত্তর</span>
-                        <span className="text-amber-700 font-black">
+                        <span className="text-amber-800 font-bold">
                           {seenConfig.subQuestions.shortCount * seenConfig.subQuestions.shortMarks} নম্বর
                         </span>
                       </div>
@@ -508,7 +550,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("shortCount", -1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="সংক্ষিপ্ত প্রশ্ন ১টি কমান"
                             aria-label="পাঠ্যাংশ সংক্ষিপ্ত প্রশ্ন ১টি কমান"
                           >
@@ -518,7 +560,7 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleSeenSubCount("shortCount", 1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 cursor-pointer text-sm sm:text-xs"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-[8px] border border-[#D5DCE4] bg-white hover:bg-[#F1F5F9] flex items-center justify-center font-semibold text-[#0F172A] cursor-pointer text-sm sm:text-xs transition-colors focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="সংক্ষিপ্ত প্রশ্ন ১টি বাড়ান"
                             aria-label="পাঠ্যাংশ সংক্ষিপ্ত প্রশ্ন ১টি বাড়ান"
                           >
@@ -546,80 +588,16 @@ export default function ExamBlueprintPanel({
             </div>
           )}
 
-          {/* Group Filter Tabs (for easy category navigation) */}
-          <div className="flex items-center gap-1.5 border-b border-slate-200 pb-2 overflow-x-auto">
-            <button
-              type="button"
-              onClick={() => setActiveTab("all")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                activeTab === "all"
-                  ? "bg-slate-800 text-white shadow-xs"
-                  : "bg-slate-100 hover:bg-slate-200 text-slate-600"
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5" />
-              <span>সকল ক্যাটাগরি ({groupCounts.all})</span>
-            </button>
-
-            {groupCounts.core > 0 && (
-              <button
-                type="button"
-                onClick={() => setActiveTab("core")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                  activeTab === "core"
-                    ? "bg-emerald-700 text-white shadow-xs"
-                    : "bg-emerald-50 hover:bg-emerald-100 text-emerald-800"
-                }`}
-              >
-                <FileCheck2 className="w-3.5 h-3.5" />
-                <span>মৌলিক ক্যাটাগরি ({groupCounts.core})</span>
-              </button>
-            )}
-
-            {groupCounts.language > 0 && (
-              <button
-                type="button"
-                onClick={() => setActiveTab("language")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                  activeTab === "language"
-                    ? "bg-sky-700 text-white shadow-xs"
-                    : "bg-sky-50 hover:bg-sky-100 text-sky-800"
-                }`}
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>ভাষা ও ব্যাকরণ ({groupCounts.language})</span>
-              </button>
-            )}
-
-            {groupCounts.math > 0 && (
-              <button
-                type="button"
-                onClick={() => setActiveTab("math")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                  activeTab === "math"
-                    ? "bg-amber-700 text-white shadow-xs"
-                    : "bg-amber-50 hover:bg-amber-100 text-amber-800"
-                }`}
-              >
-                <Calculator className="w-3.5 h-3.5" />
-                <span>গণিত বিশেষ ({groupCounts.math})</span>
-              </button>
-            )}
-
-            {groupCounts.science > 0 && (
-              <button
-                type="button"
-                onClick={() => setActiveTab("science")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
-                  activeTab === "science"
-                    ? "bg-purple-700 text-white shadow-xs"
-                    : "bg-purple-50 hover:bg-purple-100 text-purple-800"
-                }`}
-              >
-                <Compass className="w-3.5 h-3.5" />
-                <span>বিজ্ঞান ও অনুসন্ধান ({groupCounts.science})</span>
-              </button>
-            )}
+          {/* Group Filter Tabs (Sliding Soft-Solid 2.0 Segmented Control) */}
+          <div className="border-b border-slate-200 pb-3">
+            <SegmentedControl
+              value={activeTab}
+              onChange={setActiveTab}
+              ariaLabel="প্রশ্ন ক্যাটাগরি ফিল্টার"
+              roleMode="tablist"
+              size="sm"
+              options={groupTabOptions}
+            />
           </div>
 
           {/* Dynamic Categories Grid */}
@@ -641,7 +619,7 @@ export default function ExamBlueprintPanel({
                     key={cat.key}
                     className={`p-3 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 ${
                       cat.enabled
-                        ? "bg-white border-slate-300 shadow-2xs ring-1 ring-emerald-500/10"
+                        ? "bg-white border-slate-300 shadow-2xs ring-1 ring-[#006A4E]/10"
                         : "bg-slate-50/70 border-slate-200 opacity-60"
                     }`}
                   >
@@ -652,17 +630,17 @@ export default function ExamBlueprintPanel({
                       aria-checked={cat.enabled}
                       aria-label={`${cat.label} ${cat.enabled ? "বাদ দিন" : "যুক্ত করুন"}`}
                       onClick={() => handleToggleCategory(cat.key)}
-                      className="flex items-center gap-2.5 cursor-pointer select-none flex-1 min-w-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-lg p-1"
+                      className="flex items-center gap-2.5 cursor-pointer select-none flex-1 min-w-0 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] rounded-lg p-1"
                     >
-                      <span className="text-emerald-600 shrink-0">
+                      <span className="text-[#006A4E] shrink-0">
                         {cat.enabled ? (
-                          <CheckSquare className="w-5 h-5 text-emerald-600 fill-emerald-50" />
+                          <CheckSquare className="w-5 h-5 text-[#006A4E] fill-[#EEF8F3]" />
                         ) : (
                           <Square className="w-5 h-5 text-slate-400" />
                         )}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <span className={`text-xs font-bold block ${
+                        <span className={`text-xs font-semibold block ${
                           cat.enabled ? "text-slate-800" : "text-slate-500 line-through"
                         }`}>
                           {cat.label}
@@ -683,19 +661,19 @@ export default function ExamBlueprintPanel({
                           <button
                             type="button"
                             onClick={() => handleCountChange(cat.key, -1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded flex items-center justify-center text-slate-600 hover:bg-white hover:text-slate-900 transition-colors"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-md flex items-center justify-center text-slate-700 hover:bg-white hover:text-[#0F172A] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="১টি কমান"
                             aria-label={`${cat.label} ১টি প্রশ্ন কমান`}
                           >
                             <Minus className="w-3.5 h-3.5 sm:w-3 sm:h-3" />
                           </button>
-                          <span className="w-7 sm:w-6 text-center font-black text-xs text-slate-800">
+                          <span className="w-7 sm:w-6 text-center font-bold text-xs text-slate-800">
                             {cat.count}
                           </span>
                           <button
                             type="button"
                             onClick={() => handleCountChange(cat.key, 1)}
-                            className="w-7 h-7 sm:w-5 sm:h-5 rounded flex items-center justify-center text-slate-600 hover:bg-white hover:text-slate-900 transition-colors"
+                            className="w-7 h-7 sm:w-6 sm:h-6 rounded-md flex items-center justify-center text-slate-700 hover:bg-white hover:text-[#0F172A] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#006A4E]"
                             title="১টি বাড়ান"
                             aria-label={`${cat.label} ১টি প্রশ্ন বাড়ান`}
                           >
@@ -714,14 +692,14 @@ export default function ExamBlueprintPanel({
                             aria-label={`${cat.label} প্রতি প্রশ্নের মান`}
                             value={cat.marksPerQuestion}
                             onChange={(e) => handleMarksChange(cat.key, parseFloat(e.target.value) || 1)}
-                            className="w-12 sm:w-10 h-7 sm:h-6 px-1 text-center text-xs font-bold rounded-md border border-slate-200 bg-white text-slate-800 focus:outline-hidden focus:border-emerald-500"
+                            className="w-12 sm:w-10 h-7 sm:h-6 px-1 text-center text-xs font-bold rounded-md border border-slate-200 bg-white text-slate-800 focus:outline-hidden focus:border-[#006A4E]"
                             title="প্রতি প্রশ্নের নম্বর"
                           />
                         </div>
 
                         {/* Subtotal */}
                         <div className="min-w-10 text-right">
-                          <span className="text-xs font-black text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                          <span className="text-xs font-bold text-[#00563F] bg-[#EEF8F3] px-1.5 py-0.5 rounded border border-[#CBE5D8]">
                             ={subtotal} নম্বর
                           </span>
                         </div>
@@ -736,30 +714,30 @@ export default function ExamBlueprintPanel({
           {/* Action Bar */}
           <div className="pt-3 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2 text-xs text-slate-600">
-              <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
+              <Sparkles className="w-4 h-4 text-[#006A4E] shrink-0" />
               <span>
                 বর্তমানে নির্বাচিত: <strong>{totalQuestions}টি প্রশ্ন</strong>, সর্বমোট পূর্ণমান <strong>{totalMarks} নম্বর</strong>
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
+            <div className="flex items-center gap-2 flex-wrap">
+              <Button
+                variant="secondary"
+                size="sm"
+                leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
                 onClick={() => onSelectPreset("nctb_summative")}
-                className="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>ডিফল্ট রিসেট</span>
-              </button>
+                ডিফল্ট রিসেট
+              </Button>
 
-              <button
-                type="button"
+              <Button
+                variant="ink"
+                size="sm"
+                leftIcon={<Sparkles className="w-4 h-4" />}
                 onClick={handleGenerateClick}
-                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all cursor-pointer hover:shadow-emerald-600/20"
               >
-                <Sparkles className="w-4 h-4" />
-                <span>এই ব্লুপ্রিন্টে প্রশ্নপত্র তৈরি করুন</span>
-              </button>
+                এই ব্লুপ্রিন্টে প্রশ্নপত্র তৈরি করুন
+              </Button>
             </div>
           </div>
         </div>

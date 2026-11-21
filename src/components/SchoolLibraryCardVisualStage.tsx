@@ -284,7 +284,7 @@ export const SchoolLibraryCardVisualStage: React.FC<SchoolLibraryCardVisualStage
 
               <div className="flex items-center gap-2 shrink-0">
                 {!isReturned ? (
-                  <button type="button" onClick={handleReturnBook} className="px-3.5 py-2 rounded-xl text-xs font-black bg-emerald-600 text-white hover:bg-emerald-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all">
+                  <button type="button" onClick={handleReturnBook} className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-700 shadow-md flex items-center gap-1.5 active:scale-95 transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]">
                     <CheckCircle2 className="w-4 h-4" />
                     <span>বই ফেরত দিন (Return Book)</span>
                   </button>

@@ -286,11 +286,11 @@ export default function BornomalaNumberCountingGame({
           <button
             type="button"
             onClick={() => handleRangeChange("1-5")}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
-              range === "1-5"
-                ? "bg-emerald-600 text-white shadow-md scale-102"
-                : "bg-white text-emerald-800 hover:bg-emerald-100/70 border border-emerald-200"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+ range === "1-5"
+ ? "bg-emerald-600 text-white shadow-md"
+ : "bg-white text-emerald-800 hover:bg-emerald-100/70 border border-emerald-200"
+ }`}
           >
             {isEng ? "1–5 (Easy)" : "১–৫ (সহজ)"}
           </button>
@@ -298,11 +298,11 @@ export default function BornomalaNumberCountingGame({
           <button
             type="button"
             onClick={() => handleRangeChange("1-10")}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
-              range === "1-10"
-                ? "bg-emerald-600 text-white shadow-md scale-102"
-                : "bg-white text-emerald-800 hover:bg-emerald-100/70 border border-emerald-200"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+ range === "1-10"
+ ? "bg-emerald-600 text-white shadow-md"
+ : "bg-white text-emerald-800 hover:bg-emerald-100/70 border border-emerald-200"
+ }`}
           >
             {isEng ? "1–10 (Standard)" : "১–১০ (স্ট্যান্ডার্ড)"}
           </button>
@@ -310,11 +310,11 @@ export default function BornomalaNumberCountingGame({
           <button
             type="button"
             onClick={() => handleRangeChange("1-20")}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
-              range === "1-20"
-                ? "bg-emerald-600 text-white shadow-md scale-102"
-                : "bg-white text-emerald-800 hover:bg-emerald-100/70 border border-emerald-200"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+ range === "1-20"
+ ? "bg-emerald-600 text-white shadow-md"
+ : "bg-white text-emerald-800 hover:bg-emerald-100/70 border border-emerald-200"
+ }`}
           >
             {isEng ? "1–20 (Advanced)" : "১–২০ (উন্নত)"}
           </button>
@@ -382,7 +382,7 @@ export default function BornomalaNumberCountingGame({
             <button
               type="button"
               onClick={handleReplayPrompt}
-              className="p-3 bg-white/20 hover:bg-white/30 text-white rounded-2xl border border-white/30 transition-all hover:scale-105 active:scale-95 shadow-md flex items-center gap-1.5 text-xs font-bold"
+              className="p-3 bg-white/20 hover:bg-white/30 text-white rounded-2xl border border-white/30 transition-all active:scale-95 shadow-md flex items-center gap-1.5 text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               title={isEng ? "Listen to Mission" : "মিশনের নির্দেশ শোনো"}
             >
               <Volume2 className="w-4 h-4 text-amber-300" />
@@ -392,7 +392,7 @@ export default function BornomalaNumberCountingGame({
             <button
               type="button"
               onClick={handleResetBasket}
-              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 transition-all hover:scale-105 active:scale-95 text-xs font-bold flex items-center gap-1.5"
+              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 transition-all active:scale-95 text-xs font-bold flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               title={isEng ? "Empty Basket" : "ঝুড়ি খালি করো"}
             >
               <RotateCcw className="w-4 h-4" />
@@ -560,7 +560,7 @@ export default function BornomalaNumberCountingGame({
                 <button
                   type="button"
                   onClick={() => initRound(range)}
-                  className="mt-2 w-full py-1.5 bg-white text-emerald-800 rounded-xl font-black text-xs hover:bg-emerald-50 transition-all flex items-center justify-center gap-1.5 shadow-xs"
+                  className="mt-2 w-full py-1.5 bg-white text-emerald-800 rounded-xl font-semibold text-xs hover:bg-emerald-50 transition-all flex items-center justify-center gap-1.5 shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <span>{isEng ? "Next Challenge Now" : "এখনই পরবর্তী চ্যালেঞ্জ"}</span>
                   <ArrowRight className="w-3.5 h-3.5" />

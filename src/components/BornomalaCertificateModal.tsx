@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useSyncExternalStore } from "react";
 import { Printer, X } from "lucide-react";
 import confetti from "canvas-confetti";
 import { playSuccessChime } from "@/utils/bornomalaAudio";
+import { Button, IconButton, SegmentedControl } from "@/components/ui";
 
 const STUDENT_NAME_STORAGE_KEY = "prathomik_cert_student_name";
 const STUDENT_NAME_CHANGE_EVENT = "prathomik:cert-name-change";
@@ -145,47 +146,35 @@ export default function BornomalaCertificateModal({ isOpen, onClose, stars, lang
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             {/* Cert Language Toggle */}
-            <div className="flex items-center bg-slate-200 p-0.5 rounded-xl text-xs font-bold" role="group" aria-label="সনদপত্রের ভাষা">
-              <button
-                type="button"
-                onClick={() => setLangOverride({ base: languageMode, value: "bangla" })}
-                aria-pressed={certLang === "bangla"}
-                className={`px-2.5 py-1.5 min-h-[32px] rounded-lg transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-                  certLang === "bangla" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                বাংলা
-              </button>
-              <button
-                type="button"
-                onClick={() => setLangOverride({ base: languageMode, value: "english" })}
-                aria-pressed={certLang === "english"}
-                className={`px-2.5 py-1.5 min-h-[32px] rounded-lg transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-                  certLang === "english" ? "bg-white text-slate-900 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                English
-              </button>
-            </div>
+            <SegmentedControl
+              value={certLang}
+              onChange={(v) => setLangOverride({ base: languageMode, value: v })}
+              ariaLabel="সনদপত্রের ভাষা"
+              roleMode="radiogroup"
+              size="sm"
+              options={[
+                { value: "bangla", label: "বাংলা" },
+                { value: "english", label: "English" },
+              ]}
+            />
 
-            <button
-              type="button"
+            <Button
+              variant="ink"
+              size="sm"
+              leftIcon={<Printer className="w-4 h-4" />}
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-4 py-2 min-h-[40px] rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-105 active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             >
-              <Printer className="w-4 h-4" />
-              <span>{isEn ? "Print / Save" : "প্রিন্ট / সেভ করুন"}</span>
-            </button>
-            <button
-              type="button"
+              {isEn ? "Print / Save" : "প্রিন্ট / সেভ করুন"}
+            </Button>
+            <IconButton
+              icon={<X className="w-5 h-5" />}
+              ariaLabel="সনদপত্র উইন্ডো বন্ধ করুন"
+              variant="ghost"
+              size="sm"
               onClick={onClose}
-              className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-slate-500 hover:bg-slate-200 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
-              aria-label="সনদপত্র উইন্ডো বন্ধ করুন"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            />
           </div>
         </div>
 

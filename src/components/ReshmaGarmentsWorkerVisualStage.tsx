@@ -139,7 +139,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
                   <button type="button"
                     onClick={handleStitchFabric}
                     disabled={isSewing}
-                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-rose-600 hover:from-indigo-500 hover:to-rose-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#C0362C] hover:bg-[#A1271F] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                   >
                     <Scissors className="w-4 h-4" />
                     <span>{isSewing ? "সেলাই হচ্ছে..." : "কাপড় সেলাই করুন (Stitch)"}</span>
@@ -330,7 +330,7 @@ export const ReshmaGarmentsWorkerVisualStage: React.FC<ReshmaGarmentsWorkerVisua
                 playChime("fanfare");
                 handleSpeak("Reshma sends money to her parents in the village and supports her younger brother Babul's education in school. Reshma is proud to earn her own living with dignity.");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#C0362C] hover:bg-[#A1271F] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Heart className="w-4 h-4 text-rose-300" />
               <span>রেশমার আত্মমর্যাদা ও পরিবারের অনুপ্রেরণামূলক বার্তা শুনুন</span>

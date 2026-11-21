@@ -157,11 +157,11 @@ export default function GenericLessonVisualStage({
                 const isSelected = selectedVocabWord?.word === v.word;
                 return (
                   <button key={vIdx} type="button" onClick={() => handleVocabClick(v)}
-                    className={`text-left p-3 rounded-2xl border transition-all duration-150 flex flex-col justify-between ${
-                      isSelected
-                        ? "bg-emerald-600 text-white border-emerald-600 shadow-md scale-102"
-                        : "bg-white hover:bg-emerald-50/60 border-emerald-100 hover:border-emerald-300 shadow-2xs"
-                    }`}
+                    className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] text-left p-3 rounded-2xl border transition-all duration-150 flex flex-col justify-between ${
+ isSelected
+ ? "bg-emerald-600 text-white border-emerald-600 shadow-md"
+ : "bg-white hover:bg-emerald-50/60 border-emerald-100 hover:border-emerald-300 shadow-2xs"
+ }`}
                   >
                     <div className="flex items-center justify-between w-full">
                       <span className="text-xl p-1 bg-white/70 rounded-xl shadow-2xs">{v.icon || "📖"}</span>
@@ -280,7 +280,7 @@ export default function GenericLessonVisualStage({
             <button
               type="button"
               onClick={onOpenWorksheet}
-              className="w-full sm:w-auto px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-xs shadow-xs transition-all hover:scale-105 flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+              className="w-full sm:w-auto px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Printer className="w-3.5 h-3.5 text-slate-900" />
               <span>ওয়ার্কশিট খুলুন ও প্রিন্ট করুন</span>

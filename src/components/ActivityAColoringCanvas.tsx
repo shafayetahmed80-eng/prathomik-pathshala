@@ -154,9 +154,9 @@ export default function ActivityAColoringCanvas({ playChime }: ActivityAColoring
                   setActiveColor(c.hex);
                   if (playChime) playChime("click");
                 }}
-                className={`flex items-center justify-center gap-1.5 px-2.5 py-1.5 sm:py-1 rounded-xl text-xs font-bold transition-all duration-150 touch-manipulation active:scale-95 border min-h-[36px] min-w-[36px] sm:min-h-0 sm:min-w-0 ${
+                className={`flex items-center justify-center gap-1.5 px-2.5 py-1.5 sm:py-1 rounded-xl text-xs font-semibold transition-all duration-150 touch-manipulation active:translate-y-px border min-h-[36px] min-w-[36px] sm:min-h-0 sm:min-w-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                   isSelected
-                    ? "ring-2 ring-purple-500 scale-105 shadow-xs font-black border-purple-400 bg-purple-50 text-purple-900"
+                    ? "ring-2 ring-[#006A4E]/30 shadow-2xs font-bold border-[#006A4E] bg-[#EEF8F3] text-[#00563F]"
                     : "hover:bg-slate-50 border-slate-200/80 text-slate-700"
                 }`}
                 title={c.name}
@@ -177,10 +177,10 @@ export default function ActivityAColoringCanvas({ playChime }: ActivityAColoring
             type="button"
             onClick={handleAutoColorMagic}
             disabled={isAutoColoring}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs active:scale-95 ${
+            className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all shadow-2xs active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
               isAutoColoring
-                ? "bg-purple-300 text-white cursor-not-allowed animate-pulse"
-                : "bg-purple-600 hover:bg-purple-700 text-white hover:shadow-md"
+                ? "bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8] cursor-not-allowed opacity-80"
+                : "bg-[#006A4E] hover:bg-[#005C44] text-white"
             }`}
             title="একটি ক্লিকে স্বয়ংক্রিয়ভাবে পুরো দৃশ্যপটে রং করার মোশন দেখো"
           >
@@ -191,7 +191,7 @@ export default function ActivityAColoringCanvas({ playChime }: ActivityAColoring
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 shadow-2xs transition-all active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 shadow-2xs transition-all active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             title="ছবিটি আবার সাদাকালো রেখাচিত্রে ফিরিয়ে নাও"
           >
             <RotateCcw className="w-3.5 h-3.5" />

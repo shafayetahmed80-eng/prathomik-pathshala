@@ -155,13 +155,13 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                   playChime("click");
                   handleSpeak("Top of the Food Pyramid: Fat and oil make food delicious, but our body does not need very much of them. Eat very little!");
                 }}
-                className={`w-28 py-2 rounded-xl text-center border transition-all ${
+                className={`w-28 py-2 rounded-xl text-center border transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB020] ${
                   selectedTier === 1 
-                    ? "bg-gradient-to-r from-amber-600 to-red-600 border-amber-300 shadow-md ring-2 ring-amber-300" 
+                    ? "bg-[#C0362C] text-white border-[#F4C7C3] shadow-sm ring-2 ring-[#F4C7C3]" 
                     : "bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-800"
                 }`}
               >
-                <span className="text-xs font-black block">🧈 Fat & Oil</span>
+                <span className="text-xs font-bold block">🧈 Fat & Oil</span>
                 <span className="text-[9px] text-amber-200">Eat Least</span>
               </button>
 
@@ -172,14 +172,14 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                   playChime("click");
                   handleSpeak("Third level: Fish, meat, dairy products, beans and lentils. Meat and fish have protein. Dairy products like milk and egg help our teeth and bones!");
                 }}
-                className={`w-44 py-2.5 rounded-xl text-center border transition-all ${
+                className={`w-44 py-2.5 rounded-xl text-center border transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB020] ${
                   selectedTier === 2 
-                    ? "bg-gradient-to-r from-purple-600 to-indigo-700 border-purple-300 shadow-md ring-2 ring-purple-300" 
+                    ? "bg-[#4338CA] text-white border-indigo-300 shadow-sm ring-2 ring-indigo-300" 
                     : "bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-800"
                 }`}
               >
-                <span className="text-xs font-black block">🐟 Meat, Fish, Dairy, Beans</span>
-                <span className="text-[9px] text-purple-200">Protein & Calcium</span>
+                <span className="text-xs font-bold block">🐟 Meat, Fish, Dairy, Beans</span>
+                <span className="text-[9px] text-indigo-100">Protein & Calcium</span>
               </button>
 
               {/* Tier 3 */}
@@ -189,14 +189,14 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                   playChime("click");
                   handleSpeak("Second level: Fruit and vegetables. They are very important. They have vitamins that help our eyes and our health!");
                 }}
-                className={`w-64 py-2.5 rounded-xl text-center border transition-all ${
+                className={`w-64 py-2.5 rounded-xl text-center border transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB020] ${
                   selectedTier === 3 
-                    ? "bg-gradient-to-r from-emerald-600 to-teal-700 border-emerald-300 shadow-md ring-2 ring-emerald-300" 
+                    ? "bg-[#0A8257] text-white border-[#A7DFC5] shadow-sm ring-2 ring-[#A7DFC5]" 
                     : "bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-800"
                 }`}
               >
-                <span className="text-xs font-black block">🥕 Fruits & Vegetables</span>
-                <span className="text-[9px] text-emerald-200">Vitamins for Health & Eyes</span>
+                <span className="text-xs font-bold block">🥕 Fruits & Vegetables</span>
+                <span className="text-[9px] text-emerald-100">Vitamins for Health & Eyes</span>
               </button>
 
               {/* Tier 4 (Bottom Base) */}
@@ -206,14 +206,14 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                   playChime("click");
                   handleSpeak("Bottom level: Foods made from grain like rice, ruti and bread. Grains give us energy!");
                 }}
-                className={`w-80 py-3 rounded-xl text-center border transition-all ${
+                className={`w-80 py-3 rounded-xl text-center border transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB020] ${
                   selectedTier === 4 
-                    ? "bg-gradient-to-r from-amber-500 to-yellow-600 border-yellow-300 shadow-md ring-2 ring-yellow-300 text-slate-900" 
+                    ? "bg-[#FFB020] text-[#3A2300] border-[#FFE4A3] shadow-sm ring-2 ring-[#FFE4A3]" 
                     : "bg-slate-800/80 border-slate-700 text-slate-300 hover:bg-slate-800"
                 }`}
               >
-                <span className="text-xs font-black block">🍚 Grains: Rice, Ruti, Bread</span>
-                <span className={`text-[10px] font-bold ${selectedTier === 4 ? "text-slate-900" : "text-amber-200"}`}>
+                <span className="text-xs font-bold block">🍚 Grains: Rice, Ruti, Bread</span>
+                <span className={`text-[10px] font-bold ${selectedTier === 4 ? "text-[#3A2300]" : "text-amber-200"}`}>
                   Carbohydrates • Gives Us Energy (Eat Most)
                 </span>
               </button>
@@ -325,7 +325,7 @@ export const FoodPyramidVisualStage: React.FC<FoodPyramidVisualStageProps> = ({
                 playChime("fanfare");
                 handleSpeak("A healthy balanced diet contains grains for energy, vegetables and fruits for vitamins, and fish or meat for protein. Eat healthy to grow strong!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md"
+              className="w-full py-2.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>সুষম খাবারের অঙ্গীকার (Balanced Diet Pledge)</span>

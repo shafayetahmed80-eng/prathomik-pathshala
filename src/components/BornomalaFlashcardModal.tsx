@@ -6,6 +6,7 @@ import { BornomalaItem } from "@/data/bornomalaData";
 import { EnglishAlphabetItem } from "@/data/englishAlphabetData";
 import { safeSpeak, stopSpeech, unlockMobileAudio } from "@/utils/mobileSpeech";
 import { playPopSound } from "@/utils/bornomalaAudio";
+import { Button, IconButton } from "@/components/ui";
 
 interface Props {
   items: (BornomalaItem | EnglishAlphabetItem)[];
@@ -172,21 +173,20 @@ export default function BornomalaFlashcardModal({
         aria-labelledby="flashcard-title"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-pink-50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-[#F8FAFC]">
           <div className="flex items-center gap-2">
             <span className="text-xl">🎴</span>
-            <h3 id="flashcard-title" className="text-sm sm:text-base font-black text-slate-900">
+            <h3 id="flashcard-title" className="text-sm sm:text-base font-bold text-slate-900">
               ক্লাসরুম ফ্ল্যাশ কার্ড মোড ({safeIndex + 1}/{items.length})
             </h3>
           </div>
-          <button
-            type="button"
+          <IconButton
+            icon={<X className="w-5 h-5" />}
+            ariaLabel="ফ্ল্যাশ কার্ড বন্ধ করুন"
+            variant="ghost"
+            size="sm"
             onClick={handleClose}
-            aria-label="ফ্ল্যাশ কার্ড বন্ধ করুন"
-            className="p-2 min-w-[40px] min-h-[40px] rounded-xl text-slate-500 hover:bg-slate-200 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          />
         </div>
 
         {/* Big Interactive Card Body */}
@@ -235,73 +235,60 @@ export default function BornomalaFlashcardModal({
 
           {/* Audio Button */}
           <div>
-            <button
-              type="button"
+            <Button
+              variant="play-green"
+              leftIcon={<Volume2 className="w-5 h-5" />}
               onClick={() => {
                 unlockMobileAudio({ primeSilent: true });
                 handleSpeakCurrent(currentItem);
               }}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm shadow-md transition-all hover:scale-105"
             >
-              <Volume2 className="w-5 h-5" />
-              <span>উচ্চারণ ও ছড়া শোনো</span>
-            </button>
+              উচ্চারণ ও ছড়া শোনো
+            </Button>
           </div>
         </div>
 
         {/* Footer Navigation Bar */}
         <div className="flex flex-wrap items-center justify-between gap-2 px-6 py-4 border-t border-slate-200 bg-slate-50">
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="md"
+            leftIcon={<ChevronLeft className="w-4 h-4" />}
             onClick={handlePrev}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 active:scale-95"
             title="আগের বর্ণ (কিবোর্ড: ⬅️)"
           >
-            <ChevronLeft className="w-4 h-4" />
-            <span>আগের বর্ণ</span>
-          </button>
+            আগের বর্ণ
+          </Button>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
+            <Button
+              variant={isPlaying ? "play-marigold" : "ink"}
+              size="md"
+              leftIcon={isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               onClick={() => {
                 playPopSound();
                 unlockMobileAudio({ primeSilent: true });
                 setIsPlaying(!isPlaying);
               }}
               aria-pressed={isPlaying}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-xl text-xs sm:text-sm font-bold shadow-sm transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 active:scale-95 ${
-                isPlaying
-                  ? "bg-amber-500 text-white animate-pulse"
-                  : "bg-slate-800 hover:bg-slate-900 text-white"
-              }`}
+              className={isPlaying ? "h-11 px-5 text-sm rounded-[12px]" : undefined}
             >
-              {isPlaying ? (
-                <>
-                  <Pause className="w-4 h-4" />
-                  <span>বিরতি দাও</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-4 h-4" />
-                  <span>অটোপ্লে (স্মার্টবোর্ড)</span>
-                </>
-              )}
-            </button>
+              {isPlaying ? "বিরতি দাও" : "অটোপ্লে (স্মার্টবোর্ড)"}
+            </Button>
             <span className="text-[11px] font-medium text-slate-400 hidden md:inline-block">
               কিবোর্ড: ⬅️ ➡️ • Space উচ্চারণ
             </span>
           </div>
 
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="md"
+            rightIcon={<ChevronRight className="w-4 h-4 pp-arrow" />}
             onClick={handleNext}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 min-h-[44px] rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold shadow-xs transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 active:scale-95"
             title="পরের বর্ণ (কিবোর্ড: ➡️)"
           >
-            <span>পরের বর্ণ</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
+            পরের বর্ণ
+          </Button>
         </div>
       </div>
     </div>

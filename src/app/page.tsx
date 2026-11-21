@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { 
-  BookOpen, 
-  GraduationCap, 
-  Sparkles, 
-  ChevronRight, 
+import {
+  BookOpen,
+  GraduationCap,
+  Sparkles,
   ExternalLink,
   Search,
   Smile,
@@ -15,7 +14,7 @@ import {
   Volume2,
   Presentation,
   Clock,
-  Award
+  Award,
 } from "lucide-react";
 import { CLASSES_DATA, ClassGrade } from "@/data/curriculum";
 import BookReaderModal from "@/components/BookReaderModal";
@@ -27,10 +26,10 @@ import MultimediaSlideDeck from "@/components/MultimediaSlideDeck";
 import StudentCertificateStudio from "@/components/StudentCertificateStudio";
 import GlobalNCTBSearch from "@/components/GlobalNCTBSearch";
 import AudioRhymesCorner from "@/components/AudioRhymesCorner";
-import BrandHomeLink from "@/components/BrandHomeLink";
 import InstallAppButton from "@/components/InstallAppButton";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
+import { Button, SegmentedControl, getButtonClasses } from "@/components/ui";
 
 type UserRole = "student" | "teacher";
 type StudentTab = "books" | "bornomala" | "quiz" | "rhymes" | "search";
@@ -81,75 +80,34 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 via-white to-amber-50/40 text-slate-900 antialiased selection:bg-emerald-200">
       {/* 🌟 Universal Responsive Site Header with Mobile Navigation Drawer */}
-      <SiteHeader
-        showBackLink={false}
-        rightActions={
-          <div
-            role="radiogroup"
-            aria-label="ব্যবহারকারীর ভূমিকা নির্বাচন"
-            className="hidden xs:flex items-center p-0.5 sm:p-1 bg-slate-100 rounded-xl sm:rounded-2xl border border-slate-200/80"
-          >
-            <button
-              type="button"
-              onClick={() => setRole("student")}
-              aria-checked={role === "student"}
-              role="radio"
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
-                role === "student"
-                  ? "bg-white text-emerald-700 shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <span>🎈 শিক্ষার্থী</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole("teacher")}
-              aria-checked={role === "teacher"}
-              role="radio"
-              className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-bold transition-all touch-manipulation min-h-[36px] sm:min-h-0 active:scale-95 ${
-                role === "teacher"
-                  ? "bg-purple-600 text-white shadow-xs"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <GraduationCap className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>শিক্ষক</span>
-            </button>
-          </div>
-        }
-      />
+      <SiteHeader showBackLink={false} />
 
       {/* 🚀 Semantic Main Landmark */}
       <main id="main-content" className="flex-1 w-full flex flex-col items-center">
         {/* 🌟 Compact Inspiring Hero Section */}
-        <section 
+        <section
           aria-labelledby="hero-heading"
           className="relative overflow-hidden pt-6 sm:pt-10 pb-6 sm:pb-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full text-center"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl sm:rounded-full bg-emerald-100/90 border border-emerald-200 text-emerald-800 text-[11px] sm:text-xs font-bold mb-4 max-w-xl mx-auto leading-normal">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600 animate-pulse shrink-0" aria-hidden="true" />
-            <span>জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) ২০২৬ ডিজিটাল কারিকুলাম</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF8F3] border border-[#CBEADB] text-[#00563F] text-[11px] sm:text-xs font-semibold mb-4 max-w-xl mx-auto leading-normal">
+            <Sparkles className="w-3.5 h-3.5 text-[#006A4E] shrink-0" aria-hidden="true" />
+            <span className="pt-[1px]">জাতীয় শিক্ষাক্রম ও পাঠ্যপুস্তক বোর্ড (NCTB) ২০২৬ ডিজিটাল কারিকুলাম</span>
           </div>
 
-          <h1 
+          <h1
             id="hero-heading"
-            className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-snug sm:leading-tight max-w-4xl mx-auto"
+            className="text-2xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-snug sm:leading-tight max-w-4xl mx-auto tracking-tight"
           >
             {role === "student" ? (
               <>
                 প্রাথমিকের শিশুদের জন্য{" "}
-                <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-sky-600 bg-clip-text text-transparent">
-                  আনন্দময় ও স্মার্ট
-                </span>{" "}
+                <span className="text-[#006A4E]">আনন্দময় ও স্মার্ট</span>{" "}
                 শেখার ঠিকানা
               </>
             ) : (
               <>
                 প্রাথমিক শিক্ষকদের জন্য{" "}
-                <span className="bg-gradient-to-r from-purple-600 via-indigo-600 to-sky-600 bg-clip-text text-transparent">
-                  আধুনিক এআই টুলস ও ক্লাসরুম
-                </span>{" "}
+                <span className="text-[#006A4E]">আধুনিক এআই টুলস ও ক্লাসরুম</span>{" "}
                 সহায়িকা
               </>
             )}
@@ -174,6 +132,21 @@ export default function HomePage() {
             </span>
             <InstallAppButton variant="hero" />
           </div>
+
+          {/* 🎛️ Primary Role Switcher (Student / Teacher Soft-Solid Segmented Control) */}
+          <div className="mt-5 sm:mt-6 flex justify-center">
+            <SegmentedControl<UserRole>
+              ariaLabel="ব্যবহারকারীর ভূমিকা নির্বাচন"
+              roleMode="radiogroup"
+              size="md"
+              value={role}
+              onChange={setRole}
+              options={[
+                { value: "student", label: "শিক্ষার্থী মোড", shortLabel: "শিক্ষার্থী", icon: <span className="text-base leading-none">🎈</span> },
+                { value: "teacher", label: "শিক্ষক স্টুডিও", shortLabel: "শিক্ষক", icon: <GraduationCap className="w-4 h-4" /> },
+              ]}
+            />
+          </div>
         </section>
 
         {/* 🎛️ Master Dynamic Studio Workspace Section */}
@@ -183,20 +156,22 @@ export default function HomePage() {
           className="max-w-7xl mx-auto w-full px-3 sm:px-6 lg:px-8 pb-12 space-y-4"
         >
           {/* Studio Header Bar & Tab Switcher */}
-          <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-slate-200 shadow-md flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-4 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
             {/* Left: Mode Title & Mobile Dedicated Button */}
             <div className="flex items-center justify-between w-full md:w-auto">
               <div className="flex items-center gap-2.5">
-                <span 
-                  aria-hidden="true" 
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 ${
-                    role === "student" ? "bg-emerald-100 text-emerald-800" : "bg-purple-100 text-purple-800"
+                <span
+                  aria-hidden="true"
+                  className={`w-9 h-9 rounded-[12px] flex items-center justify-center text-lg shrink-0 ${
+                    role === "student"
+                      ? "bg-[#EEF8F3] text-[#00563F] border border-[#CBEADB]"
+                      : "bg-[#0F172A] text-white"
                   }`}
                 >
                   {role === "student" ? "🎈" : "👩‍🏫"}
                 </span>
                 <div>
-                  <h2 id="studio-title" className="text-sm sm:text-base font-black text-slate-900 leading-tight">
+                  <h2 id="studio-title" className="text-sm sm:text-base font-bold text-slate-900 leading-tight">
                     {role === "student" ? "শিক্ষার্থী লার্নিং স্টুডিও" : "শিক্ষক প্রফেশনাল স্টুডিও"}
                   </h2>
                   <p className="text-[11px] text-slate-500">যে টুলটি প্রয়োজন ট্যাবে নির্বাচন করুন</p>
@@ -207,179 +182,67 @@ export default function HomePage() {
               <div className="md:hidden shrink-0">
                 <Link
                   href={getDedicatedUrl()}
-                  className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
-                    role === "student"
-                      ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                      : "bg-purple-50 text-purple-800 border border-purple-200"
-                  }`}
+                  className={getButtonClasses({
+                    variant: role === "student" ? "tonal" : "secondary",
+                    size: "sm",
+                    className: "px-3",
+                  })}
                   title="এই টুলটি আলাদা ফুলস্ক্রিন পেজে খুলুন"
                 >
                   <span>ফুল পেজ</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
                 </Link>
               </div>
             </div>
 
-            {/* Middle: Segmented Tabs */}
-            <nav 
-              role="tablist" 
-              aria-label="স্টুডিও টুলস তালিকা"
-              className="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto p-1.5 no-scrollbar bg-slate-100/90 rounded-2xl"
-            >
+            {/* Middle: Soft-Solid Sliding Segmented Tabs */}
+            <div className="w-full md:w-auto flex justify-center overflow-hidden">
               {role === "student" ? (
-                <>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={studentTab === "books"}
-                    onClick={() => setStudentTab("books")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      studentTab === "books" ? "bg-white text-emerald-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <BookOpen className="w-3.5 h-3.5" />
-                    <span>পাঠ্যবই</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={studentTab === "bornomala"}
-                    onClick={() => setStudentTab("bornomala")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      studentTab === "bornomala" ? "bg-white text-pink-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Pencil className="w-3.5 h-3.5" />
-                    <span>বর্ণমালা ল্যাব</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={studentTab === "quiz"}
-                    onClick={() => setStudentTab("quiz")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      studentTab === "quiz" ? "bg-white text-amber-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Smile className="w-3.5 h-3.5" />
-                    <span>আনন্দ কুইজ</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={studentTab === "rhymes"}
-                    onClick={() => setStudentTab("rhymes")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      studentTab === "rhymes" ? "bg-white text-rose-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Volume2 className="w-3.5 h-3.5" />
-                    <span>ছড়া ও গল্প</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={studentTab === "search"}
-                    onClick={() => setStudentTab("search")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      studentTab === "search" ? "bg-white text-teal-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Search className="w-3.5 h-3.5" />
-                    <span>সার্চ</span>
-                  </button>
-                </>
+                <SegmentedControl<StudentTab>
+                  ariaLabel="শিক্ষার্থী স্টুডিও টুলস তালিকা"
+                  roleMode="tablist"
+                  size="sm"
+                  value={studentTab}
+                  onChange={setStudentTab}
+                  options={[
+                    { value: "books", label: "পাঠ্যবই", icon: <BookOpen className="w-3.5 h-3.5" /> },
+                    { value: "bornomala", label: "বর্ণমালা ল্যাব", icon: <Pencil className="w-3.5 h-3.5" /> },
+                    { value: "quiz", label: "আনন্দ কুইজ", icon: <Smile className="w-3.5 h-3.5" /> },
+                    { value: "rhymes", label: "ছড়া ও গল্প", icon: <Volume2 className="w-3.5 h-3.5" /> },
+                    { value: "search", label: "সার্চ", icon: <Search className="w-3.5 h-3.5" /> },
+                  ]}
+                />
               ) : (
-                <>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={teacherTab === "exams"}
-                    onClick={() => setTeacherTab("exams")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      teacherTab === "exams" ? "bg-white text-sky-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>প্রশ্নপত্র মেকার</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={teacherTab === "slides"}
-                    onClick={() => setTeacherTab("slides")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      teacherTab === "slides" ? "bg-white text-purple-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Presentation className="w-3.5 h-3.5" />
-                    <span>স্লাইড হাব</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={teacherTab === "planner"}
-                    onClick={() => setTeacherTab("planner")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      teacherTab === "planner" ? "bg-white text-indigo-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>লেসন প্ল্যানার</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={teacherTab === "certificates"}
-                    onClick={() => setTeacherTab("certificates")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      teacherTab === "certificates" ? "bg-white text-amber-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Award className="w-3.5 h-3.5" />
-                    <span>প্রত্যয়নপত্র মেকার</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={teacherTab === "guides"}
-                    onClick={() => setTeacherTab("guides")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      teacherTab === "guides" ? "bg-white text-emerald-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <BookOpen className="w-3.5 h-3.5" />
-                    <span>শিক্ষক সহায়িকা</span>
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={teacherTab === "search"}
-                    onClick={() => setTeacherTab("search")}
-                    className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all touch-manipulation min-h-[38px] active:scale-95 ${
-                      teacherTab === "search" ? "bg-white text-teal-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Search className="w-3.5 h-3.5" />
-                    <span>সার্চ</span>
-                  </button>
-                </>
+                <SegmentedControl<TeacherTab>
+                  ariaLabel="শিক্ষক স্টুডিও টুলস তালিকা"
+                  roleMode="tablist"
+                  size="sm"
+                  value={teacherTab}
+                  onChange={setTeacherTab}
+                  options={[
+                    { value: "exams", label: "প্রশ্নপত্র মেকার", icon: <FileText className="w-3.5 h-3.5" /> },
+                    { value: "slides", label: "স্লাইড হাব", icon: <Presentation className="w-3.5 h-3.5" /> },
+                    { value: "planner", label: "লেসন প্ল্যানার", icon: <Clock className="w-3.5 h-3.5" /> },
+                    { value: "certificates", label: "প্রত্যয়নপত্র মেকার", icon: <Award className="w-3.5 h-3.5" /> },
+                    { value: "guides", label: "শিক্ষক সহায়িকা", icon: <BookOpen className="w-3.5 h-3.5" /> },
+                    { value: "search", label: "সার্চ", icon: <Search className="w-3.5 h-3.5" /> },
+                  ]}
+                />
               )}
-            </nav>
+            </div>
 
             {/* Right: Open in Dedicated Route (Desktop) */}
             <div className="hidden md:block shrink-0">
               <Link
                 href={getDedicatedUrl()}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs ${
-                  role === "student"
-                    ? "bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200"
-                    : "bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200"
-                }`}
+                className={getButtonClasses({
+                  variant: role === "student" ? "tonal" : "secondary",
+                  size: "sm",
+                })}
                 title="এই টুলটি আলাদা ফুলস্ক্রিন পেজে খুলুন"
               >
                 <span>ফুল পেজে খুলুন</span>
-                <ExternalLink className="w-3.5 h-3.5" />
+                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
               </Link>
             </div>
           </div>
@@ -400,21 +263,19 @@ export default function HomePage() {
                       <p className="text-xs text-slate-500">তোমার শ্রেণি বাছাই করে যেকোনো বোর্ড বই সরাসরি ব্রাউজারে পড়ো</p>
                     </div>
 
-                    {/* Grade Pills */}
-                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    {/* Grade Selector Buttons */}
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
                       {CLASSES_DATA.map((cls) => (
-                        <button
+                        <Button
                           key={cls.id}
-                          type="button"
+                          variant={selectedClassId === cls.id ? "primary" : "secondary"}
+                          size="sm"
                           onClick={() => setSelectedClassId(cls.id)}
-                          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
-                            selectedClassId === cls.id
-                              ? "bg-emerald-600 text-white shadow-xs"
-                              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                          }`}
+                          aria-pressed={selectedClassId === cls.id}
+                          className="shrink-0"
                         >
-                          {cls.banglaName}
-                        </button>
+                          <span>{cls.banglaName}</span>
+                        </Button>
                       ))}
                     </div>
                   </div>
@@ -434,12 +295,12 @@ export default function HomePage() {
                           icon: book.icon
                         })}
                         aria-label={`${book.name} বইটি পড়ুন`}
-                        className="group p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200/90 hover:border-emerald-500 bg-white hover:bg-emerald-50/20 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[135px] sm:min-h-[145px] cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                        className="group p-3.5 sm:p-4 rounded-[16px] border border-[#D5DCE4] hover:border-[#006A4E] bg-white hover:bg-[#EEF8F3]/40 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[135px] sm:min-h-[145px] cursor-pointer touch-manipulation active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                       >
-                        <span className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-2xl sm:text-3xl shadow-inner group-hover:scale-108 transition-transform">
+                        <span className="w-13 h-13 sm:w-14 sm:h-14 rounded-[14px] bg-[#EEF8F3] border border-[#CBEADB] flex items-center justify-center text-2xl sm:text-3xl transition-transform duration-200 group-hover:-translate-y-0.5">
                           {book.icon}
                         </span>
-                        <span className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-emerald-700 transition-colors line-clamp-2 leading-snug mt-2">
+                        <span className="font-semibold text-slate-900 text-xs sm:text-sm group-hover:text-[#00563F] transition-colors line-clamp-2 leading-snug mt-2">
                           {book.name}
                         </span>
                       </button>
@@ -475,21 +336,19 @@ export default function HomePage() {
                       <p className="text-xs text-slate-500">এনসিটিবি কর্তৃক অনুমোদিত অফিশিয়াল শিখন ও মূল্যায়ন গাইড</p>
                     </div>
 
-                    {/* Grade Pills */}
-                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    {/* Grade Selector Buttons (Teacher Ink) */}
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
                       {CLASSES_DATA.map((cls) => (
-                        <button
+                        <Button
                           key={cls.id}
-                          type="button"
+                          variant={selectedClassId === cls.id ? "ink" : "secondary"}
+                          size="sm"
                           onClick={() => setSelectedClassId(cls.id)}
-                          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
-                            selectedClassId === cls.id
-                              ? "bg-purple-600 text-white shadow-xs"
-                              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-                          }`}
+                          aria-pressed={selectedClassId === cls.id}
+                          className="shrink-0"
                         >
-                          {cls.banglaName}
-                        </button>
+                          <span>{cls.banglaName}</span>
+                        </Button>
                       ))}
                     </div>
                   </div>
@@ -509,12 +368,12 @@ export default function HomePage() {
                           icon: tg.icon
                         })}
                         aria-label={`${tg.name} শিক্ষক সহায়িকা খুলুন`}
-                        className="group p-3.5 sm:p-4 rounded-2xl border-2 border-slate-200/90 hover:border-purple-500 bg-white hover:bg-purple-50/20 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[135px] sm:min-h-[145px] cursor-pointer touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
+                        className="group p-3.5 sm:p-4 rounded-[16px] border border-[#D5DCE4] hover:border-[#0F172A] bg-white hover:bg-slate-50/70 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center justify-between min-h-[135px] sm:min-h-[145px] cursor-pointer touch-manipulation active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                       >
-                        <span className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-purple-50 border border-purple-100 flex items-center justify-center text-2xl sm:text-3xl shadow-inner group-hover:scale-108 transition-transform">
+                        <span className="w-13 h-13 sm:w-14 sm:h-14 rounded-[14px] bg-slate-100 border border-slate-200/80 flex items-center justify-center text-2xl sm:text-3xl transition-transform duration-200 group-hover:-translate-y-0.5">
                           {tg.icon}
                         </span>
-                        <span className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-purple-700 transition-colors line-clamp-2 leading-snug mt-2">
+                        <span className="font-semibold text-slate-900 text-xs sm:text-sm group-hover:text-[#00563F] transition-colors line-clamp-2 leading-snug mt-2">
                           {tg.name}
                         </span>
                       </button>
@@ -529,129 +388,55 @@ export default function HomePage() {
         </section>
 
         {/* ⚡ Quick Launch Showcase Grid (এক নজরে সকল টুলস ও ফিচার) */}
-        <section 
+        <section
           aria-labelledby="quick-launch-heading"
           className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 border-t border-slate-200/80"
         >
           <header className="text-center mb-8 space-y-1">
-            <h2 id="quick-launch-heading" className="text-2xl sm:text-3xl font-black text-slate-900">
+            <h2 id="quick-launch-heading" className="text-2xl sm:text-3xl font-bold text-slate-900">
               প্ল্যাটফর্মের সকল ফিচার এক নজরে
             </h2>
             <p className="text-xs sm:text-sm text-slate-500">যেকোনো টুলে সরাসরি প্রবেশ করতে নিচের কার্ডগুলোতে ক্লিক করুন</p>
           </header>
 
           <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2.5 sm:gap-3.5">
-            {/* 1: Books */}
-            <Link 
-              href="/books"
-              aria-label="পাঠ্যবই লাইব্রেরি"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-emerald-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-50 border border-emerald-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                📚
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                পাঠ্যবই
-              </span>
-            </Link>
-
-            {/* 2: Bornomala */}
-            <Link 
-              href="/bornomala"
-              aria-label="বর্ণমালা ল্যাব"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-pink-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-pink-50 border border-pink-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                🎨
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-pink-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                বর্ণমালা ল্যাব
-              </span>
-            </Link>
-
-            {/* 3: Slides Hub */}
-            <Link 
-              href="/slides"
-              aria-label="স্লাইড হাব"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-purple-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-purple-50 border border-purple-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                📽️
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-purple-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                স্লাইড হাব
-              </span>
-            </Link>
-
-            {/* 4: Exam Maker */}
-            <Link 
-              href="/exams"
-              aria-label="প্রশ্নপত্র মেকার"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-sky-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-sky-50 border border-sky-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                📝
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-sky-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                প্রশ্নপত্র
-              </span>
-            </Link>
-
-            {/* 5: Quiz */}
-            <Link 
-              href="/quiz"
-              aria-label="আনন্দ কুইজ"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-amber-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-50 border border-amber-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                🎮
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-amber-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                আনন্দ কুইজ
-              </span>
-            </Link>
-
-            {/* 6: Rhymes */}
-            <Link 
-              href="/rhymes"
-              aria-label="ছড়া ও গল্প"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-rose-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-rose-50 border border-rose-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                🌙
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-rose-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                ছড়া ও গল্প
-              </span>
-            </Link>
-
-            {/* 7: Lesson Planner */}
-            <Link 
-              href="/lesson-planner"
-              aria-label="লেসন প্ল্যানার"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-indigo-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-50 border border-indigo-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                👩‍🏫
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                লেসন প্ল্যানার
-              </span>
-            </Link>
-
-            {/* 8: Certificate Studio */}
-            <Link 
-              href="/certificates"
-              aria-label="প্রত্যয়নপত্র স্টুডিও"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-amber-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 cursor-pointer"
-            >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-amber-50 border border-amber-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
-                📜
-              </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-amber-700 transition-colors line-clamp-1 leading-tight mt-1.5">
-                প্রত্যয়নপত্র
-              </span>
-            </Link>
+            {[
+              { href: "/books", label: "পাঠ্যবই", aria: "পাঠ্যবই লাইব্রেরি", icon: "📚", zone: "student" as const },
+              { href: "/bornomala", label: "বর্ণমালা ল্যাব", aria: "বর্ণমালা ল্যাব", icon: "🎨", zone: "student" as const },
+              { href: "/slides", label: "স্লাইড হাব", aria: "স্লাইড হাব", icon: "📽️", zone: "teacher" as const },
+              { href: "/exams", label: "প্রশ্নপত্র", aria: "প্রশ্নপত্র মেকার", icon: "📝", zone: "teacher" as const },
+              { href: "/quiz", label: "আনন্দ কুইজ", aria: "আনন্দ কুইজ", icon: "🎮", zone: "student" as const },
+              { href: "/rhymes", label: "ছড়া ও গল্প", aria: "ছড়া ও গল্প", icon: "🌙", zone: "student" as const },
+              { href: "/lesson-planner", label: "লেসন প্ল্যানার", aria: "লেসন প্ল্যানার", icon: "👩‍🏫", zone: "teacher" as const },
+              { href: "/certificates", label: "প্রত্যয়নপত্র", aria: "প্রত্যয়নপত্র স্টুডিও", icon: "📜", zone: "teacher" as const },
+            ].map((tile) => {
+              const isStudent = tile.zone === "student";
+              return (
+                <Link
+                  key={tile.href}
+                  href={tile.href}
+                  aria-label={tile.aria}
+                  className={`group p-3 sm:p-4 rounded-[16px] bg-white border border-[#D5DCE4] hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-[0.98] touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] cursor-pointer ${
+                    isStudent
+                      ? "hover:border-[#006A4E] hover:bg-[#EEF8F3]/35"
+                      : "hover:border-[#0F172A] hover:bg-slate-50/70"
+                  }`}
+                >
+                  <span
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-[14px] flex items-center justify-center text-2xl sm:text-3xl shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 ${
+                      isStudent
+                        ? "bg-[#EEF8F3] border border-[#CBEADB]"
+                        : "bg-slate-100 border border-slate-200/80"
+                    }`}
+                  >
+                    {tile.icon}
+                  </span>
+                  <span className="font-semibold text-xs sm:text-sm text-slate-900 group-hover:text-[#00563F] transition-colors line-clamp-1 leading-tight mt-1.5">
+                    {tile.label}
+                  </span>
+                </Link>
+              );
+            })}
 
             {/* 9: Search */}
             <button
@@ -663,12 +448,12 @@ export default function HomePage() {
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
               aria-label="স্মার্ট কারিকুলাম সার্চ"
-              className="group p-3 sm:p-4 rounded-2xl bg-white border-2 border-slate-200/90 hover:border-teal-500 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-95 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 cursor-pointer"
+              className="group p-3 sm:p-4 rounded-[16px] bg-white border border-[#D5DCE4] hover:border-[#006A4E] hover:bg-[#EEF8F3]/35 hover:shadow-md transition-all flex flex-col items-center justify-between text-center min-h-[110px] sm:min-h-[125px] active:scale-[0.98] touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] cursor-pointer"
             >
-              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100/80 flex items-center justify-center text-2xl sm:text-3xl shrink-0 shadow-inner group-hover:scale-108 transition-transform">
+              <span className="w-12 h-12 sm:w-14 sm:h-14 rounded-[14px] bg-[#EEF8F3] border border-[#CBEADB] flex items-center justify-center text-2xl sm:text-3xl shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5">
                 🔍
               </span>
-              <span className="font-bold text-xs sm:text-sm text-slate-900 group-hover:text-teal-700 transition-colors line-clamp-1 leading-tight mt-1.5">
+              <span className="font-semibold text-xs sm:text-sm text-slate-900 group-hover:text-[#00563F] transition-colors line-clamp-1 leading-tight mt-1.5">
                 স্মার্ট সার্চ
               </span>
             </button>

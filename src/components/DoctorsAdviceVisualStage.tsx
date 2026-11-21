@@ -300,7 +300,7 @@ export const DoctorsAdviceVisualStage: React.FC<DoctorsAdviceVisualStageProps> =
                 playChime("fanfare");
                 handleSpeak("Doctor's Advice: Eat energy food, rest at home, drink plenty of water and juice, cover your sneeze with a tissue, wash your hands, and use separate plates and cups!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-500 hover:to-rose-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#C0362C] hover:bg-[#A1271F] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <HeartPulse className="w-4 h-4" />
               <span>ডাক্তারের ৫টি পরামর্শ একসাথে শুনুন (Listen to All 5 Advice)</span>

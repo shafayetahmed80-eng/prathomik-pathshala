@@ -164,7 +164,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                   {!basketFull ? (
                     <button type="button"
                       onClick={handlePluckLeaf}
-                      className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                     >
                       <Leaf className="w-4 h-4" />
                       <span>পাতা তুলুন (Pluck Leaf!)</span>
@@ -200,7 +200,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                 {/* Center: Interactive Tea Bush */}
                 <div className="flex flex-col items-center relative z-10">
                   <div className="relative">
-                    <button type="button" aria-label="চা পাতা তুলুন" className="text-6xl cursor-pointer hover:scale-105 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl" onClick={handlePluckLeaf}>
+                    <button type="button" aria-label="চা পাতা তুলুন" className="text-6xl cursor-pointer transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 rounded-2xl" onClick={handlePluckLeaf}>
                       🪴
                     </button>
                     {/* Plucked leaves counter badges */}
@@ -346,7 +346,7 @@ export const SreemangalTeaVisualStage: React.FC<SreemangalTeaVisualStageProps> =
                     playChime("fanfare");
                     handleSpeak("Seven-layer tea is a famous wonder of Sreemangal. Seven colorful tea layers stay perfectly separated in a single glass!");
                   }}
-                  className="mt-3 px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm"
+                  className="mt-3 px-3.5 py-1.5 rounded-xl bg-[#B45309] hover:bg-[#92400E] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>সাত রঙের চায়ের রহস্য শুনুন</span>

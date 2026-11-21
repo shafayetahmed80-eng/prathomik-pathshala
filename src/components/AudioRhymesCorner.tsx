@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { 
   Play, 
   RotateCcw, 
-  Volume2, 
   Square, 
   Sparkles, 
   Music, 
@@ -16,15 +15,14 @@ import {
   Zap, 
   Drama, 
   Radio, 
-  Trash2,
-  Filter,
-  Gauge
+  Trash2
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { RHYMES_STORIES_DATA, AudioRhymeStory } from "@/data/rhymesData";
 import { safeSpeak, stopSpeech, preloadSpeech } from "@/utils/mobileSpeech";
 import { bgmEngine, BgmMood } from "@/utils/audioBgm";
 import { studioAcoustics, AcousticPreset } from "@/utils/studioAcoustics";
+import { Button, IconButton, SegmentedControl, AudioButton } from "@/components/ui";
 
 // Detect best supported audio mime type for cross-platform MediaRecorder (iOS Safari / Android / PC)
 function getSupportedMimeType(): string {
@@ -901,12 +899,12 @@ export default function AudioRhymesCorner() {
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <div 
             aria-hidden="true" 
-            className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center text-white text-2xl shadow-md shadow-rose-500/20 shrink-0"
+            className="w-12 h-12 rounded-2xl bg-[#006A4E] flex items-center justify-center text-white text-2xl shadow-xs shrink-0"
           >
             🌙
           </div>
           <div className="min-w-0 flex-1">
-            <h2 id="audio-corner-heading" className="text-lg sm:text-2xl font-black text-slate-900 leading-snug break-words">
+            <h2 id="audio-corner-heading" className="text-lg sm:text-2xl font-bold text-slate-900 leading-snug break-words">
               গল্প ও ছড়ার অডিও কর্নার <span className="hidden sm:inline-block font-semibold text-slate-400 text-sm">(Interactive Poetry Studio)</span>
             </h2>
             <p className="text-xs text-slate-500 mt-0.5 truncate">
@@ -915,109 +913,51 @@ export default function AudioRhymesCorner() {
           </div>
         </div>
 
-        {/* 🎭 Feature: Poetry Mood Selector */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200 self-start sm:self-auto">
-          <span className="text-[11px] font-bold text-slate-500 pl-2 pr-1">মুড:</span>
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedMood("melody");
-              bgmEngine.setMood("melody");
+        {/* 🎭 Feature: Poetry Mood Selector (Soft-Solid 2.0 SegmentedControl) */}
+        <div className="self-start sm:self-auto">
+          <SegmentedControl
+            value={selectedMood}
+            onChange={(mood) => {
+              setSelectedMood(mood);
+              bgmEngine.setMood(mood);
             }}
-            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${
-              selectedMood === "melody"
-                ? "bg-rose-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-            title="মিষ্টি সুরের শান্ত আবৃত্তি"
-          >
-            <Smile className="w-3.5 h-3.5" />
-            <span>মিষ্টি সুর</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedMood("beat");
-              bgmEngine.setMood("beat");
-            }}
-            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${
-              selectedMood === "beat"
-                ? "bg-amber-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-            title="দ্রুত তালের ছড়া"
-          >
-            <Zap className="w-3.5 h-3.5" />
-            <span>দ্রুত তাল</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedMood("drama");
-              bgmEngine.setMood("drama");
-            }}
-            className={`px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1 ${
-              selectedMood === "drama"
-                ? "bg-purple-600 text-white shadow-xs"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-            title="নাটকীয় ভাবগম্ভীর আবৃত্তি"
-          >
-            <Drama className="w-3.5 h-3.5" />
-            <span>নাটকীয়</span>
-          </button>
+            ariaLabel="ছড়ার মুড নির্বাচন"
+            roleMode="radiogroup"
+            size="sm"
+            options={[
+              { value: "melody", label: "মিষ্টি সুর", icon: <Smile className="w-3.5 h-3.5" /> },
+              { value: "beat", label: "দ্রুত তাল", icon: <Zap className="w-3.5 h-3.5" /> },
+              { value: "drama", label: "নাটকীয়", icon: <Drama className="w-3.5 h-3.5" /> },
+            ]}
+          />
         </div>
       </div>
 
-      {/* 🏫 Grade Selection Tabs (প্রাক-প্রাথমিক থেকে ৫ম শ্রেণি) */}
+      {/* 🏫 Grade Selection Tabs & Category Filters (Soft-Solid 2.0 Segmented Controls) */}
       <div className="space-y-3">
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar touch-pan-x">
-          {GRADE_OPTIONS.map((grade) => {
-            const isSelected = selectedClassId === grade.id;
-            return (
-              <button
-                key={grade.id}
-                type="button"
-                onClick={() => handleClassFilter(grade.id)}
-                aria-pressed={isSelected}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs sm:text-sm font-bold shrink-0 transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-                  isSelected
-                    ? "bg-rose-600 text-white border-rose-600 shadow-md scale-102"
-                    : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
-                }`}
-              >
-                <span>{grade.icon}</span>
-                <span>{grade.label}</span>
-              </button>
-            );
-          })}
-        </div>
+        <SegmentedControl
+          value={selectedClassId}
+          onChange={handleClassFilter}
+          ariaLabel="শ্রেণি নির্বাচন"
+          roleMode="tablist"
+          size="md"
+          options={GRADE_OPTIONS.map((grade) => ({
+            value: grade.id,
+            label: `${grade.icon} ${grade.label}`,
+          }))}
+        />
 
-        {/* 🏷️ Category Filter Chips (বাংলা ছড়া, English, শিক্ষণীয় গল্প) */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
-          <span className="text-slate-400 font-bold flex items-center gap-1 shrink-0 pl-1">
-            <Filter className="w-3 h-3" /> ফিল্টার:
-          </span>
-          {CATEGORY_OPTIONS.map((cat) => {
-            const isSelected = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => handleCategoryFilter(cat.id)}
-                aria-pressed={isSelected}
-                className={`px-3 py-1.5 rounded-xl font-bold shrink-0 transition-all border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-                  isSelected
-                    ? "bg-amber-500 text-white border-amber-500 shadow-xs scale-102"
-                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:text-slate-900"
-                }`}
-              >
-                <span>{cat.icon} </span>
-                <span>{cat.label}</span>
-              </button>
-            );
-          })}
-        </div>
+        <SegmentedControl
+          value={selectedCategory}
+          onChange={handleCategoryFilter}
+          ariaLabel="ছড়া ও গল্প ক্যাটাগরি ফিল্টার"
+          roleMode="tablist"
+          size="sm"
+          options={CATEGORY_OPTIONS.map((cat) => ({
+            value: cat.id,
+            label: `${cat.icon} ${cat.label}`,
+          }))}
+        />
       </div>
 
       {/* 🎶 Filtered Rhymes / Stories Carousel Bar */}
@@ -1031,41 +971,41 @@ export default function AudioRhymesCorner() {
                 type="button"
                 onClick={() => handleSelectItem(item)}
                 aria-pressed={isSelected}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl border-2 text-xs sm:text-sm font-bold shrink-0 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-[14px] border-2 text-xs sm:text-sm font-semibold shrink-0 transition-all cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                   isSelected
-                    ? "border-rose-500 bg-rose-50/80 text-rose-950 shadow-md scale-102 ring-2 ring-rose-500/20"
-                    : "border-slate-200 bg-white hover:border-slate-300 text-slate-700"
+                    ? "border-[#006A4E] bg-[#EEF8F3] text-[#00563F] shadow-xs"
+                    : "border-[#D5DCE4] bg-white hover:border-[#006A4E]/50 hover:bg-[#F8FAFC] text-slate-800"
                 }`}
               >
                 <span aria-hidden="true" className="text-lg">{item.icon}</span>
                 <div className="text-left">
                   <span className="block leading-tight">{item.title}</span>
-                  <span className="text-[10px] text-slate-400 font-normal">{item.gradeName}</span>
+                  <span className="text-[10px] text-slate-500 font-normal">{item.gradeName}</span>
                 </div>
               </button>
             );
           })}
         </nav>
       ) : (
-        <div className="p-6 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 space-y-2">
+        <div className="p-6 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200 space-y-2.5">
           <p className="text-xs sm:text-sm text-slate-500 font-medium">
             নির্বাচিত শ্রেণি ও ক্যাটাগরিতে কোনো ছড়া বা গল্প পাওয়া যায়নি।
           </p>
-          <button
-            type="button"
+          <Button
+            variant="primary"
+            size="sm"
             onClick={() => {
               handleClassFilter("all");
               handleCategoryFilter("all");
             }}
-            className="px-3 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-bold shadow-xs hover:bg-rose-700 transition-colors"
           >
             সব ফিল্টার রিসেট করুন
-          </button>
+          </Button>
         </div>
       )}
 
       {/* 🎛️ Interactive Classroom Studio Control Ribbon */}
-      <div className="bg-slate-50/90 p-3 sm:p-4 rounded-2xl border border-slate-200 space-y-3 w-full max-w-full overflow-hidden">
+      <div className="bg-[#F8FAFC] p-3 sm:p-4 rounded-2xl border border-slate-200 space-y-3 w-full max-w-full overflow-hidden">
         {/* Row 1: Persona Dropdown & Playback Speed */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 w-full">
           <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -1082,7 +1022,7 @@ export default function AudioRhymesCorner() {
                   stopAudio();
                   updatePersona(e.target.value);
                 }}
-                className="w-full appearance-none bg-white text-slate-800 text-xs sm:text-sm font-bold pl-2.5 pr-7 py-2 rounded-xl border border-slate-300 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500 shadow-2xs cursor-pointer min-h-[38px] truncate"
+                className="w-full appearance-none bg-white text-slate-800 text-xs sm:text-sm font-semibold pl-2.5 pr-7 py-2 rounded-xl border border-[#D5DCE4] hover:border-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#006A4E] cursor-pointer min-h-[38px] truncate"
               >
                 {VOICE_PERSONAS.map((p) => (
                   <option key={p.id} value={p.id}>
@@ -1097,125 +1037,97 @@ export default function AudioRhymesCorner() {
               </div>
             </div>
 
-            {/* Persona Preview Button */}
-            <button
-              type="button"
+            {/* Persona Preview AudioButton */}
+            <AudioButton
+              isPlaying={previewingPersona !== null}
               onClick={() => handlePreviewPersona(selectedPersona)}
               disabled={previewingPersona !== null}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all border min-h-[36px] shrink-0 active:scale-95 touch-manipulation cursor-pointer ${
-                previewingPersona
-                  ? "bg-rose-100 border-rose-300 text-rose-800 animate-pulse"
-                  : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
-              }`}
+              size="sm"
+              ariaLabel="নির্বাচিত কণ্ঠের নমুনা শুনুন"
+              playingAriaLabel="নমুনা বাজছে"
               title="নির্বাচিত কণ্ঠের একটি নমুনা শুনুন"
-            >
-              <Volume2 className={`w-3.5 h-3.5 ${previewingPersona ? "text-rose-600 animate-bounce" : "text-slate-500"}`} />
-              <span>{previewingPersona ? "বাজছে..." : "নমুনা 🔊"}</span>
-            </button>
+              className="shrink-0"
+            />
           </div>
 
           {/* ⚡ Playback Speed Selector (০.৭৫x, ১x, ১.২৫x) */}
-          <div className="flex items-center gap-1 bg-white p-0.5 rounded-xl border border-slate-200 shadow-2xs self-start sm:self-auto shrink-0">
-            <span className="text-[11px] font-bold text-slate-500 pl-2 pr-1 flex items-center gap-1">
-              <Gauge className="w-3 h-3 text-slate-400" /> গতি:
-            </span>
-            {SPEED_OPTIONS.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => updatePlaybackSpeed(opt.value)}
-                aria-pressed={playbackSpeed === opt.value}
-                className={`px-2.5 py-1.5 min-h-[32px] min-w-[32px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 cursor-pointer ${
-                  playbackSpeed === opt.value
-                    ? "bg-rose-600 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                }`}
-                title={opt.title}
-              >
-                {opt.label}
-              </button>
-            ))}
+          <div className="self-start sm:self-auto shrink-0">
+            <SegmentedControl
+              value={String(playbackSpeed) as "0.75" | "1" | "1.25"}
+              onChange={(val) => updatePlaybackSpeed(Number(val))}
+              ariaLabel="আবৃত্তির গতি"
+              roleMode="radiogroup"
+              size="sm"
+              options={SPEED_OPTIONS.map((opt) => ({
+                value: String(opt.value) as "0.75" | "1" | "1.25",
+                label: opt.label,
+              }))}
+            />
           </div>
         </div>
 
         {/* Row 2: Studio Audio Effects & Interactive Modes */}
         <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-200/60 w-full">
           {/* 🎙️ Studio Echo & Reverb Button */}
-          <button
-            type="button"
+          <Button
+            variant={echoPreset !== "off" ? "primary" : "secondary"}
+            size="sm"
+            leftIcon={<Radio className="w-3.5 h-3.5" />}
             onClick={handleToggleEcho}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
-              echoPreset === "studio"
-                ? "bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-500/20"
-                : echoPreset === "hall"
-                ? "bg-purple-600 border-purple-600 text-white shadow-md shadow-purple-500/20"
-                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
-            }`}
+            aria-pressed={echoPreset !== "off"}
             title="বাটন চেপে স্টুডিও ইকো এফেক্ট অন বা অফ করুন"
           >
-            <Radio className={`w-3.5 h-3.5 ${echoPreset !== "off" ? "animate-pulse text-amber-300" : "text-slate-400"}`} />
-            <span>
-              🎙️ স্টুডিও ইকো:{" "}
-              {echoPreset === "off" ? "বন্ধ (ট্যাপে চালু)" : echoPreset === "studio" ? "মিষ্টি স্টুডিও ✨" : "হলরুম 🏛️"}
-            </span>
-          </button>
+            স্টুডিও ইকো:{" "}
+            {echoPreset === "off" ? "বন্ধ" : echoPreset === "studio" ? "মিষ্টি স্টুডিও" : "হলরুম"}
+          </Button>
 
           {/* 🎭 Duet Dialogue Mode Toggle */}
-          <button
-            type="button"
+          <Button
+            variant={isDuetMode ? "primary" : "secondary"}
+            size="sm"
+            leftIcon={<Drama className="w-3.5 h-3.5" />}
             onClick={() => {
               const next = !isDuetMode;
               updateDuetMode(next);
               if (next) bgmEngine.playCelebrationChime();
             }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
-              isDuetMode
-                ? "bg-gradient-to-r from-rose-600 to-amber-600 text-white border-transparent shadow-md shadow-rose-500/20"
-                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
-            }`}
+            aria-pressed={isDuetMode}
             title="দ্বৈত কণ্ঠ মোড: চরিত্র ও সংলাপ অনুযায়ী স্বয়ংক্রিয় কণ্ঠ বদল"
           >
-            <Drama className={`w-3.5 h-3.5 ${isDuetMode ? "text-amber-200 animate-pulse" : "text-slate-400"}`} />
-            <span>🎭 দ্বৈত কণ্ঠ: {isDuetMode ? "চালু ✨" : "বন্ধ"}</span>
+            <span>দ্বৈত কণ্ঠ: {isDuetMode ? "চালু" : "বন্ধ"}</span>
             {currentItemHasDialogue && !isDuetMode && (
-              <span className="text-[10px] font-black text-rose-700 bg-rose-100 px-1.5 py-0.2 rounded-full animate-pulse ml-0.5">
-                সংলাপ আছে!
+              <span className="text-[10px] font-bold text-[#3A2300] bg-[#FFB020]/30 px-1.5 py-0.5 rounded-full ml-0.5">
+                সংলাপ আছে
               </span>
             )}
-          </button>
+          </Button>
 
           {/* 🎵 BGM Toggle */}
-          <button
-            type="button"
+          <Button
+            variant={isBgmEnabled ? "tonal" : "secondary"}
+            size="sm"
+            leftIcon={<Music className="w-3.5 h-3.5" />}
             onClick={() => updateBgmEnabled(!isBgmEnabled)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
-              isBgmEnabled
-                ? "bg-amber-100 border-amber-300 text-amber-900"
-                : "bg-white border-slate-200 text-slate-400"
-            }`}
+            aria-pressed={isBgmEnabled}
             title="আবহসঙ্গীত চালু বা বন্ধ করুন"
           >
-            <Music className="w-3.5 h-3.5" />
-            <span>আবহসঙ্গীত: {isBgmEnabled ? "চালু" : "বন্ধ"}</span>
-          </button>
+            আবহসঙ্গীত: {isBgmEnabled ? "চালু" : "বন্ধ"}
+          </Button>
 
           {/* ✨ Listen & Repeat Mode Toggle */}
-          <button
-            type="button"
+          <Button
+            variant={isRepeatMode ? "primary" : "secondary"}
+            size="sm"
+            leftIcon={<Sparkles className="w-3.5 h-3.5" />}
             onClick={() => {
               stopAudio();
               setIsRepeatMode(!isRepeatMode);
             }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
-              isRepeatMode
-                ? "bg-purple-600 border-purple-600 text-white shadow-xs animate-pulse"
-                : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
-            }`}
+            aria-pressed={isRepeatMode}
             title="শিশুদের জন্য শোনো এবং বলো অনুশীলন মোড"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>শোনো ও বলো: {isRepeatMode ? "চালু ✨" : "বন্ধ"}</span>
-          </button>
+            শোনো ও বলো: {isRepeatMode ? "চালু" : "বন্ধ"}
+          </Button>
         </div>
       </div>
 
@@ -1223,25 +1135,22 @@ export default function AudioRhymesCorner() {
       <section 
         aria-label="অডিও প্লেয়ার ও লিরিক্স ডিসপ্লে"
         data-paper-card="true"
-        className="max-w-2xl mx-auto p-6 sm:p-10 rounded-3xl bg-gradient-to-b from-rose-50/90 via-white to-amber-50/70 text-slate-900 border border-rose-200/80 shadow-xl space-y-6 text-center relative overflow-hidden transition-colors"
+        className="max-w-2xl mx-auto p-6 sm:p-10 rounded-3xl bg-[#F8FAFC] text-slate-900 border border-slate-200 shadow-lg space-y-6 text-center relative overflow-hidden transition-colors"
       >
-        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-rose-400/10 rounded-full blur-2xl pointer-events-none" aria-hidden="true" />
-        <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" aria-hidden="true" />
-
         {/* Story Metadata & Gamified Badge */}
         <div className="space-y-1.5 relative z-10">
-          <div className="flex items-center justify-center gap-2">
-            <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 inline-block shadow-2xs">
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#EEF8F3] text-[#00563F] border border-[#CBE5D8] inline-block">
               {selectedItem.category} • {selectedItem.gradeName}
             </span>
             {isRepeatMode && (
-              <span className="text-xs font-black px-3 py-1 rounded-full bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1 shadow-2xs animate-bounce">
-                <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-600" />
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#FFFBEB] text-[#3A2300] border border-[#FFB020] flex items-center gap-1">
+                <Star className="w-3.5 h-3.5 fill-[#FFB020] text-[#D98A00]" />
                 <span>স্টার: {earnedStars} / {selectedItem.lines.length}</span>
               </span>
             )}
           </div>
-          <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+          <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
             {selectedItem.title}
           </h3>
           <p className="text-xs text-slate-500 font-semibold">
@@ -1254,9 +1163,9 @@ export default function AudioRhymesCorner() {
           role="region" 
           aria-live="polite"
           data-paper-inner="true"
-          className="p-6 sm:p-8 rounded-3xl bg-white/95 border border-rose-100 shadow-inner space-y-4 min-h-[200px] flex flex-col justify-center relative z-10 transition-colors"
+          className="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-inner space-y-4 min-h-[200px] flex flex-col justify-center relative z-10 transition-colors"
         >
-          {/* 🎭 Live Duet Speaker Indicator with Pop-in Transition */}
+          {/* 🎭 Live Duet Speaker Indicator */}
           {isDuetMode && currentDuetSpeaker && isPlaying && (
             <div className="flex items-center justify-center mb-1.5">
               <div 
@@ -1264,10 +1173,10 @@ export default function AudioRhymesCorner() {
                 className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold border-2 shadow-sm transition-all duration-300 animate-in fade-in zoom-in-90 ${currentDuetSpeaker.colorClass}`}
               >
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#006A4E] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#006A4E]"></span>
                 </span>
-                <span className="text-base sm:text-lg transform transition-transform duration-300 scale-110 drop-shadow-xs">
+                <span className="text-base sm:text-lg">
                   {currentDuetSpeaker.avatar}
                 </span>
                 <span>
@@ -1278,25 +1187,25 @@ export default function AudioRhymesCorner() {
           )}
           {isDuetMode && !isPlaying && (
             <div className="flex items-center justify-center mb-1">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold text-[#00563F] bg-[#EEF8F3] border border-[#CBE5D8]">
                 <span>🎭 দ্বৈত কণ্ঠ সক্রিয় (চরিত্র ও সংলাপ অনুযায়ী স্বয়ংক্রিয়ভাবে কণ্ঠ পরিবর্তিত হবে)</span>
               </div>
             </div>
           )}
           {currentItemHasDialogue && !isDuetMode && (
             <div className="flex items-center justify-center mb-1">
-              <button
-                type="button"
+              <Button
+                variant="tonal"
+                size="sm"
+                leftIcon={<Sparkles className="w-3.5 h-3.5" />}
                 onClick={() => {
                   updateDuetMode(true);
                   bgmEngine.playCelebrationChime();
                 }}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-colors shadow-2xs cursor-pointer active:scale-95"
                 title="দ্বৈত কণ্ঠ মোড চালু করুন"
               >
-                <Sparkles className="w-3 h-3 text-amber-600 animate-spin" />
-                <span>💡 টিপস: এই ছড়ায় একাধিক চরিত্র আছে—<strong>&apos;দ্বৈত কণ্ঠ&apos; চালু করতে ট্যাপ করুন ✨</strong></span>
-              </button>
+                এই ছড়ায় একাধিক চরিত্র আছে — দ্বৈত কণ্ঠ চালু করুন
+              </Button>
             </div>
           )}
           {selectedItem.lines.map((line, idx) => {
@@ -1313,12 +1222,12 @@ export default function AudioRhymesCorner() {
                 }}
                 aria-label={`লাইন ${idx + 1}: ${line} - শুনতে বা অনুশীলন করতে ট্যাপ করুন`}
                 aria-current={isCurrentLine ? "true" : undefined}
-                className={`w-full text-center transition-all duration-200 py-2 px-3 rounded-2xl cursor-pointer hover:bg-rose-50/70 select-none touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 min-h-[44px] flex items-center justify-center ${
+                className={`w-full text-center transition-all duration-200 py-2.5 px-3 rounded-[14px] cursor-pointer hover:bg-[#EEF8F3]/60 select-none touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] min-h-[44px] flex items-center justify-center ${
                   isCurrentLine
-                    ? "bg-rose-100/90 border border-rose-300 shadow-xs ring-2 ring-rose-300/40 scale-102"
+                    ? "bg-[#EEF8F3] border-2 border-[#006A4E] shadow-xs"
                     : currentLineIndex > idx
-                    ? "text-slate-400 opacity-60"
-                    : "text-slate-700"
+                    ? "text-slate-400"
+                    : "text-slate-800 border-2 border-transparent"
                 }`}
                 title="এই লাইনটি শুনতে বা অনুশীলন করতে ক্লিক করুন"
               >
@@ -1329,18 +1238,17 @@ export default function AudioRhymesCorner() {
                       const isBouncingWord = currentWordIndex === wIdx;
                       return (
                         <span key={wIdx} className="relative inline-block">
-                          {/* Bouncing Ball Indicator */}
                           {isBouncingWord && (
                             <span 
-                              className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-amber-500 rounded-full animate-bounce shadow-md shadow-amber-500/50" 
+                              className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-[#FFB020] rounded-full animate-bounce shadow-sm" 
                               aria-hidden="true"
                             />
                           )}
                           <span
-                            className={`text-base sm:text-xl transition-all duration-150 px-1 py-0.5 rounded-lg ${
+                            className={`text-base sm:text-xl transition-all duration-150 px-1.5 py-0.5 rounded-lg ${
                               isBouncingWord
-                                ? "text-rose-800 font-black bg-rose-200/90 shadow-2xs scale-105"
-                                : "text-rose-900 font-bold"
+                                ? "text-[#00563F] font-bold bg-[#FFB020]/35"
+                                : "text-[#00563F] font-semibold"
                             }`}
                           >
                             {word}
@@ -1350,8 +1258,7 @@ export default function AudioRhymesCorner() {
                     })}
                   </div>
                 ) : (
-                  /* Inactive line */
-                  <p className="text-base sm:text-xl font-bold">
+                  <p className="text-base sm:text-xl font-semibold">
                     {line}
                   </p>
                 )}
@@ -1362,32 +1269,32 @@ export default function AudioRhymesCorner() {
 
         {/* 🌟 Phase 3: 'Listen & Repeat' Real Speech Recognition & Interactive Prompt Banner */}
         {isRepeatMode && isPlaying && repeatPhase === "waiting_user" && (
-          <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-rose-600 text-white p-4 rounded-2xl shadow-xl animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-3 relative z-10 border border-purple-400/30">
+          <div className="bg-[#0F172A] text-white p-4 rounded-2xl shadow-lg animate-fade-in flex flex-col sm:flex-row items-center justify-between gap-3 relative z-10 border border-slate-700">
             <div className="flex items-center gap-3">
-              <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shadow-md transition-all ${
-                isRecognizing ? "bg-rose-500 animate-pulse ring-4 ring-rose-300/40" : "bg-white/20"
+              <div className={`w-11 h-11 rounded-2xl flex items-center justify-center transition-all ${
+                isRecognizing ? "bg-[#C0362C] ring-4 ring-rose-400/30" : "bg-white/15"
               }`}>
-                <Mic className={`w-6 h-6 ${isRecognizing ? "text-white" : "text-amber-300"}`} />
+                <Mic className={`w-6 h-6 ${isRecognizing ? "text-white" : "text-[#FFB020]"}`} />
               </div>
               <div className="text-left space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <h4 className="font-black text-sm">এবার তোমার পালা! লাইনটি বলো...</h4>
+                  <h4 className="font-bold text-sm">এবার তোমার পালা! লাইনটি বলো...</h4>
                   {isRecognizing && (
-                    <span className="text-[10px] bg-rose-500 text-white font-bold px-2 py-0.5 rounded-full animate-pulse">
+                    <span className="text-[10px] bg-[#C0362C] text-white font-semibold px-2 py-0.5 rounded-full">
                       মাইক শুনছে 🔴
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-purple-200">
+                <p className="text-xs text-slate-300">
                   {isRecognizing ? "স্পষ্ট করে লাইনটি আবৃত্তি করো..." : `সময় বাকি: ${countdown} সেকেন্ড`}
                 </p>
                 {userTranscript && (
-                  <p className="text-xs bg-black/25 px-2.5 py-1 rounded-xl text-amber-200 font-semibold border border-white/10 flex items-center gap-1.5 mt-1">
+                  <p className="text-xs bg-white/10 px-2.5 py-1 rounded-xl text-amber-200 font-semibold border border-white/10 flex items-center gap-1.5 mt-1">
                     <span>তুমি বলেছো:</span>
                     <strong className="text-white">&ldquo;{userTranscript}&rdquo;</strong>
                     {matchScore !== null && (
-                      <span className={`text-[10px] font-black px-1.5 py-0.5 rounded-md ${
-                        matchScore >= 50 ? "bg-emerald-500 text-white" : "bg-amber-500 text-slate-900"
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-md ${
+                        matchScore >= 50 ? "bg-[#0A8257] text-white" : "bg-[#FFB020] text-[#3A2300]"
                       }`}>
                         {matchScore}% মিল
                       </span>
@@ -1397,105 +1304,92 @@ export default function AudioRhymesCorner() {
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <button
-                type="button"
+              <Button
+                variant="play-marigold"
+                leftIcon={<CheckCircle2 className="w-4 h-4" />}
                 onClick={() => handleUserFinishedLine(currentLineIndex)}
-                className="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-xs shadow-md transition-all active:scale-95 flex items-center gap-1.5"
                 title="পরবর্তী লাইনে যেতে ক্লিক করুন"
               >
-                <CheckCircle2 className="w-4 h-4 text-slate-900" />
-                <span>আমি বলেছি! 👏</span>
-              </button>
+                আমি বলেছি! 👏
+              </Button>
             </div>
           </div>
         )}
 
         {/* Success Feedback Banner */}
         {isRepeatMode && repeatPhase === "user_success" && (
-          <div className="bg-emerald-500 text-white py-2.5 px-4 rounded-2xl font-black text-sm shadow-md animate-bounce flex items-center justify-center gap-2 relative z-10">
+          <div className="bg-[#0A8257] text-white py-2.5 px-4 rounded-2xl font-bold text-sm shadow-sm pp-pop flex items-center justify-center gap-2 relative z-10">
             <span>🎉 দারুণ আবৃত্তি হয়েছে! স্টার যুক্ত হলো! ⭐</span>
           </div>
         )}
 
         {/* 🏆 Phase 3: Recitation Completion Fanfare Card */}
         {isCompletedPoem && (
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 text-white shadow-2xl space-y-3 animate-in zoom-in-95 duration-200 relative z-10 border border-amber-300/40">
+          <div className="p-6 sm:p-8 rounded-3xl bg-[#006A4E] text-white shadow-xl space-y-3 pp-pop relative z-10">
             <span className="text-4xl" aria-hidden="true">🏆</span>
-            <h3 className="text-xl sm:text-2xl font-black tracking-tight">
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
               অভিনন্দন! তুমি সম্পূর্ণ {itemTypeLabel} সফলভাবে শেষ করেছো!
             </h3>
-            <p className="text-xs sm:text-sm text-amber-100 font-medium">
-              তুমি অর্জন করেছো মোট <strong className="text-white text-base font-black px-1.5 py-0.5 rounded-md bg-white/20">{earnedStars}</strong>টি স্টার! ⭐
+            <p className="text-xs sm:text-sm text-emerald-100 font-medium">
+              তুমি অর্জন করেছো মোট <strong className="text-white text-base font-bold px-1.5 py-0.5 rounded-md bg-white/15">{earnedStars}</strong>টি স্টার! ⭐
             </p>
             <div className="pt-2 flex items-center justify-center gap-3">
-              <button
-                type="button"
+              <Button
+                variant="play-marigold"
+                leftIcon={<RotateCcw className="w-4 h-4" />}
                 onClick={handleRestart}
-                className="px-5 py-2.5 rounded-xl bg-white text-slate-900 font-black text-xs sm:text-sm shadow-md hover:bg-amber-50 transition-all flex items-center gap-1.5 active:scale-95"
               >
-                <RotateCcw className="w-4 h-4 text-rose-600" />
-                <span>আবার প্রথম থেকে শুরু করো</span>
-              </button>
+                আবার প্রথম থেকে শুরু করো
+              </Button>
             </div>
           </div>
         )}
 
-        {/* Playback Controls Bar */}
+        {/* Playback Controls Bar (Soft-Solid 2.0 Student Play + Audio Equalizer) */}
         <div className="flex items-center justify-center gap-3 pt-2 relative z-10">
-          <button
-            type="button"
+          <IconButton
+            icon={<RotateCcw className="w-5 h-5" />}
+            ariaLabel="প্রথম থেকে শুরু করুন"
+            variant="secondary"
+            size="lg"
             onClick={handleRestart}
-            className="p-3.5 rounded-2xl bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
-            title="প্রথম থেকে শুরু করুন"
-            aria-label="প্রথম থেকে শুরু করুন"
-          >
-            <RotateCcw className="w-5 h-5" aria-hidden="true" />
-          </button>
+          />
 
-          <button
-            type="button"
+          <Button
+            variant={isPlaying ? "play-marigold" : "play-green"}
+            leftIcon={
+              isPlaying ? (
+                <Square className="w-5 h-5 fill-current" />
+              ) : (
+                <Play className="w-5 h-5 fill-current" />
+              )
+            }
             onClick={handlePlay}
-            className={`px-8 py-3.5 rounded-2xl font-black text-sm sm:text-base flex items-center gap-2 shadow-lg transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
-              isPlaying
-                ? "bg-amber-500 hover:bg-amber-600 text-white shadow-amber-500/30 animate-pulse"
-                : "bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white shadow-rose-500/30"
-            }`}
+            className="px-7"
           >
-            {isPlaying ? (
-              <>
-                <Square className="w-5 h-5 fill-current" aria-hidden="true" />
-                <span>থামাও</span>
-              </>
-            ) : (
-              <>
-                <Play className="w-5 h-5 fill-current" aria-hidden="true" />
-                <span>{playButtonLabel}</span>
-              </>
-            )}
-          </button>
+            {playButtonLabel}
+          </Button>
 
-          <button
-            type="button"
-            onClick={stopAudio}
-            className="p-3.5 rounded-2xl bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-slate-300 shadow-xs transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
-            title="বন্ধ করো"
-            aria-label="অডিও বন্ধ করো"
-          >
-            <Volume2 className="w-5 h-5" aria-hidden="true" />
-          </button>
+          <AudioButton
+            isPlaying={isPlaying}
+            onClick={isPlaying ? stopAudio : handlePlay}
+            size="md"
+            ariaLabel="আবৃত্তি শুরু করো"
+            playingAriaLabel="অডিও থামাও"
+          />
         </div>
 
         {/* 🎙️ Feature 4: My Recitation Audio Recorder Deck */}
-        <div className="pt-4 border-t border-rose-100 space-y-3 relative z-10 text-left">
+        <div className="pt-4 border-t border-slate-200 space-y-3 relative z-10 text-left">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
-              <Radio className="w-4 h-4 text-rose-500" />
+            <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+              <Radio className="w-4 h-4 text-[#006A4E]" />
               <span>আমার কণ্ঠে আবৃত্তি রেকর্ড করো (My Recitation)</span>
             </span>
 
             {isRecording && (
-              <span className="text-xs font-black text-rose-600 flex items-center gap-1 animate-pulse">
-                <span className="w-2 h-2 rounded-full bg-rose-600" />
+              <span className="text-xs font-bold text-[#C0362C] flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#C0362C] animate-ping" />
                 রেকর্ডিং চলছে: {recordingSeconds}s
               </span>
             )}
@@ -1503,51 +1397,50 @@ export default function AudioRhymesCorner() {
 
           <div className="flex flex-wrap items-center gap-3">
             {!isRecording ? (
-              <button
-                type="button"
+              <Button
+                variant="danger-tonal"
+                size="sm"
+                leftIcon={<Mic className="w-4 h-4" />}
                 onClick={startRecording}
-                className="px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-xs flex items-center gap-2 transition-all shadow-2xs"
               >
-                <Mic className="w-4 h-4 text-rose-600" />
-                <span>নিজের কণ্ঠে রেকর্ড শুরু করো</span>
-              </button>
+                নিজের কণ্ঠে রেকর্ড শুরু করো
+              </Button>
             ) : (
-              <button
-                type="button"
+              <Button
+                variant="danger"
+                size="sm"
+                leftIcon={<MicOff className="w-4 h-4" />}
                 onClick={stopRecording}
-                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center gap-2 transition-all shadow-md animate-pulse"
               >
-                <MicOff className="w-4 h-4" />
-                <span>রেকর্ডিং থামাও ({recordingSeconds}s)</span>
-              </button>
+                রেকর্ডিং থামাও ({recordingSeconds}s)
+              </Button>
             )}
 
             {recordedAudioUrl && !isRecording && (
-              <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 p-1.5 rounded-xl">
+              <div className="flex items-center gap-2 bg-[#EEF8F3] border border-[#CBE5D8] p-1.5 rounded-xl">
                 <audio 
                   src={recordedAudioUrl} 
                   controls 
                   className="h-8 max-w-[210px] sm:max-w-[260px]"
                 />
-                <button
-                  type="button"
+                <IconButton
+                  icon={<Trash2 className="w-4 h-4" />}
+                  ariaLabel="রেকর্ড মুছে ফেলুন"
+                  variant="danger-tonal"
+                  size="sm"
                   onClick={() => setRecordedAudioUrl(null)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
-                  title="রেকর্ড মুছে ফেলুন"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                />
               </div>
             )}
           </div>
 
           {recorderError && (
-            <p className="text-[11px] text-rose-600 font-semibold">{recorderError}</p>
+            <p className="text-[11px] text-[#C0362C] font-semibold">{recorderError}</p>
           )}
         </div>
 
         {/* Moral Theme Note */}
-        <div className="pt-2 text-xs text-slate-600 border-t border-rose-100 font-medium relative z-10 text-center">
+        <div className="pt-2 text-xs text-slate-600 border-t border-slate-200 font-medium relative z-10 text-center">
           💡 <strong className="text-slate-800">শিখন মূল্যবোধ:</strong> {selectedItem.moralOrTheme}
         </div>
       </section>

@@ -185,11 +185,11 @@ export default function KiteCraftingVisualStage({
             { step: 6, label: "🚀 ৬. ওড়াও!", icon: "🪁" },
           ].map((item) => (
             <button type="button" key={item.step} onClick={() => handleStepSelect(item.step)}
-              className={`px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-black transition-all flex items-center gap-1 shrink-0 ${
-                activeStep === item.step
-                  ? "bg-sky-600 text-white shadow-xs scale-102"
-                  : "bg-slate-100/80 text-slate-700 hover:bg-slate-200/80"
-              }`}
+              className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 shrink-0 ${
+ activeStep === item.step
+ ? "bg-sky-600 text-white shadow-xs"
+ : "bg-slate-100/80 text-slate-700 hover:bg-slate-200/80"
+ }`}
             >
               <span>{item.icon}</span>
               <span className="hidden xs:inline">{item.label}</span>
@@ -221,11 +221,11 @@ export default function KiteCraftingVisualStage({
           {isFlyingMode ? (
             <button type="button"
               onClick={triggerWindGust}
-              className={`px-2 py-0.5 rounded-xl text-[10px] font-black flex items-center gap-1 transition-all ${
-                windGustActive
-                  ? "bg-sky-700 text-white scale-105"
-                  : "bg-sky-100 text-sky-800 hover:bg-sky-200"
-              }`}
+              className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2 py-0.5 rounded-xl text-[10px] font-semibold flex items-center gap-1 transition-all ${
+ windGustActive
+ ? "bg-sky-700 text-white"
+ : "bg-sky-100 text-sky-800 hover:bg-sky-200"
+ }`}
             >
               <Wind className={`w-3 h-3 ${windGustActive ? "animate-spin" : ""}`} />
               <span>দমকা হাওয়া!</span>
@@ -233,7 +233,7 @@ export default function KiteCraftingVisualStage({
           ) : (
             <button type="button"
               onClick={() => handleStepSelect(6)}
-              className="px-2 py-0.5 rounded-xl text-[10px] font-black bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-1 shadow-2xs"
+              className="px-2 py-0.5 rounded-xl text-[10px] font-semibold bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-1 shadow-2xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Play className="w-3 h-3 fill-white" />
               <span>আকাশে ওড়াও</span>
@@ -781,7 +781,7 @@ export default function KiteCraftingVisualStage({
           {!isFlyingMode && (
             <button type="button"
               onClick={() => handleStepSelect(Math.min(activeStep + 1, 6))}
-              className="px-2.5 py-1 rounded-xl text-xs font-black bg-sky-600 text-white hover:bg-sky-700 active:scale-95 transition-all shadow-2xs"
+              className="px-2.5 py-1 rounded-xl text-xs font-semibold bg-sky-600 text-white hover:bg-sky-700 active:scale-95 transition-all shadow-2xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               পরবর্তী ধাপ ➔
             </button>

@@ -191,7 +191,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
                 {!drillCompleted ? (
                   <button type="button"
                     onClick={handleStartDrill}
-                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-500 hover:to-red-500 text-white text-xs font-black shadow-md flex items-center gap-1.5 animate-pulse"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#C0362C] hover:bg-[#A1271F] text-white text-xs font-semibold shadow-md flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                   >
                     <ShieldCheck className="w-4 h-4" />
                     <span>মহড়া চালান (Run Safety Drill)</span>
@@ -277,7 +277,7 @@ export const RajuOccupationsC5VisualStage: React.FC<RajuOccupationsC5VisualStage
                 playChime("fanfare");
                 handleSpeak("Every occupation that serves human lives with honesty and dedication is noble. Volunteering without money shows the highest virtue of humanity!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md"
+              className="w-full py-2.5 rounded-xl bg-[#C0362C] hover:bg-[#A1271F] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Heart className="w-4 h-4 text-amber-200" />
               <span>পেশা ও সমাজসেবার মর্যাদা উপলব্ধি করুন</span>

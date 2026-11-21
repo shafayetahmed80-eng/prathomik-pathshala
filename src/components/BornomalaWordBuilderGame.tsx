@@ -330,11 +330,11 @@ export default function BornomalaWordBuilderGame({
           <button
             type="button"
             onClick={() => handleDifficultyChange("easy-2")}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
-              difficulty === "easy-2"
-                ? "bg-amber-600 text-white shadow-md scale-102"
-                : "bg-white text-amber-800 hover:bg-amber-100/70 border border-amber-200"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+ difficulty === "easy-2"
+ ? "bg-amber-600 text-white shadow-md"
+ : "bg-white text-amber-800 hover:bg-amber-100/70 border border-amber-200"
+ }`}
           >
             {isEng ? "Short Words" : "ছোট শব্দ (২ বর্ণ)"}
           </button>
@@ -342,11 +342,11 @@ export default function BornomalaWordBuilderGame({
           <button
             type="button"
             onClick={() => handleDifficultyChange("medium-3")}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
-              difficulty === "medium-3"
-                ? "bg-amber-600 text-white shadow-md scale-102"
-                : "bg-white text-amber-800 hover:bg-amber-100/70 border border-amber-200"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+ difficulty === "medium-3"
+ ? "bg-amber-600 text-white shadow-md"
+ : "bg-white text-amber-800 hover:bg-amber-100/70 border border-amber-200"
+ }`}
           >
             {isEng ? "Medium Words" : "মাঝারি শব্দ (৩ বর্ণ)"}
           </button>
@@ -354,11 +354,11 @@ export default function BornomalaWordBuilderGame({
           <button
             type="button"
             onClick={() => handleDifficultyChange("all")}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black transition-all ${
-              difficulty === "all"
-                ? "bg-amber-600 text-white shadow-md scale-102"
-                : "bg-white text-amber-800 hover:bg-amber-100/70 border border-amber-200"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+ difficulty === "all"
+ ? "bg-amber-600 text-white shadow-md"
+ : "bg-white text-amber-800 hover:bg-amber-100/70 border border-amber-200"
+ }`}
           >
             {isEng ? "All Words" : "সকল শব্দ"}
           </button>
@@ -425,7 +425,7 @@ export default function BornomalaWordBuilderGame({
             <button
               type="button"
               onClick={handleReplayPrompt}
-              className="p-3 bg-white/20 hover:bg-white/30 text-white rounded-2xl border border-white/30 transition-all hover:scale-105 active:scale-95 shadow-md flex items-center gap-1.5 text-xs font-bold"
+              className="p-3 bg-white/20 hover:bg-white/30 text-white rounded-2xl border border-white/30 transition-all active:scale-95 shadow-md flex items-center gap-1.5 text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               title={isEng ? "Hear Word Again" : "শব্দটি আবার শোনো"}
             >
               <Volume2 className="w-4 h-4 text-amber-300" />
@@ -435,7 +435,7 @@ export default function BornomalaWordBuilderGame({
             <button
               type="button"
               onClick={handleResetCarriages}
-              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 transition-all hover:scale-105 active:scale-95 text-xs font-bold flex items-center gap-1.5"
+              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 transition-all active:scale-95 text-xs font-bold flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               title={isEng ? "Clear Train" : "বগি খালি করো"}
             >
               <RotateCcw className="w-4 h-4" />
@@ -583,7 +583,7 @@ export default function BornomalaWordBuilderGame({
             <button
               type="button"
               onClick={() => initRound(difficulty)}
-              className="px-4 py-2 bg-white text-emerald-900 font-black text-xs rounded-xl shadow-md hover:bg-emerald-50 transition-all flex items-center gap-1.5"
+              className="px-4 py-2 bg-white text-emerald-900 font-semibold text-xs rounded-xl shadow-md hover:bg-emerald-50 transition-all flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <span>{isEng ? "Next Word Now" : "পরবর্তী শব্দ"}</span>
               <ArrowRight className="w-4 h-4" />
@@ -617,13 +617,13 @@ export default function BornomalaWordBuilderGame({
                 type="button"
                 onClick={() => handleWagonClick(wagon)}
                 disabled={wagon.isUsed || isCompleted}
-                className={`w-14 h-16 sm:w-16 sm:h-18 rounded-2xl border-2 font-black text-2xl sm:text-3xl flex flex-col items-center justify-center transition-all duration-200 select-none touch-manipulation shadow-md ${
-                  wagon.isUsed
-                    ? "opacity-20 scale-90 border-slate-300 bg-slate-100 pointer-events-none"
-                    : isWobbling
-                    ? "animate-shake bg-rose-500 text-white border-rose-300 scale-105"
-                    : `bg-gradient-to-b ${styleColor} hover:scale-110 active:scale-95 cursor-pointer`
-                }`}
+                className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] w-14 h-16 sm:w-16 sm:h-18 rounded-2xl border-2 font-bold text-2xl sm:text-3xl flex flex-col items-center justify-center transition-all duration-200 select-none touch-manipulation shadow-md ${
+ wagon.isUsed
+ ? "opacity-20 scale-90 border-slate-300 bg-slate-100 pointer-events-none"
+ : isWobbling
+ ? "animate-shake bg-rose-500 text-white border-rose-300"
+ : `bg-[#0A8257] hover:bg-[#08704A] ${styleColor} active:scale-95 cursor-pointer`
+ }`}
                 aria-label={`অক্ষর ${wagon.char}`}
               >
                 <span>{wagon.char}</span>

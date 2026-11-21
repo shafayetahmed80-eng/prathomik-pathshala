@@ -134,33 +134,33 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
         {/* View Mode Navigation Tabs */}
         <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-amber-200 shadow-2xs">
           <button type="button" onClick={() => { setActiveTab("timeline"); playChime("pop"); }}
-            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
-              activeTab === "timeline" 
-                ? "bg-amber-500 text-white shadow-xs" 
-                : "text-slate-600 hover:text-amber-600 hover:bg-amber-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+ activeTab === "timeline" 
+ ? "bg-[#B45309] text-white hover:bg-[#92400E] shadow-xs" 
+ : "text-slate-600 hover:text-amber-600 hover:bg-amber-50"
+ }`}
           >
             <Clock className="w-3.5 h-3.5" />
             <span>টাইমলাইন</span>
           </button>
           <button type="button"
             onClick={() => { setActiveTab("clock"); playChime("pop"); }}
-            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
-              activeTab === "clock" 
-                ? "bg-amber-500 text-white shadow-xs" 
-                : "text-slate-600 hover:text-amber-600 hover:bg-amber-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+ activeTab === "clock" 
+ ? "bg-[#B45309] text-white hover:bg-[#92400E] shadow-xs" 
+ : "text-slate-600 hover:text-amber-600 hover:bg-amber-50"
+ }`}
           >
             <Sun className="w-3.5 h-3.5" />
             <span>এনালগ ঘড়ি</span>
           </button>
           <button type="button"
             onClick={() => { setActiveTab("routineGame"); playChime("pop"); }}
-            className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
-              activeTab === "routineGame" 
-                ? "bg-amber-500 text-white shadow-xs" 
-                : "text-slate-600 hover:text-amber-600 hover:bg-amber-50"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+ activeTab === "routineGame" 
+ ? "bg-[#B45309] text-white hover:bg-[#92400E] shadow-xs" 
+ : "text-slate-600 hover:text-amber-600 hover:bg-amber-50"
+ }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>রুটিন গেম</span>
@@ -181,11 +181,11 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
                   <button type="button"
                     key={evt.id}
                     onClick={() => handleSelectEvent(evt)}
-                    className={`p-2 rounded-xl text-center border-2 transition-all flex flex-col items-center justify-between ${
-                      isSelected
-                        ? "bg-amber-500 text-white border-amber-600 shadow-md scale-102"
-                        : "bg-white hover:bg-amber-50 text-slate-800 border-amber-100 shadow-2xs hover:border-amber-300"
-                    }`}
+                    className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] p-2 rounded-xl text-center border-2 transition-all flex flex-col items-center justify-between ${
+ isSelected
+ ? "bg-[#B45309] text-white hover:bg-[#92400E] border-amber-600 shadow-md"
+ : "bg-white hover:bg-amber-50 text-slate-800 border-amber-100 shadow-2xs hover:border-amber-300"
+ }`}
                   >
                     <span className="text-xl">{evt.icon}</span>
                     <span className="text-[11px] font-black truncate w-full mt-0.5">{evt.time}</span>
@@ -327,11 +327,11 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
                 <button type="button"
                   key={h}
                   onClick={() => handleClockChange(h)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all ${
-                    clockHour === h 
-                      ? "bg-amber-500 text-white shadow-md scale-105" 
-                      : "bg-slate-100 text-slate-700 hover:bg-amber-100"
-                  }`}
+                  className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+ clockHour === h 
+ ? "bg-[#B45309] text-white hover:bg-[#92400E] shadow-md" 
+ : "bg-slate-100 text-slate-700 hover:bg-amber-100"
+ }`}
                 >
                   {h} o'clock
                 </button>
@@ -367,7 +367,7 @@ export const MitasDayVisualStage: React.FC<MitasDayVisualStageProps> = ({
                   </p>
                   <button type="button"
                     onClick={resetGame}
-                    className="px-4 py-2 rounded-xl text-xs font-black bg-amber-500 text-white hover:bg-amber-600 shadow-md inline-flex items-center gap-1.5"
+                    className="px-4 py-2 rounded-xl text-xs font-semibold bg-[#B45309] text-white hover:bg-[#92400E] shadow-md inline-flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                     <span>আবার খেলুন</span>

@@ -6,7 +6,6 @@ import {
   Download,
   Sparkles,
   RotateCcw,
-  Check,
   CheckCircle2,
   ZoomIn,
   ZoomOut,
@@ -18,6 +17,7 @@ import {
   Eye,
   X
 } from "lucide-react";
+import { Button, IconButton, SegmentedControl, getButtonClasses } from "@/components/ui";
 
 // ==========================================
 // 🏛️ SVG EMBLEMS & ORNAMENTS
@@ -580,61 +580,38 @@ export default function StudentCertificateStudio() {
 
           {/* Action Buttons: Autofill, Blank/Filled Mode & Print */}
           <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
+            <Button
+              variant="tonal"
+              size="sm"
+              leftIcon={<Sparkles className="w-4 h-4" />}
               onClick={handleAutofillDemo}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition-all touch-manipulation min-h-[40px] active:scale-95"
               title="বাস্তব নমুনা তথ্য লোড করুন"
             >
-              <Sparkles className="w-4 h-4 text-amber-600" />
-              <span>নমুনা তথ্য পূরণ</span>
-            </button>
+              নমুনা তথ্য পূরণ
+            </Button>
 
             {/* Print Mode Switcher (Filled vs Blank) */}
-            <div
-              role="radiogroup"
-              aria-label="প্রিন্ট মোড"
-              className="inline-flex p-1 bg-slate-100 rounded-xl border border-slate-200/80"
-            >
-              <button
-                type="button"
-                role="radio"
-                aria-checked={printMode === "filled"}
-                onClick={() => setPrintMode("filled")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all min-h-[34px] ${
-                  printMode === "filled"
-                    ? "bg-white text-emerald-800 shadow-xs border border-emerald-200"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-                title="কম্পিউটারাইজড ফিল্ড কপি প্রিভিউ"
-              >
-                ডিজিটাল পূরণকৃত
-              </button>
-              <button
-                type="button"
-                role="radio"
-                aria-checked={printMode === "blank"}
-                onClick={() => setPrintMode("blank")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all min-h-[34px] ${
-                  printMode === "blank"
-                    ? "bg-white text-blue-800 shadow-xs border border-blue-200"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-                title="হাতে কলমে লেখার জন্য ডটেড ব্ল্যাঙ্ক কপি"
-              >
-                ব্ল্যাঙ্ক প্রিন্ট ফরম
-              </button>
-            </div>
+            <SegmentedControl
+              value={printMode}
+              onChange={setPrintMode}
+              ariaLabel="প্রিন্ট মোড"
+              roleMode="radiogroup"
+              size="sm"
+              options={[
+                { value: "filled", label: "ডিজিটাল পূরণকৃত", shortLabel: "ডিজিটাল" },
+                { value: "blank", label: "ব্ল্যাঙ্ক প্রিন্ট ফরম", shortLabel: "ব্ল্যাঙ্ক ফরম" },
+              ]}
+            />
 
-            {/* Direct Print Button */}
-            <button
-              type="button"
+            {/* Direct Print Button (Single Teacher Ink Primary CTA) */}
+            <Button
+              variant="ink"
+              size="md"
+              leftIcon={<Printer className="w-4 h-4" />}
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-black bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition-all hover:scale-102 active:scale-95 min-h-[40px]"
             >
-              <Printer className="w-4 h-4" />
-              <span>প্রিন্ট / PDF সেভ (Ctrl+P)</span>
-            </button>
+              প্রিন্ট / PDF সেভ (Ctrl+P)
+            </Button>
           </div>
         </div>
 
@@ -656,10 +633,10 @@ export default function StudentCertificateStudio() {
                   type="button"
                   onClick={() => setTemplate(t.id)}
                   aria-pressed={isSelected}
-                  className={`p-3 sm:p-3.5 rounded-2xl border-2 text-center transition-all flex flex-col items-center justify-between min-h-[105px] sm:min-h-[115px] touch-manipulation active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer ${
+                  className={`p-3 sm:p-3.5 rounded-[14px] border-2 text-center transition-all flex flex-col items-center justify-between min-h-[105px] sm:min-h-[115px] touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] cursor-pointer ${
                     isSelected
-                      ? "border-emerald-600 bg-emerald-50/50 ring-2 ring-emerald-500/20 shadow-xs scale-102"
-                      : "border-slate-200/90 bg-white hover:border-slate-300 hover:bg-slate-50/50 shadow-2xs"
+                      ? "border-[#006A4E] bg-[#EEF8F3]/70 shadow-xs"
+                      : "border-[#D5DCE4] bg-white hover:border-[#94A3B8] hover:bg-[#F8FAFC]"
                   }`}
                 >
                   <span 
@@ -668,7 +645,7 @@ export default function StudentCertificateStudio() {
                   >
                     {icon}
                   </span>
-                  <span className="text-xs font-bold text-slate-900 leading-tight mt-1 line-clamp-1">
+                  <span className="text-xs font-semibold text-slate-900 leading-tight mt-1 line-clamp-1">
                     {t.name.replace(/^\d+\.\s*/, "")}
                   </span>
                 </button>
@@ -1085,14 +1062,14 @@ export default function StudentCertificateStudio() {
               </div>
 
               <div className="sm:col-span-2 flex items-center justify-end gap-2 pt-2">
-                <button
-                  type="button"
+                <Button
+                  variant="danger-tonal"
+                  size="sm"
+                  leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
                   onClick={handleReset}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 transition-colors"
                 >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>শিক্ষার্থীর তথ্য মুছুন</span>
-                </button>
+                  শিক্ষার্থীর তথ্য মুছুন
+                </Button>
               </div>
             </div>
           )}
@@ -1232,22 +1209,26 @@ export default function StudentCertificateStudio() {
           {activeFormTab === "gallery" && (
             <div className="pt-4 space-y-4">
               {/* Hero ZIP Download Banner */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#0F172A] text-white shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <FolderArchive className="w-6 h-6 shrink-0" />
-                    <h2 className="text-base sm:text-lg font-black">
+                    <FolderArchive className="w-6 h-6 text-[#FFB020] shrink-0" />
+                    <h2 className="text-base sm:text-lg font-bold">
                       মূল প্রত্যয়নপত্রের জিপ ফাইল (Certificate_Sample.zip)
                     </h2>
                   </div>
-                  <p className="text-xs sm:text-sm text-amber-100">
+                  <p className="text-xs sm:text-sm text-slate-300">
                     স্কুলের আসল ৫টি মূল সনদের স্ক্যান কপি সম্বলিত জিপ ফাইল সরাসরি ডাউনলোড করে কম্পিউটারে সংরক্ষণ করুন।
                   </p>
                 </div>
                 <a
                   href="/certificates/Certificate_Sample.zip"
                   download="Certificate_Sample.zip"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white text-amber-900 font-black text-xs sm:text-sm shadow-md hover:bg-amber-50 transition-all hover:scale-105 active:scale-95 shrink-0"
+                  className={getButtonClasses({
+                    variant: "secondary",
+                    size: "md",
+                    className: "shrink-0",
+                  })}
                 >
                   <Download className="w-4 h-4" />
                   <span>জিপ ফাইল ডাউনলোড (৯৩১ KB)</span>
@@ -1287,26 +1268,32 @@ export default function StudentCertificateStudio() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1 pt-2 border-t border-slate-100">
-                      <button
-                        type="button"
+                    <div className="flex items-center gap-1.5 pt-2 border-t border-slate-100">
+                      <Button
+                        variant="tonal"
+                        size="sm"
                         onClick={() => {
                           setTemplate(t.id);
                           setActiveFormTab("school");
                           setToastMessage(`টেমপ্লেট '${t.name}' নির্বাচন করা হয়েছে!`);
                           setTimeout(() => setToastMessage(null), 2500);
                         }}
-                        className="flex-1 py-1.5 px-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] transition-colors text-center"
+                        className="flex-1"
                       >
                         ব্যবহার করুন
-                      </button>
+                      </Button>
                       <a
                         href={t.sampleImg}
                         download={`certificate-sample-${idx + 1}.jpg`}
-                        className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                        className={getButtonClasses({
+                          variant: "secondary",
+                          size: "sm",
+                          iconOnly: true,
+                        })}
                         title="ছবিটি ডাউনলোড করুন"
+                        aria-label={`${t.name} ছবিটি ডাউনলোড করুন`}
                       >
-                        <Download className="w-3.5 h-3.5" />
+                        <Download className="w-4 h-4" />
                       </a>
                     </div>
                   </div>
@@ -1327,45 +1314,41 @@ export default function StudentCertificateStudio() {
         </div>
 
         {/* Zoom Controls with Auto-Fit */}
-        <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-slate-200 shadow-xs self-start sm:self-auto" role="group" aria-label="সনদপত্র প্রিভিউ জুম কন্ট্রোল">
-          <button
-            type="button"
+        <div className="flex items-center gap-1.5 bg-white p-1 rounded-[14px] border border-[#D5DCE4] shadow-xs self-start sm:self-auto" role="group" aria-label="সনদপত্র প্রিভিউ জুম কন্ট্রোল">
+          <Button
+            variant="tonal"
+            size="sm"
+            leftIcon={<Maximize2 className="w-3.5 h-3.5" />}
             onClick={handleAutoFit}
-            className="inline-flex items-center gap-1 px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
             title="স্ক্রিনের সাথে অটো-ফিট করুন"
           >
-            <Maximize2 className="w-3.5 h-3.5" />
-            <span>অটো-ফিট</span>
-          </button>
-          <div className="h-4 w-px bg-slate-200" />
-          <button
-            type="button"
+            অটো-ফিট
+          </Button>
+          <div className="h-5 w-px bg-slate-200" />
+          <IconButton
+            icon={<ZoomOut className="w-4 h-4" />}
+            ariaLabel="জুম আউট"
+            variant="ghost"
+            size="sm"
             onClick={() => setZoomScale((prev) => Math.max(30, prev - 10))}
-            className="p-2 min-w-[38px] min-h-[38px] rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
-            title="জুম আউট"
-            aria-label="জুম আউট"
-          >
-            <ZoomOut className="w-4 h-4" />
-          </button>
-          <span className="text-xs font-black text-slate-700 w-12 text-center" aria-live="polite">
+          />
+          <span className="text-xs font-bold text-slate-700 w-11 text-center" aria-live="polite">
             {zoomScale}%
           </span>
-          <button
-            type="button"
+          <IconButton
+            icon={<ZoomIn className="w-4 h-4" />}
+            ariaLabel="জুম ইন"
+            variant="ghost"
+            size="sm"
             onClick={() => setZoomScale((prev) => Math.min(130, prev + 10))}
-            className="p-2 min-w-[38px] min-h-[38px] rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center justify-center touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
-            title="জুম ইন"
-            aria-label="জুম ইন"
-          >
-            <ZoomIn className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
+          />
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={() => setZoomScale(100)}
-            className="px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
           >
             ১০০%
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -1814,16 +1797,16 @@ export default function StudentCertificateStudio() {
         >
           <div className="relative max-w-4xl w-full bg-white rounded-3xl p-4 shadow-2xl border border-slate-300 flex flex-col gap-3">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-              <h3 className="text-sm sm:text-base font-black text-slate-900">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900">
                 মূল স্ক্যানকৃত প্রত্যয়নপত্রের নমুনা প্রিভিউ
               </h3>
-              <button
-                type="button"
+              <IconButton
+                icon={<X className="w-5 h-5" />}
+                ariaLabel="প্রিভিউ বন্ধ করুন"
+                variant="ghost"
+                size="sm"
                 onClick={() => setPreviewSampleModal(null)}
-                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              />
             </div>
 
             <div className="relative max-h-[75vh] overflow-auto rounded-2xl bg-slate-100 flex items-center justify-center p-2">
@@ -1839,19 +1822,19 @@ export default function StudentCertificateStudio() {
               <a
                 href={previewSampleModal}
                 download="certificate-sample-full.jpg"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-xs transition-all"
+                className={getButtonClasses({ variant: "primary", size: "sm" })}
               >
                 <Download className="w-4 h-4" />
                 <span>আসল সাইজে ছবি ডাউনলোড করুন</span>
               </a>
 
-              <button
-                type="button"
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => setPreviewSampleModal(null)}
-                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors"
               >
                 বন্ধ করুন
-              </button>
+              </Button>
             </div>
           </div>
         </div>

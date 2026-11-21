@@ -205,7 +205,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
                   </div>
                 </div>
 
-                <button type="button" onClick={handleToggleTv} className={`px-3.5 py-1.5 rounded-xl text-xs font-black shadow-md flex items-center gap-1.5 transition-all ${ tvPlaying ? "bg-rose-600 hover:bg-rose-500 text-white" : "bg-purple-600 hover:bg-purple-500 text-white animate-pulse" }`}>
+                <button type="button" onClick={handleToggleTv} className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-3.5 py-1.5 rounded-xl text-xs font-semibold shadow-md flex items-center gap-1.5 transition-all ${ tvPlaying ? "bg-rose-600 hover:bg-rose-500 text-white" : "bg-purple-600 hover:bg-purple-500 text-white" }`}>
                   <Tv className="w-4 h-4" />
                   <span>{tvPlaying ? "টিভি বন্ধ করুন" : "কার্টুন চালান (Turn on TV)"}</span>
                 </button>
@@ -298,7 +298,7 @@ export const SaikatsFamilyVisualStage: React.FC<SaikatsFamilyVisualStageProps> =
                 playChime("fanfare");
                 handleSpeak("Every member of Saikat's family utilizes their free time constructively with healthy creative hobbies and self-improvement!");
               }}
-              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-xl bg-[#006A4E] hover:bg-[#005C44] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               <Heart className="w-4 h-4 text-rose-300" />
               <span>পরিবারের গঠনমূলক অবসর সময় উদযাপন করুন</span>

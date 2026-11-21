@@ -52,6 +52,7 @@ import BornomalaWorksheetModal from "./BornomalaWorksheetModal";
 import BornomalaCertificateModal from "./BornomalaCertificateModal";
 import BornomalaMiniGame from "./BornomalaMiniGame";
 import BornomalaFlashcardModal from "./BornomalaFlashcardModal";
+import { Button, IconButton, SegmentedControl, AudioButton } from "@/components/ui";
 
 const COLOR_PALETTE = [
   { name: "নীল", hex: "#2563eb" },
@@ -1181,16 +1182,12 @@ export default function BanglaBornomalaLab() {
           <div className="flex items-center gap-3">
             <div 
               aria-hidden="true" 
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white text-2xl shadow-md shrink-0 transition-transform ${
-                isEnglish 
-                  ? "bg-gradient-to-tr from-blue-600 via-indigo-600 to-sky-500 shadow-blue-500/20" 
-                  : "bg-gradient-to-tr from-pink-500 via-rose-500 to-amber-500 shadow-pink-500/20"
-              }`}
+              className="w-12 h-12 rounded-2xl bg-[#006A4E] flex items-center justify-center text-white text-2xl shadow-xs shrink-0"
             >
               {isEnglish ? "🇬🇧" : "🎨"}
             </div>
             <div>
-              <h2 id="bornomala-lab-heading" className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h2 id="bornomala-lab-heading" className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 {isEnglish ? "English Alphabet & Phonics Lab" : "ডিজিটাল বর্ণমালা ও হাতেখড়ি ল্যাব"}
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -1201,60 +1198,49 @@ export default function BanglaBornomalaLab() {
             </div>
           </div>
 
-          {/* 🌐 Language Switcher Pill */}
-          <div className="flex items-center p-1 bg-slate-100 rounded-2xl border border-slate-200 self-start sm:self-auto">
-            <button
-              type="button"
-              onClick={() => {
-                if (languageMode === "bangla") return;
+          {/* 🌐 Language Switcher Pill (Soft-Solid 2.0 SegmentedControl) */}
+          <div className="self-start sm:self-auto">
+            <SegmentedControl
+              value={languageMode}
+              onChange={(nextLang) => {
+                if (nextLang === languageMode) return;
                 playPopSound();
                 stopSpeech();
-                setLanguageMode("bangla");
-                setSelectedMatraFilter("all");
-                selectItem(VOWELS_DATA[0]);
-                setActiveTab("vowels");
+                setLanguageMode(nextLang);
+                if (nextLang === "bangla") {
+                  setSelectedMatraFilter("all");
+                  selectItem(VOWELS_DATA[0]);
+                  setActiveTab("vowels");
+                } else {
+                  setEnglishAnatomyFilter("all");
+                  selectItem(ENGLISH_ALPHABET_DATA[0]);
+                  setEnglishTab("all");
+                }
               }}
-              className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                languageMode === "bangla"
-                  ? "bg-white text-pink-700 shadow-xs scale-102"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              🇧🇩 বাংলা
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                if (languageMode === "english") return;
-                playPopSound();
-                stopSpeech();
-                setLanguageMode("english");
-                setEnglishAnatomyFilter("all");
-                selectItem(ENGLISH_ALPHABET_DATA[0]);
-                setEnglishTab("all");
-              }}
-              className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                languageMode === "english"
-                  ? "bg-white text-blue-700 shadow-xs scale-102"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              🇬🇧 English
-            </button>
+              ariaLabel="ভাষা নির্বাচন"
+              roleMode="radiogroup"
+              size="sm"
+              options={[
+                { value: "bangla", label: "🇧🇩 বাংলা" },
+                { value: "english", label: "🇬🇧 English" },
+              ]}
+            />
           </div>
         </div>
 
         {/* Global Toolbar: Stars, Game Switcher, Worksheet, Certificate */}
         <div className="flex flex-wrap items-center gap-2 self-start lg:self-auto">
           {/* Star Counter */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs sm:text-sm font-bold shadow-xs">
-            <Star className="w-4 h-4 text-amber-500 fill-amber-500 animate-spin-slow" aria-hidden="true" />
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FFFBEB] border border-[#FFB020]/50 text-[#3A2300] text-xs sm:text-sm font-semibold">
+            <Star className="w-4 h-4 text-[#FFB020] fill-[#FFB020]" aria-hidden="true" />
             <span>{stars} স্টার পয়েন্ট</span>
           </div>
 
           {/* Mini Game Toggle Button */}
-          <button
-            type="button"
+          <Button
+            variant={showMiniGame ? "primary" : "play-marigold"}
+            size="sm"
+            leftIcon={<Gamepad2 className="w-4 h-4" />}
             onClick={() => {
               playPopSound();
               unlockMobileAudio({ primeSilent: true });
@@ -1263,28 +1249,23 @@ export default function BanglaBornomalaLab() {
               }
               setShowMiniGame(!showMiniGame);
             }}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs ${
-              showMiniGame
-                ? "bg-purple-600 text-white hover:bg-purple-700 shadow-sm"
-                : "bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200"
-            }`}
+            className={!showMiniGame ? "h-9 px-3.5 text-xs rounded-[12px]" : undefined}
           >
-            <Gamepad2 className={`w-4 h-4 ${showMiniGame ? "text-white" : "text-purple-600"}`} />
-            <span>
-              {showMiniGame
-                ? languageMode === "english"
-                  ? "Back to Canvas"
-                  : "ক্যানভাসে ফিরুন"
-                : languageMode === "english"
-                ? "🎮 Game Arcade"
-                : "🎮 বর্ণ খেলা"}
-            </span>
-          </button>
+            {showMiniGame
+              ? languageMode === "english"
+                ? "Back to Canvas"
+                : "ক্যানভাসে ফিরুন"
+              : languageMode === "english"
+              ? "Game Arcade"
+              : "বর্ণ খেলা"}
+          </Button>
 
           {/* Flashcard Modal Toggle */}
-          <button
-            type="button"
+          <Button
+            variant="tonal"
+            size="sm"
             disabled={filteredList.length === 0}
+            leftIcon={<Play className="w-3.5 h-3.5 fill-current" />}
             onClick={() => {
               if (filteredList.length === 0) return;
               playPopSound();
@@ -1292,40 +1273,38 @@ export default function BanglaBornomalaLab() {
               setFlashcardSessionKey((prev) => prev + 1);
               setIsFlashcardOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 disabled:opacity-50 disabled:cursor-not-allowed text-pink-700 border border-pink-200 text-xs sm:text-sm font-bold transition-all shadow-xs"
             title="ক্লাসরুম মাল্টিমিডিয়া অটোপ্লে ফ্ল্যাশ কার্ড"
           >
-            <Play className="w-3.5 h-3.5 fill-pink-600 text-pink-600" />
-            <span>ফ্ল্যাশ কার্ড</span>
-          </button>
+            ফ্ল্যাশ কার্ড
+          </Button>
 
           {/* Printable Worksheet Modal Toggle */}
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<Printer className="w-3.5 h-3.5" />}
             onClick={() => {
               playPopSound();
               setIsWorksheetOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs sm:text-sm font-bold transition-all shadow-xs"
             title="A4 সাইজের অফলাইন প্রিন্ট শিট"
           >
-            <Printer className="w-3.5 h-3.5" />
-            <span>ওয়ার্কশিট প্রিন্ট</span>
-          </button>
+            ওয়ার্কশিট প্রিন্ট
+          </Button>
 
           {/* Certificate Modal Toggle */}
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
+            leftIcon={<Award className="w-4 h-4 text-[#D98A00]" />}
             onClick={() => {
               playPopSound();
               setIsCertificateOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm font-bold transition-all shadow-xs"
             title="হাতেখড়ি সম্মাননা সনদপত্র তৈরি"
           >
-            <Award className="w-4 h-4" />
-            <span>সনদপত্র</span>
-          </button>
+            সনদপত্র
+          </Button>
         </div>
       </div>
 
@@ -1346,80 +1325,31 @@ export default function BanglaBornomalaLab() {
             {isEnglish ? (
               // English Navigation Tabs
               <div className="space-y-2.5">
-                <nav aria-label="English alphabet category selection" className="flex items-center gap-1.5 sm:gap-2 bg-slate-100 p-1.5 rounded-2xl overflow-x-auto max-w-full no-scrollbar">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setEnglishTab("all");
-                      selectItem(ENGLISH_ALPHABET_DATA[0]);
-                      setEnglishAnatomyFilter("all");
-                    }}
-                    aria-pressed={englishTab === "all"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      englishTab === "all"
-                        ? "bg-white text-blue-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    All Letters (A-Z) (26)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setEnglishTab("vowels");
-                      selectItem(ENGLISH_VOWELS[0]);
-                      setEnglishAnatomyFilter("all");
-                    }}
-                    aria-pressed={englishTab === "vowels"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      englishTab === "vowels"
-                        ? "bg-white text-pink-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    Vowels (স্বরধ্বনি) (5)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setEnglishTab("consonants");
-                      selectItem(ENGLISH_CONSONANTS[0]);
-                      setEnglishAnatomyFilter("all");
-                    }}
-                    aria-pressed={englishTab === "consonants"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      englishTab === "consonants"
-                        ? "bg-white text-emerald-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    Consonants (ব্যঞ্জনধ্বনি) (21)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setEnglishTab("numbers");
-                      selectItem(ENGLISH_NUMBERS_DATA[0]);
-                      setEnglishAnatomyFilter("all");
-                    }}
-                    aria-pressed={englishTab === "numbers"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      englishTab === "numbers"
-                        ? "bg-white text-amber-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    Numbers (0-100)
-                  </button>
-                </nav>
+                <SegmentedControl
+                  value={englishTab}
+                  onChange={(tab) => {
+                    playPopSound();
+                    setEnglishTab(tab);
+                    setEnglishAnatomyFilter("all");
+                    if (tab === "all") selectItem(ENGLISH_ALPHABET_DATA[0]);
+                    else if (tab === "vowels") selectItem(ENGLISH_VOWELS[0]);
+                    else if (tab === "consonants") selectItem(ENGLISH_CONSONANTS[0]);
+                    else selectItem(ENGLISH_NUMBERS_DATA[0]);
+                  }}
+                  ariaLabel="English alphabet category selection"
+                  roleMode="tablist"
+                  size="md"
+                  options={[
+                    { value: "all", label: "All Letters (A-Z) (26)" },
+                    { value: "vowels", label: "Vowels (5)" },
+                    { value: "consonants", label: "Consonants (21)" },
+                    { value: "numbers", label: "Numbers (0-100)" },
+                  ]}
+                />
 
                 {/* Numbers Range Filter Sub-bar (English) */}
                 {englishTab === "numbers" && (
-                  <div className="flex items-center gap-1.5 px-2 overflow-x-auto no-scrollbar py-0.5">
+                  <div className="flex items-center gap-1.5 px-1 overflow-x-auto no-scrollbar py-0.5">
                     <span className="text-[11px] font-bold text-slate-500 shrink-0">Range:</span>
                     {(
                       [
@@ -1438,10 +1368,11 @@ export default function BanglaBornomalaLab() {
                           playPopSound();
                           applyNumberRangeFilter(range.id);
                         }}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                        aria-pressed={numberRangeFilter === range.id}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold transition-all shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                           numberRangeFilter === range.id
-                            ? "bg-amber-600 text-white shadow-xs"
-                            : "bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60"
+                            ? "bg-[#006A4E] text-white"
+                            : "bg-[#F8FAFC] text-slate-700 hover:bg-[#EEF8F3] hover:text-[#00563F] border border-[#D5DCE4]"
                         }`}
                       >
                         {range.label}
@@ -1454,120 +1385,53 @@ export default function BanglaBornomalaLab() {
                 {englishTab !== "numbers" && (
                   <div className="flex flex-wrap items-center justify-between gap-2 px-1">
                     {/* Case Switcher */}
-                    <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
-                      <span className="text-[11px] font-bold text-slate-500 pl-1.5 pr-0.5">রূপ:</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setEnglishCase("upper");
-                          setAccuracyScore(null);
-                          hasAwardedCurrentAttemptRef.current = false;
-                        }}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                          englishCase === "upper"
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "bg-white text-slate-700 hover:bg-slate-200"
-                        }`}
-                      >
-                        বড়হাত (A-Z)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setEnglishCase("lower");
-                          setAccuracyScore(null);
-                          hasAwardedCurrentAttemptRef.current = false;
-                        }}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                          englishCase === "lower"
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "bg-white text-slate-700 hover:bg-slate-200"
-                        }`}
-                      >
-                        ছোটহাত (a-z)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setEnglishCase("pair");
-                          setAccuracyScore(null);
-                          hasAwardedCurrentAttemptRef.current = false;
-                        }}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                          englishCase === "pair"
-                            ? "bg-blue-600 text-white shadow-xs"
-                            : "bg-white text-slate-700 hover:bg-slate-200"
-                        }`}
-                      >
-                        উভয় রূপ (Aa)
-                      </button>
-                    </div>
+                    <SegmentedControl
+                      value={englishCase}
+                      onChange={(c) => {
+                        playPopSound();
+                        setEnglishCase(c);
+                        setAccuracyScore(null);
+                        hasAwardedCurrentAttemptRef.current = false;
+                      }}
+                      ariaLabel="অক্ষরের রূপ নির্বাচন"
+                      roleMode="radiogroup"
+                      size="sm"
+                      options={[
+                        { value: "upper", label: "বড়হাত (A-Z)" },
+                        { value: "lower", label: "ছোটহাত (a-z)" },
+                        { value: "pair", label: "উভয় রূপ (Aa)" },
+                      ]}
+                    />
 
                     {/* Anatomy Filter */}
                     <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
                       <span className="text-[11px] font-bold text-slate-500 shrink-0">লাইন বিন্যাস:</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          applyEnglishAnatomyFilter("all");
-                        }}
-                        className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
-                          englishAnatomyFilter === "all"
-                            ? "bg-slate-800 text-white shadow-xs"
-                            : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                        }`}
-                      >
-                        সকল বর্ণ
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          applyEnglishAnatomyFilter("ascender");
-                        }}
-                        className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
-                          englishAnatomyFilter === "ascender"
-                            ? "bg-pink-600 text-white shadow-xs"
-                            : "bg-pink-50 text-pink-700 hover:bg-pink-100"
-                        }`}
-                        title="উর্ধ্বমুখী বর্ণ (b, d, f, h, k, l, t)"
-                      >
-                        উর্ধ্বমুখী (Ascender)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          applyEnglishAnatomyFilter("middle");
-                        }}
-                        className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
-                          englishAnatomyFilter === "middle"
-                            ? "bg-emerald-600 text-white shadow-xs"
-                            : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                        }`}
-                        title="মাঝারি বর্ণ (a, c, e, m, n, o, r, s, u, v, w, x, z)"
-                      >
-                        মাঝারি (Middle)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          applyEnglishAnatomyFilter("descender");
-                        }}
-                        className={`px-2 py-1 rounded-lg text-[11px] font-bold transition-all shrink-0 ${
-                          englishAnatomyFilter === "descender"
-                            ? "bg-amber-600 text-white shadow-xs"
-                            : "bg-amber-50 text-amber-700 hover:bg-amber-100"
-                        }`}
-                        title="নিম্নমুখী বর্ণ (g, j, p, q, y)"
-                      >
-                        নিম্নমুখী (Descender)
-                      </button>
+                      {(
+                        [
+                          { id: "all", label: "সকল বর্ণ", title: "সকল বর্ণ" },
+                          { id: "ascender", label: "উর্ধ্বমুখী (Ascender)", title: "উর্ধ্বমুখী বর্ণ (b, d, f, h, k, l, t)" },
+                          { id: "middle", label: "মাঝারি (Middle)", title: "মাঝারি বর্ণ (a, c, e, m, n, o, r, s, u, v, w, x, z)" },
+                          { id: "descender", label: "নিম্নমুখী (Descender)", title: "নিম্নমুখী বর্ণ (g, j, p, q, y)" },
+                        ] as const
+                      ).map((af) => (
+                        <button
+                          key={af.id}
+                          type="button"
+                          onClick={() => {
+                            playPopSound();
+                            applyEnglishAnatomyFilter(af.id);
+                          }}
+                          aria-pressed={englishAnatomyFilter === af.id}
+                          title={af.title}
+                          className={`px-2.5 py-1 rounded-full text-[11px] font-semibold transition-all shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
+                            englishAnatomyFilter === af.id
+                              ? "bg-[#006A4E] text-white"
+                              : "bg-[#F8FAFC] text-slate-700 hover:bg-[#EEF8F3] hover:text-[#00563F] border border-[#D5DCE4]"
+                          }`}
+                        >
+                          {af.label}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -1575,94 +1439,40 @@ export default function BanglaBornomalaLab() {
             ) : (
               // Bangla Navigation Tabs
               <>
-                <nav aria-label="বর্ণমালা শ্রেণি নির্বাচন" className="flex items-center gap-1.5 sm:gap-2 bg-slate-100 p-1.5 rounded-2xl overflow-x-auto max-w-full no-scrollbar">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setActiveTab("vowels");
+                <SegmentedControl
+                  value={activeTab}
+                  onChange={(tab) => {
+                    playPopSound();
+                    setActiveTab(tab);
+                    if (tab === "vowels") {
                       selectItem(VOWELS_DATA[0]);
                       setSelectedMatraFilter("all");
-                    }}
-                    aria-pressed={activeTab === "vowels"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      activeTab === "vowels"
-                        ? "bg-white text-pink-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    স্বরবর্ণ (১১)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setActiveTab("consonants");
+                    } else if (tab === "consonants") {
                       selectItem(CONSONANTS_DATA[0]);
                       setSelectedMatraFilter("all");
-                    }}
-                    aria-pressed={activeTab === "consonants"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      activeTab === "consonants"
-                        ? "bg-white text-emerald-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    ব্যঞ্জনবর্ণ (৩৯)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setActiveTab("karchinho");
+                    } else if (tab === "karchinho") {
                       selectItem(KAR_DATA[0]);
-                    }}
-                    aria-pressed={activeTab === "karchinho"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      activeTab === "karchinho"
-                        ? "bg-white text-blue-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    কারচিহ্ন (১০)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setActiveTab("juktoborno");
+                    } else if (tab === "juktoborno") {
                       selectItem(JUKTOBORNO_DATA[0]);
-                    }}
-                    aria-pressed={activeTab === "juktoborno"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      activeTab === "juktoborno"
-                        ? "bg-white text-purple-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    যুক্তবর্ণ (১৬)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setActiveTab("numbers");
+                    } else {
                       selectItem(NUMBERS_DATA[0]);
-                    }}
-                    aria-pressed={activeTab === "numbers"}
-                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shrink-0 transition-all ${
-                      activeTab === "numbers"
-                        ? "bg-white text-amber-700 shadow-xs"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    সংখ্যা (০-১০০)
-                  </button>
-                </nav>
+                    }
+                  }}
+                  ariaLabel="বর্ণমালা শ্রেণি নির্বাচন"
+                  roleMode="tablist"
+                  size="md"
+                  options={[
+                    { value: "vowels", label: "স্বরবর্ণ (১১)" },
+                    { value: "consonants", label: "ব্যঞ্জনবর্ণ (৩৯)" },
+                    { value: "karchinho", label: "কারচিহ্ন (১০)" },
+                    { value: "juktoborno", label: "যুক্তবর্ণ (১৬)" },
+                    { value: "numbers", label: "সংখ্যা (০-১০০)" },
+                  ]}
+                />
 
                 {/* Numbers Range Filter Sub-bar (Bangla) */}
                 {activeTab === "numbers" && (
-                  <div className="flex items-center gap-1.5 px-2 overflow-x-auto no-scrollbar py-0.5">
+                  <div className="flex items-center gap-1.5 px-1 overflow-x-auto no-scrollbar py-0.5">
                     <span className="text-xs font-bold text-slate-500 shrink-0">পরিসর:</span>
                     {(
                       [
@@ -1681,10 +1491,11 @@ export default function BanglaBornomalaLab() {
                           playPopSound();
                           applyNumberRangeFilter(range.id);
                         }}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all shrink-0 ${
+                        aria-pressed={numberRangeFilter === range.id}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold transition-all shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                           numberRangeFilter === range.id
-                            ? "bg-amber-600 text-white shadow-xs"
-                            : "bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200/60"
+                            ? "bg-[#006A4E] text-white"
+                            : "bg-[#F8FAFC] text-slate-700 hover:bg-[#EEF8F3] hover:text-[#00563F] border border-[#D5DCE4]"
                         }`}
                       >
                         {range.label}
@@ -1695,64 +1506,33 @@ export default function BanglaBornomalaLab() {
 
                 {/* Matra Filter Sub-bar (Only for Vowels and Consonants) */}
                 {(activeTab === "vowels" || activeTab === "consonants") && (
-                  <div className="flex items-center gap-2 px-2 overflow-x-auto no-scrollbar">
+                  <div className="flex items-center gap-1.5 px-1 overflow-x-auto no-scrollbar">
                     <span className="text-xs font-bold text-slate-500 shrink-0">মাত্রাভেদ:</span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        playPopSound();
-                        applyBanglaMatraFilter("all");
-                      }}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                        selectedMatraFilter === "all"
-                          ? "bg-slate-800 text-white shadow-xs"
-                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-                      }`}
-                    >
-                      সকল বর্ণ
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        playPopSound();
-                        applyBanglaMatraFilter("full");
-                      }}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                        selectedMatraFilter === "full"
-                          ? "bg-pink-600 text-white shadow-xs"
-                          : "bg-pink-50 text-pink-700 hover:bg-pink-100"
-                      }`}
-                    >
-                      পূর্ণমাত্রা ({activeTab === "vowels" ? "৬টি" : "২৬টি"})
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        playPopSound();
-                        applyBanglaMatraFilter("half");
-                      }}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                        selectedMatraFilter === "half"
-                          ? "bg-emerald-600 text-white shadow-xs"
-                          : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                      }`}
-                    >
-                      অর্ধমাত্রা ({activeTab === "vowels" ? "১টি" : "৭টি"})
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        playPopSound();
-                        applyBanglaMatraFilter("none");
-                      }}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                        selectedMatraFilter === "none"
-                          ? "bg-amber-600 text-white shadow-xs"
-                          : "bg-amber-50 text-amber-700 hover:bg-amber-100"
-                      }`}
-                    >
-                      মাত্রাহীন ({activeTab === "vowels" ? "৪টি" : "৬টি"})
-                    </button>
+                    {(
+                      [
+                        { id: "all", label: "সকল বর্ণ" },
+                        { id: "full", label: `পূর্ণমাত্রা (${activeTab === "vowels" ? "৬টি" : "২৬টি"})` },
+                        { id: "half", label: `অর্ধমাত্রা (${activeTab === "vowels" ? "১টি" : "৭টি"})` },
+                        { id: "none", label: `মাত্রাহীন (${activeTab === "vowels" ? "৪টি" : "৬টি"})` },
+                      ] as const
+                    ).map((mf) => (
+                      <button
+                        key={mf.id}
+                        type="button"
+                        onClick={() => {
+                          playPopSound();
+                          applyBanglaMatraFilter(mf.id);
+                        }}
+                        aria-pressed={selectedMatraFilter === mf.id}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold transition-all shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
+                          selectedMatraFilter === mf.id
+                            ? "bg-[#006A4E] text-white"
+                            : "bg-[#F8FAFC] text-slate-700 hover:bg-[#EEF8F3] hover:text-[#00563F] border border-[#D5DCE4]"
+                        }`}
+                      >
+                        {mf.label}
+                      </button>
+                    ))}
                   </div>
                 )}
               </>
@@ -1772,18 +1552,18 @@ export default function BanglaBornomalaLab() {
                     ? "এই ফিল্টারে কোনো বর্ণ নেই। সব বর্ণ দেখতে রিসেট করুন।"
                     : "এই ফিল্টারে কোনো বর্ণ পাওয়া যায়নি।"}
                 </span>
-                <button
-                  type="button"
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() => {
                     playPopSound();
                     setEnglishAnatomyFilter("all");
                     setSelectedMatraFilter("all");
                     setNumberRangeFilter("all");
                   }}
-                  className="px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold shadow-xs"
                 >
                   সব বর্ণ দেখাও
-                </button>
+                </Button>
               </div>
             ) : (
               filteredList.map((item) => {
@@ -1806,18 +1586,16 @@ export default function BanglaBornomalaLab() {
                       }
                     }}
                     aria-pressed={isSelected}
-                    className={`min-w-[64px] sm:min-w-[74px] h-18 sm:h-20 rounded-2xl border-2 flex flex-col items-center justify-center gap-0.5 shrink-0 transition-all ${
+                    className={`min-w-[64px] sm:min-w-[74px] h-18 sm:h-20 rounded-[14px] border-2 flex flex-col items-center justify-center gap-0.5 shrink-0 transition-all cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] ${
                       isSelected
-                        ? isEnglish
-                          ? "border-blue-500 bg-blue-50/90 text-blue-900 shadow-md scale-105 ring-2 ring-blue-500/20"
-                          : "border-pink-500 bg-pink-50/90 text-pink-900 shadow-md scale-105 ring-2 ring-pink-500/20"
-                        : "border-slate-200 bg-white hover:border-slate-300 text-slate-800"
+                        ? "border-[#006A4E] bg-[#EEF8F3] text-[#00563F] shadow-sm"
+                        : "border-[#D5DCE4] bg-white hover:border-[#006A4E]/50 hover:bg-[#F8FAFC] text-slate-800"
                     }`}
                   >
-                    <span className={`font-black ${isEnglish && englishCase === "pair" ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"}`}>
+                    <span className={`font-bold ${isEnglish && englishCase === "pair" ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"}`}>
                       {displayGlyph}
                     </span>
-                    <span className="text-[11px] sm:text-xs font-semibold text-slate-600 px-1 truncate max-w-[66px] text-center">
+                    <span className="text-[11px] sm:text-xs font-medium text-slate-600 px-1 truncate max-w-[66px] text-center">
                       {item.word}
                     </span>
                   </button>
@@ -1972,168 +1750,116 @@ export default function BanglaBornomalaLab() {
               </div>
 
               {/* Teacher Voice Switcher Bar */}
-              <div className="flex items-center justify-between gap-2 bg-white/80 p-2 rounded-2xl border border-slate-200 text-xs">
+              <div className="flex items-center justify-between gap-2 bg-white p-2 rounded-2xl border border-slate-200 text-xs flex-wrap">
                 <span className="font-bold text-slate-600 text-[11px] flex items-center gap-1">
                   <span>🗣️</span>
                   <span>{isEnglish ? "Teacher's Voice:" : "শিক্ষকের কণ্ঠ:"}</span>
                 </span>
-                <div className="flex items-center gap-1">
-                  {isEnglish ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setEnglishTeacherVoice("ana");
-                        }}
-                        className={`px-2.5 py-1 rounded-xl font-bold text-xs transition-all ${
-                          englishTeacherVoice === "ana"
-                            ? "bg-blue-600 text-white shadow-xs scale-102"
-                            : "bg-blue-50 text-blue-700 hover:bg-blue-100"
-                        }`}
-                        title="Teacher Ana (US English Child Friendly)"
-                      >
-                        👧 Teacher Ana
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setEnglishTeacherVoice("guy");
-                        }}
-                        className={`px-2.5 py-1 rounded-xl font-bold text-xs transition-all ${
-                          englishTeacherVoice === "guy"
-                            ? "bg-indigo-600 text-white shadow-xs scale-102"
-                            : "bg-indigo-50 text-indigo-700 hover:bg-indigo-100"
-                        }`}
-                        title="Teacher Guy (US English Standard)"
-                      >
-                        👨‍🏫 Teacher Guy
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setTeacherVoice("nabanita");
-                        }}
-                        className={`px-2.5 py-1 rounded-xl font-bold text-xs transition-all ${
-                          teacherVoice === "nabanita"
-                            ? "bg-pink-600 text-white shadow-xs scale-102"
-                            : "bg-pink-50 text-pink-700 hover:bg-pink-100"
-                        }`}
-                        title="নবনীতা ম্যাম (মহিলা কণ্ঠ)"
-                      >
-                        👩‍🏫 নবনীতা ম্যাম
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          playPopSound();
-                          setTeacherVoice("pradeep");
-                        }}
-                        className={`px-2.5 py-1 rounded-xl font-bold text-xs transition-all ${
-                          teacherVoice === "pradeep"
-                            ? "bg-blue-600 text-white shadow-xs scale-102"
-                            : "bg-blue-50 text-blue-700 hover:bg-blue-100"
-                        }`}
-                        title="প্রদীপ স্যার (পুরুষ কণ্ঠ)"
-                      >
-                        👨‍🏫 প্রদীপ স্যার
-                      </button>
-                    </>
-                  )}
-                </div>
+                {isEnglish ? (
+                  <SegmentedControl
+                    value={englishTeacherVoice}
+                    onChange={(v) => {
+                      playPopSound();
+                      setEnglishTeacherVoice(v);
+                    }}
+                    ariaLabel="Teacher Voice"
+                    roleMode="radiogroup"
+                    size="sm"
+                    options={[
+                      { value: "ana", label: "👧 Teacher Ana" },
+                      { value: "guy", label: "👨‍🏫 Teacher Guy" },
+                    ]}
+                  />
+                ) : (
+                  <SegmentedControl
+                    value={teacherVoice}
+                    onChange={(v) => {
+                      playPopSound();
+                      setTeacherVoice(v);
+                    }}
+                    ariaLabel="শিক্ষকের কণ্ঠ"
+                    roleMode="radiogroup"
+                    size="sm"
+                    options={[
+                      { value: "nabanita", label: "👩‍🏫 নবনীতা ম্যাম" },
+                      { value: "pradeep", label: "👨‍🏫 প্রদীপ স্যার" },
+                    ]}
+                  />
+                )}
               </div>
 
               {/* Action Buttons: Letter Name (English), Pure Sound/Phonics, Rhyme, Record, Celebrate */}
-              <div className="pt-1 flex flex-wrap gap-2 justify-center sm:justify-start">
+              <div className="pt-1 flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+                <AudioButton
+                  isPlaying={isSpeaking}
+                  onClick={() => handleSpeakPure(selectedItem)}
+                  size="md"
+                  ariaLabel={isEnglish ? "Listen to pure Phonics sound" : "শুধু বিশুদ্ধ বর্ণধ্বনি শুনুন"}
+                  playingAriaLabel="উচ্চারণ চলছে"
+                />
+
                 {isEnglish && englishItem && (
-                  <button
-                    type="button"
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => handleSpeak(englishItem.name)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-sky-700 hover:bg-sky-50 border border-sky-200 shadow-xs transition-all"
                     title="অক্ষরের নাম শুনুন (Letter Name)"
                   >
-                    <span>🔤 {englishItem.type === "number" ? "Number Name" : "Letter Name"}</span>
-                  </button>
+                    🔤 {englishItem.type === "number" ? "Number Name" : "Letter Name"}
+                  </Button>
                 )}
 
-                <button
-                  type="button"
+                <Button
+                  variant="tonal"
+                  size="sm"
+                  leftIcon={<Volume2 className="w-4 h-4" />}
                   onClick={() => handleSpeakPure(selectedItem)}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                    isSpeaking 
-                      ? isEnglish ? "bg-blue-600 text-white animate-pulse" : "bg-pink-600 text-white animate-pulse" 
-                      : isEnglish 
-                        ? "bg-white text-blue-700 hover:bg-blue-50 border border-blue-200 shadow-xs"
-                        : "bg-white text-pink-700 hover:bg-pink-50 border border-pink-200 shadow-xs"
-                  }`}
                   title={isEnglish ? "Listen to pure Phonics sound" : "শুধু বিশুদ্ধ বর্ণধ্বনি শুনুন"}
                 >
-                  <Volume2 className={`w-4 h-4 ${isSpeaking ? "text-white" : isEnglish ? "text-blue-600" : "text-pink-600"}`} aria-hidden="true" />
-                  <span>{isEnglish ? "🔊 Phonics Sound" : "🔊 বর্ণধ্বনি"}</span>
-                </button>
+                  {isEnglish ? "Phonics Sound" : "বর্ণধ্বনি"}
+                </Button>
 
-                <button
-                  type="button"
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() => handleSpeakRhyme(selectedItem)}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white border shadow-xs transition-all ${
-                    isEnglish
-                      ? "text-indigo-700 hover:bg-indigo-50 border-indigo-200"
-                      : "text-purple-700 hover:bg-purple-50 border border-purple-200"
-                  }`}
                   title={isEnglish ? "Listen to Phonics Rhyme & Sentence" : "ছড়া ও উদাহরণ বাক্য শুনুন"}
                 >
-                  <span>{isEnglish ? "🎵 Phonics Rhyme" : "🎵 ছড়া ও বাক্য"}</span>
-                </button>
+                  {isEnglish ? "🎵 Phonics Rhyme" : "🎵 ছড়া ও বাক্য"}
+                </Button>
 
                 {/* Voice Recording Button */}
-                <button
-                  type="button"
+                <Button
+                  variant={isRecording ? "danger" : "danger-tonal"}
+                  size="sm"
+                  leftIcon={isRecording ? <Square className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
                   onClick={handleToggleRecord}
-                  className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                    isRecording 
-                      ? "bg-rose-600 text-white animate-pulse shadow-md" 
-                      : "bg-white text-rose-700 hover:bg-rose-50 border border-rose-200 shadow-xs"
-                  }`}
                   title="বাচ্চার উচ্চারণ রেকর্ড করুন"
                 >
-                  {isRecording ? <Square className="w-4 h-4" /> : <Mic className="w-4 h-4 text-rose-600" />}
-                  <span>{isRecording ? `রেকর্ড থামাও (${recordCountdown}s)` : "আমার কণ্ঠ রেকর্ড"}</span>
-                </button>
+                  {isRecording ? `রেকর্ড থামাও (${recordCountdown}s)` : "আমার কণ্ঠ রেকর্ড"}
+                </Button>
 
                 {/* Play Recorded Voice */}
                 {recordedAudioUrl && !isRecording && (
-                  <button
-                    type="button"
+                  <Button
+                    variant={isPlayingRecorded ? "primary" : "tonal"}
+                    size="sm"
+                    leftIcon={isPlayingRecorded ? <Square className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current" />}
                     onClick={handlePlayRecorded}
-                    className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs animate-in zoom-in-95 ${
-                      isPlayingRecorded
-                        ? "bg-purple-600 text-white animate-pulse"
-                        : "bg-purple-100 hover:bg-purple-200 text-purple-800"
-                    }`}
                     title={isPlayingRecorded ? "বাজানো থামাও" : "আমার রেকর্ড করা কথা শুনো"}
                   >
-                    {isPlayingRecorded ? (
-                      <Square className="w-4 h-4 fill-white" />
-                    ) : (
-                      <Play className="w-4 h-4 fill-purple-700 text-purple-700" />
-                    )}
-                    <span>{isPlayingRecorded ? "রেকর্ড থামাও" : "আমার রেকর্ড শোনো"}</span>
-                  </button>
+                    {isPlayingRecorded ? "রেকর্ড থামাও" : "আমার রেকর্ড শোনো"}
+                  </Button>
                 )}
 
-                <button
-                  type="button"
+                <Button
+                  variant="play-marigold"
+                  leftIcon={<Sparkles className="w-4 h-4" />}
                   onClick={handleCelebrateManual}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-all hover:scale-105 active:scale-95"
+                  className="h-9 px-3.5 text-xs rounded-[12px]"
                 >
-                  <Sparkles className="w-4 h-4" aria-hidden="true" />
-                  <span>বাহবা দাও!</span>
-                </button>
+                  বাহবা দাও!
+                </Button>
               </div>
 
               {/* Stroke Order Guide Tip Box */}
@@ -2160,70 +1886,25 @@ export default function BanglaBornomalaLab() {
               aria-label="হাত ঘুরিয়ে লেখার ক্যানভাস বোর্ড"
               className="lg:col-span-7 space-y-3"
             >
-              {/* Drawing Tools Palette (Phase 2) */}
-              <div className="flex flex-wrap items-center justify-between gap-2.5 p-3 bg-slate-100 rounded-2xl border border-slate-200">
+              {/* Drawing Tools Palette (Soft-Solid 2.0) */}
+              <div className="flex flex-wrap items-center justify-between gap-2.5 p-3 bg-[#F8FAFC] rounded-2xl border border-slate-200">
                 {/* Brush Types (Pencil, Chalk, Rainbow, Eraser) */}
-                <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setBrushMode("pencil");
-                    }}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
-                      brushMode === "pencil" ? "bg-blue-600 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"
-                    }`}
-                    title="সাধারণ পেন্সিল"
-                  >
-                    <Pencil className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">পেন্সিল</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setBrushMode("chalk");
-                    }}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
-                      brushMode === "chalk" ? "bg-purple-600 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"
-                    }`}
-                    title="চক পেন্সিল"
-                  >
-                    <Sparkle className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">চক</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setBrushMode("rainbow");
-                    }}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
-                      brushMode === "rainbow" ? "bg-gradient-to-r from-pink-500 to-amber-500 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"
-                    }`}
-                    title="জাদুকরী রংধনু ব্রাশ"
-                  >
-                    <span>🌈</span>
-                    <span className="hidden sm:inline">রংধনু</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      playPopSound();
-                      setBrushMode("eraser");
-                    }}
-                    className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition-all ${
-                      brushMode === "eraser" ? "bg-rose-600 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"
-                    }`}
-                    title="ইরেজার (মুছে ফেলা)"
-                  >
-                    <Eraser className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">মুছুনি</span>
-                  </button>
-                </div>
+                <SegmentedControl
+                  value={brushMode}
+                  onChange={(mode) => {
+                    playPopSound();
+                    setBrushMode(mode);
+                  }}
+                  ariaLabel="তুলির ধরন"
+                  roleMode="radiogroup"
+                  size="sm"
+                  options={[
+                    { value: "pencil", label: "পেন্সিল", icon: <Pencil className="w-3.5 h-3.5" /> },
+                    { value: "chalk", label: "চক", icon: <Sparkle className="w-3.5 h-3.5" /> },
+                    { value: "rainbow", label: "🌈 রংধনু" },
+                    { value: "eraser", label: "মুছুনি", icon: <Eraser className="w-3.5 h-3.5" /> },
+                  ]}
+                />
 
                 {/* Color Swatches */}
                 {brushMode !== "rainbow" && brushMode !== "eraser" && (
@@ -2236,13 +1917,14 @@ export default function BanglaBornomalaLab() {
                           playPopSound();
                           setBrushColor(c.hex);
                         }}
-                        className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center p-1 rounded-full transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-800 touch-manipulation cursor-pointer"
+                        className="w-10 h-10 sm:w-9 sm:h-9 flex items-center justify-center p-1 rounded-full transition-transform active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] touch-manipulation cursor-pointer"
                         title={c.name}
                         aria-label={`${c.name} পেন্সিল`}
+                        aria-pressed={brushColor === c.hex}
                       >
                         <span
                           className={`w-7 h-7 sm:w-7 sm:h-7 rounded-full block shadow-2xs transition-transform ${
-                            brushColor === c.hex ? "scale-115 ring-2 ring-slate-800" : "hover:scale-105"
+                            brushColor === c.hex ? "scale-110 ring-2 ring-[#0F172A] ring-offset-2" : "hover:scale-105"
                           }`}
                           style={{ backgroundColor: c.hex }}
                         />
@@ -2252,67 +1934,46 @@ export default function BanglaBornomalaLab() {
                 )}
 
                 {/* Brush Size Controls */}
-                <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200" role="group" aria-label="তুলির আকার নির্বাচন">
-                  <button
-                    type="button"
-                    onClick={() => setBrushSize(6)}
-                    aria-pressed={brushSize === 6}
-                    className={`px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${brushSize === 6 ? "bg-slate-800 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"}`}
-                    title="চিকন দাগ"
-                  >
-                    চিকন
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBrushSize(12)}
-                    aria-pressed={brushSize === 12}
-                    className={`px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${brushSize === 12 ? "bg-slate-800 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"}`}
-                    title="মাঝারি দাগ"
-                  >
-                    মাঝারি
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBrushSize(22)}
-                    aria-pressed={brushSize === 22}
-                    className={`px-3 py-1.5 min-h-[36px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 ${brushSize === 22 ? "bg-slate-800 text-white shadow-xs" : "text-slate-600 hover:bg-slate-100"}`}
-                    title="মোটা দাগ"
-                  >
-                    মোটা
-                  </button>
-                </div>
+                <SegmentedControl
+                  value={String(brushSize) as "6" | "12" | "22"}
+                  onChange={(val) => setBrushSize(Number(val))}
+                  ariaLabel="তুলির আকার নির্বাচন"
+                  roleMode="radiogroup"
+                  size="sm"
+                  options={[
+                    { value: "6", label: "চিকন" },
+                    { value: "12", label: "মাঝারি" },
+                    { value: "22", label: "মোটা" },
+                  ]}
+                />
 
                 {/* Undo, Redo, Download & Clear */}
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
+                <div className="flex items-center gap-1.5">
+                  <IconButton
+                    icon={<Undo2 className="w-4 h-4" />}
+                    ariaLabel="পেছনে যাও (Undo)"
+                    variant="secondary"
+                    size="sm"
                     onClick={handleUndo}
-                    aria-label="পেছনে যাও (Undo)"
-                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
-                    title="পেছনে যাও (Undo)"
-                  >
-                    <Undo2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
+                  />
+                  <IconButton
+                    icon={<Redo2 className="w-4 h-4" />}
+                    ariaLabel="সামনে যাও (Redo)"
+                    variant="secondary"
+                    size="sm"
                     onClick={handleRedo}
-                    aria-label="সামনে যাও (Redo)"
-                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
-                    title="সামনে যাও (Redo)"
-                  >
-                    <Redo2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
+                  />
+                  <IconButton
+                    icon={<Download className="w-4 h-4" />}
+                    ariaLabel="ছবি ডাউনলোড করো (PNG)"
+                    variant="secondary"
+                    size="sm"
                     onClick={handleDownloadDrawing}
-                    aria-label="ছবি ডাউনলোড করো (PNG)"
-                    className="p-2 min-w-[40px] min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 touch-manipulation flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
-                    title="ছবি ডাউনলোড করো (PNG)"
-                  >
-                    <Download className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
+                  />
+                  <Button
+                    variant="danger-tonal"
+                    size="sm"
+                    leftIcon={<RotateCcw className="w-3.5 h-3.5" />}
                     onClick={() => {
                       playPopSound();
                       undoStackRef.current = [];
@@ -2322,12 +1983,10 @@ export default function BanglaBornomalaLab() {
                       setupInkCanvas(false);
                     }}
                     aria-label="নতুন করে ক্যানভাস পরিষ্কার করো"
-                    className="px-3 py-2 min-h-[40px] rounded-xl bg-white hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold flex items-center gap-1.5 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500"
                     title="নতুন করে পরিষ্কার করো"
                   >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    <span>পরিষ্কার</span>
-                  </button>
+                    পরিষ্কার
+                  </Button>
                 </div>
               </div>
 
@@ -2354,40 +2013,35 @@ export default function BanglaBornomalaLab() {
 
               {/* Bottom Tracing Controls Bar: Grid toggle, Accuracy verification */}
               <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    leftIcon={showRuledGrid ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                     onClick={() => setShowRuledGrid(!showRuledGrid)}
-                    className="text-xs font-semibold text-slate-600 hover:text-slate-900 inline-flex items-center gap-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-xl transition-colors"
                   >
-                    {showRuledGrid ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                    <span>
-                      {showRuledGrid
-                        ? isEnglish ? "৪-দাগের রুল্ড লাইন লুকাও" : "৩-দাগের রুল্ড লাইন লুকাও"
-                        : isEnglish ? "৪-দাগের ইংলিশ খাতা দেখাও" : "৩-দাগের রুল্ড খাতা দেখাও"}
-                    </span>
-                  </button>
+                    {showRuledGrid
+                      ? isEnglish ? "৪-দাগের রুল্ড লাইন লুকাও" : "৩-দাগের রুল্ড লাইন লুকাও"
+                      : isEnglish ? "৪-দাগের ইংলিশ খাতা দেখাও" : "৩-দাগের রুল্ড খাতা দেখাও"}
+                  </Button>
 
-                  <button
-                    type="button"
+                  <Button
+                    variant="tonal"
+                    size="sm"
                     onClick={() => setShowStrokeGuide(!showStrokeGuide)}
-                    className="text-xs font-semibold text-amber-800 hover:text-amber-950 inline-flex items-center gap-1 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-200 transition-colors"
                   >
-                    <span>{showStrokeGuide ? (isEnglish ? "Hide Rules" : "নিয়ম লুকাও") : (isEnglish ? "Show Stroke Rules" : "লেখার নিয়ম দেখাও")}</span>
-                  </button>
+                    {showStrokeGuide ? (isEnglish ? "Hide Rules" : "নিয়ম লুকাও") : (isEnglish ? "Show Stroke Rules" : "লেখার নিয়ম দেখাও")}
+                  </Button>
                 </div>
 
-                {/* Accuracy Detection Button (Phase 3) */}
-                <button
-                  type="button"
+                {/* Accuracy Detection Primary Student Play CTA */}
+                <Button
+                  variant="play-green"
+                  leftIcon={<CheckCircle2 className="w-5 h-5" />}
                   onClick={handleVerifyAccuracy}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white font-bold text-xs sm:text-sm shadow-sm transition-all hover:scale-105 active:scale-95 ${
-                    isEnglish ? "bg-blue-600 hover:bg-blue-700" : "bg-pink-600 hover:bg-pink-700"
-                  }`}
                 >
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>{isEnglish ? "Verify Writing & Win Stars!" : "লেখা যাচাই করো ও স্টার নাও!"}</span>
-                </button>
+                  {isEnglish ? "Verify Writing & Win Stars!" : "লেখা যাচাই করো ও স্টার নাও!"}
+                </Button>
               </div>
 
               {/* Accuracy Feedback Banner */}

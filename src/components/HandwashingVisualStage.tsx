@@ -134,11 +134,11 @@ export default function HandwashingVisualStage({
             { step: 6, label: "✨ ৬. নখ ও কবজি", icon: "🧼" },
           ].map((item) => (
             <button type="button" key={item.step} onClick={() => handleStepSelect(item.step)}
-              className={`px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-black transition-all flex items-center gap-1 shrink-0 ${
-                activeStep === item.step
-                  ? "bg-teal-600 text-white shadow-xs scale-102"
-                  : "bg-slate-100/80 text-slate-700 hover:bg-slate-200/80"
-              }`}
+              className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2 py-1 rounded-xl text-[10px] sm:text-[11px] font-semibold transition-all flex items-center gap-1 shrink-0 ${
+ activeStep === item.step
+ ? "bg-teal-600 text-white shadow-xs"
+ : "bg-slate-100/80 text-slate-700 hover:bg-slate-200/80"
+ }`}
             >
               <span>{item.icon}</span>
               <span className="hidden xs:inline">{item.label}</span>
@@ -154,11 +154,11 @@ export default function HandwashingVisualStage({
               setIsWaterRunning(!isWaterRunning);
               if (playChime) playChime("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-xs font-black flex items-center gap-1 transition-all ${
-              isWaterRunning
-                ? "bg-sky-500 text-white shadow-2xs"
-                : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all ${
+ isWaterRunning
+ ? "bg-sky-500 text-white shadow-2xs"
+ : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+ }`}
             title="পানির কল চালু বা বন্ধ করুন"
           >
             <Droplets className="w-3.5 h-3.5" />
@@ -171,7 +171,7 @@ export default function HandwashingVisualStage({
               if (playChime) playChime("fanfare");
               handleSpeak(stepDescriptions[activeStep].speech);
             }}
-            className="px-2.5 py-1 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 shadow-2xs active:scale-95 flex items-center gap-1"
+            className="px-2.5 py-1 rounded-xl text-xs font-semibold bg-[#006A4E] hover:bg-[#005C44] text-white shadow-2xs active:scale-95 flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
           >
             <Volume2 className="w-3.5 h-3.5" />
             <span>ধাপের অডিও</span>
@@ -495,7 +495,7 @@ export default function HandwashingVisualStage({
           {activeStep < 6 && (
             <button type="button"
               onClick={() => handleStepSelect(activeStep + 1)}
-              className="px-2.5 py-1 rounded-xl text-xs font-black bg-teal-600 text-white hover:bg-teal-700 active:scale-95 transition-all shadow-2xs"
+              className="px-2.5 py-1 rounded-xl text-xs font-semibold bg-teal-600 text-white hover:bg-teal-700 active:scale-95 transition-all shadow-2xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
             >
               পরবর্তী ধাপ ➔
             </button>

@@ -313,7 +313,7 @@ export const MariaLifeIsBeautifulVisualStage: React.FC<MariaLifeIsBeautifulVisua
                     playChime("fanfare");
                     handleSpeak("Maria learned to read Braille as a young child. She reads with her fingertips!");
                   }}
-                  className="px-3 py-1 rounded bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-xs"
+                  className="px-3 py-1 rounded bg-[#B45309] hover:bg-[#92400E] text-white text-xs font-bold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Volume2 className="w-3.5 h-3.5 inline mr-1" />
                   ব্রেইল উচ্চারণ শুনুন

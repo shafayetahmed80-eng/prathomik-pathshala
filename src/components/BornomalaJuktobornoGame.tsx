@@ -436,7 +436,7 @@ export default function BornomalaJuktobornoGame({
             <button
               type="button"
               onClick={handleReplayPrompt}
-              className="p-3 bg-white/20 hover:bg-white/30 text-white rounded-2xl border border-white/30 transition-all hover:scale-105 active:scale-95 shadow-md flex items-center gap-1.5 text-xs font-bold"
+              className="p-3 bg-white/20 hover:bg-white/30 text-white rounded-2xl border border-white/30 transition-all active:scale-95 shadow-md flex items-center gap-1.5 text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               title={isEng ? "Hear Mission" : "মিশন শোনো"}
             >
               <Volume2 className="w-4 h-4 text-amber-300" />
@@ -446,7 +446,7 @@ export default function BornomalaJuktobornoGame({
             <button
               type="button"
               onClick={handleResetCauldron}
-              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 transition-all hover:scale-105 active:scale-95 text-xs font-bold flex items-center gap-1.5"
+              className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl border border-white/20 transition-all active:scale-95 text-xs font-bold flex items-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               title={isEng ? "Empty Cauldron" : "হাঁড়ি খালি করো"}
             >
               <RotateCcw className="w-4 h-4" />
@@ -575,7 +575,7 @@ export default function BornomalaJuktobornoGame({
               <button
                 type="button"
                 onClick={initRound}
-                className="mt-3 py-1.5 px-4 bg-white text-purple-950 rounded-xl font-black text-xs hover:bg-purple-100 transition-all inline-flex items-center gap-1.5 shadow-md"
+                className="mt-3 py-1.5 px-4 bg-white text-purple-950 rounded-xl font-semibold text-xs hover:bg-purple-100 transition-all inline-flex items-center gap-1.5 shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
               >
                 <span>{isEng ? "Forge Next Magic" : "পরবর্তী যুক্তবর্ণ তৈরি করো"}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -609,13 +609,13 @@ export default function BornomalaJuktobornoGame({
                 type="button"
                 onClick={() => handleBubbleClick(bubble)}
                 disabled={bubble.isUsed || isCompleted}
-                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 font-black text-2xl sm:text-3xl flex items-center justify-center transition-all duration-200 select-none touch-manipulation shadow-md ${
-                  bubble.isUsed
-                    ? "opacity-20 scale-90 border-slate-300 bg-slate-200 pointer-events-none"
-                    : isWobbling
-                    ? "animate-shake bg-rose-500 text-white border-rose-300 scale-105"
-                    : `bg-gradient-to-br ${bubble.color} hover:scale-115 active:scale-95 cursor-pointer shadow-purple-500/30`
-                }`}
+                className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 font-bold text-2xl sm:text-3xl flex items-center justify-center transition-all duration-200 select-none touch-manipulation shadow-md ${
+ bubble.isUsed
+ ? "opacity-20 scale-90 border-slate-300 bg-slate-200 pointer-events-none"
+ : isWobbling
+ ? "animate-shake bg-rose-500 text-white border-rose-300"
+ : `bg-[#0A8257] hover:bg-[#08704A] ${bubble.color} hover:scale-115 active:scale-95 cursor-pointer shadow-purple-500/30`
+ }`}
                 aria-label={`উপাদান ${bubble.char}`}
               >
                 <span>{bubble.char}</span>

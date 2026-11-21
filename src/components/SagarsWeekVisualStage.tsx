@@ -134,11 +134,11 @@ export const SagarsWeekVisualStage: React.FC<SagarsWeekVisualStageProps> = ({
               <button type="button"
                 key={a.id}
                 onClick={() => handleSelectActivity(a)}
-                className={`p-2 rounded-xl text-center border-2 transition-all flex flex-col items-center justify-between ${
-                  isSelected
-                    ? "bg-indigo-600 text-white border-indigo-700 shadow-md scale-102"
-                    : "bg-white hover:bg-indigo-50 text-slate-800 border-indigo-100 shadow-2xs hover:border-indigo-300"
-                }`}
+                className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] p-2 rounded-xl text-center border-2 transition-all flex flex-col items-center justify-between ${
+ isSelected
+ ? "bg-indigo-600 text-white border-indigo-700 shadow-md"
+ : "bg-white hover:bg-indigo-50 text-slate-800 border-indigo-100 shadow-2xs hover:border-indigo-300"
+ }`}
               >
                 <span className="text-xl">{a.icon}</span>
                 <span className="text-[10px] font-black truncate w-full mt-0.5">{a.time}</span>

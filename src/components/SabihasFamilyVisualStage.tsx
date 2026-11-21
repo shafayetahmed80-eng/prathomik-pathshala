@@ -146,11 +146,11 @@ export default function SabihasFamilyVisualStage({
               setActiveMode("family_home");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "family_home"
-                ? "bg-amber-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "family_home"
+ ? "bg-amber-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>👨‍👩‍👧‍👦</span>
             <span>পরিবারের সদস্য</span>
@@ -162,11 +162,11 @@ export default function SabihasFamilyVisualStage({
               setActiveMode("family_tree");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "family_tree"
-                ? "bg-rose-500 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "family_tree"
+ ? "bg-rose-500 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>🌳</span>
             <span>ফ্যামিলি ট্রি</span>
@@ -178,11 +178,11 @@ export default function SabihasFamilyVisualStage({
               setActiveMode("roles");
               playChime?.("click");
             }}
-            className={`px-2.5 py-1 rounded-xl text-[11px] font-black transition-all flex items-center gap-1 whitespace-nowrap ${
-              activeMode === "roles"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+            className={`focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E] px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all flex items-center gap-1 whitespace-nowrap ${
+ activeMode === "roles"
+ ? "bg-emerald-600 text-white shadow-xs"
+ : "text-slate-600 hover:bg-slate-100"
+ }`}
           >
             <span>💼</span>
             <span>পেশা ও ভূমিকা</span>
@@ -291,7 +291,7 @@ export default function SabihasFamilyVisualStage({
                 <button
                   type="button"
                   onClick={handleTriggerFamilyLove}
-                  className="px-2.5 py-1 rounded-xl text-[10px] font-black bg-rose-500 hover:bg-rose-600 text-white transition-all shadow-xs flex items-center gap-1"
+                  className="px-2.5 py-1 rounded-xl text-[10px] font-semibold bg-rose-500 hover:bg-rose-600 text-white transition-all shadow-xs flex items-center gap-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#006A4E]"
                 >
                   <Heart className="w-3 h-3 fill-current" />
                   <span>ভালোবাসা ❤️</span>
