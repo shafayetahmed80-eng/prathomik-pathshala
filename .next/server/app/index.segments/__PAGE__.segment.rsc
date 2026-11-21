@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-3:"static/chunks/app/layout-a1fa63e273b99ee7.js"
+3:"static/chunks/app/layout-2792743525a889a6.js"
 4:I[8346,["177","$3"],"default"]
 5:I[6626,[],""]
 6:I[7632,[],""]
-:HL["/_next/static/css/1393c5445e037b4a.css","style"]
+:HL["/_next/static/css/fac4fe47f35544f9.css","style"]
 :HL["https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","style"]
 2:T6aa,
               try {
@@ -35,23 +35,23 @@
               } catch (e) {}
             9:X
 a:[["children",{"s":"__PAGE__","h":160,"d":{"r":"$Lb","p":"$@c","v":null,"s":"$9"}}]]
-0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/1393c5445e037b4a.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":"$L7"}]]}]}]],[]]}]]}]]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":"$Ld","p":"$@e","v":null,"s":"$9"}},"a":"$@f","u":"$@10","b":"OE6-by6eTFxYTkjqMpLyf"}
+0:{"t":{"t":{"s":"","h":80,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/fac4fe47f35544f9.css","precedence":"next"}]],["$","html",null,{"lang":"bn","className":"scroll-smooth","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700&family=Atma:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=Mina:wght@400;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap","rel":"stylesheet"}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$2"}}]]}],["$","body",null,{"className":"min-h-screen bg-slate-50 text-slate-800 antialiased","suppressHydrationWarning":true,"children":[["$","$L4",null,{}],["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":"$L7"}]]}]}]],[]]}]]}]]}]]}],"p":"$@8","v":null,"s":"$9"},"c":"$Qa"},"h":{"r":"$Ld","p":"$@e","v":null,"s":"$9"}},"a":"$@f","u":"$@10","b":"WRFkd8Poegeskr-BeD9h8"}
 11:I[4659,[],"ClientPageRoot"]
 12:"static/chunks/568-eaec14f81ebfc140.js"
 13:"static/chunks/392-309e25e20f984f91.js"
 14:"static/chunks/446-8743656014d3bd8f.js"
-15:"static/chunks/597-0867bc06b741386a.js"
+15:"static/chunks/597-b79b2c80761e6528.js"
 16:"static/chunks/595-d381c538724390b8.js"
 17:"static/chunks/344-5879fce7f73156d1.js"
 18:"static/chunks/865-699ce2262d5a0b80.js"
 19:"static/chunks/438-c2c181fa48b7aa46.js"
 1a:"static/chunks/666-3bd34ecbf2d636fa.js"
-1b:"static/chunks/557-739b011fa31a1c35.js"
+1b:"static/chunks/557-e7e9bd8c9f96a9ce.js"
 1c:"static/chunks/276-79f59dd8e64c68e4.js"
 1d:"static/chunks/322-fc8aac6f7fbf6d6e.js"
 1e:"static/chunks/857-230f7ee133de65d3.js"
 1f:"static/chunks/767-cdbdae834ea8c67d.js"
-20:"static/chunks/app/page-936603d5ad133df5.js"
+20:"static/chunks/app/page-992cdb9505db394d.js"
 21:I[2677,["568","$12","392","$13","446","$14","597","$15","595","$16","344","$17","865","$18","438","$19","666","$1a","557","$1b","276","$1c","322","$1d","857","$1e","767","$1f","974","$20"],"default"]
 24:I[4395,[],"OutletBoundary"]
 25:"$Sreact.suspense"

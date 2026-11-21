@@ -264,6 +264,22 @@ export function detectDuetSpeaker(
   };
 }
 
+export function hasDialogueLines(item: AudioRhymeStory): boolean {
+  if (
+    item.title.includes("খোকন") ||
+    item.title.includes("কাঠবিড়ালী") ||
+    item.title.includes("রাখাল") ||
+    item.title.includes("বাঘ") ||
+    item.title.includes("সিংহ") ||
+    item.title.includes("ইঁদুর")
+  ) {
+    return true;
+  }
+  return item.lines.some((line) =>
+    /^(মা|আম্মু|খোকন|খোকা|রাখাল|দাদু|শিক্ষক|বাঘ|সিংহ|ইঁদুর|ছেলে)\s*[:—\-]/i.test(line.trim())
+  );
+}
+
 const GRADE_OPTIONS = [
   { id: "all", label: "সকল শ্রেণি", icon: "🌈" },
   { id: "pre-primary", label: "প্রাক-প্রাথমিক", icon: "🧸" },
@@ -388,6 +404,44 @@ export default function AudioRhymesCorner() {
     setPreviewingPersona(null);
   };
 
+  const updatePersona = (personaId: string) => {
+    setSelectedPersona(personaId);
+    try {
+      localStorage.setItem("pp_rhyme_persona", personaId);
+    } catch {}
+  };
+
+  const handleToggleEcho = () => {
+    const next = studioAcoustics.toggleEcho();
+    setEchoPreset(next);
+    try {
+      localStorage.setItem("pp_studio_echo", next);
+    } catch {}
+  };
+
+  const updateDuetMode = (enabled: boolean) => {
+    setIsDuetMode(enabled);
+    try {
+      localStorage.setItem("pp_duet_mode", String(enabled));
+    } catch {}
+  };
+
+  const updateBgmEnabled = (enabled: boolean) => {
+    setIsBgmEnabled(enabled);
+    if (!enabled) bgmEngine.stopBgm();
+    else if (isPlaying) bgmEngine.startBgm();
+    try {
+      localStorage.setItem("pp_bgm_enabled", String(enabled));
+    } catch {}
+  };
+
+  const updatePlaybackSpeed = (speed: number) => {
+    setPlaybackSpeed(speed);
+    try {
+      localStorage.setItem("pp_rhyme_speed", String(speed));
+    } catch {}
+  };
+
   const handleSelectItem = (item: AudioRhymeStory) => {
     stopAudio();
     setIsCompletedPoem(false);
@@ -397,9 +451,9 @@ export default function AudioRhymesCorner() {
 
     const isEng = item.language === "en-US" || item.category === "English Rhymes";
     if (isEng && selectedPersona !== "buddy" && selectedPersona !== "ana" && selectedPersona !== "guy") {
-      setSelectedPersona("buddy");
+      updatePersona("buddy");
     } else if (!isEng && (selectedPersona === "buddy" || selectedPersona === "ana" || selectedPersona === "guy")) {
-      setSelectedPersona("didimoni");
+      updatePersona("didimoni");
     }
 
     // ⚡ Pre-buffer first two lines immediately so playback begins with ZERO delay
@@ -423,17 +477,46 @@ export default function AudioRhymesCorner() {
       const voice = isEng ? "buddy" : selectedPersona;
       preloadSpeech(selectedItem.lines[0], { lang: selectedItem.language, rate: 0.85, voice });
     }
+
+    // Load persisted audio studio preferences from localStorage on mount
+    try {
+      const savedPersona = localStorage.getItem("pp_rhyme_persona");
+      const savedEcho = localStorage.getItem("pp_studio_echo");
+      const savedDuet = localStorage.getItem("pp_duet_mode");
+      const savedBgm = localStorage.getItem("pp_bgm_enabled");
+      const savedSpeed = localStorage.getItem("pp_rhyme_speed");
+
+      queueMicrotask(() => {
+        if (savedPersona && VOICE_PERSONAS.some((p) => p.id === savedPersona)) {
+          setSelectedPersona(savedPersona);
+        }
+        if (savedEcho === "studio" || savedEcho === "hall" || savedEcho === "off") {
+          setEchoPreset(savedEcho);
+          studioAcoustics.setPreset(savedEcho);
+        }
+        if (savedDuet !== null) {
+          setIsDuetMode(savedDuet === "true");
+        }
+        if (savedBgm !== null) {
+          setIsBgmEnabled(savedBgm === "true");
+        }
+        if (savedSpeed) {
+          const parsed = parseFloat(savedSpeed);
+          if ([0.75, 1.0, 1.25].includes(parsed)) {
+            setPlaybackSpeed(parsed);
+          }
+        }
+      });
+    } catch {
+      // Storage access may be restricted in sandboxed or private contexts
+    }
+
     return () => {
       stopAudio();
       if (recordTimerRef.current) clearInterval(recordTimerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleToggleEcho = () => {
-    const next = studioAcoustics.toggleEcho();
-    setEchoPreset(next);
-  };
 
   const handlePreviewPersona = (personaId: string) => {
     const p = VOICE_PERSONAS.find((item) => item.id === personaId);
@@ -806,25 +889,27 @@ export default function AudioRhymesCorner() {
     ? "গল্পটি শোনো"
     : "আবৃত্তি শোনো";
 
+  const currentItemHasDialogue = hasDialogueLines(selectedItem);
+
   return (
     <article 
       aria-labelledby="audio-corner-heading"
-      className="bg-white rounded-3xl p-4 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 w-full"
+      className="bg-white rounded-3xl p-3.5 sm:p-8 lg:p-10 border border-slate-200 shadow-xl space-y-6 sm:space-y-8 w-full max-w-full overflow-hidden"
     >
       {/* 🌟 Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4 min-w-0 w-full">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           <div 
             aria-hidden="true" 
             className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center text-white text-2xl shadow-md shadow-rose-500/20 shrink-0"
           >
             🌙
           </div>
-          <div>
-            <h2 id="audio-corner-heading" className="text-xl sm:text-2xl font-black text-slate-900 leading-snug">
+          <div className="min-w-0 flex-1">
+            <h2 id="audio-corner-heading" className="text-lg sm:text-2xl font-black text-slate-900 leading-snug break-words">
               গল্প ও ছড়ার অডিও কর্নার <span className="hidden sm:inline-block font-semibold text-slate-400 text-sm">(Interactive Poetry Studio)</span>
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5 truncate">
               প্রাক-প্রাথমিক থেকে ৫ম শ্রেণি: বাউন্সিং বল কারাওকে, নিউরাল আবৃত্তি ও ৩টি ছড়ার মুড
             </p>
           </div>
@@ -980,27 +1065,28 @@ export default function AudioRhymesCorner() {
       )}
 
       {/* 🎛️ Interactive Classroom Studio Control Ribbon */}
-      <div className="bg-slate-50/90 p-3 sm:p-4 rounded-2xl border border-slate-200 space-y-3">
+      <div className="bg-slate-50/90 p-3 sm:p-4 rounded-2xl border border-slate-200 space-y-3 w-full max-w-full overflow-hidden">
         {/* Row 1: Persona Dropdown & Playback Speed */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2 flex-wrap">
-            <label htmlFor="persona-select" className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 w-full">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <label htmlFor="persona-select" className="text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
               <span>🎤</span>
-              <span>কণ্ঠশিল্পী (Voice):</span>
+              <span className="hidden xs:inline">কণ্ঠশিল্পী:</span>
+              <span className="xs:hidden">কণ্ঠ:</span>
             </label>
-            <div className="relative inline-flex items-center">
+            <div className="relative inline-flex items-center flex-1 sm:flex-initial min-w-0 max-w-[210px] sm:max-w-xs">
               <select
                 id="persona-select"
                 value={selectedPersona}
                 onChange={(e) => {
                   stopAudio();
-                  setSelectedPersona(e.target.value);
+                  updatePersona(e.target.value);
                 }}
-                className="appearance-none bg-white text-slate-800 text-xs sm:text-sm font-bold pl-3 pr-8 py-2 rounded-xl border border-slate-300 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500 shadow-2xs cursor-pointer min-h-[38px]"
+                className="w-full appearance-none bg-white text-slate-800 text-xs sm:text-sm font-bold pl-2.5 pr-7 py-2 rounded-xl border border-slate-300 hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500 shadow-2xs cursor-pointer min-h-[38px] truncate"
               >
                 {VOICE_PERSONAS.map((p) => (
                   <option key={p.id} value={p.id}>
-                    {p.avatar} {p.name} — {p.role}
+                    {p.avatar} {p.name}
                   </option>
                 ))}
               </select>
@@ -1016,20 +1102,20 @@ export default function AudioRhymesCorner() {
               type="button"
               onClick={() => handlePreviewPersona(selectedPersona)}
               disabled={previewingPersona !== null}
-              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all border min-h-[36px] ${
+              className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all border min-h-[36px] shrink-0 active:scale-95 touch-manipulation cursor-pointer ${
                 previewingPersona
                   ? "bg-rose-100 border-rose-300 text-rose-800 animate-pulse"
                   : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
               }`}
-              title="নির্বাচিত কণ্ঠশিল্পীর একটি নমুনা শুনুন"
+              title="নির্বাচিত কণ্ঠের একটি নমুনা শুনুন"
             >
               <Volume2 className={`w-3.5 h-3.5 ${previewingPersona ? "text-rose-600 animate-bounce" : "text-slate-500"}`} />
-              <span>{previewingPersona ? "নমুনা বাজছে..." : "নমুনা 🔊"}</span>
+              <span>{previewingPersona ? "বাজছে..." : "নমুনা 🔊"}</span>
             </button>
           </div>
 
           {/* ⚡ Playback Speed Selector (০.৭৫x, ১x, ১.২৫x) */}
-          <div className="flex items-center gap-1 bg-white p-0.5 rounded-xl border border-slate-200 shadow-2xs">
+          <div className="flex items-center gap-1 bg-white p-0.5 rounded-xl border border-slate-200 shadow-2xs self-start sm:self-auto shrink-0">
             <span className="text-[11px] font-bold text-slate-500 pl-2 pr-1 flex items-center gap-1">
               <Gauge className="w-3 h-3 text-slate-400" /> গতি:
             </span>
@@ -1037,9 +1123,9 @@ export default function AudioRhymesCorner() {
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setPlaybackSpeed(opt.value)}
+                onClick={() => updatePlaybackSpeed(opt.value)}
                 aria-pressed={playbackSpeed === opt.value}
-                className={`px-2.5 py-1.5 min-h-[32px] min-w-[32px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 ${
+                className={`px-2.5 py-1.5 min-h-[32px] min-w-[32px] rounded-lg text-xs font-bold transition-all touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 cursor-pointer ${
                   playbackSpeed === opt.value
                     ? "bg-rose-600 text-white shadow-xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
@@ -1053,12 +1139,12 @@ export default function AudioRhymesCorner() {
         </div>
 
         {/* Row 2: Studio Audio Effects & Interactive Modes */}
-        <div className="flex items-center gap-2 sm:gap-3 flex-wrap pt-1 border-t border-slate-200/60">
+        <div className="flex items-center gap-2 flex-wrap pt-2 border-t border-slate-200/60 w-full">
           {/* 🎙️ Studio Echo & Reverb Button */}
           <button
             type="button"
             onClick={handleToggleEcho}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
               echoPreset === "studio"
                 ? "bg-emerald-600 border-emerald-600 text-white shadow-md shadow-emerald-500/20"
                 : echoPreset === "hall"
@@ -1079,10 +1165,10 @@ export default function AudioRhymesCorner() {
             type="button"
             onClick={() => {
               const next = !isDuetMode;
-              setIsDuetMode(next);
+              updateDuetMode(next);
               if (next) bgmEngine.playCelebrationChime();
             }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
               isDuetMode
                 ? "bg-gradient-to-r from-rose-600 to-amber-600 text-white border-transparent shadow-md shadow-rose-500/20"
                 : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
@@ -1091,18 +1177,18 @@ export default function AudioRhymesCorner() {
           >
             <Drama className={`w-3.5 h-3.5 ${isDuetMode ? "text-amber-200 animate-pulse" : "text-slate-400"}`} />
             <span>🎭 দ্বৈত কণ্ঠ: {isDuetMode ? "চালু ✨" : "বন্ধ"}</span>
+            {currentItemHasDialogue && !isDuetMode && (
+              <span className="text-[10px] font-black text-rose-700 bg-rose-100 px-1.5 py-0.2 rounded-full animate-pulse ml-0.5">
+                সংলাপ আছে!
+              </span>
+            )}
           </button>
 
           {/* 🎵 BGM Toggle */}
           <button
             type="button"
-            onClick={() => {
-              const next = !isBgmEnabled;
-              setIsBgmEnabled(next);
-              if (!next) bgmEngine.stopBgm();
-              else if (isPlaying) bgmEngine.startBgm();
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
+            onClick={() => updateBgmEnabled(!isBgmEnabled)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
               isBgmEnabled
                 ? "bg-amber-100 border-amber-300 text-amber-900"
                 : "bg-white border-slate-200 text-slate-400"
@@ -1120,7 +1206,7 @@ export default function AudioRhymesCorner() {
               stopAudio();
               setIsRepeatMode(!isRepeatMode);
             }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] ${
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all border min-h-[36px] active:scale-95 touch-manipulation cursor-pointer ${
               isRepeatMode
                 ? "bg-purple-600 border-purple-600 text-white shadow-xs animate-pulse"
                 : "bg-white border-slate-200 text-slate-700 hover:bg-slate-100"
@@ -1170,20 +1256,47 @@ export default function AudioRhymesCorner() {
           data-paper-inner="true"
           className="p-6 sm:p-8 rounded-3xl bg-white/95 border border-rose-100 shadow-inner space-y-4 min-h-[200px] flex flex-col justify-center relative z-10 transition-colors"
         >
-          {/* 🎭 Live Duet Speaker Indicator */}
+          {/* 🎭 Live Duet Speaker Indicator with Pop-in Transition */}
           {isDuetMode && currentDuetSpeaker && isPlaying && (
-            <div className="flex items-center justify-center mb-1">
-              <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold border shadow-xs animate-pulse transition-all ${currentDuetSpeaker.colorClass}`}>
-                <span className="text-base">{currentDuetSpeaker.avatar}</span>
-                <span>{currentDuetSpeaker.name} আবৃত্তি করছেন</span>
+            <div className="flex items-center justify-center mb-1.5">
+              <div 
+                key={currentDuetSpeaker.name}
+                className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold border-2 shadow-sm transition-all duration-300 animate-in fade-in zoom-in-90 ${currentDuetSpeaker.colorClass}`}
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                </span>
+                <span className="text-base sm:text-lg transform transition-transform duration-300 scale-110 drop-shadow-xs">
+                  {currentDuetSpeaker.avatar}
+                </span>
+                <span>
+                  {currentDuetSpeaker.name} <span className="font-normal opacity-80 text-[11px] sm:text-xs">আবৃত্তি করছেন...</span>
+                </span>
               </div>
             </div>
           )}
           {isDuetMode && !isPlaying && (
             <div className="flex items-center justify-center mb-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200">
-                <span>🎭 দ্বৈত কণ্ঠ মোড সক্রিয় (চরিত্র অনুযায়ী কণ্ঠ পরিবর্তন হবে)</span>
+                <span>🎭 দ্বৈত কণ্ঠ সক্রিয় (চরিত্র ও সংলাপ অনুযায়ী স্বয়ংক্রিয়ভাবে কণ্ঠ পরিবর্তিত হবে)</span>
               </div>
+            </div>
+          )}
+          {currentItemHasDialogue && !isDuetMode && (
+            <div className="flex items-center justify-center mb-1">
+              <button
+                type="button"
+                onClick={() => {
+                  updateDuetMode(true);
+                  bgmEngine.playCelebrationChime();
+                }}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-colors shadow-2xs cursor-pointer active:scale-95"
+                title="দ্বৈত কণ্ঠ মোড চালু করুন"
+              >
+                <Sparkles className="w-3 h-3 text-amber-600 animate-spin" />
+                <span>💡 টিপস: এই ছড়ায় একাধিক চরিত্র আছে—<strong>&apos;দ্বৈত কণ্ঠ&apos; চালু করতে ট্যাপ করুন ✨</strong></span>
+              </button>
             </div>
           )}
           {selectedItem.lines.map((line, idx) => {
