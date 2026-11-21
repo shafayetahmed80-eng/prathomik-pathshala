@@ -104,7 +104,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree",
+    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala",
     "enablePrerenderSourceMaps": true,
     "cacheComponents": false,
     "cacheLife": {
@@ -346,13 +346,13 @@ self.__SERVER_FILES_MANIFEST={
           "as": "*.css"
         }
       },
-      "root": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree"
+      "root": "C:\\Projects\\prathomik-pathshala"
     },
-    "repoRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree",
+    "repoRoot": "C:\\Projects\\prathomik-pathshala",
     "distDirRoot": ".next",
     "supportsImmutableAssets": false
   },
-  "appDir": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree",
+  "appDir": "C:\\Projects\\prathomik-pathshala",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",
