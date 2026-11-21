@@ -48,7 +48,8 @@ const SILENT_WAV_DATA_URI =
 const preloadedSrcMap = new Map<string, string>();
 
 // Persistent browser CacheStorage name for rural / offline resilient classroom playback
-const AUDIO_CACHE_NAME = "pp-rhymes-audio-v2";
+// Bumping to v3 invalidates legacy single-voice Google TTS cached responses
+const AUDIO_CACHE_NAME = "pp-rhymes-audio-v3";
 
 export function isMobileBrowser(): boolean {
   if (typeof navigator === "undefined") return false;

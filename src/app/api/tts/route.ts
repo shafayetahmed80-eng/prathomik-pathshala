@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { MsEdgeTTS, OUTPUT_FORMAT } from "msedge-tts";
 
+// Ensure ws library uses pure JavaScript masking to prevent native bufferutil issues
+if (!process.env.WS_NO_BUFFER_UTIL) {
+  process.env.WS_NO_BUFFER_UTIL = "1";
+}
+
 // In-memory LRU cache for lightning-fast, zero-latency repeated requests
 const audioCache = new Map<string, { buffer: Uint8Array; contentType: string }>();
 const MAX_CACHE_ENTRIES = 500;
@@ -21,12 +26,12 @@ interface PersonaConfig {
 }
 
 const PERSONA_CONFIGS: Record<string, PersonaConfig> = {
-  // 6 Studio Voice Personas
-  didimoni: { edgeVoice: "bn-BD-NabanitaNeural", defaultPitch: "+4Hz", defaultRate: "-4%" },
+  // 6 Authentic Studio Voice Personas (Using all 4 Bengali Neural Voices + Pitch Tuning)
+  didimoni: { edgeVoice: "bn-BD-NabanitaNeural", defaultPitch: "+3Hz", defaultRate: "-3%" },
   shikkhok: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "-2Hz", defaultRate: "-2%" },
-  khukumoni: { edgeVoice: "bn-BD-NabanitaNeural", defaultPitch: "+9Hz", defaultRate: "+4%" },
-  kishor: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "+6Hz", defaultRate: "+8%" },
-  dadu: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "-7Hz", defaultRate: "-12%" },
+  khukumoni: { edgeVoice: "bn-IN-TanishaaNeural", defaultPitch: "+10Hz", defaultRate: "+5%" },
+  kishor: { edgeVoice: "bn-IN-BashkarNeural", defaultPitch: "+5Hz", defaultRate: "+6%" },
+  dadu: { edgeVoice: "bn-BD-PradeepNeural", defaultPitch: "-9Hz", defaultRate: "-12%" },
   buddy: { edgeVoice: "en-US-AnaNeural", defaultPitch: "+0Hz", defaultRate: "+0%" },
   // Legacy voice mappings for backward compatibility
   nabanita: { edgeVoice: "bn-BD-NabanitaNeural", defaultPitch: "+2Hz", defaultRate: "-4%" },
@@ -70,7 +75,7 @@ async function synthesizeEdgeTts(
   options?: { pitch?: string; rate?: string },
   timeoutMs?: number
 ): Promise<Buffer> {
-  const effectiveTimeout = timeoutMs || Math.max(3500, Math.min(8500, text.length * 14));
+  const effectiveTimeout = timeoutMs || Math.max(4500, Math.min(10000, text.length * 16));
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
       reject(new Error(`Edge TTS timed out after ${effectiveTimeout}ms`));
@@ -214,7 +219,8 @@ export async function GET(request: NextRequest) {
           },
         });
       }
-    } catch {
+    } catch (err) {
+      console.error("[TTS API] Edge Neural TTS failed for voice", edgeVoice, "reason:", err);
       consecutiveEdgeFailures++;
       if (consecutiveEdgeFailures >= MAX_CONSECUTIVE_FAILURES) {
         circuitOpenUntil = Date.now() + CIRCUIT_OPEN_COOLDOWN_MS;

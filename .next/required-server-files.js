@@ -104,7 +104,7 @@ self.__SERVER_FILES_MANIFEST={
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\audio-uiux-worktree",
+    "outputFileTracingRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree",
     "enablePrerenderSourceMaps": true,
     "cacheComponents": false,
     "cacheLife": {
@@ -333,6 +333,10 @@ self.__SERVER_FILES_MANIFEST={
     "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight",
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
+    "serverExternalPackages": [
+      "msedge-tts",
+      "ws"
+    ],
     "turbopack": {
       "rules": {
         "*.css": {
@@ -342,13 +346,13 @@ self.__SERVER_FILES_MANIFEST={
           "as": "*.css"
         }
       },
-      "root": "C:\\Projects\\prathomik-pathshala\\scratch\\audio-uiux-worktree"
+      "root": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree"
     },
-    "repoRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\audio-uiux-worktree",
+    "repoRoot": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree",
     "distDirRoot": ".next",
     "supportsImmutableAssets": false
   },
-  "appDir": "C:\\Projects\\prathomik-pathshala\\scratch\\audio-uiux-worktree",
+  "appDir": "C:\\Projects\\prathomik-pathshala\\scratch\\tts-voice-worktree",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",
